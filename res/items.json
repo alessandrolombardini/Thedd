@@ -1,0 +1,15 @@
+{  
+    "0" : {
+      "name": "pozione",
+      "effects" : [
+	{"PV": "20"}
+      ]
+    },
+
+    "1" : {
+      "name": "bomba",
+      "effects" : [
+        {"PV": "-10"}
+      ]
+    } 
+}
