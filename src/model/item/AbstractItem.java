@@ -1,7 +1,6 @@
 package model.item;
 
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import model.characters.Statistic;
 
@@ -14,7 +13,7 @@ public abstract class AbstractItem implements Item {
 
     private final int id;
     private final String name;
-    private Map<Statistic, Integer> effects;
+    private final Map<Statistic, Integer> effects;
 
     /**
      * 
@@ -22,11 +21,22 @@ public abstract class AbstractItem implements Item {
      *          id of the object, used only for comparison and hashing purpose
      * @param name
      *          name of the object
+     * @param effects
+     *          effects of the object
      */
     public AbstractItem(final int id, final String name, final Map<Statistic, Integer> effects) {
         this.id = id;
         this.name = name;
-        this.effects = effects; 
+        this.effects = effects;
+    }
+
+    /**
+     * 
+     * @return
+     *          the item id
+     */
+    protected final int getId() {
+        return this.id;
     }
 
     @Override
@@ -42,6 +52,14 @@ public abstract class AbstractItem implements Item {
     @Override
     public final boolean isUsable() {
         return this instanceof UsableItem;
+    }
+    /**
+     * 
+     * @return
+     *          the map of the effects of the item
+     */
+    protected final Map<Statistic, Integer> getEffects() {
+        return effects;
     }
 
     @Override
@@ -64,18 +82,13 @@ public abstract class AbstractItem implements Item {
             return false;
         }
         final AbstractItem other = (AbstractItem) obj;
-        if (id != other.id) {
-            return false;
-        }
-        return true;
+        return id == other.id;
     }
 
-    /**
-     * @return
-     *          the String representation of this object
-     */
-    public final String toString() {
-        return this.name + ": " + effects.entrySet().stream().map(e -> e.getKey() + " -> " + e.getValue()).collect(Collectors.joining(", ", "[", "]"));
-    }
+    @Override
+    public abstract Item copy();
+
+    @Override
+    public abstract String toString();
 
 }
