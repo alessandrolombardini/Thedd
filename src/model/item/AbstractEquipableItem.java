@@ -19,8 +19,10 @@ public abstract class AbstractEquipableItem extends AbstractItem implements Equi
      *          id of the item
      * @param name
      *          name of the item
+     * @param effects
+     *          map of modifiers of the equipable item
      */
-    public AbstractEquipableItem(final int id, final String name, Map<Statistic, Integer> effects) {
+    public AbstractEquipableItem(final int id, final String name, final Map<Statistic, Integer> effects) {
         super(id, name, effects);
         modifiers = new HashMap<>();
     }
@@ -28,23 +30,6 @@ public abstract class AbstractEquipableItem extends AbstractItem implements Equi
     @Override
     public final Map<Statistic, Integer> getModifiers() {
         return new HashMap<>(modifiers);
-    }
-    /**
-     * 
-     * @param stat
-     *          Statistic modified
-     * @param value
-     *          Magnitude of the modifier
-     * @return
-     *          self
-     */
-    protected final EquipableItem addModifier(final Statistic stat, final int value) {
-        if (modifiers.containsKey(stat)) {
-            throw new IllegalArgumentException("A modifier affecting this Statistic already exists");
-        } else {
-            modifiers.put(stat, value);
-            return this;
-        }
     }
 
 }
