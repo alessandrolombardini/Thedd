@@ -20,8 +20,8 @@ public abstract class AbstractEquipableItem extends AbstractItem implements Equi
      * @param name
      *          name of the item
      */
-    public AbstractEquipableItem(final int id, final String name) {
-        super(id, name);
+    public AbstractEquipableItem(final int id, final String name, Map<Statistic, Integer> effects) {
+        super(id, name, effects);
         modifiers = new HashMap<>();
     }
 

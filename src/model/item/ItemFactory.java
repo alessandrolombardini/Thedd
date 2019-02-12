@@ -26,19 +26,22 @@ public final class ItemFactory {
 
     static {
         try (BufferedReader br = new BufferedReader(new FileReader("res/items.json"))) {
-            String json = br.lines().collect(Collectors.joining());
-            JSONObject jo = new JSONObject(json);
+            final String json = br.lines().collect(Collectors.joining());
+            final JSONObject jo = new JSONObject(json);
             jo.keySet().stream().forEach(k -> {
-                int itemId = Integer.parseInt(k);
-                String itemName = jo.getJSONObject(k).getString("name");
-                Map<Statistic, Integer> effects = new HashMap<>();
-                JSONArray mods = jo.getJSONObject(k).getJSONArray("effects");
+                final int itemId = Integer.parseInt(k);
+                final String itemName = jo.getJSONObject(k).getString("name");
+                final Map<Statistic, Integer> effects = new HashMap<>();
+                final JSONArray mods = jo.getJSONObject(k).getJSONArray("effects");
                 for (int i = 0; i < mods.length(); i++) {
                     final int index = i;
                     mods.getJSONObject(i).keySet().forEach(k2 -> effects.put(Statistic.valueOf(k2), Integer.parseInt(mods.getJSONObject(index).getString(k2))));
                 }
-                database.add(new AbstractItem(itemId, itemName, effects) {
-                });
+                if (itemId < 0) {
+                    database.add(new AbstractEquipableItem(itemId, itemName, effects) { });
+                } else {
+                    database.add(new AbstractItem(itemId, itemName, effects) { });
+                }
             });
         } catch (FileNotFoundException e) {
             e.printStackTrace();
