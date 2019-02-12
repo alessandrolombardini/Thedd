@@ -25,6 +25,17 @@ public final class ItemFactory {
     private static List<Item> database = new ArrayList<>();
 
     static {
+        initDatabase();
+        database.stream().forEach(i -> System.out.println(i));
+    }
+
+    private ItemFactory() {
+    }
+
+    /**
+     *  Load the JSON database file and populate the database with objects. 
+     */
+    public static void initDatabase() {
         try (BufferedReader br = new BufferedReader(new FileReader("res/items.json"))) {
             final String json = br.lines().collect(Collectors.joining());
             final JSONObject jo = new JSONObject(json);
@@ -48,10 +59,6 @@ public final class ItemFactory {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        database.stream().forEach(i -> System.out.println(i));
-    }
-
-    private ItemFactory() {
     }
 
     /**
