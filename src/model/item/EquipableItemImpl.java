@@ -12,7 +12,7 @@ import model.characters.Statistic;
  */
 public class EquipableItemImpl extends AbstractItem implements EquipableItem {
 
-    //private final Map<Statistic, Integer> modifiers;
+    private final EquipableItemType type;
 
     /**
      * 
@@ -20,11 +20,14 @@ public class EquipableItemImpl extends AbstractItem implements EquipableItem {
      *          id of the item
      * @param name
      *          name of the item
+     * @param t
+     *          type of the object
      * @param effects
      *          map of modifiers of the equipable item
      */
-    public EquipableItemImpl(final int id, final String name, final Map<Statistic, Integer> effects) {
+    public EquipableItemImpl(final int id, final String name, final EquipableItemType t, final Map<Statistic, Integer> effects) {
         super(id, name, effects);
+        this.type = t;
     }
 
     @Override
@@ -33,13 +36,18 @@ public class EquipableItemImpl extends AbstractItem implements EquipableItem {
     }
 
     @Override
+    public final EquipableItemType getType() {
+        return this.type;
+    }
+
+    @Override
     public final Item copy() {
-        return new EquipableItemImpl(this.getId(), this.getName(), this.getEffects()) { };
+        return new EquipableItemImpl(this.getId(), this.getName(), this.type, this.getEffects()) { };
     }
 
     @Override
     public final String toString() {
-        return this.getName() + ": " + this.getEffects().entrySet().stream().map(e -> e.getKey() + " -> " + e.getValue()).collect(Collectors.joining(", ", "[", "]"));
+        return this.getName() + "(" + this.type + ")" + ": " + this.getEffects().entrySet().stream().map(e -> e.getKey() + " -> " + e.getValue()).collect(Collectors.joining(", ", "[", "]"));
     }
 
 }
