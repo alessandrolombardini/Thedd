@@ -50,7 +50,8 @@ public final class ItemFactory {
                     mods.getJSONObject(i).keySet().forEach(k2 -> effects.put(Statistic.valueOf(k2), Integer.parseInt(mods.getJSONObject(index).getString(k2))));
                 }
                 if (itemId < 0) {
-                    DATABASE.add(new EquipableItemImpl(itemId, itemName, effects));
+                    final EquipableItemType t = jo.getJSONObject(k).getEnum(EquipableItemType.class, "type");
+                    DATABASE.add(new EquipableItemImpl(itemId, itemName, t, effects));
                 } else {
                     DATABASE.add(new UsableItemImpl(itemId, itemName, effects));
                 }
