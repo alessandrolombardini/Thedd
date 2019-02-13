@@ -2,6 +2,7 @@ package model.item;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import model.characters.Statistic;
@@ -27,7 +28,7 @@ public class EquipableItemImpl extends AbstractItem implements EquipableItem {
      */
     public EquipableItemImpl(final int id, final String name, final EquipableItemType t, final Map<Statistic, Integer> effects) {
         super(id, name, effects);
-        this.type = t;
+        this.type = Objects.requireNonNull(t);
     }
 
     @Override

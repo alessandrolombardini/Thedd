@@ -1,6 +1,7 @@
 package model.item;
 
 import java.util.Map;
+import java.util.Objects;
 
 import model.characters.Statistic;
 
@@ -26,8 +27,8 @@ public abstract class AbstractItem implements Item {
      */
     public AbstractItem(final int id, final String name, final Map<Statistic, Integer> effects) {
         this.id = id;
-        this.name = name;
-        this.effects = effects;
+        this.name = Objects.requireNonNull(name);
+        this.effects = Objects.requireNonNull(effects);
     }
 
     /**
