@@ -45,17 +45,17 @@ public interface Character {
     /**
      * This method equip the specified item, updating character's statistics.
      * 
-     * @param id the id of the item to be equipped.
+     * @param itemid the id of the item to be equipped.
      */
-    void equipItem(int id);
+    void equipItem(int itemid);
 
     /**
      * This method remove the specified item to the equipped ones and automatically
      * update character's statistics.
      * 
-     * @param id the id of the item to be removed.
+     * @param itemId the id of the item to be removed.
      */
-    void removeItem(int id);
+    void removeItem(int itemId);
 
     /**
      * This method returns a list with all the equipped items.
