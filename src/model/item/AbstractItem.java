@@ -3,7 +3,7 @@ package model.item;
 import java.util.Map;
 import java.util.Objects;
 
-import model.characters.Statistic;
+import model.character.Statistic;
 
 /**
  * Abstract class that defines the methods which tell whether a item is of a

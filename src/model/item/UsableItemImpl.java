@@ -3,7 +3,7 @@ package model.item;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import model.characters.Statistic;
+import model.character.Statistic;
 import model.combat.Action;
 
 /**

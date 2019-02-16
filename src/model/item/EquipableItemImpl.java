@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import model.characters.Statistic;
+import model.character.Statistic;
 
 /**
  * 

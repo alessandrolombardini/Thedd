@@ -2,7 +2,7 @@ package model.item;
 
 import java.util.Map;
 
-import model.characters.Statistic;
+import model.character.Statistic;
 
 /**
  * 
