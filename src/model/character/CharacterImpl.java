@@ -9,7 +9,7 @@ import model.item.Item;
 /**
  * Class that define a Generic Character.
  */
-public class GenericCharacter implements Character {
+public class CharacterImpl implements Character {
 
     private final EnumMap<Statistic, StatValues> stat;
     private final List<Action> actions;
@@ -19,7 +19,7 @@ public class GenericCharacter implements Character {
      * @param basicStat , a map with the basic statistic values of the character.
      * @param basicActions , a list of the possible actions of the character.
      */
-    public GenericCharacter(final EnumMap<Statistic, StatValues> basicStat, final List<Action> basicActions) {
+    public CharacterImpl(final EnumMap<Statistic, StatValues> basicStat, final List<Action> basicActions) {
         this.stat = new EnumMap<>(basicStat);
         this.actions = new ArrayList<>(basicActions);
     }
