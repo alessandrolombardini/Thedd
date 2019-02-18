@@ -28,4 +28,6 @@ public interface CombatInstance {
 	
 	public CombatStatus getCombatStatus();
 
+	public List<? extends Combatant> getAllParties();
+
 }

@@ -11,7 +11,7 @@ public interface ActionActor {
 	
 	public void setAction(Action action);
 	
-	public void setTarget(ActionActor target);
+	public void setTargets(ActionActor target);
 	
 	public int compareTo(ActionActor other);
 	

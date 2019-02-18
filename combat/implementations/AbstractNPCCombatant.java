@@ -1,10 +1,10 @@
 package combat.implementations;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-import combat.enums.TargetType;
 import combat.interfaces.Action;
 import combat.interfaces.ActionActor;
 import combat.interfaces.Combatant;
@@ -35,33 +35,38 @@ public abstract class AbstractNPCCombatant extends AbstractCombatant implements 
 	}
 		
 	@Override
-	public void setNextAIAction(ActionActor target) {
+	public void setNextAIAction() {
 		Random dice = new Random();
 		double diceRoll = dice.nextDouble();
 		for(NPCAction action : actionList) {
 			if(diceRoll > action.getPickChanceLowerBound() && diceRoll < action.getPickChanceUpperBound()) {
 				setAction(action);
-				if(target != null) {
-					setTarget(target);
-				} else {
-					setRandomTarget();
-				}
+				setRandomTarget();
 			};
 		}
 	}
 	
-	@Override
-	public void setNextAIAction() {
-		setNextAIAction(null);
-	}
-	
-	private void setRandomTarget() {
+	protected void setRandomTarget() {
 		Random random = new Random();
-		if(getAction().get().getTargetType() == TargetType.FOE) {
-			List<Combatant> playerParty = getInstance().getPlayerParty();
-			int targetIndex = random.nextInt(playerParty.size());
-			setTarget(playerParty.get(targetIndex));
+		List<? extends Combatant> targetParty = new ArrayList<>();
+		switch(getAction().get().getTargetType()) {
+		case ALLY:
+			targetParty = getCombatInstance().getNPCsParty();
+			break;
+		case EVERYONE:
+			targetParty = getCombatInstance().getAllParties();
+			break;
+		case FOE:
+			targetParty = getCombatInstance().getPlayerParty();
+			break;
+		case SELF:
+			targetParty = getCombatInstance().getNPCsParty();
+			break;
+		default:
+			throw new IllegalStateException("Action target type could not be found");
 		}
+		int targetIndex = random.nextInt(targetParty.size());
+		setTargets(targetParty.get(targetIndex));
 	}
 
 }

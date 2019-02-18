@@ -64,9 +64,7 @@ public class DefaultCombatLogic implements CombatLogic {
 				
 				result.addResult(target, ActionResultType.HIT);
 				//combatLogger.addStringLog}
-				System.out.println("DefaultCombatLogic (output management to logger) \n\t" + source.getName() + " hit " + target.getName());
 			} else if(hasTargetParried(source, target)) { //in caso di parry si deve interrompere l'attacco? (al momento sì)
-				System.out.println("DefaultCombatLogic (output management to logger) \n\t" + target.getName() + " has parried " + source.getName() + "'s attack!");
 				actorsQueue.remove(target);
 				if(target instanceof NPCCombatant) { //Controlla se confronto fra class funziona comunque: sarebbe meglio
 					((NPCCombatant)target).setNextAIAction();
@@ -77,7 +75,6 @@ public class DefaultCombatLogic implements CombatLogic {
 				}
 				result.addResult(target, ActionResultType.PARRIED);
 			} else {
-				System.out.println("DefaultCombatLogic (output management to logger) \n\t" + source.getName() + " missed ");
 				result.addResult(target, ActionResultType.MISSED);
 			}
 		}
@@ -204,9 +201,7 @@ public class DefaultCombatLogic implements CombatLogic {
 		case ALLY:
 			break;
 		case EVERYONE:
-			targets = Stream
-					.concat(combatInstance.getPlayerParty().stream(), combatInstance.getNPCsParty().stream())
-					.collect(Collectors.toList());
+			targets = combatInstance.getAllParties();
 			break;
 		case FOE:
 			targets = NPCCombatant.class.isInstance(action.getSource()) ? combatInstance.getPlayerParty() :

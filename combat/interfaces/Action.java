@@ -3,6 +3,7 @@ package combat.interfaces;
 import java.util.List;
 
 import combat.enums.TargetType;
+import combat.interfaces.ActionActor;
 
 public interface Action {
 	
@@ -10,7 +11,7 @@ public interface Action {
 	
 	//public boolean checkRequirements()
 	
-	public void setTarget(ActionActor target);
+	public void setTargets(ActionActor target, List<? extends Combatant> targetedParty);
 	
 	public void setSource(ActionActor source); //ActionActor può esserlo anche un interagibile
 	

@@ -9,6 +9,7 @@ import combat.enums.TargetType;
 import combat.interfaces.Action;
 import combat.interfaces.ActionActor;
 import combat.interfaces.ActionEffect;
+import combat.interfaces.Combatant;
 
 public abstract class AbstractAction implements Action {
 	
@@ -38,7 +39,7 @@ public abstract class AbstractAction implements Action {
 	}
 	
 	@Override
-	public void setTarget(ActionActor target) {
+	public void setTargets(ActionActor target, List<? extends Combatant> targetedParty) {
 		targets.clear();
 		targets.add(Objects.requireNonNull(target));
 		for(ActionEffect effect : effects) {

@@ -12,17 +12,13 @@ public interface CombatLogic {
 	
 	public void addPlayerPendingActionTarget(ActionActor target);
 	
-	public CombatStatus getCombatStatus(); //-> restituisce PLAYER_WON PLAYER_LOST NOT_ENDED
+	public CombatStatus getCombatStatus();
 	
 	public ActionResult executeNextAction();
 	//NOTA: Probabilmente il Controller avrà bisogno di eseguire ogni azione manualmente, perchè deve leggere
-	//il risultato dell'azione e, se opportuno, far partire le animazioni QUINDI
+	//il risultato dell'azione e, se opportuno, far partire le animazioni 
 	
-	
-	//il controller chiama executeNextAction sulla logica del combattimento corrente e ne ricava un ActionResult (BRUTTINO)
-	
-	
-	public void resetCombat();  //maybe builds a CombatInstance?
+	public void resetCombat();
 	
 	public void startCombat();
 	

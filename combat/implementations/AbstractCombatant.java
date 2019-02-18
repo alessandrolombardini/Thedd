@@ -11,6 +11,7 @@ import combat.interfaces.ActionActor;
 import combat.interfaces.CombatInstance;
 import combat.interfaces.Combatant;
 import combat.interfaces.NPCAction;
+import combat.interfaces.NPCCombatant;
 
 public abstract class AbstractCombatant implements Combatant {
 	
@@ -40,9 +41,10 @@ public abstract class AbstractCombatant implements Combatant {
 	}
 
 	@Override
-	public void setTarget(ActionActor target) {
+	public void setTargets(ActionActor target) {
 		if(!getAction().equals(Optional.empty())) {
-			getAction().get().setTarget(target);
+			List<? extends Combatant> targetedParty = NPCCombatant.class.isInstance(target) ? combatInstance.getNPCsParty() : combatInstance.getPlayerParty();
+			getAction().get().setTargets(target, targetedParty);
 		}
 	}
 
@@ -77,7 +79,7 @@ public abstract class AbstractCombatant implements Combatant {
 		return Collections.unmodifiableList(actionList);
 	}
 	
-	protected CombatInstance getInstance() {
+	protected CombatInstance getCombatInstance() {
 		return combatInstance;
 	}
 

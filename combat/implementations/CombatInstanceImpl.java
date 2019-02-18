@@ -3,7 +3,8 @@ package combat.implementations;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import combat.enums.CombatStatus;
 import combat.interfaces.CombatInstance;
 import combat.interfaces.Combatant;
@@ -62,6 +63,10 @@ public class CombatInstanceImpl implements CombatInstance {
 	@Override
 	public CombatStatus getCombatStatus() {
 		return combatStatus;
+	}
+	@Override
+	public List<? extends Combatant> getAllParties() {
+		return Stream.concat(friendlies.stream(), hostiles.stream()).collect(Collectors.toList());
 	}
 
 }
