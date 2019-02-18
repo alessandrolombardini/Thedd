@@ -1,50 +1,62 @@
 package model.character;
 
+import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
 
 import model.item.Item;
 
+/**
+ * Class that define a Generic Character.
+ */
 public class GenericCharacter implements Character {
 
-    @Override
-    public void updateStat(Statistic stat, int value) {
-        // TODO Auto-generated method stub
+    private final EnumMap<Statistic, StatValues> stat;
+    private final List<Action> actions;
+
+    /**
+     * GenericCharacter's constructor.
+     * @param basicStat , a map with the basic statistic values of the character.
+     * @param basicActions , a list of the possible actions of the character.
+     */
+    public GenericCharacter(final EnumMap<Statistic, StatValues> basicStat, final List<Action> basicActions) {
+        this.stat = new EnumMap<>(basicStat);
+        this.actions = new ArrayList<>(basicActions);
     }
 
     @Override
-    public boolean isAlive() {
-        // TODO Auto-generated method stub
-        return false;
+    public final void updateStat(final Statistic stat, final int value) {
+        this.stat.get(stat).updateActual(value);
     }
 
     @Override
-    public StatValues getStat(Statistic stat) {
-        // TODO Auto-generated method stub
-        return null;
+    public final boolean isAlive() {
+        return (this.stat.get(Statistic.PV).getActual() > 0 ? true : false);
     }
 
     @Override
-    public List<Action> getActions() {
-        // TODO Auto-generated method stub
-        return null;
+    public final StatValues getStat(final Statistic stat) {
+        return this.stat.get(stat);
     }
 
     @Override
-    public void equipItem(int itemid) {
-        // TODO Auto-generated method stub
-        
+    public final List<Action> getActions() {
+        return this.actions;
     }
 
     @Override
-    public void removeItem(int itemId) {
-        // TODO Auto-generated method stub
-        
+    public final void equipItem(final int itemid) {
+        //to-do
     }
 
     @Override
-    public List<Item> getEquippedItems() {
-        // TODO Auto-generated method stub
-        return null;
+    public final void removeItem(final int itemId) {
+        //to-do
+    }
+
+    @Override
+    public final List<Item> getEquippedItems() {
+        return null; //to-do
     }
 
 }
