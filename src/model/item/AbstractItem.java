@@ -36,7 +36,7 @@ public abstract class AbstractItem implements Item {
      * @return
      *          the item id
      */
-    protected final int getId() {
+    public final int getId() {
         return this.id;
     }
 
