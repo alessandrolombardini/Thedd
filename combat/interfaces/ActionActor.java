@@ -1,12 +1,13 @@
 package combat.interfaces;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ActionActor {
 	
 	public String getName();
 	
-	public Optional<Action> getCurrentAction();
+	public Optional<Action> getAction();
 	
 	public void setAction(Action action);
 	
@@ -15,6 +16,10 @@ public interface ActionActor {
 	public int compareTo(ActionActor other);
 	
 	public int getPriority();
+	
+	public void setAvailableActionsList(List<? extends Action> actions);
+	
+	public List<? extends Action> getAvailableActionsList();
 	
 	//public getActions() ?
 		

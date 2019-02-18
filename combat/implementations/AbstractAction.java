@@ -22,14 +22,15 @@ public abstract class AbstractAction implements Action {
 	//gettype
 	//manaRequirement? oppure un generico getRequirements?
 	
-	public AbstractAction(ActionActor source, String name, double baseHitChance) {
-		this(source, name, Collections.<ActionEffect>emptyList(), baseHitChance);
+	public AbstractAction(ActionActor source, String name, double baseHitChance, TargetType targetType) {
+		this(source, name, Collections.<ActionEffect>emptyList(), baseHitChance, targetType);
 	}
 	
-	public AbstractAction(ActionActor source, String name, List<ActionEffect> effects, double baseHitChance) {
+	public AbstractAction(ActionActor source, String name, List<ActionEffect> effects, double baseHitChance, TargetType targetType) {
 		this.source = source;
 		this.name = name;
 		this.baseHitChance = baseHitChance;
+		this.targetType = targetType;
 		for(ActionEffect effect : effects) {
 			effect.updateEffectBySource(source);
 			this.effects.add(effect);

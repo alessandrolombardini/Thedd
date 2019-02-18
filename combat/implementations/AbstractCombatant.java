@@ -1,18 +1,24 @@
 package combat.implementations;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 import combat.interfaces.Action;
 import combat.interfaces.ActionActor;
 import combat.interfaces.CombatInstance;
 import combat.interfaces.Combatant;
+import combat.interfaces.NPCAction;
 
 public abstract class AbstractCombatant implements Combatant {
 	
 	private final String name;
 	private Optional<Action> currentAction;
 	private CombatInstance combatInstance;
-	
+	private List<? extends Action> actionList = new ArrayList<>();
+	private Random dice = new Random();
 	
 	public AbstractCombatant(String name) {	
 		this.name = name;
@@ -24,7 +30,7 @@ public abstract class AbstractCombatant implements Combatant {
 	}
 
 	@Override
-	public Optional<Action> getCurrentAction() {
+	public Optional<Action> getAction() {
 		return currentAction;
 	}
 
@@ -35,8 +41,8 @@ public abstract class AbstractCombatant implements Combatant {
 
 	@Override
 	public void setTarget(ActionActor target) {
-		if(!getCurrentAction().equals(Optional.empty())) {
-			getCurrentAction().get().setTarget(target);
+		if(!getAction().equals(Optional.empty())) {
+			getAction().get().setTarget(target);
 		}
 	}
 
@@ -60,6 +66,16 @@ public abstract class AbstractCombatant implements Combatant {
 	public void getCharacter() {
 		//DA CAMBIARE ANCHE NELL'INTERFACCIA
 	} 
+	
+	@Override
+	public void setAvailableActionsList(List<? extends Action> actions) {
+		actionList = Collections.unmodifiableList(actions);
+	}
+	
+	@Override
+	public List<? extends Action> getAvailableActionsList() {
+		return Collections.unmodifiableList(actionList);
+	}
 	
 	protected CombatInstance getInstance() {
 		return combatInstance;

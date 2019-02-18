@@ -10,7 +10,7 @@ public abstract class AbstractNPCAction extends AbstractAction implements NPCAct
 	private double upperBound = 100;
 	
 	public AbstractNPCAction(ActionActor source, String name, double lowerBound, double upperBound, TargetType targetType, double baseHitChance) {
-		super(source, name, baseHitChance);
+		super(source, name, baseHitChance, targetType);
 		setPickChanceBounds(lowerBound, upperBound);
 		setTargetType(targetType);
 	}

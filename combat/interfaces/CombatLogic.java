@@ -1,5 +1,7 @@
 package combat.interfaces;
 
+import java.util.List;
+
 import combat.enums.CombatStatus;
 
 public interface CombatLogic {
@@ -29,4 +31,6 @@ public interface CombatLogic {
 	public void addActorToQueue(ActionActor action);
 	
 	public boolean isRoundReady();
+	
+	public List<? extends Combatant> getValidTargets(Action action);
 }

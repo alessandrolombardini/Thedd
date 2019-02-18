@@ -14,7 +14,7 @@ public class DamageEffect implements ActionEffect {  //physical damage/magical d
 	@Override
 	public void apply(ActionActor target) {
 		//if target is Character -> target.modifyHealth(amount)
-		System.out.println("Target hit: dealt " + damage + " damage");
+		System.out.println("DamageEffect (move output management to logger)\n\tTarget hit: dealt " + damage + " damage");
 	}
 
 	@Override

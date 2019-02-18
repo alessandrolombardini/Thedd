@@ -2,7 +2,7 @@ package combat.interfaces;
 
 public interface CombatController {
 	
-	public void characterSelected(/*Character character*/);
+	public void characterSelected(Combatant character);
 	
 	public void handleCombatRound();
 	

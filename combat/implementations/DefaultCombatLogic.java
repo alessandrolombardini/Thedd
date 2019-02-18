@@ -4,7 +4,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import combat.enums.ActionResultType;
 import combat.enums.CombatStatus;
 import combat.enums.TargetType;
@@ -46,7 +47,7 @@ public class DefaultCombatLogic implements CombatLogic {
 	public ActionResult executeNextAction() {
 		combatInstance.setCombatStatus(CombatStatus.ROUND_IN_PROGRESS);
 		ActionActor source = actorsQueue.get(0);
-		Action sourceAction = source.getCurrentAction().get();
+		Action sourceAction = source.getAction().get();
 		ActionResult result = new ActionResultImpl(sourceAction);
 		List<ActionActor> targets = sourceAction.getTargets(); 
 		for(ActionActor target : targets) {
@@ -63,17 +64,20 @@ public class DefaultCombatLogic implements CombatLogic {
 				
 				result.addResult(target, ActionResultType.HIT);
 				//combatLogger.addStringLog}
+				System.out.println("DefaultCombatLogic (output management to logger) \n\t" + source.getName() + " hit " + target.getName());
 			} else if(hasTargetParried(source, target)) { //in caso di parry si deve interrompere l'attacco? (al momento sì)
+				System.out.println("DefaultCombatLogic (output management to logger) \n\t" + target.getName() + " has parried " + source.getName() + "'s attack!");
 				actorsQueue.remove(target);
 				if(target instanceof NPCCombatant) { //Controlla se confronto fra class funziona comunque: sarebbe meglio
 					((NPCCombatant)target).setNextAIAction();
 					actorsQueue.add(target);
+				} else {					
+					combatInstance.setCombatStatus(CombatStatus.ROUND_PAUSED);
+					break; //Brutto?
 				}
 				result.addResult(target, ActionResultType.PARRIED);
-				combatInstance.setCombatStatus(CombatStatus.ROUND_PAUSED);
-				break; //Brutto?
 			} else {
-				System.out.println("DefaultCombatLogic (Move this output to logger) - " + source.getName() + " missed ");
+				System.out.println("DefaultCombatLogic (output management to logger) \n\t" + source.getName() + " missed ");
 				result.addResult(target, ActionResultType.MISSED);
 			}
 		}
@@ -99,7 +103,7 @@ public class DefaultCombatLogic implements CombatLogic {
 	}
 	
 	private boolean hasTargetParried(ActionActor source, ActionActor target) {
-		final Action targetAction = target.getCurrentAction().get();
+		final Action targetAction = target.getAction().get();
 		//se target è nella queue vuol dire che non ha ancora attivato il parry: ritorna false
 		if(!actorsQueue.contains(target) && targetAction instanceof AbstractParryAction) {	//NOTA: alternativamente, posso aggiungere metodo getType() in Action, che restituisca che genere di Action è
 		 	return isTargetHit(targetAction, source);  //Nota: se parry bersaglia se stesso, questa funzione resutuirà sempre true: parry automatico oppure librera utils diceRoller perchè mi sono rotto le balls di aggiungere random a caso
@@ -119,11 +123,10 @@ public class DefaultCombatLogic implements CombatLogic {
 		
 		actionModifier = action.getHitChanceModifier();
 		
-		List<? extends Combatant> oppositeParty = NPCCombatant.class.isInstance(target) ? combatInstance.getNPCsParty() :
-										combatInstance.getPlayerParty();
+		
 		
 		if (action.getTargetType() != TargetType.ALLY && action.getTargetType() != TargetType.SELF &&
-				oppositeParty.contains(target)) { 
+				getValidTargets(action).contains(target)) { 
 			/*
 			 * sourceChance = currentActor.getPriority() (e getPriority richiamerà getCurrentReflexes a sto punto)
 			 * modificare poi baseChance in modo da decidersi
@@ -192,6 +195,30 @@ public class DefaultCombatLogic implements CombatLogic {
 	public boolean isRoundReady() {
 		return combatInstance.getPlayerParty().size() + combatInstance.getNPCsParty().size() == actorsQueue.size()
 				|| combatInstance.getCombatStatus() == CombatStatus.ROUND_PAUSED; //Perchè in questa logica ogni attore ha un'azione da compiere
+	}
+
+	@Override
+	public List<? extends Combatant> getValidTargets(Action action) {
+		List<? extends Combatant> targets = new LinkedList<>();
+		switch(action.getTargetType()) {
+		case ALLY:
+			break;
+		case EVERYONE:
+			targets = Stream
+					.concat(combatInstance.getPlayerParty().stream(), combatInstance.getNPCsParty().stream())
+					.collect(Collectors.toList());
+			break;
+		case FOE:
+			targets = NPCCombatant.class.isInstance(action.getSource()) ? combatInstance.getPlayerParty() :
+					combatInstance.getNPCsParty();
+			break;
+		case SELF:
+			targets = Collections.singletonList((Combatant)action.getSource());
+			break;
+		default:
+			throw new IllegalStateException("Target type of the action was not found");		
+		}
+		return targets;
 	}
 
 }

@@ -1,28 +1,31 @@
 package combat.implementations;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import combat.enums.TargetType;
+import combat.interfaces.Action;
 import combat.interfaces.ActionActor;
 import combat.interfaces.Combatant;
 import combat.interfaces.NPCAction;
 import combat.interfaces.NPCCombatant;
 
 public abstract class AbstractNPCCombatant extends AbstractCombatant implements NPCCombatant {
-
-	private List<NPCAction> actionList = new ArrayList<>();
-	private Random dice = new Random();
+	
+	private List<NPCAction> actionList;
 	
 	public AbstractNPCCombatant(String name) {
 		super(name);
 	}
 	
 	@Override
-	public void setAIActions(List<NPCAction> actions) {
-		actionList = Collections.unmodifiableList(actions);
+	public void setAvailableActionsList(List<? extends Action> actions) {
+		super.setAvailableActionsList(actions);
+		actionList = getAvailableActionsList()
+									.stream()
+									.map(a -> (NPCAction)a)
+									.collect(Collectors.toList());
 		double totalActionsProbabilities = actionList.stream()
 				.mapToDouble(a -> a.getPickChanceUpperBound())
 				.sum();
@@ -33,6 +36,7 @@ public abstract class AbstractNPCCombatant extends AbstractCombatant implements 
 		
 	@Override
 	public void setNextAIAction(ActionActor target) {
+		Random dice = new Random();
 		double diceRoll = dice.nextDouble();
 		for(NPCAction action : actionList) {
 			if(diceRoll > action.getPickChanceLowerBound() && diceRoll < action.getPickChanceUpperBound()) {
@@ -53,7 +57,7 @@ public abstract class AbstractNPCCombatant extends AbstractCombatant implements 
 	
 	private void setRandomTarget() {
 		Random random = new Random();
-		if(getCurrentAction().get().getTargetType() == TargetType.FOE) {
+		if(getAction().get().getTargetType() == TargetType.FOE) {
 			List<Combatant> playerParty = getInstance().getPlayerParty();
 			int targetIndex = random.nextInt(playerParty.size());
 			setTarget(playerParty.get(targetIndex));
