@@ -12,22 +12,22 @@ public interface CombatInstance {
 	
 	public void resetInstance();
 		
-	public void addNPCsPartyMembers(List<NPCCombatant> hostileNPCs);
+	public void addNPCsPartyMembers(List<ActionActor> hostileNPCs);
 	
-	public void addPlayerPartyMembers(List<Combatant> alliedPCs);
+	public void addPlayerPartyMembers(List<ActionActor> alliedPCs);
 	
-	public void addNPCsPartyMember(NPCCombatant hostileNPC);
+	public void addNPCsPartyMember(ActionActor hostileNPC);
 	
-	public void addPlayerPartyMember(Combatant alliedPC);
+	public void addPlayerPartyMember(ActionActor alliedPC);
 	
-	public List<NPCCombatant> getNPCsParty();
+	public List<ActionActor> getNPCsParty();
 	
-	public List<Combatant> getPlayerParty();
+	public List<ActionActor> getPlayerParty();
 
 	public void setCombatStatus(CombatStatus newStatus);
 	
 	public CombatStatus getCombatStatus();
 
-	public List<? extends Combatant> getAllParties();
+	public List<ActionActor> getAllParties();
 
 }

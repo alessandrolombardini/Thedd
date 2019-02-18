@@ -11,7 +11,7 @@ public interface Action {
 	
 	//public boolean checkRequirements()
 	
-	public void setTargets(ActionActor target, List<? extends Combatant> targetedParty);
+	public void setTargets(ActionActor target, List<ActionActor> targetedParty);
 	
 	public void setSource(ActionActor source); //ActionActor può esserlo anche un interagibile
 	

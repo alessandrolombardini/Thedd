@@ -43,7 +43,7 @@ public abstract class AbstractCombatant implements Combatant {
 	@Override
 	public void setTargets(ActionActor target) {
 		if(!getAction().equals(Optional.empty())) {
-			List<? extends Combatant> targetedParty = NPCCombatant.class.isInstance(target) ? combatInstance.getNPCsParty() : combatInstance.getPlayerParty();
+			List<ActionActor> targetedParty = NPCCombatant.class.isInstance(target) ? combatInstance.getNPCsParty() : combatInstance.getPlayerParty();
 			getAction().get().setTargets(target, targetedParty);
 		}
 	}

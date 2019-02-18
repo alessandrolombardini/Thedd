@@ -4,8 +4,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import combat.enums.ActionResultType;
 import combat.enums.CombatStatus;
 import combat.enums.TargetType;
@@ -23,14 +21,14 @@ public class DefaultCombatLogic implements CombatLogic {
 	private List<ActionActor> actorsQueue = new LinkedList<>(); //Defined and handled here since the queue can change depending on the logic implementation
 	
 	public DefaultCombatLogic() {
-		this(Collections.<NPCCombatant>emptyList(), Collections.<Combatant>emptyList());		
+		this(Collections.<ActionActor>emptyList(), Collections.<ActionActor>emptyList());		
 	}
 	
-	public DefaultCombatLogic(List<NPCCombatant> hostileNPCs) {
-		this(hostileNPCs, Collections.<Combatant>emptyList());
+	public DefaultCombatLogic(List<ActionActor> hostileNPCs) {
+		this(hostileNPCs, Collections.<ActionActor>emptyList());
 	}
 	
-	public DefaultCombatLogic(List<NPCCombatant> hostileNPCs, List<Combatant> partyMembers) {
+	public DefaultCombatLogic(List<ActionActor> hostileNPCs, List<ActionActor> partyMembers) {
 		combatInstance.addNPCsPartyMembers(hostileNPCs);
 		combatInstance.addPlayerPartyMembers(partyMembers);
 	}
@@ -161,9 +159,13 @@ public class DefaultCombatLogic implements CombatLogic {
 	}
 
 	private void setNextAIMoves() {
-		for(NPCCombatant npc : combatInstance.getNPCsParty()) {
-			npc.setNextAIAction();
-			addActorToQueue(npc);
+		for(ActionActor npc : combatInstance.getNPCsParty()) {
+			if(npc instanceof AutomaticActionActor) {
+				((AutomaticActionActor)npc).setNextAction();
+				addActorToQueue(npc);				
+			} else {
+				throw new IllegalStateException("Only AutomaticActionActors are allowed in the NPCs party");
+			}
 		}
 	}
 	
@@ -195,8 +197,8 @@ public class DefaultCombatLogic implements CombatLogic {
 	}
 
 	@Override
-	public List<? extends Combatant> getValidTargets(Action action) {
-		List<? extends Combatant> targets = new LinkedList<>();
+	public List<ActionActor> getValidTargets(Action action) {
+		List<ActionActor> targets = new LinkedList<>();
 		switch(action.getTargetType()) {
 		case ALLY:
 			break;

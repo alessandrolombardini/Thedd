@@ -28,5 +28,5 @@ public interface CombatLogic {
 	
 	public boolean isRoundReady();
 	
-	public List<? extends Combatant> getValidTargets(Action action);
+	public List<ActionActor> getValidTargets(Action action);
 }

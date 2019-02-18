@@ -6,14 +6,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import combat.enums.CombatStatus;
+import combat.interfaces.ActionActor;
 import combat.interfaces.CombatInstance;
-import combat.interfaces.Combatant;
-import combat.interfaces.NPCCombatant;
 
 public class CombatInstanceImpl implements CombatInstance {
 	
-	private List<NPCCombatant> hostiles = new ArrayList<NPCCombatant>();
-	private List<Combatant> friendlies = new ArrayList<Combatant>();
+	private List<ActionActor> hostiles = new ArrayList<>();
+	private List<ActionActor> friendlies = new ArrayList<>();
 	private int roundCount = 0;
 	private CombatStatus combatStatus = CombatStatus.NOT_STARTED;
 	
@@ -33,27 +32,27 @@ public class CombatInstanceImpl implements CombatInstance {
 	}
 	
 	@Override
-	public void addNPCsPartyMembers(List<NPCCombatant> hostileNPCs) {
+	public void addNPCsPartyMembers(List<ActionActor> hostileNPCs) {
 		hostiles.addAll(hostileNPCs);
 	}
 	@Override
-	public void addPlayerPartyMembers(List<Combatant> alliedPCs) {
+	public void addPlayerPartyMembers(List<ActionActor> alliedPCs) {
 		friendlies.addAll(alliedPCs);
 	}
 	@Override
-	public void addNPCsPartyMember(NPCCombatant hostileNPC) {
+	public void addNPCsPartyMember(ActionActor hostileNPC) {
 		hostiles.add(hostileNPC);
 	}
 	@Override
-	public void addPlayerPartyMember(Combatant alliedPC) {
+	public void addPlayerPartyMember(ActionActor alliedPC) {
 		friendlies.add(alliedPC);
 	}
 	@Override
-	public List<NPCCombatant> getNPCsParty() {
+	public List<ActionActor> getNPCsParty() {
 		return Collections.unmodifiableList(hostiles);
 	}
 	@Override
-	public List<Combatant> getPlayerParty() {
+	public List<ActionActor> getPlayerParty() {
 		return Collections.unmodifiableList(friendlies);
 	}
 	@Override
@@ -65,7 +64,7 @@ public class CombatInstanceImpl implements CombatInstance {
 		return combatStatus;
 	}
 	@Override
-	public List<? extends Combatant> getAllParties() {
+	public List<ActionActor> getAllParties() {
 		return Stream.concat(friendlies.stream(), hostiles.stream()).collect(Collectors.toList());
 	}
 

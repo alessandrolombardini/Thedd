@@ -1,6 +1,8 @@
 package combat.interfaces;
 
-public interface NPCCombatant extends Combatant {
+import combat.implementations.AutomaticActionActor;
+
+public interface NPCCombatant extends Combatant, AutomaticActionActor {
 	
 	public void setNextAIAction();
 	

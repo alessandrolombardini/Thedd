@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 
 import combat.interfaces.Action;
 import combat.interfaces.ActionActor;
-import combat.interfaces.Combatant;
 import combat.interfaces.NPCAction;
 import combat.interfaces.NPCCombatant;
 
@@ -17,6 +16,11 @@ public abstract class AbstractNPCCombatant extends AbstractCombatant implements 
 	
 	public AbstractNPCCombatant(String name) {
 		super(name);
+	}
+	
+	@Override
+	public void setNextAction() {
+		setNextAIAction();
 	}
 	
 	@Override
@@ -48,7 +52,7 @@ public abstract class AbstractNPCCombatant extends AbstractCombatant implements 
 	
 	protected void setRandomTarget() {
 		Random random = new Random();
-		List<? extends Combatant> targetParty = new ArrayList<>();
+		List<ActionActor> targetParty = new ArrayList<>();
 		switch(getAction().get().getTargetType()) {
 		case ALLY:
 			targetParty = getCombatInstance().getNPCsParty();
