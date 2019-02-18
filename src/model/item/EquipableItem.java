@@ -5,7 +5,7 @@ import java.util.Map;
 import model.character.Statistic;
 
 /**
- * 
+ * Specialization of Item which can be equiped but cannot be used.
  *
  */
 public interface EquipableItem extends Item {

@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import model.character.Statistic;
 
 /**
- * 
+ * Implementation of {@link model.item.EquipableItem}.
  *
  */
 public class EquipableItemImpl extends AbstractItem implements EquipableItem {

@@ -7,7 +7,7 @@ import model.character.Statistic;
 import model.combat.Action;
 
 /**
- * 
+ * Implementation of {@link model.item.UsableItem}.
  *
  */
 public class UsableItemImpl extends AbstractItem implements UsableItem {

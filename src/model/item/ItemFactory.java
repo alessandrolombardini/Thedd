@@ -17,7 +17,7 @@ import org.json.JSONObject;
 import model.character.Statistic;
 
 /**
- * 
+ * Factory for generating random items from a database.
  *
  */
 public final class ItemFactory {
