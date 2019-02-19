@@ -26,8 +26,6 @@ public interface Action {
 
     String getName();
 
-    String getLogMessage();  //Probabilmente dovrebbe essere l'effetto ad avere il log 
-
     List<ActionActor> getTargets();
 
     double getHitChanceModifier();

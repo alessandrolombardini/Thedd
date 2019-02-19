@@ -15,7 +15,6 @@ public abstract class AbstractAction implements Action {
     private final List<ActionActor> targets = new ArrayList<ActionActor>();
     private ActionActor source;
     private final List<ActionEffect> effects = new ArrayList<>();
-    private String logMessage;
     private String name;
     private double baseHitChance;
     private TargetType targetType;
@@ -83,11 +82,6 @@ public abstract class AbstractAction implements Action {
     @Override
     public String getName() {
         return name;
-    }
-
-    @Override
-    public String getLogMessage() {
-        return source.getName() + " does a standard action to "; //+ target.getName? ;
     }
 
     @Override
