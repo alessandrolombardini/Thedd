@@ -1,6 +1,5 @@
 package combat.implementations;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -33,7 +32,7 @@ public abstract class AbstractNPCCombatant extends AbstractCombatant implements 
         final double totalActionsProbabilities = actionList.stream()
                 .mapToDouble(a -> a.getPickChanceUpperBound())
                 .sum();
-        if(totalActionsProbabilities != 1.0) {
+        if (totalActionsProbabilities != 1.0) {
             throw new IllegalStateException("Actions pick chance's upper bounds do not amount to 1");
         }
     }
@@ -45,32 +44,19 @@ public abstract class AbstractNPCCombatant extends AbstractCombatant implements 
         for (final NPCAction action : actionList) {
             if (diceRoll > action.getPickChanceLowerBound() && diceRoll < action.getPickChanceUpperBound()) {
                 setAction(action);
-                setRandomTarget();
             }
         }
     }
 
-    protected void setRandomTarget() {
-        List<ActionActor> targetParty = new ArrayList<>();
-        switch (getAction().get().getTargetType()) {
-        case ALLY:
-            targetParty = getCombatInstance().getNPCsParty();
-            break;
-        case EVERYONE:
-            targetParty = getCombatInstance().getAllParties();
-            break;
-        case FOE:
-            targetParty = getCombatInstance().getPlayerParty();
-            break;
-        case SELF:
-            targetParty = getCombatInstance().getNPCsParty();
-            break;
-        default:
-            throw new IllegalStateException("Action target type could not be found");
-        }
+    @Override
+    public void setNextTarget(final List<ActionActor> availableTargets) {
+        setRandomTarget(availableTargets);
+    }
+
+    protected void setRandomTarget(final List<ActionActor> availableTargets) {
         final Random random = new Random();
-        final int targetIndex = random.nextInt(targetParty.size());
-        setTargets(targetParty.get(targetIndex));
+        final int targetIndex = random.nextInt(availableTargets.size());
+        getAction().get().setTargets(availableTargets.get(targetIndex), availableTargets);
     }
 
 }
