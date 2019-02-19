@@ -38,7 +38,7 @@ public class DefaultCombatLogic implements CombatLogic {
     public void addActorToQueue(final ActionActor actor) { 
         //Maybe checks if action is valid, but it's better to leave that directly to the Action (checkRequirements method) in order to ease the GUI's work
         actorsQueue.add(0, actor);
-        if (combatInstance.getCombatStatus() != CombatStatus.ROUND_IN_PROGRESS) { //Se no vuol dire che siamo in caso counterattack
+        if (combatInstance.getCombatStatus() != CombatStatus.ROUND_IN_PROGRESS) { //Se no vuol dire che siamo in caso counterattack o fuori combattimento
             actorsQueue.sort((a, b) -> a.getPriority() - b.getPriority());
         }
     }
@@ -161,6 +161,8 @@ public class DefaultCombatLogic implements CombatLogic {
         for (final ActionActor npc : combatInstance.getNPCsParty()) {
             if (npc instanceof AutomaticActionActor) {
                 ((AutomaticActionActor) npc).setNextAction();
+                final List<ActionActor> availableTargets = getValidTargets(npc.getAction().get());
+                ((AutomaticActionActor) npc).setNextTarget(availableTargets);
                 addActorToQueue(npc);
             } else {
                 throw new IllegalStateException("Only AutomaticActionActors are allowed in the NPCs party");
@@ -197,24 +199,20 @@ public class DefaultCombatLogic implements CombatLogic {
 
     @Override
     public List<ActionActor> getValidTargets(final Action action) {
-        List<ActionActor> targets = new LinkedList<>();
         switch (action.getTargetType()) {
         case ALLY:
-            break;
+            return NPCCombatant.class.isInstance(action.getSource()) ? combatInstance.getNPCsParty() 
+                    : combatInstance.getPlayerParty();
         case EVERYONE:
-            targets = combatInstance.getAllParties();
-            break;
+            return combatInstance.getAllParties();
         case FOE:
-            targets = NPCCombatant.class.isInstance(action.getSource()) ? combatInstance.getPlayerParty() :
-                    combatInstance.getNPCsParty();
-            break;
+            return NPCCombatant.class.isInstance(action.getSource()) ? combatInstance.getPlayerParty() 
+                    : combatInstance.getNPCsParty();
         case SELF:
-            targets = Collections.singletonList((Combatant) action.getSource());
-            break;
+            return Collections.singletonList((Combatant) action.getSource());
         default:
             throw new IllegalStateException("Target type of the action was not found");
         }
-        return targets;
     }
 
 }

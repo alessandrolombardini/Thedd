@@ -21,12 +21,15 @@ public class DamageEffect implements ActionEffect {  //to be subdivided into phy
     @Override
     public void updateEffectByTarget(final ActionActor target) {
         // TODO Auto-generated method stub
+        //subtract character armor from damageù
+        //foreach attribute and temporal attribute of the character, attr.modifyValue(damage)
         targetName = target.getName();
     }
 
     @Override
     public void updateEffectBySource(final ActionActor source) {
         // TODO Auto-generated method stub
+        //add character strenght etc.. to damage
         sourceName = source.getName();
     }
 
