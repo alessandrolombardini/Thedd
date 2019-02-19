@@ -1,11 +1,11 @@
 package combat.interfaces;
 
 public interface ModifierEffect extends ActionEffect {
-	
-	public void updateDuration();
-	
-	public boolean isExpired();
-	
-	public String getLogMessage();
+
+    void updateDuration();
+
+    boolean isExpired();
+
+    String getLogMessage();
 
 }

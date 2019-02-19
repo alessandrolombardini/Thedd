@@ -1,11 +1,11 @@
 package combat.interfaces;
 
 public interface ActionEffect {
-	
-	public void apply(ActionActor target);
-	
-	public void updateEffectByTarget(ActionActor target);
-	
-	public void updateEffectBySource(ActionActor source);
-	
+
+    void apply(ActionActor target);
+
+    void updateEffectByTarget(ActionActor target);
+
+    void updateEffectBySource(ActionActor source);
+
 }

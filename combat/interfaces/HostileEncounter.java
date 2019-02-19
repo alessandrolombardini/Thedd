@@ -3,11 +3,11 @@ package combat.interfaces;
 import java.util.List;
 
 public interface HostileEncounter {
-	
-	public CombatLogic getCombatLogic(); //getCombatLogic?
-	
-	public void addNPC(Combatant character);
-	
-	public void addAll(List<Combatant> characters);
+
+    CombatLogic getCombatLogic(); //getCombatLogic?
+
+    void addNPC(Combatant character);
+
+	void addAll(List<Combatant> characters);
 
 }
