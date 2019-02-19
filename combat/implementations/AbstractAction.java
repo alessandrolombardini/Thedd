@@ -10,8 +10,8 @@ import combat.interfaces.Action;
 import combat.interfaces.ActionActor;
 import combat.interfaces.ActionEffect;
 
-public abstract class AbstractAction implements Action {
 
+public abstract class AbstractAction implements Action {
     private final List<ActionActor> targets = new ArrayList<ActionActor>();
     private ActionActor source;
     private final List<ActionEffect> effects = new ArrayList<>();
@@ -57,12 +57,15 @@ public abstract class AbstractAction implements Action {
 
     @Override
     public void addEffects(final List<ActionEffect> effects) {
-        this.effects.addAll(effects);
+        for (final ActionEffect effect : effects) {
+            addEffect(effect);
+        }
     }
 
     @Override
     public void addEffect(final ActionEffect effect) {
         effects.add(Objects.requireNonNull(effect));
+        effect.updateEffectBySource(source);
     }
 
     @Override
