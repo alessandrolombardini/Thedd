@@ -26,7 +26,7 @@ public class InventoryImpl implements Inventory {
     public final Optional<Item> getItem(final int id) {
         final Optional<Entry<Item, Integer>> selected = this.items.entrySet().stream().
                 filter(en -> en.getKey().getId() == id).findFirst();
-        if (selected.isPresent()) {
+        if (selected.isPresent() && selected.get().getKey().isEquipable()) {
             selected.get().setValue(selected.get().getValue() - 1);
                 if (selected.get().getValue() <= 0) {
                     this.items.remove(selected.get().getKey());
