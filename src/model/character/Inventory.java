@@ -1,5 +1,7 @@
 package model.character;
 
+import java.util.Optional;
+
 import model.item.Item;
 
 /**
@@ -10,10 +12,10 @@ public interface Inventory {
     /**
      * This method returns the specified item of the Inventory.
      * 
-     * @param position the position in the inventory of the object
-     * @return the specified item
+     * @param id the id of the object
+     * @return the specified item or null if is not present
      */
-    Item getItem(int position);
+    Optional<Item> getItem(int id);
 
     /**
      * This method add the passed item in the Inventory.
