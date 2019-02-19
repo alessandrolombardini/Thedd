@@ -7,5 +7,7 @@ public interface ActionEffect {
     void updateEffectByTarget(ActionActor target);
 
     void updateEffectBySource(ActionActor source);
+    
+    String getLogMessage();
 
 }
