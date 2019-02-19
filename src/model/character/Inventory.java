@@ -10,10 +10,10 @@ public interface Inventory {
     /**
      * This method returns the specified item of the Inventory.
      * 
-     * @param id identifier of the object
+     * @param position the position in the inventory of the object
      * @return the specified item
      */
-    Item getItem(int id);
+    Item getItem(int position);
 
     /**
      * This method add the passed item in the Inventory.

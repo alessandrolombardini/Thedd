@@ -1,6 +1,8 @@
 package model.character;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 
@@ -16,7 +18,8 @@ public class CharacterImpl implements Character {
 
     /**
      * GenericCharacter's constructor.
-     * @param basicStat , a map with the basic statistic values of the character.
+     * 
+     * @param basicStat    , a map with the basic statistic values of the character.
      * @param basicActions , a list of the possible actions of the character.
      */
     public CharacterImpl(final EnumMap<Statistic, StatValues> basicStat, final List<Action> basicActions) {
@@ -31,7 +34,7 @@ public class CharacterImpl implements Character {
 
     @Override
     public final boolean isAlive() {
-        return (this.stat.get(Statistic.PV).getActual() > 0 ? true : false);
+        return this.stat.get(Statistic.PV).getActual() > 0;
     }
 
     @Override
@@ -41,22 +44,22 @@ public class CharacterImpl implements Character {
 
     @Override
     public final List<Action> getActions() {
-        return this.actions;
+        return Collections.unmodifiableList(this.actions);
     }
 
     @Override
     public final void equipItem(final int itemid) {
-        //to-do
+        // to-do
     }
 
     @Override
     public final void removeItem(final int itemId) {
-        //to-do
+        // to-do
     }
 
     @Override
     public final List<Item> getEquippedItems() {
-        return null; //to-do
+        return null; // to-do
     }
 
 }
