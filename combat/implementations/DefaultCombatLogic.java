@@ -119,8 +119,8 @@ public class DefaultCombatLogic implements CombatLogic {
 
         actionModifier = action.getHitChanceModifier();
 
-        if (action.getTargetType() != TargetType.ALLY && action.getTargetType() != TargetType.SELF &&
-                getValidTargets(action).contains(target)) { 
+        if (action.getTargetType() != TargetType.ALLY && action.getTargetType() != TargetType.SELF 
+                && getValidTargets(action).contains(target)) { 
             /*
              * sourceChance = currentActor.getPriority() (e getPriority richiamerà getCurrentReflexes a sto punto)
              * modificare poi baseChance in modo da decidersi
