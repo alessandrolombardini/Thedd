@@ -33,4 +33,10 @@ public interface Item {
      * @return the id if the item
      */
     int getId();
+
+    /**
+     * 
+     * @return the description of the item
+     */
+    String getDescription();
 }
