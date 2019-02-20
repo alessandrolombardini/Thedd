@@ -18,7 +18,6 @@ import model.character.Statistic;
 
 /**
  * Factory for generating random items from a database.
- *
  */
 public final class ItemFactory {
 
@@ -45,15 +44,16 @@ public final class ItemFactory {
                 final String itemName = jo.getJSONObject(k).getString("name");
                 final Map<Statistic, Integer> effects = new HashMap<>();
                 final JSONArray mods = jo.getJSONObject(k).getJSONArray("effects");
+                final String itemDescription = jo.getJSONObject(k).getString("description");
                 for (int i = 0; i < mods.length(); i++) {
                     final int index = i;
                     mods.getJSONObject(i).keySet().forEach(k2 -> effects.put(Statistic.valueOf(k2), Integer.parseInt(mods.getJSONObject(index).getString(k2))));
                 }
                 if (itemId < 0) {
                     final EquipableItemType t = jo.getJSONObject(k).getEnum(EquipableItemType.class, "type");
-                    DATABASE.add(new EquipableItemImpl(itemId, itemName, t, effects));
+                    DATABASE.add(new EquipableItemImpl(itemId, itemName, t, effects, itemDescription));
                 } else {
-                    DATABASE.add(new UsableItemImpl(itemId, itemName, effects));
+                    DATABASE.add(new UsableItemImpl(itemId, itemName, effects, itemDescription));
                 }
             });
         } catch (final FileNotFoundException e) {
