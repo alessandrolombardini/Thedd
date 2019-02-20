@@ -3,6 +3,7 @@ package combat.implementations;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import combat.enums.ActionResultType;
 import combat.enums.CombatStatus;
@@ -14,7 +15,6 @@ import combat.interfaces.AutomaticActionActor;
 import combat.interfaces.CombatInstance;
 import combat.interfaces.CombatLogic;
 import combat.interfaces.Combatant;
-import combat.interfaces.NPCCombatant;
 
 public class DefaultCombatLogic implements CombatLogic {
 
@@ -37,9 +37,11 @@ public class DefaultCombatLogic implements CombatLogic {
     @Override
     public void addActorToQueue(final ActionActor actor) { 
         //Maybe checks if action is valid, but it's better to leave that directly to the Action (checkRequirements method) in order to ease the GUI's work
-        actorsQueue.add(0, actor);
-        if (combatInstance.getCombatStatus() != CombatStatus.ROUND_IN_PROGRESS) { //Se no vuol dire che siamo in caso counterattack o fuori combattimento
-            actorsQueue.sort((a, b) -> a.getPriority() - b.getPriority());
+        if (!actor.getAction().equals(Optional.empty())) {
+            actorsQueue.add(0, actor);
+            if (combatInstance.getCombatStatus() != CombatStatus.ROUND_IN_PROGRESS) { //Se no vuol dire che siamo in caso counterattack o fuori combattimento
+                actorsQueue.sort((a, b) -> a.getPriority() - b.getPriority());
+            } 
         }
     }
 
@@ -65,9 +67,8 @@ public class DefaultCombatLogic implements CombatLogic {
 
             } else if (hasTargetParried(source, target)) { //in caso di parry si deve interrompere l'attacco? (al momento sì)
                 actorsQueue.remove(target);
-                if (target instanceof NPCCombatant) { //Controlla se confronto fra class funziona comunque: sarebbe meglio
-                    ((NPCCombatant) target).setNextAIAction();
-                    actorsQueue.add(target);
+                if (combatInstance.getNPCsParty().contains(target)) { //Controlla se confronto fra class funziona comunque: sarebbe meglio
+                    setNextAIMove((AutomaticActionActor) target);
                 } else {
                     combatInstance.setCombatStatus(CombatStatus.ROUND_PAUSED);
                     break; //Brutto?
@@ -147,7 +148,7 @@ public class DefaultCombatLogic implements CombatLogic {
 
     @Override
     public void startCombat() { 
-        combatInstance.setCombatStatus(CombatStatus.ROUND_ENDED);//forse da eliminare (o sostituire con round waiting)
+        combatInstance.setCombatStatus(CombatStatus.STARTED);//forse da eliminare (o sostituire con round waiting)
         prepareNextRound();
     }
 
@@ -160,30 +161,24 @@ public class DefaultCombatLogic implements CombatLogic {
     private void setNextAIMoves() {
         for (final ActionActor npc : combatInstance.getNPCsParty()) {
             if (npc instanceof AutomaticActionActor) {
-                ((AutomaticActionActor) npc).setNextAction();
-                final List<ActionActor> availableTargets = getValidTargets(npc.getAction().get());
-                ((AutomaticActionActor) npc).setNextTarget(availableTargets);
-                addActorToQueue(npc);
+                setNextAIMove((AutomaticActionActor) npc);
             } else {
                 throw new IllegalStateException("Only AutomaticActionActors are allowed in the NPCs party");
             }
         }
     }
 
+    private void setNextAIMove(final AutomaticActionActor actor) {
+        actor.setNextAction();
+        final List<ActionActor> availableTargets = getValidTargets(actor.getAction().get());
+        actor.setNextTarget(availableTargets);
+        addActorToQueue(actor);
+    }
+
     @Override
     public void setCombatInstance(final CombatInstance newInstance) {
         combatInstance = newInstance;
         //prepareNextRound();                      //FORSE UTILE SOLO IN CASO IN CUI IL ROUND SIA IN CORSO. OPPURE SE ROUND IN CORSO LANCIO ECCEZIONE
-    }
-
-    @Override
-    public void setPlayerPendingAction(final Action action) {
-        //session.getCurrentCharacter.setAction? Altrimenti gli passo pure il personaggio
-    }
-
-    @Override
-    public void addPlayerPendingActionTarget(final ActionActor target) {
-        //guarda sopra, dopodichè inserisci nella coda
     }
 
     @Override
@@ -199,14 +194,15 @@ public class DefaultCombatLogic implements CombatLogic {
 
     @Override
     public List<ActionActor> getValidTargets(final Action action) {
+        final ActionActor source = action.getSource();
         switch (action.getTargetType()) {
         case ALLY:
-            return NPCCombatant.class.isInstance(action.getSource()) ? combatInstance.getNPCsParty() 
+            return combatInstance.getNPCsParty().contains(source) ? combatInstance.getNPCsParty() 
                     : combatInstance.getPlayerParty();
         case EVERYONE:
             return combatInstance.getAllParties();
         case FOE:
-            return NPCCombatant.class.isInstance(action.getSource()) ? combatInstance.getPlayerParty() 
+            return combatInstance.getPlayerParty().contains(source) ? combatInstance.getPlayerParty() 
                     : combatInstance.getNPCsParty();
         case SELF:
             return Collections.singletonList((Combatant) action.getSource());
