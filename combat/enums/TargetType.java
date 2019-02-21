@@ -1,10 +1,10 @@
 package combat.enums;
 
 public enum TargetType {
-	
-	ALLY,
-	FOE,
-	EVERYONE,
-	SELF;
+
+    ALLY,
+    FOE,
+    EVERYONE,
+    SELF;
 
 }
