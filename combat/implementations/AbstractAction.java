@@ -110,4 +110,25 @@ public abstract class AbstractAction implements Action {
         return targetType;
     }
 
+    @Override
+    public boolean equals(final Object other) {
+        if (other == this) {
+            return true;
+        }
+        if (!(other instanceof AbstractAction)) {
+            return false;
+        } else {
+            final AbstractAction o = ((AbstractAction) other);
+            //Considerare anche se gli effetti e i bersagli sono uguali?
+            return getSource().equals(o.getSource())
+                    && getName().equals(o.getName())
+                    && getTargetType() == o.getTargetType();
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(/*getSource(), */getName(), getTargetType());
+    }
+
 }
