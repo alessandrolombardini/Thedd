@@ -18,7 +18,7 @@ public interface ActionActor {
 
     /**
      * Returns the action that the actor is going to execute.
-     * @return the current action
+     * @return the current action, Optional.empty() if no action is present
      */
     Optional<Action> getAction();
 
