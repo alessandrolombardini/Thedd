@@ -23,4 +23,14 @@ public interface Item {
      * @return whether the object which calls this method is a UsableItem
      */
     boolean isUsable();
+
+    /**
+     * @return a copy of the item which called this
+     */
+    Item copy();
+
+    /**
+     * @return the id if the item
+     */
+    int getId();
 }

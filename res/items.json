@@ -1,15 +1,23 @@
 {  
     "0" : {
-      "name": "pozione",
+      "name": "Potion",
       "effects" : [
 	{"PV": "20"}
       ]
     },
 
     "1" : {
-      "name": "bomba",
+      "name": "Bomb",
       "effects" : [
         {"PV": "-10"}
       ]
-    } 
+    }, 
+
+    "-1" : {
+      "name" : "Sword",
+      "type" : "HAND",
+      "effects" : [
+        {"FOR": "2"}
+      ]
+    }
 }

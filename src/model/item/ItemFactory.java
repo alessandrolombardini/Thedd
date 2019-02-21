@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import model.characters.Statistic;
+import model.character.Statistic;
 
 /**
  * 
@@ -22,9 +22,21 @@ import model.characters.Statistic;
  */
 public final class ItemFactory {
 
-    private static List<Item> database = new ArrayList<>();
+    private static final List<Item> DATABASE = new ArrayList<>();
+    private static final Random RNGENERATOR = new Random();
 
     static {
+        initDatabase();
+        DATABASE.stream().forEach(i -> System.out.println(i));
+    }
+
+    private ItemFactory() {
+    }
+
+    /**
+     *  Load the JSON database file and populate the database with objects. 
+     */
+    public static void initDatabase() {
         try (BufferedReader br = new BufferedReader(new FileReader("res/items.json"))) {
             final String json = br.lines().collect(Collectors.joining());
             final JSONObject jo = new JSONObject(json);
@@ -38,20 +50,17 @@ public final class ItemFactory {
                     mods.getJSONObject(i).keySet().forEach(k2 -> effects.put(Statistic.valueOf(k2), Integer.parseInt(mods.getJSONObject(index).getString(k2))));
                 }
                 if (itemId < 0) {
-                    database.add(new AbstractEquipableItem(itemId, itemName, effects) { });
+                    final EquipableItemType t = jo.getJSONObject(k).getEnum(EquipableItemType.class, "type");
+                    DATABASE.add(new EquipableItemImpl(itemId, itemName, t, effects));
                 } else {
-                    database.add(new AbstractItem(itemId, itemName, effects) { });
+                    DATABASE.add(new UsableItemImpl(itemId, itemName, effects));
                 }
             });
-        } catch (FileNotFoundException e) {
+        } catch (final FileNotFoundException e) {
             e.printStackTrace();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             e.printStackTrace();
         }
-        database.stream().forEach(i -> System.out.println(i));
-    }
-
-    private ItemFactory() {
     }
 
     /**
@@ -60,6 +69,6 @@ public final class ItemFactory {
      *          a random item from the database
      */
     public static Item getRandomItem() {
-        return database.get(new Random().nextInt(database.size()));
+        return DATABASE.get(RNGENERATOR.nextInt(DATABASE.size())).copy();
     }
 }
