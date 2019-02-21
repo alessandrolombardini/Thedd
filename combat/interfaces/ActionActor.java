@@ -5,7 +5,7 @@ import java.util.Optional;
 
 /**
  * 
- * An entity capable of perfoming Actions in and out of combat.
+ * An entity capable of performing Actions in and out of combat.
  *
  */
 public interface ActionActor {
