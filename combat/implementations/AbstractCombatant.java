@@ -1,21 +1,23 @@
 package combat.implementations;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import combat.interfaces.Action;
 import combat.interfaces.ActionActor;
 import combat.interfaces.CombatInstance;
 import combat.interfaces.Combatant;
+import utils.RandomCollection;
+import utils.RandomList;
+import utils.RandomListImpl;
 
 public abstract class AbstractCombatant implements Combatant {
 
     private final String name;
     private Optional<Action> currentAction;
     private CombatInstance combatInstance;
-    private List<? extends Action> actionList = new ArrayList<>();
+    private final RandomList<Action> actionList = new RandomListImpl<>();
 
     public AbstractCombatant(final String name) {
         this.name = name;
@@ -58,16 +60,40 @@ public abstract class AbstractCombatant implements Combatant {
 
     @Override
     public void setAvailableActionsList(final List<? extends Action> actions) {
-        actionList = Collections.unmodifiableList(actions);
+        actions.forEach(a -> actionList.add(a, 1.0));
     }
 
     @Override
     public List<? extends Action> getAvailableActionsList() {
-        return Collections.unmodifiableList(actionList);
+        return actionList.getList();
     }
 
     protected CombatInstance getCombatInstance() {
         return combatInstance;
     }
 
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+        if (!(other instanceof AbstractCombatant)) {
+            return false;
+        }
+        final AbstractCombatant o = ((AbstractCombatant) other);
+        return getName().equals(o.getName())
+                && getAvailableActionsList().equals(o.getAvailableActionsList());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName(),getAvailableActionsList());
+    }
+    
+    //PER MARTINA: se intendi rendere sia i personaggi giocanti che non giocanti capaci di eseguire azioni
+    //             random fondendo le clasi AbstractCombatant e AbstractNPCCombatant, questo metodo non ti
+    //             serve ad un cubo probabilmente e puoi semplicemente operare con actionList
+    protected RandomCollection<Action> getWeightedActions() {
+        return actionList;
+    }
 }
