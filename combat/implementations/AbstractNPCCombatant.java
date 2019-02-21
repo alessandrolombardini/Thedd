@@ -6,10 +6,10 @@ import java.util.stream.Collectors;
 
 import combat.interfaces.Action;
 import combat.interfaces.ActionActor;
+import combat.interfaces.AutomaticActionActor;
 import combat.interfaces.NPCAction;
-import combat.interfaces.NPCCombatant;
 
-public abstract class AbstractNPCCombatant extends AbstractCombatant implements NPCCombatant {
+public abstract class AbstractNPCCombatant extends AbstractCombatant implements AutomaticActionActor {
 
     private List<NPCAction> actionList;
 
@@ -18,19 +18,14 @@ public abstract class AbstractNPCCombatant extends AbstractCombatant implements 
     }
 
     @Override
-    public void setNextAction() {
-        setNextAIAction();
-    }
-
-    @Override
     public void setAvailableActionsList(final List<? extends Action> actions) {
         super.setAvailableActionsList(actions);
         actionList = getAvailableActionsList()
                                     .stream()
-                                    .map(a -> (NPCAction)a)
+                                    .map(a -> (NPCAction) a)
                                     .collect(Collectors.toList());
         final double totalActionsProbabilities = actionList.stream()
-                .mapToDouble(a -> a.getPickChanceUpperBound())
+                .mapToDouble(a -> a.getPickWeight())
                 .sum();
         if (totalActionsProbabilities != 1.0) {
             throw new IllegalStateException("Actions pick chance's upper bounds do not amount to 1");
@@ -38,12 +33,24 @@ public abstract class AbstractNPCCombatant extends AbstractCombatant implements 
     }
 
     @Override
-    public void setNextAIAction() {
-        final Random dice = new Random();
-        final double diceRoll = dice.nextDouble();
-        for (final NPCAction action : actionList) {
-            if (diceRoll > action.getPickChanceLowerBound() && diceRoll < action.getPickChanceUpperBound()) {
-                setAction(action);
+    public void setNextAction() {
+        //Code taken from https://stackoverflow.com/questions/6737283/weighted-randomness-in-java
+        // Compute the total weight of all items together
+        double random = 0d;
+        double totalWeight = 0.0d;
+        for (final NPCAction a : actionList) {
+            totalWeight += a.getPickWeight();
+        }
+
+        // Now choose a random item
+        while (random == 0d) {
+            random = Math.random() * totalWeight;
+        }
+        for (final NPCAction a : actionList) {
+            random -= a.getPickWeight();
+            if (random <= 0d) {
+                setAction(a);
+                break;
             }
         }
     }
