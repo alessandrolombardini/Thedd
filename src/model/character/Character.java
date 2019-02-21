@@ -1,8 +1,6 @@
 package model.character;
 
 import java.util.List;
-
-import model.action.Action;
 import model.item.Item;
 
 /**
@@ -36,11 +34,11 @@ public interface Character {
     StatValues getStat(Statistic stat);
 
     /**
-     * This method returns character's actions.
+     * This method return the character's inventory.
      * 
-     * @return the list composed of character's actions
+     * @return the character's inventory
      */
-    List<Action> getActions();
+    Inventory getInventory();
 
     /**
      * This method equip the specified item, updating character's statistics.
@@ -62,6 +60,5 @@ public interface Character {
      * 
      * @return a list of items
      */
-    List<Item> getEquippedItems();
-
+    List<? extends Item> getEquippedItems();
 }
