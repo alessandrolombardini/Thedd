@@ -59,7 +59,6 @@ public class DefaultCombatLogic implements CombatLogic {
 
                 //Parry attivabile anche se avversario colpisce? (Per ora no)
                 //Se bersaglio in parry viene colpito, questo mantiene il parry? (Per ora sì)
-
                 sourceAction.applyEffects(target);
                 //CONTROLLA CHE IL BERSAGLIO SIA KO: NEL CASO, SE PRESENTE, RIMUOVILO DALLA QUEUE
 
@@ -197,13 +196,13 @@ public class DefaultCombatLogic implements CombatLogic {
         final ActionActor source = action.getSource();
         switch (action.getTargetType()) {
         case ALLY:
-            return combatInstance.getNPCsParty().contains(source) ? combatInstance.getNPCsParty() 
-                    : combatInstance.getPlayerParty();
+            return combatInstance.getNPCsParty().contains(source) ? combatInstance.getPlayerParty() 
+                    : combatInstance.getNPCsParty();
         case EVERYONE:
             return combatInstance.getAllParties();
         case FOE:
-            return combatInstance.getPlayerParty().contains(source) ? combatInstance.getPlayerParty() 
-                    : combatInstance.getNPCsParty();
+            return combatInstance.getPlayerParty().contains(source) ? combatInstance.getNPCsParty() 
+                    : combatInstance.getPlayerParty();
         case SELF:
             return Collections.singletonList((Combatant) action.getSource());
         default:
