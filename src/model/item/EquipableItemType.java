@@ -40,7 +40,6 @@ public enum EquipableItemType {
 
     private final int maxCount;
     private final int equipValue;
-    private static final int MAX_VALUE_OF_EQUIPEMENT = 9;
 
     EquipableItemType(final int value, final int maxCount) {
         this.maxCount = maxCount; 
@@ -66,11 +65,10 @@ public enum EquipableItemType {
 
     /**
      * 
-     * @return
-     *  the value the sum of all values of equipped items have to stay below.
+     * @return whether the Item is a weapon (or a shield)
      */
-    public int getMaxNumOfEquipement() {
-        return MAX_VALUE_OF_EQUIPEMENT;
+    public boolean isWeapon() {
+        return this.equals(ONE_HANDED) || this.equals(TWO_HANDED);
     }
 
 }
