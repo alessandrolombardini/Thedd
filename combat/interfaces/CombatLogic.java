@@ -66,6 +66,12 @@ public interface CombatLogic {
      */
     List<ActionActor> getValidTargets(Action action);
 
+    /**
+     * Returns the list of the actors involved in the combat, ordered by actors' initiative.
+     * @return the ordered list of actors
+     */
+    List<ActionActor> getOrderedActorsList();
+
     //boolean canSelectAction(ActionActor actor) //maybe better put in Combatant/Character
 
     //void applyModifiers();
