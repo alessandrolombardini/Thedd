@@ -2,6 +2,7 @@ package combat.interfaces;
 
 import java.util.List;
 
+import combat.enums.RandomActionPrority;
 import utils.RandomCollection;
 
 /**
@@ -36,4 +37,21 @@ public interface AutomaticActionActor extends ActionActor {
      * @return the current collection
      */
     RandomCollection<Action> updateActionWeight(Action action, double newWeight);
+
+    /**
+     * Updates the value of the specified action with the specified amount.
+     * @param action the selected action
+     * @param newWeight the new weight of the action
+     * @return the current collection
+     */
+    RandomCollection<Action> updateActionWeight(Action action, RandomActionPrority newWeight);
+
+    /**
+     * Adds an action to available actions of the actor and sets its weight
+     * used in future random selections.
+     * @param action the action to be added
+     * @param weight a non negative value
+     * @return the current collection
+     */
+    RandomCollection<Action> addWeightedAction(Action action, RandomActionPrority weight);
 }
