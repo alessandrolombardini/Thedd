@@ -69,4 +69,6 @@ public interface CombatLogic {
     //boolean canSelectAction(ActionActor actor) //maybe better put in Combatant/Character
 
     //void applyModifiers();
+    
+    //List getActorsQueue -> to be used by the controller to know and tell the view about order of actions
 }

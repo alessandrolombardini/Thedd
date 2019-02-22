@@ -40,7 +40,7 @@ public class DefaultCombatLogic implements CombatLogic {
         if (!actor.getAction().equals(Optional.empty())) {
             actorsQueue.add(0, actor);
             if (combatInstance.getCombatStatus() != CombatStatus.ROUND_IN_PROGRESS) { //Se no vuol dire che siamo in caso counterattack o fuori combattimento
-                actorsQueue.sort((a, b) -> a.getPriority() - b.getPriority());
+                actorsQueue.sort((a, b) -> b.getPriority() - a.getPriority());
             } 
         }
     }
@@ -49,6 +49,7 @@ public class DefaultCombatLogic implements CombatLogic {
         combatInstance.setCombatStatus(CombatStatus.ROUND_IN_PROGRESS);
         final ActionActor source = actorsQueue.get(0);
         final Action sourceAction = source.getAction().get();
+        System.out.println("Executing action: " + sourceAction.getName() + " (" + source.getName() +")");//TODELETE
         final ActionResult result = new ActionResultImpl(sourceAction);
         final List<ActionActor> targets = sourceAction.getTargets(); 
         for (final ActionActor target : targets) {
@@ -64,7 +65,9 @@ public class DefaultCombatLogic implements CombatLogic {
 
                 result.addResult(target, ActionResultType.HIT);
 
+                System.out.println("Hit target " + target.getName());//TODELETE                
             } else if (hasTargetParried(source, target)) { //in caso di parry si deve interrompere l'attacco? (al momento sì)
+                System.out.println("Target " + target.getName() + "parried the attack!");//TODELETE
                 actorsQueue.remove(target);
                 if (combatInstance.getNPCsParty().contains(target)) { //Controlla se confronto fra class funziona comunque: sarebbe meglio
                     setNextAIMove((AutomaticActionActor) target);
@@ -73,8 +76,11 @@ public class DefaultCombatLogic implements CombatLogic {
                     break; //Brutto?
                 }
                 result.addResult(target, ActionResultType.PARRIED);
+
             } else {
                 result.addResult(target, ActionResultType.MISSED);
+
+                System.out.println("Missed target " + target.getName());//TODELETE
             }
         }
         actorsQueue.remove(0);

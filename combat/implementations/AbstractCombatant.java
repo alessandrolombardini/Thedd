@@ -81,13 +81,13 @@ public abstract class AbstractCombatant implements Combatant {
             return false;
         }
         final AbstractCombatant o = ((AbstractCombatant) other);
-        return getName().equals(o.getName())
-                && getAvailableActionsList().equals(o.getAvailableActionsList());
+        return getName().equals(o.getName());
+                //&& getAvailableActionsList().equals(o.getAvailableActionsList());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(),getAvailableActionsList());
+        return Objects.hash(getName()/*,getAvailableActionsList()*/);
     }
     
     //PER MARTINA: se intendi rendere sia i personaggi giocanti che non giocanti capaci di eseguire azioni

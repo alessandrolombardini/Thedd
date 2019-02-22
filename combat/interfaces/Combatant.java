@@ -17,4 +17,6 @@ public interface Combatant extends ActionActor {
     //                attributi/modificatori temporanei
 
     //bool isInCombat();
+    
+    //maybe a method to get a unique random ID? (Maybe to e put in action actor)
 }
