@@ -5,7 +5,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 
+import model.item.EquipableItem;
 import model.item.Item;
+import model.item.UsableItem;
 
 /**
  * Implementation of Inventory interface.
@@ -23,15 +25,14 @@ public class InventoryImpl implements Inventory {
     }
 
     @Override
-    public final Optional<Item> getItem(final int id) {
-        final Optional<Entry<Item, Integer>> selected = this.items.entrySet().stream().
-                filter(en -> en.getKey().getId() == id).findFirst();
-        if (selected.isPresent() && selected.get().getKey().isEquipable()) {
-            selected.get().setValue(selected.get().getValue() - 1);
-                if (selected.get().getValue() <= 0) {
-                    this.items.remove(selected.get().getKey());
-                }
-            return Optional.of(selected.get().getKey());
+    public final Optional<EquipableItem> getEquipableItem(final int id) {
+        if (findItem(id).isPresent()) {
+            final Entry<Item, Integer> entry = findItem(id).get();
+            if (entry.getKey().isEquipable()) {
+                updateInventory(entry);
+                // It's safe to do this cast because was checked that this item is Equipable
+                return Optional.of((EquipableItem) entry.getKey());
+            }
         }
         return Optional.ofNullable(null);
     }
@@ -42,6 +43,35 @@ public class InventoryImpl implements Inventory {
             this.items.put(item, this.items.get(item) + 1);
         } else {
             this.items.put(item, 1);
+        }
+    }
+
+    @Override
+    public final Optional<UsableItem> getUsableItem(final int id) {
+        if (findItem(id).isPresent()) {
+            final Entry<Item, Integer> entry = findItem(id).get();
+            if (!entry.getKey().isEquipable()) {
+                updateInventory(entry);
+                // It's safe to do this cast because was checked that this item is Usable
+                return Optional.of((UsableItem) entry.getKey());
+            }
+        }
+        return Optional.ofNullable(null);
+    }
+
+    @Override
+    public final void removeItem(final int id) {
+        // TODO Auto-generated method stub
+    }
+
+    private Optional<Entry<Item, Integer>> findItem(final int id) {
+        return this.items.entrySet().stream().filter(en -> en.getKey().getId() == id).findFirst();
+    }
+
+    private void updateInventory(final Entry<Item, Integer> entry) {
+        this.items.put(entry.getKey(), entry.getValue() - 1);
+        if (entry.getValue() <= 0) {
+            this.items.remove(entry.getKey());
         }
     }
 }
