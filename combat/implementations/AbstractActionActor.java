@@ -4,22 +4,24 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import combat.enums.RandomActionPrority;
 import combat.interfaces.Action;
 import combat.interfaces.ActionActor;
 import combat.interfaces.CombatInstance;
-import combat.interfaces.Combatant;
 import utils.RandomCollection;
 import utils.RandomList;
 import utils.RandomListImpl;
 
-public abstract class AbstractCombatant implements Combatant {
+public abstract class AbstractActionActor implements ActionActor {
 
     private final String name;
     private Optional<Action> currentAction;
     private CombatInstance combatInstance;
     private final RandomList<Action> actionList = new RandomListImpl<>();
+    private int roundPlace;
+    private boolean isInCombat;
 
-    public AbstractCombatant(final String name) {
+    public AbstractActionActor(final String name) {
         this.name = name;
     }
 
@@ -51,16 +53,11 @@ public abstract class AbstractCombatant implements Combatant {
     @Override
     public void setCombatInstance(final CombatInstance instance) {
         this.combatInstance = instance;
-    }
-
-    @Override
-    public void getCharacter() {
-        //DA CAMBIARE ANCHE NELL'INTERFACCIA
     } 
 
     @Override
     public void setAvailableActionsList(final List<? extends Action> actions) {
-        actions.forEach(a -> actionList.add(a, 1.0));
+        actions.forEach(a -> actionList.add(a, RandomActionPrority.DEFAULT.getWeight()));
     }
 
     @Override
@@ -77,10 +74,10 @@ public abstract class AbstractCombatant implements Combatant {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof AbstractCombatant)) {
+        if (!(other instanceof AbstractActionActor)) {
             return false;
         }
-        final AbstractCombatant o = ((AbstractCombatant) other);
+        final AbstractActionActor o = ((AbstractActionActor) other);
         return getName().equals(o.getName());
                 //&& getAvailableActionsList().equals(o.getAvailableActionsList());
     }
@@ -89,7 +86,36 @@ public abstract class AbstractCombatant implements Combatant {
     public int hashCode() {
         return Objects.hash(getName()/*,getAvailableActionsList()*/);
     }
-    
+
+    @Override
+    public void setIsInCombat(final boolean isInCombat) {
+        this.isInCombat = isInCombat;
+    }
+
+    @Override
+    public boolean isInCombat() {
+        return isInCombat;
+    }
+
+    @Override
+    public int getPlaceInRound() {
+        return roundPlace;
+    }
+
+    @Override
+    public void setPlaceInRound(final int place) {
+        if (place > 0) {
+            roundPlace = place;
+        } else {
+            throw new IllegalArgumentException("Number must be greater than 0");
+        }
+    }
+
+    @Override
+    public void resetPlaceInRound() {
+        roundPlace = 0;
+    }
+
     //PER MARTINA: se intendi rendere sia i personaggi giocanti che non giocanti capaci di eseguire azioni
     //             random fondendo le clasi AbstractCombatant e AbstractNPCCombatant, questo metodo non ti
     //             serve ad un cubo probabilmente e puoi semplicemente operare con actionList

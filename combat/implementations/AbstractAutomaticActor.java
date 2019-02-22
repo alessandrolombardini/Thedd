@@ -6,12 +6,18 @@ import java.util.Random;
 import combat.interfaces.Action;
 import combat.interfaces.ActionActor;
 import combat.interfaces.AutomaticActionActor;
+import combat.enums.RandomActionPrority;
 import utils.RandomCollection;
 
-public abstract class AbstractNPCCombatant extends AbstractCombatant implements AutomaticActionActor {
+public abstract class AbstractAutomaticActor extends AbstractActionActor implements AutomaticActionActor {
 
-    public AbstractNPCCombatant(final String name) {
+    public AbstractAutomaticActor(final String name) {
         super(name);
+    }
+
+    @Override
+    public RandomCollection<Action> addWeightedAction(final Action action, final RandomActionPrority weight) {
+        return addWeightedAction(action, weight.getWeight());
     }
 
     @Override
@@ -20,8 +26,12 @@ public abstract class AbstractNPCCombatant extends AbstractCombatant implements 
     }
 
     @Override
-    public
-    RandomCollection<Action> updateActionWeight(final Action action, final double newWeight) {
+    public RandomCollection<Action> updateActionWeight(final Action action, final RandomActionPrority newWeight) {
+        return updateActionWeight(action, newWeight.getWeight());
+    }
+
+    @Override
+    public RandomCollection<Action> updateActionWeight(final Action action, final double newWeight) {
         getWeightedActions().updateItemWeight(action, newWeight);
         return getWeightedActions();
     }
