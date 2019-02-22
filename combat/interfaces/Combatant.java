@@ -5,8 +5,6 @@ package combat.interfaces;
  */
 public interface Combatant extends ActionActor {
 
-    void setCombatInstance(CombatInstance instance);
-
     void getCharacter(); //DA CAMBIARE
 
     //PER MARTINA: per il momento ignora la riga sottostante
