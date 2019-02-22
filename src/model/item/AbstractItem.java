@@ -15,6 +15,7 @@ public abstract class AbstractItem implements Item {
     private final int id;
     private final String name;
     private final Map<Statistic, Integer> effects;
+    private final String description;
 
     /**
      * 
@@ -24,11 +25,14 @@ public abstract class AbstractItem implements Item {
      *          name of the object
      * @param effects
      *          effects of the object
+     * @param description
+     *          description of the Item
      */
-    public AbstractItem(final int id, final String name, final Map<Statistic, Integer> effects) {
+    public AbstractItem(final int id, final String name, final Map<Statistic, Integer> effects, final String description) {
         this.id = id;
         this.name = Objects.requireNonNull(name);
         this.effects = Objects.requireNonNull(effects);
+        this.description = Objects.requireNonNull(description);
     }
 
     /**
@@ -61,6 +65,11 @@ public abstract class AbstractItem implements Item {
      */
     protected final Map<Statistic, Integer> getEffects() {
         return effects;
+    }
+
+    @Override
+    public final String getDescription() {
+        return this.description;
     }
 
     @Override

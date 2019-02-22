@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import model.character.Statistic;
 
 /**
- * 
+ * Implementation of {@link model.item.EquipableItem}.
  *
  */
 public class EquipableItemImpl extends AbstractItem implements EquipableItem {
@@ -25,9 +25,11 @@ public class EquipableItemImpl extends AbstractItem implements EquipableItem {
      *          type of the object
      * @param effects
      *          map of modifiers of the equipable item
+     * @param description
+     *          description of the Item
      */
-    public EquipableItemImpl(final int id, final String name, final EquipableItemType t, final Map<Statistic, Integer> effects) {
-        super(id, name, effects);
+    public EquipableItemImpl(final int id, final String name, final EquipableItemType t, final Map<Statistic, Integer> effects, final String description) {
+        super(id, name, effects, description);
         this.type = Objects.requireNonNull(t);
     }
 
@@ -43,12 +45,12 @@ public class EquipableItemImpl extends AbstractItem implements EquipableItem {
 
     @Override
     public final Item copy() {
-        return new EquipableItemImpl(this.getId(), this.getName(), this.type, this.getEffects()) { };
+        return new EquipableItemImpl(this.getId(), this.getName(), this.type, this.getEffects(), this.getDescription());
     }
 
     @Override
     public final String toString() {
-        return this.getName() + "(" + this.type + ")" + ": " + this.getEffects().entrySet().stream().map(e -> e.getKey() + " -> " + e.getValue()).collect(Collectors.joining(", ", "[", "]"));
+        return this.getName() + "(" + this.type + ")" + ": " + this.getEffects().entrySet().stream().map(e -> e.getKey() + " -> " + e.getValue()).collect(Collectors.joining(", ", "[", "]")) + " | " + this.getDescription();
     }
 
 }

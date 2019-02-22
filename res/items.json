@@ -3,14 +3,16 @@
       "name": "Potion",
       "effects" : [
 	{"PV": "20"}
-      ]
+      ],
+      "description" : "A mystical beverage that heal wounds"
     },
 
     "1" : {
       "name": "Bomb",
       "effects" : [
         {"PV": "-10"}
-      ]
+      ],
+      "description" : "An explosive. Be careful!"
     }, 
 
     "-1" : {
@@ -18,6 +20,7 @@
       "type" : "HAND",
       "effects" : [
         {"FOR": "2"}
-      ]
+      ],
+      "description" : "A light sword"
     }
 }
