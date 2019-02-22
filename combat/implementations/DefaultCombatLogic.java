@@ -1,10 +1,13 @@
 package combat.implementations;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.IntStream;
+
 import combat.enums.ActionResultType;
 import combat.enums.CombatStatus;
 import combat.enums.TargetType;
@@ -20,7 +23,8 @@ public class DefaultCombatLogic implements CombatLogic {
 
     private CombatInstance combatInstance = new CombatInstanceImpl();
     private final List<ActionActor> actorsQueue = new LinkedList<>(); //Defined and handled here since the queue can change depending on the logic implementation
-
+    private final Comparator<ActionActor> orderingStrategy = (a, b) -> b.getPriority() - a.getPriority();
+    
     public DefaultCombatLogic() {
         this(Collections.<ActionActor>emptyList(), Collections.<ActionActor>emptyList());
     }
@@ -40,7 +44,7 @@ public class DefaultCombatLogic implements CombatLogic {
         if (!actor.getAction().equals(Optional.empty())) {
             actorsQueue.add(0, actor);
             if (combatInstance.getCombatStatus() != CombatStatus.ROUND_IN_PROGRESS) { //Se no vuol dire che siamo in caso counterattack o fuori combattimento
-                actorsQueue.sort((a, b) -> b.getPriority() - a.getPriority());
+                actorsQueue.sort(orderingStrategy);
             } 
         }
     }
@@ -49,7 +53,6 @@ public class DefaultCombatLogic implements CombatLogic {
         combatInstance.setCombatStatus(CombatStatus.ROUND_IN_PROGRESS);
         final ActionActor source = actorsQueue.get(0);
         final Action sourceAction = source.getAction().get();
-        System.out.println("Executing action: " + sourceAction.getName() + " (" + source.getName() +")");//TODELETE
         final ActionResult result = new ActionResultImpl(sourceAction);
         final List<ActionActor> targets = sourceAction.getTargets(); 
         for (final ActionActor target : targets) {
@@ -65,22 +68,17 @@ public class DefaultCombatLogic implements CombatLogic {
 
                 result.addResult(target, ActionResultType.HIT);
 
-                System.out.println("Hit target " + target.getName());//TODELETE                
             } else if (hasTargetParried(source, target)) { //in caso di parry si deve interrompere l'attacco? (al momento sì)
-                System.out.println("Target " + target.getName() + "parried the attack!");//TODELETE
                 actorsQueue.remove(target);
                 if (combatInstance.getNPCsParty().contains(target)) { //Controlla se confronto fra class funziona comunque: sarebbe meglio
                     setNextAIMove((AutomaticActionActor) target);
                 } else {
                     combatInstance.setCombatStatus(CombatStatus.ROUND_PAUSED);
-                    break; //Brutto?
                 }
                 result.addResult(target, ActionResultType.PARRIED);
 
             } else {
                 result.addResult(target, ActionResultType.MISSED);
-
-                System.out.println("Missed target " + target.getName());//TODELETE
             }
         }
         actorsQueue.remove(0);
@@ -96,10 +94,12 @@ public class DefaultCombatLogic implements CombatLogic {
 
         /*if(combatInstance.getAllies().stream().allMatch(c -> c.getCharacter().getHealth == 0)) {
             combatInstance.setCombatStatus(CombatStatus.PLAYER_LOST);
+            //reset characters turnOrder variable and isInCombat value
         }
 
         if(combatInstance.getHostiles().stream().allMatch(c -> c.getCharacter().getHealth == 0)) {
             combatInstance.setCombatStatus(CombatStatus.PLAYER_WON);
+            //reset characters turnOrder variable and isInCombat value
         }*/
 
     }
@@ -154,6 +154,7 @@ public class DefaultCombatLogic implements CombatLogic {
     @Override
     public void startCombat() { 
         combatInstance.setCombatStatus(CombatStatus.STARTED);//forse da eliminare (o sostituire con round waiting)
+        combatInstance.getAllParties().forEach(a -> a.setIsInCombat(true));
         prepareNextRound();
     }
 
@@ -161,6 +162,11 @@ public class DefaultCombatLogic implements CombatLogic {
     public void prepareNextRound() {
         combatInstance.increaseRoundNumber();
         setNextAIMoves();
+        final List<ActionActor> sortedActors = combatInstance.getAllParties();
+        sortedActors.sort(orderingStrategy);
+        final int size = sortedActors.size();
+        IntStream.rangeClosed(1, size)
+                .forEach(i -> sortedActors.get(i).setPlaceInRound(i));
     }
 
     private void setNextAIMoves() {
@@ -214,6 +220,11 @@ public class DefaultCombatLogic implements CombatLogic {
         default:
             throw new IllegalStateException("Target type of the action was not found");
         }
+    }
+
+    @Override
+    public List<ActionActor> getOrderedActorsList() {
+        return Collections.unmodifiableList(actorsQueue);
     }
 
 }
