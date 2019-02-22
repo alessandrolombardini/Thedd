@@ -1,9 +1,9 @@
-package combat.interfaces;
+package model.combat.interfaces;
 
 import java.util.List;
 
-import combat.enums.ActionResultType;
 import javafx.util.Pair;
+import model.combat.enums.ActionResultType;
 
 /**
  * The result of an executed action. To be used by loggers or to decide what to show to the player.

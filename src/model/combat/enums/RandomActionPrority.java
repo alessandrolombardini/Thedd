@@ -1,4 +1,4 @@
-package combat.enums;
+package model.combat.enums;
 
 public enum RandomActionPrority {
     VERY_HIGH(90),

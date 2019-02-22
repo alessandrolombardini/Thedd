@@ -1,14 +1,14 @@
-package combat.implementations;
+package model.combat.implementations;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import combat.enums.TargetType;
-import combat.interfaces.Action;
-import combat.interfaces.ActionActor;
-import combat.interfaces.ActionEffect;
+import model.combat.enums.TargetType;
+import model.combat.interfaces.Action;
+import model.combat.interfaces.ActionActor;
+import model.combat.interfaces.ActionEffect;
 
 
 public abstract class AbstractAction implements Action {

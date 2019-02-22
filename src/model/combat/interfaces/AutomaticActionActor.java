@@ -1,8 +1,8 @@
-package combat.interfaces;
+package model.combat.interfaces;
 
 import java.util.List;
 
-import combat.enums.RandomActionPrority;
+import model.combat.enums.RandomActionPrority;
 import utils.RandomCollection;
 
 /**

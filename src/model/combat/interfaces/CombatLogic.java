@@ -1,8 +1,8 @@
-package combat.interfaces;
+package model.combat.interfaces;
 
 import java.util.List;
 
-import combat.enums.CombatStatus;
+import model.combat.enums.CombatStatus;
 
 /**
  * The part of the model that dictates how the combat will flow.<br>

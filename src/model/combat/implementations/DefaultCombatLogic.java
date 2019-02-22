@@ -1,4 +1,4 @@
-package combat.implementations;
+package model.combat.implementations;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -8,16 +8,16 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.stream.IntStream;
 
-import combat.enums.ActionResultType;
-import combat.enums.CombatStatus;
-import combat.enums.TargetType;
-import combat.interfaces.Action;
-import combat.interfaces.ActionActor;
-import combat.interfaces.ActionResult;
-import combat.interfaces.AutomaticActionActor;
-import combat.interfaces.CombatInstance;
-import combat.interfaces.CombatLogic;
-import combat.interfaces.Combatant;
+import model.combat.enums.ActionResultType;
+import model.combat.enums.CombatStatus;
+import model.combat.enums.TargetType;
+import model.combat.interfaces.Action;
+import model.combat.interfaces.ActionActor;
+import model.combat.interfaces.ActionResult;
+import model.combat.interfaces.AutomaticActionActor;
+import model.combat.interfaces.CombatInstance;
+import model.combat.interfaces.CombatLogic;
+import model.combat.interfaces.Combatant;
 
 public class DefaultCombatLogic implements CombatLogic {
 

@@ -1,4 +1,4 @@
-package combat.interfaces;
+package model.combat.interfaces;
 
 /**
  * TO BE IGNORED SINCE IT'S CURRENTLY NOT WELL DEFINED/HIGHLY SUSCEPTIBLE TO CHANGES.

@@ -1,8 +1,8 @@
-package combat.interfaces;
+package model.combat.interfaces;
 
 import java.util.List;
 
-import combat.enums.CombatStatus;
+import model.combat.enums.CombatStatus;
 
 /**
  * Holds information about the current combat.

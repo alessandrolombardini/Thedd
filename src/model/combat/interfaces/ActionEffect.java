@@ -1,4 +1,4 @@
-package combat.interfaces;
+package model.combat.interfaces;
 
 /**
  * The effect that and Action has on its target.

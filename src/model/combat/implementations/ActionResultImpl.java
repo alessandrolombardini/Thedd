@@ -1,14 +1,14 @@
-package combat.implementations;
+package model.combat.implementations;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import combat.enums.ActionResultType;
-import combat.interfaces.Action;
-import combat.interfaces.ActionActor;
-import combat.interfaces.ActionResult;
 import javafx.util.Pair;
+import model.combat.enums.ActionResultType;
+import model.combat.interfaces.Action;
+import model.combat.interfaces.ActionActor;
+import model.combat.interfaces.ActionResult;
 
 public class ActionResultImpl implements ActionResult {
 

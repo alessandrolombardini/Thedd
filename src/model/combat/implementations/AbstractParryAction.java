@@ -1,10 +1,10 @@
-package combat.implementations;
+package model.combat.implementations;
 
 import java.util.List;
 
-import combat.enums.TargetType;
-import combat.interfaces.ActionActor;
-import combat.interfaces.ActionEffect;
+import model.combat.enums.TargetType;
+import model.combat.interfaces.ActionActor;
+import model.combat.interfaces.ActionEffect;
 
 public abstract class AbstractParryAction extends AbstractAction {
 

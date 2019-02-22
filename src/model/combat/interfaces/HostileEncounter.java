@@ -1,4 +1,4 @@
-package combat.interfaces;
+package model.combat.interfaces;
 
 import java.util.List;
 

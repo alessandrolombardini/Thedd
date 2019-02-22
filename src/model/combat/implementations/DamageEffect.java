@@ -1,7 +1,7 @@
-package combat.implementations;
+package model.combat.implementations;
 
-import combat.interfaces.ActionActor;
-import combat.interfaces.ActionEffect;
+import model.combat.interfaces.ActionActor;
+import model.combat.interfaces.ActionEffect;
 
 public class DamageEffect implements ActionEffect {  //to be subdivided into physical damage/magical damage/fire/holy etc...
 

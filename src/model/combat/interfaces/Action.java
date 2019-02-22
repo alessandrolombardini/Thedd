@@ -1,7 +1,8 @@
-package combat.interfaces;
+package model.combat.interfaces;
 
 import java.util.List;
-import combat.enums.TargetType;
+
+import model.combat.enums.TargetType;
 
 /**
  * An action that can be selected and executed in and out of combat.

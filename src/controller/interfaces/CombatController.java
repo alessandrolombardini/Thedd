@@ -1,4 +1,7 @@
-package combat.interfaces;
+package controller.interfaces;
+
+import model.combat.interfaces.ActionActor;
+import model.combat.interfaces.HostileEncounter;
 
 /**
  * TO BE IGNORED SINCE IT'S CURRENTLY NOT WELL DEFINED/HIGHLY SUSCEPTIBLE TO CHANGES.

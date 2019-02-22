@@ -1,13 +1,13 @@
-package combat.implementations;
+package model.combat.implementations;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import combat.enums.RandomActionPrority;
-import combat.interfaces.Action;
-import combat.interfaces.ActionActor;
-import combat.interfaces.CombatInstance;
+import model.combat.enums.RandomActionPrority;
+import model.combat.interfaces.Action;
+import model.combat.interfaces.ActionActor;
+import model.combat.interfaces.CombatInstance;
 import utils.RandomCollection;
 import utils.RandomList;
 import utils.RandomListImpl;
@@ -19,7 +19,7 @@ public abstract class AbstractActionActor implements ActionActor {
     private CombatInstance combatInstance;
     private final RandomList<Action> actionList = new RandomListImpl<>();
     private int roundPlace;
-    private boolean isInCombat;
+    private boolean inCombat;
 
     public AbstractActionActor(final String name) {
         this.name = name;
@@ -70,7 +70,7 @@ public abstract class AbstractActionActor implements ActionActor {
     }
 
     @Override
-    public boolean equals(Object other) {
+    public boolean equals(final Object other) {
         if (other == this) {
             return true;
         }
@@ -89,12 +89,12 @@ public abstract class AbstractActionActor implements ActionActor {
 
     @Override
     public void setIsInCombat(final boolean isInCombat) {
-        this.isInCombat = isInCombat;
+        this.inCombat = isInCombat;
     }
 
     @Override
     public boolean isInCombat() {
-        return isInCombat;
+        return inCombat;
     }
 
     @Override

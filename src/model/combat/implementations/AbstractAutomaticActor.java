@@ -1,12 +1,12 @@
-package combat.implementations;
+package model.combat.implementations;
 
 import java.util.List;
 import java.util.Random;
 
-import combat.interfaces.Action;
-import combat.interfaces.ActionActor;
-import combat.interfaces.AutomaticActionActor;
-import combat.enums.RandomActionPrority;
+import model.combat.enums.RandomActionPrority;
+import model.combat.interfaces.Action;
+import model.combat.interfaces.ActionActor;
+import model.combat.interfaces.AutomaticActionActor;
 import utils.RandomCollection;
 
 public abstract class AbstractAutomaticActor extends AbstractActionActor implements AutomaticActionActor {
