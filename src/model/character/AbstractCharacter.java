@@ -5,7 +5,10 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
+import model.item.EquipableItem;
+import model.item.EquipableItemType;
 import model.item.Item;
 
 /**
@@ -15,7 +18,7 @@ public abstract class AbstractCharacter implements Character {
 
     private final EnumMap<Statistic, StatValues> stat;
     private final Inventory inventory;
-    private final List<Item> equipment;
+    private final List<EquipableItem> equipment;
 
     /**
      * GenericCharacter's constructor.
@@ -44,11 +47,14 @@ public abstract class AbstractCharacter implements Character {
     }
 
     @Override
-    public final void equipItem(final int itemId) {
-        final Optional<Item> it = this.inventory.getItem(itemId);
-        if (it.isPresent()) { // Next to-do: add controls for type equipment.
+    public final boolean equipItem(final int itemId) {
+        final Optional<EquipableItem> it = this.inventory.getEquipableItem(itemId);
+        if (it.isPresent() && checkEquipment(it.get())) {
             this.equipment.add(it.get());
+            this.inventory.removeItem(it.get());
+            return true;
         }
+        return false;
     }
 
     @Override
@@ -68,6 +74,26 @@ public abstract class AbstractCharacter implements Character {
     @Override
     public final Inventory getInventory() {
         return this.inventory;
+    }
+
+    private boolean checkEquipment(final EquipableItem item) {
+        if (item.isWeapon()) {
+            if (this.equipment.stream()
+                              .noneMatch(it -> it.getType() == EquipableItemType.TWO_HANDED)) {
+                final int oneHandWeapons = (int) this.equipment.stream()
+                                                               .filter(it -> it.getType() == EquipableItemType.ONE_HANDED)
+                                                               .count();
+                return (oneHandWeapons == 0 || (oneHandWeapons == 1 && item.getType() == EquipableItemType.ONE_HANDED));
+            } 
+            return false;
+        } else if (item.getType() == EquipableItemType.RING) {
+            return ((int) this.equipment.stream()
+                                    .filter(it -> it.getType() == EquipableItemType.RING)
+                                    .count() < EquipableItemType.getMaxNumOfRings());
+        } else {
+            return this.equipment.stream()
+                                 .noneMatch(it -> it.getType() == item.getType());
+        }
     }
 
 }
