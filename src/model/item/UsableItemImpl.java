@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import model.character.Statistic;
-import model.combat.Action;
+import model.combat.interfaces.Action;
 
 /**
  * Implementation of {@link model.item.UsableItem}.
