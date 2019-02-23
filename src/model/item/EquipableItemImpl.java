@@ -1,5 +1,6 @@
 package model.item;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -35,7 +36,7 @@ public class EquipableItemImpl extends AbstractItem implements EquipableItem {
 
     @Override
     public final Map<Statistic, Integer> getModifiers() {
-        return new HashMap<>(this.getEffects());
+        return Collections.unmodifiableMap(this.getEffects());
     }
 
     @Override

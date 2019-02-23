@@ -1,5 +1,6 @@
 package model.item;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 
@@ -64,7 +65,7 @@ public abstract class AbstractItem implements Item {
      *          the map of the effects of the item
      */
     protected final Map<Statistic, Integer> getEffects() {
-        return effects;
+        return Collections.unmodifiableMap(effects);
     }
 
     @Override
