@@ -44,8 +44,9 @@ public interface Character {
      * This method equip the specified item, updating character's statistics.
      * 
      * @param itemid the id of the item to be equipped.
+     * @return true if the item is correctly equipped, otherwise false.
      */
-    void equipItem(int itemid);
+    boolean equipItem(int itemid);
 
     /**
      * This method remove the specified item to the equipped ones and automatically
