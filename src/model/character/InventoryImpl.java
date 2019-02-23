@@ -29,7 +29,6 @@ public class InventoryImpl implements Inventory {
         if (findItem(id).isPresent()) {
             final Entry<Item, Integer> entry = findItem(id).get();
             if (entry.getKey().isEquipable()) {
-                updateInventory(entry);
                 // It's safe to do this cast because was checked that this item is Equipable
                 return Optional.of((EquipableItem) entry.getKey());
             }
@@ -51,7 +50,6 @@ public class InventoryImpl implements Inventory {
         if (findItem(id).isPresent()) {
             final Entry<Item, Integer> entry = findItem(id).get();
             if (!entry.getKey().isEquipable()) {
-                updateInventory(entry);
                 // It's safe to do this cast because was checked that this item is Usable
                 return Optional.of((UsableItem) entry.getKey());
             }
@@ -61,17 +59,18 @@ public class InventoryImpl implements Inventory {
 
     @Override
     public final void removeItem(final int id) {
-        // TODO Auto-generated method stub
+        // to-do
+    }
+
+    @Override
+    public final void removeItem(final Item item) {
+        this.items.put(item, this.items.get(item) - 1);
+        if (this.items.get(item) <= 0) {
+            this.items.remove(item);
+        }
     }
 
     private Optional<Entry<Item, Integer>> findItem(final int id) {
         return this.items.entrySet().stream().filter(en -> en.getKey().getId() == id).findFirst();
-    }
-
-    private void updateInventory(final Entry<Item, Integer> entry) {
-        this.items.put(entry.getKey(), entry.getValue() - 1);
-        if (entry.getValue() <= 0) {
-            this.items.remove(entry.getKey());
-        }
     }
 }
