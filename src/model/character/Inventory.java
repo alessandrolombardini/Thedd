@@ -40,4 +40,11 @@ public interface Inventory {
      * @param id the id of the Item that is going to be removed
      */
     void removeItem(int id);
+
+     /**
+     * This method remove the specified item from the Inventory.
+     * 
+     * @param item theItem that is going to be removed
+     */
+    void removeItem(Item item);
 }
