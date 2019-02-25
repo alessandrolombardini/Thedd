@@ -5,8 +5,8 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
+import model.combat.implementations.AbstractActionActor;
 import model.item.EquipableItem;
 import model.item.EquipableItemType;
 import model.item.Item;
@@ -14,7 +14,7 @@ import model.item.Item;
 /**
  * Class that define a Generic Character.
  */
-public abstract class AbstractCharacter implements Character {
+public abstract class AbstractCharacter extends AbstractActionActor implements Character {
 
     private final EnumMap<Statistic, StatValues> stat;
     private final Inventory inventory;
@@ -24,8 +24,10 @@ public abstract class AbstractCharacter implements Character {
      * GenericCharacter's constructor.
      * 
      * @param basicStat , a map with the basic statistic values of the character.
+     * @param name , the name of the character.
      */
-    public AbstractCharacter(final EnumMap<Statistic, StatValues> basicStat) {
+    public AbstractCharacter(final EnumMap<Statistic, StatValues> basicStat, final String name) {
+        super(name);
         this.stat = new EnumMap<>(basicStat);
         this.inventory = new InventoryImpl();
         this.equipment = new ArrayList<>();
@@ -77,7 +79,7 @@ public abstract class AbstractCharacter implements Character {
     }
 
     private boolean checkEquipment(final EquipableItem item) {
-        if (item.isWeapon()) {
+        if (item.getType().isWeapon()) {
             if (this.equipment.stream()
                               .noneMatch(it -> it.getType() == EquipableItemType.TWO_HANDED)) {
                 final int oneHandWeapons = (int) this.equipment.stream()
