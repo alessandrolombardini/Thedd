@@ -10,4 +10,10 @@ public interface RoomEvent {
      * @return the type of an event inside the room
      */
     RoomEventType getType();
+
+    /**
+     * @return
+     *  the name of the contraption
+     */
+    String getName();
 }
