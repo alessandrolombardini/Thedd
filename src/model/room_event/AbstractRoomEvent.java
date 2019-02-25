@@ -1,4 +1,7 @@
 package model.room_event;
+
+import java.util.Objects;
+
 /**
  * 
  *
@@ -13,7 +16,7 @@ public abstract class AbstractRoomEvent implements RoomEvent {
      *  the name of the room event
      */
     public AbstractRoomEvent(final String name) {
-        this.name = name;
+        this.name = Objects.requireNonNull(name);
     }
 
     @Override
