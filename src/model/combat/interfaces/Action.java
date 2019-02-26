@@ -1,6 +1,7 @@
 package model.combat.interfaces;
 
 import java.util.List;
+import java.util.Optional;
 
 import model.combat.enums.TargetType;
 
@@ -39,7 +40,7 @@ public interface Action {
      * Returns the Actor that is capable of performing this action.
      * @return the source Actor
      */
-    ActionActor getSource();
+    Optional<ActionActor> getSource();
 
     /**
      * Returns the effects linked to this action.
@@ -55,9 +56,15 @@ public interface Action {
 
     /**
      * Adds one effect to the action.
-     * @param effect the effect
+     * @param effect the effect to be added
      */
     void addEffect(ActionEffect effect);
+
+    /**
+     * Removes one effect to the action.
+     * @param effect the targeted effect
+     */
+    void removeEffect(ActionEffect effect);
 
     /**
      * Applies all of the action's effects to the target.
