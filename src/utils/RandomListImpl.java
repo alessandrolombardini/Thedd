@@ -59,4 +59,9 @@ public class RandomListImpl<E> extends AbstractRandomCollection<E> implements Ra
         return Collections.unmodifiableList(result);
     }
 
+    @Override
+    public boolean remove(final E item) {
+        return list.remove(item);
+    }
+
 }

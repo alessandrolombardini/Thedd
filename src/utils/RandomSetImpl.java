@@ -59,4 +59,9 @@ public class RandomSetImpl<E> extends AbstractRandomCollection<E> implements Ran
         return Collections.unmodifiableSet(result);
     }
 
+    @Override
+    public boolean remove(final E item) {
+        return set.remove(item);
+    }
+
 }
