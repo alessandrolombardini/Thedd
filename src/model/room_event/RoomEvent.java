@@ -16,4 +16,7 @@ public interface RoomEvent {
      *  the name of the contraption
      */
     String getName();
+    
+    boolean isCompleted();
+    
 }
