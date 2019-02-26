@@ -1,16 +1,15 @@
 package model.room_event;
 
-import model.combat.Action;
+import model.combat.interfaces.ActionActor;
 
 /**
  * Specialization of {@link model.room_event.RoomEvent}. It defines the "Contraption" {@link model.room_event.RoomEventType}.
  *
  */
-public interface Contraption extends RoomEvent {
+public interface Contraption extends RoomEvent, ActionActor {
+
     /**
-     * 
-     * @return
-     *  the action to be performed to the activator of the Contraption.
+     * Complete the RoomEvent and make it no longer available.
      */
-    Action getAction();
+    void complete();
 }
