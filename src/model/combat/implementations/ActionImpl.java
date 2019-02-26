@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import model.combat.enums.TargetType;
 import model.combat.interfaces.Action;
@@ -11,9 +12,9 @@ import model.combat.interfaces.ActionActor;
 import model.combat.interfaces.ActionEffect;
 
 
-public abstract class AbstractAction implements Action {
+public class ActionImpl implements Action {
     private final List<ActionActor> targets = new ArrayList<ActionActor>();
-    private ActionActor source;
+    private Optional<ActionActor> source;
     private final List<ActionEffect> effects = new ArrayList<>();
     private String name;
     private double baseHitChance;
@@ -21,12 +22,16 @@ public abstract class AbstractAction implements Action {
     //gettype
     //manaRequirement? oppure un generico getRequirements?
 
-    public AbstractAction(final ActionActor source, final String name, final double baseHitChance, final TargetType targetType) {
+    protected ActionImpl(final String name, final double baseHitChance, final TargetType targetType) {
+        this(null, name, Collections.<ActionEffect>emptyList(), baseHitChance, targetType);
+    } 
+
+    protected ActionImpl(final ActionActor source, final String name, final double baseHitChance, final TargetType targetType) {
         this(source, name, Collections.<ActionEffect>emptyList(), baseHitChance, targetType);
     }
 
-    public AbstractAction(final ActionActor source, final String name, final List<ActionEffect> effects, final double baseHitChance, final TargetType targetType) {
-        this.source = source;
+    protected ActionImpl(final ActionActor source, final String name, final List<ActionEffect> effects, final double baseHitChance, final TargetType targetType) {
+        this.source = Optional.ofNullable(source);
         this.name = name;
         this.baseHitChance = baseHitChance;
         this.targetType = targetType;
@@ -52,7 +57,8 @@ public abstract class AbstractAction implements Action {
 
     @Override
     public void setSource(final ActionActor source) {
-        this.source = source;
+        this.source = Optional.of(source);
+        effects.forEach(e -> e.updateEffectBySource(source));
     }
 
     @Override
@@ -65,7 +71,9 @@ public abstract class AbstractAction implements Action {
     @Override
     public void addEffect(final ActionEffect effect) {
         effects.add(Objects.requireNonNull(effect));
-        effect.updateEffectBySource(source);
+        if (source.isPresent()) {
+            effect.updateEffectBySource(source.get());
+        }
     }
 
     @Override
@@ -76,7 +84,7 @@ public abstract class AbstractAction implements Action {
     @Override
     public void applyEffects(final ActionActor target) {
         effects.stream().forEach((e) -> {
-                e.updateEffectBySource(getSource());
+                e.updateEffectBySource(getSource().get());
                 e.updateEffectByTarget(target);
                 e.apply(target);
             });
@@ -88,7 +96,7 @@ public abstract class AbstractAction implements Action {
     }
 
     @Override
-    public ActionActor getSource() {
+    public Optional<ActionActor> getSource() {
         return source;
     }
 
@@ -115,10 +123,10 @@ public abstract class AbstractAction implements Action {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof AbstractAction)) {
+        if (!(other instanceof ActionImpl)) {
             return false;
         } else {
-            final AbstractAction o = ((AbstractAction) other);
+            final ActionImpl o = ((ActionImpl) other);
             //Considerare anche se gli effetti e i bersagli sono uguali?
             return getSource().equals(o.getSource())
                     && getName().equals(o.getName())
@@ -129,6 +137,11 @@ public abstract class AbstractAction implements Action {
     @Override
     public int hashCode() {
         return Objects.hash(/*getSource(), */getName(), getTargetType());
+    }
+
+    @Override
+    public void removeEffect(final ActionEffect effect) {
+        effects.remove(effect);
     }
 
 }
