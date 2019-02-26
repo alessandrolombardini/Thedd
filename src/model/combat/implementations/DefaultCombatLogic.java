@@ -24,7 +24,7 @@ public class DefaultCombatLogic implements CombatLogic {
     private CombatInstance combatInstance = new CombatInstanceImpl();
     private final List<ActionActor> actorsQueue = new LinkedList<>(); //Defined and handled here since the queue can change depending on the logic implementation
     private final Comparator<ActionActor> orderingStrategy = (a, b) -> b.getPriority() - a.getPriority();
-    
+
     public DefaultCombatLogic() {
         this(Collections.<ActionActor>emptyList(), Collections.<ActionActor>emptyList());
     }
@@ -153,7 +153,7 @@ public class DefaultCombatLogic implements CombatLogic {
 
     @Override
     public void startCombat() { 
-        combatInstance.setCombatStatus(CombatStatus.STARTED);//forse da eliminare (o sostituire con round waiting)
+        combatInstance.setCombatStatus(CombatStatus.STARTED); //forse da eliminare (o sostituire con round waiting)
         combatInstance.getAllParties().forEach(a -> a.setIsInCombat(true));
         prepareNextRound();
     }
@@ -205,7 +205,10 @@ public class DefaultCombatLogic implements CombatLogic {
 
     @Override
     public List<ActionActor> getValidTargets(final Action action) {
-        final ActionActor source = action.getSource();
+        if (!action.getSource().isPresent()) {
+            return Collections.emptyList();
+        }
+        final ActionActor source = action.getSource().get();
         switch (action.getTargetType()) {
         case ALLY:
             return combatInstance.getNPCsParty().contains(source) ? combatInstance.getPlayerParty() 
@@ -216,7 +219,7 @@ public class DefaultCombatLogic implements CombatLogic {
             return combatInstance.getPlayerParty().contains(source) ? combatInstance.getNPCsParty() 
                     : combatInstance.getPlayerParty();
         case SELF:
-            return Collections.singletonList((Combatant) action.getSource());
+            return Collections.singletonList((Combatant) source);
         default:
             throw new IllegalStateException("Target type of the action was not found");
         }
