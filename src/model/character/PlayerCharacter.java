@@ -13,7 +13,7 @@ public class PlayerCharacter extends AbstractCharacter {
      * @param basicStat , a map with the basic statistics.
      * @param name , the string name of the player character.
      */
-    public PlayerCharacter(final EnumMap<Statistic, StatValues> basicStat, final String name) {
+    public PlayerCharacter(final EnumMap<Statistic, StatValuesImpl> basicStat, final String name) {
         super(basicStat, name);
     }
 

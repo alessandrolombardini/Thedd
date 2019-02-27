@@ -31,7 +31,7 @@ public interface BasicCharacter {
      * @return a StatValues that contains the actual/max values of the specified
      *         statistic.
      */
-    StatValues getStat(Statistic stat);
+    StatValuesImpl getStat(Statistic stat);
 
     /**
      * This method return the character's inventory.

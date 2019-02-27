@@ -6,7 +6,7 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Optional;
 
-import model.combat.implementations.AbstractActionActor;
+import model.combat.implementations.AbstractAutomaticActor;
 import model.item.EquipableItem;
 import model.item.EquipableItemType;
 import model.item.Item;
@@ -14,9 +14,9 @@ import model.item.Item;
 /**
  * Class that define a Generic Character.
  */
-public abstract class AbstractCharacter extends AbstractActionActor implements BasicCharacter {
+public abstract class AbstractCharacter extends AbstractAutomaticActor implements BasicCharacter {
 
-    private final EnumMap<Statistic, StatValues> stat;
+    private final EnumMap<Statistic, StatValuesImpl> stat;
     private final Inventory inventory;
     private final List<EquipableItem> equipment;
 
@@ -26,7 +26,7 @@ public abstract class AbstractCharacter extends AbstractActionActor implements B
      * @param basicStat , a map with the basic statistic values of the character.
      * @param name , the name of the character.
      */
-    public AbstractCharacter(final EnumMap<Statistic, StatValues> basicStat, final String name) {
+    public AbstractCharacter(final EnumMap<Statistic, StatValuesImpl> basicStat, final String name) {
         super(name);
         this.stat = new EnumMap<>(basicStat);
         this.inventory = new InventoryImpl();
@@ -44,7 +44,7 @@ public abstract class AbstractCharacter extends AbstractActionActor implements B
     }
 
     @Override
-    public final StatValues getStat(final Statistic stat) {
+    public final StatValuesImpl getStat(final Statistic stat) {
         return this.stat.get(stat);
     }
 
@@ -78,6 +78,7 @@ public abstract class AbstractCharacter extends AbstractActionActor implements B
         return this.inventory;
     }
 
+    //Returns true if this Item is equipable, else false.
     private boolean checkEquipment(final EquipableItem item) {
         if (item.getType().isWeapon()) {
             if (this.equipment.stream()
