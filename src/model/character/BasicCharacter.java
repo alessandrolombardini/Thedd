@@ -6,7 +6,7 @@ import model.item.Item;
 /**
  * Interface that define the characters.
  */
-public interface Character {
+public interface BasicCharacter {
 
     /**
      * This method modify the actual status of the current character.

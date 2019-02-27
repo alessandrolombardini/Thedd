@@ -14,7 +14,7 @@ import model.item.Item;
 /**
  * Class that define a Generic Character.
  */
-public abstract class AbstractCharacter extends AbstractActionActor implements Character {
+public abstract class AbstractCharacter extends AbstractActionActor implements BasicCharacter {
 
     private final EnumMap<Statistic, StatValues> stat;
     private final Inventory inventory;
