@@ -34,10 +34,15 @@ public abstract class AbstractCharacter extends AbstractAutomaticActor implement
     }
 
     @Override
-    public final void updateStat(final Statistic stat, final int value) {
+    public final void updateActualStat(final Statistic stat, final int value) {
         this.stat.get(stat).updateActual(value);
     }
 
+    @Override
+    public final void updateMaxStat(final Statistic stat, final int value) {
+        this.stat.get(stat).updateMax(value);
+    }
+    
     @Override
     public final boolean isAlive() {
         return this.stat.get(Statistic.PV).getActual() > 0;

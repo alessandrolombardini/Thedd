@@ -9,12 +9,20 @@ import model.item.Item;
 public interface BasicCharacter {
 
     /**
-     * This method modify the actual status of the current character.
+     * This method modify the actual status of the asked statistic.
      * 
      * @param stat  the statistic to update.
      * @param value the value updated to the specified statistic.
      */
-    void updateStat(Statistic stat, int value);
+    void updateActualStat(Statistic stat, int value);
+    
+    /**
+     * This method modify the max status of the asked statistic.
+     * 
+     * @param stat  the statistic to update.
+     * @param value the value updated to the specified statistic.
+     */
+    void updateMaxStat(Statistic stat, int value);
 
     /**
      * This method allows to know if the character is alive.
