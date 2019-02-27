@@ -21,7 +21,11 @@ public class StatValuesImpl implements StatValues {
 
     @Override
     public final void updateActual(final int value) {
-        this.actual = this.actual + value;
+        if (this.actual + value > this.max) {
+            this.actual = this.max;
+        } else {
+            this.actual = this.actual + this.max;
+        }
     }
 
     @Override
@@ -29,7 +33,7 @@ public class StatValuesImpl implements StatValues {
         final int oldMax = this.max;
 
         this.max = this.max + value;
-        this.actual = (int) (this.actual * this.max) / oldMax;
+        updateActual((int) (this.actual * this.max) / oldMax);
     }
 
     @Override
