@@ -1,14 +1,12 @@
 package model.character;
 
 import java.util.List;
-
-import model.action.Action;
 import model.item.Item;
 
 /**
  * Interface that define the characters.
  */
-public interface Character {
+public interface BasicCharacter {
 
     /**
      * This method modify the actual status of the current character.
@@ -33,21 +31,22 @@ public interface Character {
      * @return a StatValues that contains the actual/max values of the specified
      *         statistic.
      */
-    StatValues getStat(Statistic stat);
+    StatValuesImpl getStat(Statistic stat);
 
     /**
-     * This method returns character's actions.
+     * This method return the character's inventory.
      * 
-     * @return the list composed of character's actions
+     * @return the character's inventory
      */
-    List<Action> getActions();
+    Inventory getInventory();
 
     /**
      * This method equip the specified item, updating character's statistics.
      * 
      * @param itemid the id of the item to be equipped.
+     * @return true if the item is correctly equipped, otherwise false.
      */
-    void equipItem(int itemid);
+    boolean equipItem(int itemid);
 
     /**
      * This method remove the specified item to the equipped ones and automatically
@@ -62,6 +61,5 @@ public interface Character {
      * 
      * @return a list of items
      */
-    List<Item> getEquippedItems();
-
+    List<? extends Item> getEquippedItems();
 }
