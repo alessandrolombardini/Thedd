@@ -25,6 +25,7 @@ public final class ItemFactory {
     public static void initDatabase() {
         DATABASE.add(new UsableItemPotion());
         DATABASE.add(new UsableItemBomb());
+        DATABASE.add(new EquipableItemSword());
     }
 
     /**
