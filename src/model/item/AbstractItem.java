@@ -15,7 +15,11 @@ public abstract class AbstractItem implements Item {
 
     private final int id;
     private final String name;
+    //status da applicare al pesonaggio
     private final List<ActionEffect> effects;
+
+    //azioni da aggiungere alla lista di azioni di un personaggio
+    //private final List<Action> additionalAction;
     private final String description;
 
     /**
