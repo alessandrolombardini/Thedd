@@ -1,20 +1,12 @@
 package model.item;
 
-import java.util.Map;
-
-import model.character.Statistic;
+import model.combat.interfaces.ActionActor;
 
 /**
- * Specialization of Item which can be equiped but cannot be used.
+ * Specialization of Item which can be equipped but cannot be used.
  *
  */
 public interface EquipableItem extends Item {
-    /**
-     * 
-     * @return
-     *  the map containing the statistics and the modifier granted by the item
-     */
-    Map<Statistic, Integer> getModifiers();
 
     /**
      * 
@@ -22,4 +14,18 @@ public interface EquipableItem extends Item {
      *  the type of the item
      */
     EquipableItemType getType();
+
+    /**
+     *  This method has to be called every time one equip an item, as the item will update the character statistics.
+     * @param equipper
+     *  the character who has equipped the item.
+     */
+    void onEquip(ActionActor equipper);
+
+    /**
+     * This method has to be called every time one unequip an item, as the item will update the character statistics.
+     * @param equipper
+     *  the character who has unequipped the item.
+     */
+    void onUnequip(ActionActor equipper);
 }
