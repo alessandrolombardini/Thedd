@@ -27,7 +27,7 @@ public class ActionResultImpl implements ActionResult {
 
     @Override
     public void addResult(final ActionActor target, final ActionResultType result) {
-        results.add(new Pair<ActionActor, ActionResultType>(target,result));
+        results.add(new Pair<ActionActor, ActionResultType>(target, result));
     }
 
     @Override

@@ -15,6 +15,13 @@ public interface RandomCollection<E> {
     RandomCollection<E> add(E item, double weight);
 
     /**
+     * Removes an item from the collection.
+     * @param item the item to be inserted
+     * @return true if the element was removed, false otherwise
+     */
+    boolean remove(E item);
+
+    /**
      * Gets the next random item.
      * @return a random item
      */

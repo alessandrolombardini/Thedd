@@ -1,7 +1,7 @@
 package model.combat.interfaces;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * 
@@ -9,7 +9,6 @@ import java.util.Optional;
  *
  */
 public interface ActionActor {
-
     /**
      * Returns the literal name of the actor.
      * @return the name of the actor
@@ -20,7 +19,7 @@ public interface ActionActor {
      * Sets the combat instance of the Actor.
      * @param instance the combatInstance
      */
-    void setCombatInstance(CombatInstance instance);
+    void setCombatInstance(CombatInstance instance); //arguably better placed inside AutomaticActionAcotor only
 
     /**
      * Returns the action that the actor is going to execute.
@@ -33,6 +32,22 @@ public interface ActionActor {
      * @param action the next action of the actor
      */
     void setAction(Action action);
+
+    /**
+     * Adds the specified action to the available actions of the actor.<br>
+     * If the action is already present in the actor's collections, the
+     * previous action will be overwritten with the new one.
+     * @param action the action to be added
+     */
+    void addAction(Action action);
+
+    /**
+     * Removes, if present, the specified action from the actor's collection
+     * of available actions.
+     * @param action the action to be removed
+     * @return true if the action was removed, false otherwise.
+     */
+    boolean removeAction(Action action);
 
     /**
      * Override of default compareTo method.
@@ -56,13 +71,13 @@ public interface ActionActor {
      * <p>
      * @param actions the list of available actions
      */
-    void setAvailableActionsList(List<? extends Action> actions);
+    void setAvailableActions(Set<? extends Action> actions);
 
     /**
      * Returns the list of available actions.
      * @return the list of actions
      */
-    List<? extends Action> getAvailableActionsList();
+    Set<? extends Action> getAvailableActions();
 
     /**
      * Sets whether or not the actor is in combat.

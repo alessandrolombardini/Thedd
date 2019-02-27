@@ -1,23 +1,23 @@
 package model.combat.implementations;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 import model.combat.enums.RandomActionPrority;
 import model.combat.interfaces.Action;
 import model.combat.interfaces.ActionActor;
 import model.combat.interfaces.CombatInstance;
 import utils.RandomCollection;
-import utils.RandomList;
-import utils.RandomListImpl;
+import utils.RandomSet;
+import utils.RandomSetImpl;
 
 public abstract class AbstractActionActor implements ActionActor {
 
     private final String name;
     private Optional<Action> currentAction;
     private CombatInstance combatInstance;
-    private final RandomList<Action> actionList = new RandomListImpl<>();
+    private final RandomSet<Action> availableActions = new RandomSetImpl<>();
     private int roundPlace;
     private boolean inCombat;
 
@@ -46,9 +46,7 @@ public abstract class AbstractActionActor implements ActionActor {
     }
 
     @Override
-    public int getPriority() {
-        return 1; ///DA CAMBIARE: RIFERISCITI AL PERSONAGGIO
-    }
+    public abstract int getPriority();
 
     @Override
     public void setCombatInstance(final CombatInstance instance) {
@@ -56,13 +54,13 @@ public abstract class AbstractActionActor implements ActionActor {
     } 
 
     @Override
-    public void setAvailableActionsList(final List<? extends Action> actions) {
-        actions.forEach(a -> actionList.add(a, RandomActionPrority.DEFAULT.getWeight()));
+    public void setAvailableActions(final Set<? extends Action> actions) {
+        actions.forEach(a -> addAction(a));
     }
 
     @Override
-    public List<? extends Action> getAvailableActionsList() {
-        return actionList.getList();
+    public Set<? extends Action> getAvailableActions() {
+        return availableActions.getSet();
     }
 
     protected CombatInstance getCombatInstance() {
@@ -120,6 +118,17 @@ public abstract class AbstractActionActor implements ActionActor {
     //             random fondendo le clasi AbstractCombatant e AbstractNPCCombatant, questo metodo non ti
     //             serve ad un cubo probabilmente e puoi semplicemente operare con actionList
     protected RandomCollection<Action> getWeightedActions() {
-        return actionList;
+        return availableActions;
     }
+
+    @Override
+    public void addAction(final Action action) {
+        availableActions.add(action, RandomActionPrority.DEFAULT.getWeight());
+    }
+
+    @Override
+    public boolean removeAction(final Action action) {
+        return availableActions.remove(action);
+    }
+
 }

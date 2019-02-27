@@ -6,7 +6,7 @@ import model.combat.enums.TargetType;
 import model.combat.interfaces.ActionActor;
 import model.combat.interfaces.ActionEffect;
 
-public abstract class AbstractParryAction extends AbstractAction {
+public abstract class AbstractParryAction extends ActionImpl {
 
     public AbstractParryAction(final ActionActor source, final String name, final double baseHitChance) {
         super(source, name, baseHitChance, TargetType.SELF);
