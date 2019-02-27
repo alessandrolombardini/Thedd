@@ -15,5 +15,6 @@ public enum Statistic {
     FOR,
 
     /** Riflessi. */
-    RIFL
+    RIFL;
+
 }

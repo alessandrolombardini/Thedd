@@ -1,12 +1,22 @@
 package model.character;
 
+import java.util.EnumMap;
 import java.util.List;
+
+import model.combat.interfaces.AutomaticActionActor;
 import model.item.Item;
 
 /**
  * Interface that define the characters.
  */
-public interface BasicCharacter {
+public interface BasicCharacter extends AutomaticActionActor {
+
+    /**
+     * This method sets the default statistics of the character.
+     * 
+     * @param basicStat an EnumMap composed by the statistics' values.
+     */
+    void setBasicStat(EnumMap<Statistic, StatValues> basicStat);
 
     /**
      * This method modify the actual status of the asked statistic.
@@ -15,7 +25,7 @@ public interface BasicCharacter {
      * @param value the value updated to the specified statistic.
      */
     void updateActualStat(Statistic stat, int value);
-    
+
     /**
      * This method modify the max status of the asked statistic.
      * 
@@ -39,7 +49,7 @@ public interface BasicCharacter {
      * @return a StatValues that contains the actual/max values of the specified
      *         statistic.
      */
-    StatValuesImpl getStat(Statistic stat);
+    StatValues getStat(Statistic stat);
 
     /**
      * This method return the character's inventory.

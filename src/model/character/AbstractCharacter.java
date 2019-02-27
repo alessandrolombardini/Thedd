@@ -16,7 +16,7 @@ import model.item.Item;
  */
 public abstract class AbstractCharacter extends AbstractAutomaticActor implements BasicCharacter {
 
-    private final EnumMap<Statistic, StatValuesImpl> stat;
+    private final EnumMap<Statistic, StatValues> stat;
     private final Inventory inventory;
     private final List<EquipableItem> equipment;
 
@@ -26,11 +26,15 @@ public abstract class AbstractCharacter extends AbstractAutomaticActor implement
      * @param basicStat , a map with the basic statistic values of the character.
      * @param name , the name of the character.
      */
-    public AbstractCharacter(final EnumMap<Statistic, StatValuesImpl> basicStat, final String name) {
+    public AbstractCharacter(final String name) {
         super(name);
-        this.stat = new EnumMap<>(basicStat);
+        this.stat = new EnumMap<>(Statistic.class);
         this.inventory = new InventoryImpl();
         this.equipment = new ArrayList<>();
+    }
+    
+    public final void setBasicStat (EnumMap<Statistic, StatValues> basicStat) {
+        this.stat.putAll(basicStat);
     }
 
     @Override
@@ -49,7 +53,7 @@ public abstract class AbstractCharacter extends AbstractAutomaticActor implement
     }
 
     @Override
-    public final StatValuesImpl getStat(final Statistic stat) {
+    public final StatValues getStat(final Statistic stat) {
         return this.stat.get(stat);
     }
 
@@ -81,6 +85,11 @@ public abstract class AbstractCharacter extends AbstractAutomaticActor implement
     @Override
     public final Inventory getInventory() {
         return this.inventory;
+    }
+    
+    @Override
+    public int getPriority() {
+        return this.stat.get(Statistic.RIFL).getActual();
     }
 
     //Returns true if this Item is equipable, else false.
