@@ -1,8 +1,14 @@
 package model.item;
 
+import model.character.BasicCharacter;
+import model.character.Statistic;
 import model.combat.interfaces.ActionActor;
 import model.combat.interfaces.ActionEffect;
 
+/**
+ * ActionEffect which heals the target.
+ *
+ */
 public class HealingEffect implements ActionEffect {
 
     private final double baseHealing;
@@ -12,11 +18,12 @@ public class HealingEffect implements ActionEffect {
     }
 
     @Override
-    public void apply(final ActionActor target) {
-        if (target instanceof model.character.Character) {
-
+    public final void apply(final ActionActor target) {
+        if (target instanceof BasicCharacter) {
+            ((BasicCharacter) target).getStat(Statistic.PV).updateActual((int) baseHealing);
+        } else {
+            throw new IllegalArgumentException("Target must be a BasicCharacter");
         }
-
     }
 
     @Override
