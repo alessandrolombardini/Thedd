@@ -1,5 +1,7 @@
 package model.environment;
 
+import java.util.Random;
+
 /**
  * Representation of difficulty levels of this game.
  * 
@@ -47,5 +49,16 @@ public enum Difficulty {
      */
     public String getName() {
         return this.name;
+    }
+
+    /**
+     * This method allows to get a random difficulty level.
+     * 
+     * @return a random Difficulty
+     */
+    public static Difficulty getRandomDifficulty() {
+        final Random rand = new Random();
+        final int randomValue = rand.nextInt(Difficulty.values().length);
+        return Difficulty.values()[randomValue];
     }
 }
