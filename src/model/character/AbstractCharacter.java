@@ -23,7 +23,6 @@ public abstract class AbstractCharacter extends AbstractAutomaticActor implement
     /**
      * GenericCharacter's constructor.
      * 
-     * @param basicStat , a map with the basic statistic values of the character.
      * @param name , the name of the character.
      */
     public AbstractCharacter(final String name) {
@@ -32,8 +31,9 @@ public abstract class AbstractCharacter extends AbstractAutomaticActor implement
         this.inventory = new InventoryImpl();
         this.equipment = new ArrayList<>();
     }
-    
-    public final void setBasicStat (EnumMap<Statistic, StatValues> basicStat) {
+
+    @Override
+    public final void setBasicStat(final EnumMap<Statistic, StatValues> basicStat) {
         this.stat.putAll(basicStat);
     }
 
@@ -46,7 +46,7 @@ public abstract class AbstractCharacter extends AbstractAutomaticActor implement
     public final void updateMaxStat(final Statistic stat, final int value) {
         this.stat.get(stat).updateMax(value);
     }
-    
+
     @Override
     public final boolean isAlive() {
         return this.stat.get(Statistic.PV).getActual() > 0;
@@ -86,9 +86,9 @@ public abstract class AbstractCharacter extends AbstractAutomaticActor implement
     public final Inventory getInventory() {
         return this.inventory;
     }
-    
+
     @Override
-    public int getPriority() {
+    public final int getPriority() {
         return this.stat.get(Statistic.RIFL).getActual();
     }
 
