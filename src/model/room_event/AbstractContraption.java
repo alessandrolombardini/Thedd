@@ -46,5 +46,8 @@ public abstract class AbstractContraption extends AbstractActionActor implements
             completed = !completed;
         }
     }
+    
+    @Override
+    public abstract Contraption copy();
 
 }
