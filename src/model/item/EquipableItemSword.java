@@ -20,6 +20,6 @@ public class EquipableItemSword extends EquipableItemImpl {
      */
     public EquipableItemSword() {
         super(ID, NAME, TYPE, new ArrayList<>(), DESCRIPTION);
-        this.addActionEffect(new EquipementStatisticBonusEffect(Statistic.FOR, 1));
+        this.addActionEffect(new EquipmentStatisticBonusEffect(Statistic.FOR, 1));
     }
 }

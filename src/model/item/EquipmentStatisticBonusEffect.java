@@ -11,7 +11,7 @@ import model.combat.interfaces.ActionActor;
  * An actionEffect which represent a bonus (or malus) given by an EquipableItem.
  *
  */
-public class EquipementStatisticBonusEffect implements StatisticBonusEffect {
+public class EquipmentStatisticBonusEffect implements StatisticBonusEffect {
 
     private Optional<BasicCharacter> target;
     private final Statistic targetStat;
@@ -24,9 +24,10 @@ public class EquipementStatisticBonusEffect implements StatisticBonusEffect {
      * @param value
      *  the value used to update the statistic
      */
-    public EquipementStatisticBonusEffect(final Statistic stat, final int value) {
+    public EquipmentStatisticBonusEffect(final Statistic stat, final int value) {
         targetStat = Objects.requireNonNull(stat);
         effectValue = value;
+        target = Optional.empty();
     }
 
     @Override
