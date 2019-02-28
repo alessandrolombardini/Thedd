@@ -10,18 +10,16 @@ import java.util.Random;
  */
 public class RoomEvents {
 
-    private static final List<Class<? extends Contraption>> CONTRAPTION_DATABASE = new ArrayList<>();
-    private static Random r = new Random();
-    
+    private static final List<Contraption> CONTRAPTION_DATABASE = new ArrayList<>();
+    private static final Random RNG = new Random();
     
     static {
-        CONTRAPTION_DATABASE.add(ContraptionTrap.class);
+        CONTRAPTION_DATABASE.add(new ContraptionTrap());
     }
     
     private RoomEvents() {
-
     }
-
+    
     /**
      * 
      * @return
@@ -52,12 +50,6 @@ public class RoomEvents {
      *  an instance of {@link model.room_event.Contraption}.
      */
     public static final RoomEvent getContraption() {
-            try {
-                return CONTRAPTION_DATABASE.get(r.nextInt(CONTRAPTION_DATABASE.size())).newInstance();
-            } catch (InstantiationException | IllegalAccessException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-                return null;
-            }
+            return CONTRAPTION_DATABASE.get(RNG.nextInt(CONTRAPTION_DATABASE.size())).copy();
     }
 }
