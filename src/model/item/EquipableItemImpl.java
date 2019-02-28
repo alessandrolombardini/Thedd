@@ -13,6 +13,9 @@ import model.combat.interfaces.ActionEffect;
  */
 public class EquipableItemImpl extends AbstractItem implements EquipableItem {
 
+    //azioni da aggiungere alla lista di azioni di un personaggio
+    //private final List<Action> additionalAction;
+    
     private final EquipableItemType type;
 
     /**
