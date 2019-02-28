@@ -24,7 +24,7 @@ public class StatValuesImpl implements StatValues {
         if (this.actual + value > this.max) {
             this.actual = this.max;
         } else {
-            this.actual = this.actual + this.max;
+            this.actual = this.actual + value;
         }
     }
 
