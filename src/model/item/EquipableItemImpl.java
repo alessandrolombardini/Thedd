@@ -50,14 +50,12 @@ public class EquipableItemImpl extends AbstractItem implements EquipableItem {
 
     @Override
     public void onEquip(final ActionActor equipper) {
-        // TODO Auto-generated method stub
-
+        this.getEffects().forEach(e -> e.apply(equipper));
     }
 
     @Override
     public void onUnequip(final ActionActor equipper) {
-        // TODO Auto-generated method stub
-
+        this.getEffects().stream().filter(e -> e instanceof StatisticBonusEffect).forEach(e -> ((StatisticBonusEffect)e).removeBonus());
     }
 
 }
