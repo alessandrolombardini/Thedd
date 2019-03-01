@@ -10,7 +10,7 @@ import model.combat.interfaces.Action;
  * 
  *
  */
-public class TreasureChest extends AbstractContraption implements Contraption {
+public class TreasureChest extends ContraptionImpl implements Contraption {
 
     private static final String NAME = "Treasure Chest";
     private static final Action ACTION = new AbstractAction(null, NAME, Arrays.asList(new ItemGiverEffect()), 1, TargetType.EVERYONE) { };
@@ -19,7 +19,6 @@ public class TreasureChest extends AbstractContraption implements Contraption {
      */
     public TreasureChest() {
         super(NAME, ACTION);
-        ACTION.setSource(this);
     }
 
     public static Contraption newInstance() {

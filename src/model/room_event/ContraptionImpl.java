@@ -10,7 +10,7 @@ import model.combat.interfaces.Action;
  * 
  *
  */
-public abstract class AbstractContraption extends AbstractActionActor implements Contraption {
+public abstract class ContraptionImpl extends AbstractActionActor implements Contraption {
 
     //private final Action action;
     private boolean completed;
@@ -22,7 +22,7 @@ public abstract class AbstractContraption extends AbstractActionActor implements
      * @param action
      *          action performed by the contraption
      */
-    public AbstractContraption(final String name, final Action action) {
+    public ContraptionImpl(final String name, final Action action) {
         super(name);
         super.setAction(Objects.requireNonNull(action));
         this.getAction().ifPresent(a -> a.setSource(this));
