@@ -20,7 +20,12 @@ public class HealingEffect implements ActionEffect {
     @Override
     public final void apply(final ActionActor target) {
         if (target instanceof BasicCharacter) {
-            ((BasicCharacter) target).getStat(Statistic.PV).updateActual((int) baseHealing);
+            final BasicCharacter t = ((BasicCharacter) target);
+            if(baseHealing != Double.POSITIVE_INFINITY) {
+                t.getStat(Statistic.PV).updateActual((int) baseHealing);
+            } else {
+                t.getStat(Statistic.PV).updateActual(t.getStat(Statistic.PV).getMax());
+            }
         } else {
             throw new IllegalArgumentException("Target must be a BasicCharacter");
         }
