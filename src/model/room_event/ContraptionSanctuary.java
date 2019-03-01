@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import model.combat.enums.TargetType;
 import model.combat.implementations.AbstractAction;
 import model.combat.interfaces.Action;
+import model.item.HealingEffect;
 
 public class ContraptionSanctuary extends ContraptionImpl {
 
@@ -13,12 +14,11 @@ public class ContraptionSanctuary extends ContraptionImpl {
     
     public ContraptionSanctuary() {
         super(NAME, ACTION);
-        //TODO add healing effect 
+        ACTION.addEffect(new HealingEffect(Double.POSITIVE_INFINITY));
     }
     
     public static Contraption newInstance() {
         return new ContraptionSanctuary();
     }
-    
     
 }
