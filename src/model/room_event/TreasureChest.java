@@ -22,9 +22,7 @@ public class TreasureChest extends AbstractContraption implements Contraption {
         ACTION.setSource(this);
     }
 
-    //Unused in this project.
-    @Override
-    public Contraption copy() {
+    public static Contraption newInstance() {
         return new TreasureChest();
     }
 }
