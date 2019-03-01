@@ -16,6 +16,7 @@ public class RoomEvents {
     
     static {
         CONTRAPTION_DATABASE.add(ContraptionTrap::newInstance);
+        CONTRAPTION_DATABASE.add(ContraptionSanctuary::newInstance);
     }
     
     private RoomEvents() {
