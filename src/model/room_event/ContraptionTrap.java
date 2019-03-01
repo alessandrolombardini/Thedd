@@ -21,8 +21,8 @@ public class ContraptionTrap extends AbstractContraption {
     public static Contraption createNew() {
         return new ContraptionTrap();
     }
-    @Override
-    public Contraption copy() {
+    
+    public static Contraption newInstance() {
         return new ContraptionTrap();
     }
     
