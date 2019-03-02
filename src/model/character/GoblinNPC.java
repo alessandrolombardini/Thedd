@@ -5,7 +5,7 @@ import java.util.EnumMap;
 /**
  * Class that implements a Goblin Non-Player Character.
  */
-public final class GoblinNPC extends AbstractCharacter {
+public final class GoblinNPC extends GenericCharacter {
 
     // Questi valori sono messi a caso e credo non abbiano assolutamente senso.
     private static final int BASIC_PV = 50;

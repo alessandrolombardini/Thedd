@@ -5,7 +5,7 @@ import java.util.EnumMap;
 /**
  * Class that implements a Headless Non-Player Character.
  */
-public final class HeadlessNPC extends AbstractCharacter {
+public final class HeadlessNPC extends GenericCharacter {
 
     // Questi valori sono messi a caso e credo non abbiano assolutamente senso.
     private static final int BASIC_PV = 50;

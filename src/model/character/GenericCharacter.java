@@ -14,7 +14,7 @@ import model.item.Item;
 /**
  * Class that define a Generic Character.
  */
-public abstract class AbstractCharacter extends AbstractAutomaticActor implements BasicCharacter {
+public class GenericCharacter extends AbstractAutomaticActor implements BasicCharacter {
 
     private final EnumMap<Statistic, StatValues> stat;
     private final Inventory inventory;
@@ -25,7 +25,7 @@ public abstract class AbstractCharacter extends AbstractAutomaticActor implement
      * 
      * @param name , the name of the character.
      */
-    public AbstractCharacter(final String name) {
+    protected GenericCharacter(final String name) {
         super(name);
         this.stat = new EnumMap<>(Statistic.class);
         this.inventory = new InventoryImpl();
