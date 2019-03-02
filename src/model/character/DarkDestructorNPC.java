@@ -13,6 +13,8 @@ public final class DarkDestructorNPC extends AbstractCharacter {
     private static final int BASIC_FOR = 30;
     private static final int BASIC_RIFL = 20;
 
+    private static final String NAME = "Dark_Destructor";
+
     private static final EnumMap<Statistic, StatValues> BASIC_STAT = new EnumMap<Statistic, StatValues>(
             Statistic.class);
 
@@ -27,7 +29,7 @@ public final class DarkDestructorNPC extends AbstractCharacter {
      * DarkDestructor's constructor.
      */
     private DarkDestructorNPC() {
-        super("Dark Destructor");
+        super(NAME);
     }
 
     /**
