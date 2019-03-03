@@ -5,19 +5,16 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 import java.util.stream.IntStream;
 
 import model.combat.enums.ActionResultType;
 import model.combat.enums.CombatStatus;
-import model.combat.enums.TargetType;
 import model.combat.interfaces.Action;
 import model.combat.interfaces.ActionActor;
 import model.combat.interfaces.ActionResult;
 import model.combat.interfaces.AutomaticActionActor;
 import model.combat.interfaces.CombatInstance;
 import model.combat.interfaces.CombatLogic;
-import model.combat.interfaces.Combatant;
 
 public class DefaultCombatLogic implements CombatLogic {
 
@@ -56,7 +53,7 @@ public class DefaultCombatLogic implements CombatLogic {
         final ActionResult result = new ActionResultImpl(sourceAction);
         final List<ActionActor> targets = sourceAction.getTargets(); 
         for (final ActionActor target : targets) {
-            if (isTargetHit(sourceAction, target)) {
+            if (sourceAction.isTargetHit(target)) {
 
                 //nel caso venga applicato un modificatore già presente da un'azione, resettare il modificatore, no stacking per ora
                 //questo va nella logica degli effetti però
@@ -64,16 +61,16 @@ public class DefaultCombatLogic implements CombatLogic {
                 //Parry attivabile anche se avversario colpisce? (Per ora no)
                 //Se bersaglio in parry viene colpito, questo mantiene il parry? (Per ora sì)
                 sourceAction.applyEffects(target);
-                //CONTROLLA CHE IL BERSAGLIO SIA KO: NEL CASO, SE PRESENTE, RIMUOVILO DALLA QUEUE
+                //CONTROLLA CHE IL BERSAGLIO SIA KO: NEL CASO, SE PRESENTE, RIMUOVILO DALLA QUEUE -> controllo effettuato in precedenza con canAct
 
                 result.addResult(target, ActionResultType.HIT);
 
-            } else if (hasTargetParried(source, target)) { //in caso di parry si deve interrompere l'attacco? (al momento sì)
+            } else if (/*source.action.isBlockable && */hasTargetParried(source, target)) { //in caso di parry si deve interrompere l'attacco? (al momento sì)
                 actorsQueue.remove(target);
-                if (combatInstance.getNPCsParty().contains(target)) { //Controlla se confronto fra class funziona comunque: sarebbe meglio
+                combatInstance.setCombatStatus(CombatStatus.ROUND_PAUSED);
+                if (combatInstance.getNPCsParty().contains(target)) { //Maybe check if target is Automatic AND his behavior is active
                     setNextAIMove((AutomaticActionActor) target);
-                } else {
-                    combatInstance.setCombatStatus(CombatStatus.ROUND_PAUSED);
+                    combatInstance.setCombatStatus(CombatStatus.ROUND_IN_PROGRESS);
                 }
                 result.addResult(target, ActionResultType.PARRIED);
 
@@ -84,6 +81,17 @@ public class DefaultCombatLogic implements CombatLogic {
         actorsQueue.remove(0);
         checkCombatStatus();
         return result;
+    }
+
+    private boolean hasTargetParried(final ActionActor source, final ActionActor target) {
+        //INSTEAD OF INSTANCEOF, YOU CAN USE TAGS NOW!
+        final Action targetAction = target.getAction().get();
+        //se target è nella queue vuol dire che non ha ancora attivato il parry: ritorna false
+        if (!actorsQueue.contains(target) && targetAction instanceof AbstractParryAction) {    //NOTA: alternativamente, posso aggiungere metodo getType() in Action, che restituisca che genere di Action è
+             return targetAction.isTargetHit(source);
+        } else {
+            return false;
+        }
     }
 
     private void checkCombatStatus() {
@@ -104,44 +112,10 @@ public class DefaultCombatLogic implements CombatLogic {
 
     }
 
-    private boolean hasTargetParried(final ActionActor source, final ActionActor target) {
-        final Action targetAction = target.getAction().get();
-        //se target è nella queue vuol dire che non ha ancora attivato il parry: ritorna false
-        if (!actorsQueue.contains(target) && targetAction instanceof AbstractParryAction) {    //NOTA: alternativamente, posso aggiungere metodo getType() in Action, che restituisca che genere di Action è
-             return isTargetHit(targetAction, source);  //Nota: se parry bersaglia se stesso, questa funzione resutuirà sempre true: parry automatico oppure librera utils diceRoller perchè mi sono rotto le balls di aggiungere random a caso
-        } else {
-            return false;
-        }
-    }
-
     /*public void applyNextModifier() { //Da fare a fine turno, dopo aver eseguito tutte le azioni
      * //combatant.getModifiers, effect.updateEffect(combatant) -> 
      * effect.apply -> combatLogger.addStringLog (questo comporta anche lo scalare il suo turno di vita)
     }*/
-
-    private boolean isTargetHit(final Action action, final ActionActor target) { 
-        final Random dice = new Random(); //classe utils.DiceRoller potrebbe essere comoda?
-        double sourceModifier, actionModifier, targetModifier, sourceEffectsModifiers, targetEffectsModifier;
-
-        actionModifier = action.getHitChanceModifier();
-
-        if (action.getTargetType() != TargetType.ALLY && action.getTargetType() != TargetType.SELF 
-                && getValidTargets(action).contains(target)) { 
-            /*
-             * sourceChance = currentActor.getPriority() (e getPriority richiamerà getCurrentReflexes a sto punto)
-             * modificare poi baseChance in modo da decidersi
-             */
-            //if target.getClass() == ActionActor.class -> targetModifier = target.getReflexes etc...
-            //if (target.getAction() instanceof AbstractDefensiveAction) {
-                    //defenceModifier = target.getAction().getModifier()
-            //}
-            //successThreshold = tutti i modificatori sopra combinati in qualche modo (addizione probs)
-            final double successThreshold = actionModifier;
-            return dice.nextDouble() < successThreshold;
-        } else {
-            return true;
-        }
-    }
 
     @Override
     public void resetCombat() {
@@ -162,11 +136,10 @@ public class DefaultCombatLogic implements CombatLogic {
     public void prepareNextRound() {
         combatInstance.increaseRoundNumber();
         setNextAIMoves();
-        final List<ActionActor> sortedActors = combatInstance.getAllParties();
-        sortedActors.sort(orderingStrategy);
+        final List<ActionActor> sortedActors = getOrderedActorsList();
         final int size = sortedActors.size();
-        IntStream.rangeClosed(1, size)
-                .forEach(i -> sortedActors.get(i).setPlaceInRound(i));
+        IntStream.range(0, size)
+                .forEach(i -> sortedActors.get(i).setPlaceInRound(i + 1));
     }
 
     private void setNextAIMoves() {
@@ -180,8 +153,9 @@ public class DefaultCombatLogic implements CombatLogic {
     }
 
     private void setNextAIMove(final AutomaticActionActor actor) {
-        actor.setNextAction();
-        final List<ActionActor> availableTargets = getValidTargets(actor.getAction().get());
+        //actor.selectNextAction(combatInstance) -> qua dentro l'attore richiama i metodi della sua strategia
+        actor.setNextAction(combatInstance.getCopy());
+        final List<ActionActor> availableTargets = actor.getAction().get().getValidTargets(combatInstance.getCopy());
         actor.setNextTarget(availableTargets);
         addActorToQueue(actor);
     }
@@ -193,7 +167,7 @@ public class DefaultCombatLogic implements CombatLogic {
     }
 
     @Override
-    public CombatStatus getCombatStatus() {  ///GET ROUND RESULT FORSE VA MEGLIO
+    public CombatStatus getCombatStatus() {
         return combatInstance.getCombatStatus();
     }
 
@@ -204,30 +178,10 @@ public class DefaultCombatLogic implements CombatLogic {
     }
 
     @Override
-    public List<ActionActor> getValidTargets(final Action action) {
-        if (!action.getSource().isPresent()) {
-            return Collections.emptyList();
-        }
-        final ActionActor source = action.getSource().get();
-        switch (action.getTargetType()) {
-        case ALLY:
-            return combatInstance.getNPCsParty().contains(source) ? combatInstance.getPlayerParty() 
-                    : combatInstance.getNPCsParty();
-        case EVERYONE:
-            return combatInstance.getAllParties();
-        case FOE:
-            return combatInstance.getPlayerParty().contains(source) ? combatInstance.getNPCsParty() 
-                    : combatInstance.getPlayerParty();
-        case SELF:
-            return Collections.singletonList((Combatant) source);
-        default:
-            throw new IllegalStateException("Target type of the action was not found");
-        }
-    }
-
-    @Override
     public List<ActionActor> getOrderedActorsList() {
-        return Collections.unmodifiableList(actorsQueue);
+        final List<ActionActor> result = combatInstance.getAllParties();
+        result.sort(orderingStrategy);
+        return result;
     }
 
 }
