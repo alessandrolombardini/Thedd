@@ -7,7 +7,6 @@ import java.util.Set;
 import model.combat.enums.RandomActionPrority;
 import model.combat.interfaces.Action;
 import model.combat.interfaces.ActionActor;
-import model.combat.interfaces.CombatInstance;
 import utils.RandomCollection;
 import utils.RandomSet;
 import utils.RandomSetImpl;
@@ -16,7 +15,6 @@ public abstract class AbstractActionActor implements ActionActor {
 
     private final String name;
     private Optional<Action> currentAction;
-    private CombatInstance combatInstance;
     private final RandomSet<Action> availableActions = new RandomSetImpl<>();
     private int roundPlace;
     private boolean inCombat;
@@ -49,11 +47,6 @@ public abstract class AbstractActionActor implements ActionActor {
     public abstract int getPriority();
 
     @Override
-    public void setCombatInstance(final CombatInstance instance) {
-        this.combatInstance = instance;
-    } 
-
-    @Override
     public void setAvailableActions(final Set<? extends Action> actions) {
         actions.forEach(a -> addAction(a));
     }
@@ -61,10 +54,6 @@ public abstract class AbstractActionActor implements ActionActor {
     @Override
     public Set<? extends Action> getAvailableActions() {
         return availableActions.getSet();
-    }
-
-    protected CombatInstance getCombatInstance() {
-        return combatInstance;
     }
 
     @Override

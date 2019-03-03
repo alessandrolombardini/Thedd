@@ -16,12 +16,6 @@ public interface ActionActor {
     String getName();
 
     /**
-     * Sets the combat instance of the Actor.
-     * @param instance the combatInstance
-     */
-    void setCombatInstance(CombatInstance instance); //arguably better placed inside AutomaticActionAcotor only
-
-    /**
      * Returns the action that the actor is going to execute.
      * @return the current action, Optional.empty() if no action is present
      */
