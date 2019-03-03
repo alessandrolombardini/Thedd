@@ -5,11 +5,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Random;
 
 import model.combat.enums.TargetType;
 import model.combat.interfaces.Action;
 import model.combat.interfaces.ActionActor;
 import model.combat.interfaces.ActionEffect;
+import model.combat.interfaces.CombatInstance;
+import model.combat.interfaces.Combatant;
 
 
 public class ActionImpl implements Action {
@@ -22,21 +25,21 @@ public class ActionImpl implements Action {
     //gettype
     //manaRequirement? oppure un generico getRequirements?
 
-    protected ActionImpl(final String name, final double baseHitChance, final TargetType targetType) {
+    public ActionImpl(final String name, final double baseHitChance, final TargetType targetType) {
         this(null, name, Collections.<ActionEffect>emptyList(), baseHitChance, targetType);
     } 
 
-    protected ActionImpl(final ActionActor source, final String name, final double baseHitChance, final TargetType targetType) {
+    public ActionImpl(final ActionActor source, final String name, final double baseHitChance, final TargetType targetType) {
         this(source, name, Collections.<ActionEffect>emptyList(), baseHitChance, targetType);
     }
 
-    protected ActionImpl(final ActionActor source, final String name, final List<ActionEffect> effects, final double baseHitChance, final TargetType targetType) {
+    public ActionImpl(final ActionActor source, final String name, final List<ActionEffect> effects, final double baseHitChance, final TargetType targetType) {
         this.source = Optional.ofNullable(source);
         this.name = name;
         this.baseHitChance = baseHitChance;
         this.targetType = targetType;
         for (final ActionEffect effect : effects) {
-            effect.updateEffectBySource(source);
+            this.source.ifPresent(effect::updateEffectBySource);
             this.effects.add(effect);
         }
     }
@@ -45,9 +48,6 @@ public class ActionImpl implements Action {
     public void setTargets(final ActionActor target, final List<ActionActor> targetedParty) {
         targets.clear();
         targets.add(Objects.requireNonNull(target));
-        for (final ActionEffect effect : effects) {
-            effect.updateEffectByTarget(target);
-        }
     }
 
     @Override
@@ -143,5 +143,55 @@ public class ActionImpl implements Action {
     public void removeEffect(final ActionEffect effect) {
         effects.remove(effect);
     }
+
+    @Override
+    public List<ActionActor> getValidTargets(final CombatInstance combatInstance) {
+        //Da astrarre
+        if (getSource().isPresent()) {
+            return Collections.emptyList();
+        }
+        final ActionActor source = getSource().get();
+        switch (getTargetType()) {
+        case ALLY:
+            return combatInstance.getNPCsParty().contains(source) ? combatInstance.getPlayerParty() 
+                    : combatInstance.getNPCsParty();
+        case EVERYONE:
+            return combatInstance.getAllParties();
+        case FOE:
+            return combatInstance.getPlayerParty().contains(source) ? combatInstance.getNPCsParty() 
+                    : combatInstance.getPlayerParty();
+        case SELF:
+            return Collections.singletonList((Combatant) source);
+        default:
+            throw new IllegalStateException("Target type of the action was not found");
+        }
+    }
+
+    @Override
+    public boolean isTargetHit(final ActionActor target) {
+
+        //DA ASTRARRE
+        final Random dice = new Random(); //classe utils.DiceRoller potrebbe essere comoda?
+        double sourceModifier, actionModifier, targetModifier, sourceStatusesModifiers, targetStatusesModifier;
+
+        actionModifier = getHitChanceModifier();
+
+        if (getTargetType() != TargetType.ALLY && getTargetType() != TargetType.SELF) { 
+            /*
+             * sourceChance = currentActor.getPriority() (e getPriority richiamerà getCurrentReflexes a sto punto)
+             * modificare poi baseChance in modo da decidersi
+             */
+            //if target.getClass() == ActionActor.class -> targetModifier = target.getReflexes etc...
+            //if (target.getAction() instanceof AbstractDefensiveAction) {
+                    //defenceModifier = target.getAction().getModifier()
+            //}
+            //successThreshold = tutti i modificatori sopra combinati in qualche modo (addizione probs)
+            final double successThreshold = actionModifier;
+            return dice.nextDouble() < successThreshold;
+        } else {
+            return true;
+        }
+    }
+
 
 }
