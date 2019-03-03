@@ -60,13 +60,6 @@ public interface CombatLogic {
     boolean isRoundReady();
 
     /**
-     * Returns the list of valid targets for the action provided.
-     * @param action the selected action
-     * @return the list of valid targets for the action
-     */
-    List<ActionActor> getValidTargets(Action action);
-
-    /**
      * Returns the list of the actors involved in the combat, ordered by actors' initiative.
      * @return the ordered list of actors
      */

@@ -102,4 +102,18 @@ public interface Action {
      */
     void setTargetType(TargetType targetType);
 
+    /**
+     * Gets whether or not the target of the action is hit.
+     * @param target the target of the action
+     * @return true if the target is hit, false otherwise.
+     */
+    boolean isTargetHit(ActionActor target);
+
+    /**
+     * Returns the list of valid targets for this action.
+     * @param combatInstance the combat instance in which this action is executed
+     * @return a collection of valid targets
+     */
+    List<ActionActor> getValidTargets(CombatInstance combatInstance);
+
 }
