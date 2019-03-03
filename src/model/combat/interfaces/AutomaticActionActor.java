@@ -9,11 +9,14 @@ import utils.RandomCollection;
  * An actor capable of autonomously selecting an action and a target. 
  */
 public interface AutomaticActionActor extends ActionActor {
+    
+    //Add method setBehavior
+    //Add method isBehaviorActive
  
     /**
      * Makes the actor select a new Action between the ones he possesses.
      */
-    void setNextAction();
+    void setNextAction(CombatInstance instance);
 
     /**
      * Makes the actor select a target between the ones provided in a list. 

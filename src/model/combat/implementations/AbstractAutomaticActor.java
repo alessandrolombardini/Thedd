@@ -7,6 +7,7 @@ import model.combat.enums.RandomActionPrority;
 import model.combat.interfaces.Action;
 import model.combat.interfaces.ActionActor;
 import model.combat.interfaces.AutomaticActionActor;
+import model.combat.interfaces.CombatInstance;
 import utils.RandomCollection;
 
 public abstract class AbstractAutomaticActor extends AbstractActionActor implements AutomaticActionActor {
@@ -37,7 +38,7 @@ public abstract class AbstractAutomaticActor extends AbstractActionActor impleme
     }
 
     @Override
-    public void setNextAction() {
+    public void setNextAction(final CombatInstance combatInstance3) {
         setAction(getWeightedActions().getNext());
     }
 
