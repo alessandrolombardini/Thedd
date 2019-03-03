@@ -68,5 +68,15 @@ public class CombatInstanceImpl implements CombatInstance {
     public List<ActionActor> getAllParties() {
         return Stream.concat(friendlies.stream(), hostiles.stream()).collect(Collectors.toList());
     }
-
+    @Override
+    public CombatInstance getCopy() {
+        final CombatInstance copy = new CombatInstanceImpl();
+        copy.addPlayerPartyMembers(getPlayerParty());
+        copy.addNPCsPartyMembers(getNPCsParty());
+        copy.setCombatStatus(getCombatStatus());
+        while (getRoundNumber() > copy.getRoundNumber()) {
+            copy.increaseRoundNumber();
+        }
+        return copy;
+    }
 }

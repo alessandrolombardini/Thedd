@@ -81,4 +81,10 @@ public interface CombatInstance {
      */
     List<ActionActor> getAllParties();
 
+    /**
+     * Returns a copy of the instance.
+     * @return a copy of the instance
+     */
+    CombatInstance getCopy();
+
 }
