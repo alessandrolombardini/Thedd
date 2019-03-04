@@ -5,16 +5,14 @@ import java.util.EnumMap;
 /**
  * Class that implements a Goblin Non-Player Character.
  */
-public final class GoblinNPC extends GenericCharacter {
+public class GoblinNPC extends GenericCharacter {
 
     // Questi valori sono messi a caso e credo non abbiano assolutamente senso.
     private static final int BASIC_PV = 50;
     private static final int BASIC_COS = 30;
     private static final int BASIC_FOR = 30;
     private static final int BASIC_RIFL = 20;
-
     private static final String NAME = "Goblin";
-
     private static final EnumMap<Statistic, StatValues> BASIC_STAT = new EnumMap<Statistic, StatValues>(
             Statistic.class);
 
@@ -27,21 +25,12 @@ public final class GoblinNPC extends GenericCharacter {
 
     /**
      * Goblin's constructor.
-     */
-    private GoblinNPC() {
-        super(NAME);
-    }
-
-    /**
-     * Goblin's static factory.
      * 
-     * @param multiplier it's the rate multiplied at the basic statistics.
-     * @return a new instance of Goblin.
+     * @param multiplier rate multiplied at the basic statistics.
      */
-    public static BasicCharacter createGoblinNPC(final int multiplier) {
-        final BasicCharacter ret = new GoblinNPC();
-        ret.setBasicStat(BASIC_STAT);
+    public GoblinNPC(final int multiplier) {
+        super(NAME);
+        this.setBasicStat(BASIC_STAT);
         // ret.addWeightedAction(new ActionImpl() , RandomActionPrority.DEFAULT);
-        return ret;
     }
 }

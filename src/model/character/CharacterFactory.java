@@ -3,44 +3,41 @@ package model.character;
 import java.util.Optional;
 
 /**
- * Interface of a character factory.
+ * Implementation of a character factory.
  */
-public interface CharacterFactory {
+public final class CharacterFactory {
+
+    private static final String DEFAULT_PC_NAME = "Player";
+
+    private CharacterFactory() {
+    }
 
     /**
-     * This method return a new PlayerCharacter.
-     * 
-     * @param type the type of the character.
-     * @param name the name of the player, the default is his type.
-     * @return a new instance of PlayerCharacter
+     * Method that create a new PlayerCharacter.
+     * @param name chosen by the player.
+     * @return a new Player Character
      */
-    Optional<BasicCharacter> createCharacter(PlayerCharacter type, Optional<String> name);
+    public BasicCharacter createPlayerCharacter(final Optional<String> name) {
+        if (name.isPresent()) {
+            return new PlayerCharacter(name.get());
+        }
+        return new PlayerCharacter(DEFAULT_PC_NAME);
+    }
 
     /**
-     * This method returns a new Headless NPC.
-     * 
-     * @param type the type of the character.
-     * @param multiplier it's the rate multiplied at the basic statistics.
-     * @return a new instance of Headless.
+     * Method that create a new Enemy-NonPlayerCharacter.
+     * @param type the type of the enemy.
+     * @param multiplier 
+     * @return a new specified Non-Player Character
      */
-    BasicCharacter createCharacter(HeadlessNPC type, Optional<Integer> multiplier);
-
-    /**
-     * This method returns a new Goblin NPC.
-     * 
-     * @param type the type of the character.
-     * @param multiplier it's the rate multiplied at the basic statistics.
-     * @return a new instance of Goblin.
-     */
-    BasicCharacter createCharacter(GoblinNPC type, Optional<Integer> multiplier);
-
-    /**
-     * This method returns a new DarkDestructor NPC.
-     * 
-     * @param type the type of the character.
-     * @param multiplier it's the rate multiplied at the basic statistics.
-     * @return a new instance of DarkDestructor.
-     */
-    Optional<BasicCharacter> createCharacter(DarkDestructorNPC type, Optional<Integer> multiplier);
-
+    public BasicCharacter createEnemy(final EnemyCharacterType type, final int multiplier) {
+        switch (type) {
+        case GOBLIN:
+            return new GoblinNPC(multiplier);
+        case HEADLESS:
+            return new HeadlessNPC(multiplier);
+        default:
+            return new DarkDestructorNPC(multiplier);
+        }
+    }
 }

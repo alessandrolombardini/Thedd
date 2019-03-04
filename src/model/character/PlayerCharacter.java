@@ -5,13 +5,13 @@ import java.util.EnumMap;
 /**
  * Class that Implements a Player Character.
  */
-public final class PlayerCharacter extends GenericCharacter {
+public class PlayerCharacter extends GenericCharacter {
+
     // Questi valori sono messi a caso e credo non abbiano assolutamente senso.
     private static final int BASIC_PV = 50;
     private static final int BASIC_COS = 30;
     private static final int BASIC_FOR = 30;
     private static final int BASIC_RIFL = 20;
-
     private static final EnumMap<Statistic, StatValues> BASIC_STAT = new EnumMap<Statistic, StatValues>(
             Statistic.class);
 
@@ -27,21 +27,9 @@ public final class PlayerCharacter extends GenericCharacter {
      * 
      * @param name the string name of the player character.
      */
-    private PlayerCharacter(final String name) {
+    public PlayerCharacter(final String name) {
         super(name);
-    }
-
-    /**
-     * PlayerCharacter's static factory.
-     * 
-     * @param name the name chosen by the player.
-     * @return a new instance of Player Character
-     */
-    public static BasicCharacter createPlayerCharacter(final String name) {
-        final BasicCharacter ret = new PlayerCharacter(name);
-        ret.setBasicStat(BASIC_STAT);
+        this.setBasicStat(BASIC_STAT);
         // ret.addWeightedAction(new ActionImpl(), RandomActionPrority.DEFAULT);
-        return ret;
     }
-
 }
