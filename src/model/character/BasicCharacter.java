@@ -19,22 +19,6 @@ public interface BasicCharacter extends AutomaticActionActor {
     void setBasicStat(EnumMap<Statistic, StatValues> basicStat);
 
     /**
-     * This method modify the actual status of the asked statistic.
-     * 
-     * @param stat  the statistic to update.
-     * @param value the value updated to the specified statistic.
-     */
-    void updateActualStat(Statistic stat, int value);
-
-    /**
-     * This method modify the max status of the asked statistic.
-     * 
-     * @param stat  the statistic to update.
-     * @param value the value updated to the specified statistic.
-     */
-    void updateMaxStat(Statistic stat, int value);
-
-    /**
      * This method allows to know if the character is alive.
      * 
      * @return true if current character is alive, otherwise false.
@@ -59,7 +43,7 @@ public interface BasicCharacter extends AutomaticActionActor {
     Inventory getInventory();
 
     /**
-     * This method equip the specified item, updating character's statistics.
+     * This method equip the specified item.
      * 
      * @param itemid the id of the item to be equipped.
      * @return true if the item is correctly equipped, otherwise false.
@@ -67,12 +51,11 @@ public interface BasicCharacter extends AutomaticActionActor {
     boolean equipItem(int itemid);
 
     /**
-     * This method remove the specified item to the equipped ones and automatically
-     * update character's statistics.
+     * This method remove the specified item to the equipped ones.
      * 
      * @param itemId the id of the item to be removed.
      */
-    void removeItem(int itemId);
+    void unequipItem(int itemId);
 
     /**
      * This method returns a list with all the equipped items.

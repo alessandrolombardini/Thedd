@@ -14,7 +14,7 @@ import model.item.Item;
 /**
  * Class that define a Generic Character.
  */
-public class GenericCharacter extends AbstractAutomaticActor implements BasicCharacter {
+public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicCharacter {
 
     private final EnumMap<Statistic, StatValues> stat;
     private final Inventory inventory;
@@ -25,7 +25,7 @@ public class GenericCharacter extends AbstractAutomaticActor implements BasicCha
      * 
      * @param name , the name of the character.
      */
-    protected GenericCharacter(final String name) {
+    protected BasicCharacterImpl(final String name) {
         super(name);
         this.stat = new EnumMap<>(Statistic.class);
         this.inventory = new InventoryImpl();
@@ -35,16 +35,6 @@ public class GenericCharacter extends AbstractAutomaticActor implements BasicCha
     @Override
     public final void setBasicStat(final EnumMap<Statistic, StatValues> basicStat) {
         this.stat.putAll(basicStat);
-    }
-
-    @Override
-    public final void updateActualStat(final Statistic stat, final int value) {
-        this.stat.get(stat).updateActual(value);
-    }
-
-    @Override
-    public final void updateMaxStat(final Statistic stat, final int value) {
-        this.stat.get(stat).updateMax(value);
     }
 
     @Override
@@ -59,19 +49,24 @@ public class GenericCharacter extends AbstractAutomaticActor implements BasicCha
 
     @Override
     public final boolean equipItem(final int itemId) {
-        final Optional<EquipableItem> it = this.inventory.getEquipableItem(itemId);
-        if (it.isPresent() && checkEquipment(it.get())) {
-            this.equipment.add(it.get());
-            this.inventory.removeItem(it.get());
+        final Optional<Item> it = this.inventory.getItem(itemId);
+        if (it.isPresent() && it.get().isEquipable()) {
+            final EquipableItem equip = (EquipableItem) it.get(); // check
+            if (checkEquipment(equip)) {
+                this.equipment.add((EquipableItem) it.get());
+                equip.onEquip(this); // check
+                this.inventory.removeItem(it.get());
+            }
             return true;
         }
         return false;
     }
 
     @Override
-    public final void removeItem(final int itemId) {
+    public final void unequipItem(final int itemId) {
         for (int i = 0; i < this.equipment.size(); i++) {
             if (this.equipment.get(i).getId() == itemId) {
+                this.equipment.get(i).onUnequip(this); // check
                 this.inventory.addItem(this.equipment.remove(i));
             }
         }
@@ -92,24 +87,20 @@ public class GenericCharacter extends AbstractAutomaticActor implements BasicCha
         return this.stat.get(Statistic.RIFL).getActual();
     }
 
-    //Returns true if this Item is equipable, else false.
+    // Returns true if this Item can be equipped, else false.
     private boolean checkEquipment(final EquipableItem item) {
         if (item.getType().isWeapon()) {
-            if (this.equipment.stream()
-                              .noneMatch(it -> it.getType() == EquipableItemType.TWO_HANDED)) {
+            if (this.equipment.stream().noneMatch(it -> it.getType() == EquipableItemType.TWO_HANDED)) {
                 final int oneHandWeapons = (int) this.equipment.stream()
-                                                               .filter(it -> it.getType() == EquipableItemType.ONE_HANDED)
-                                                               .count();
+                        .filter(it -> it.getType() == EquipableItemType.ONE_HANDED).count();
                 return (oneHandWeapons == 0 || (oneHandWeapons == 1 && item.getType() == EquipableItemType.ONE_HANDED));
-            } 
+            }
             return false;
         } else if (item.getType() == EquipableItemType.RING) {
-            return ((int) this.equipment.stream()
-                                    .filter(it -> it.getType() == EquipableItemType.RING)
-                                    .count() < EquipableItemType.getMaxNumOfRings());
+            return ((int) this.equipment.stream().filter(it -> it.getType() == EquipableItemType.RING)
+                    .count() < EquipableItemType.getMaxNumOfRings());
         } else {
-            return this.equipment.stream()
-                                 .noneMatch(it -> it.getType() == item.getType());
+            return this.equipment.stream().noneMatch(it -> it.getType() == item.getType());
         }
     }
 

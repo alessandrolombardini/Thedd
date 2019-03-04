@@ -5,7 +5,7 @@ import java.util.EnumMap;
 /**
  * Class that Implements a Player Character.
  */
-public class PlayerCharacter extends GenericCharacter {
+public class PlayerCharacter extends BasicCharacterImpl {
 
     // Questi valori sono messi a caso e credo non abbiano assolutamente senso.
     private static final int BASIC_PV = 50;

@@ -5,7 +5,7 @@ import java.util.EnumMap;
 /**
  * Class that implements a DarkDestructor Non-Player Character.
  */
-public class DarkDestructorNPC extends GenericCharacter {
+public class DarkDestructorNPC extends BasicCharacterImpl {
 
     // Questi valori sono messi a caso e credo non abbiano assolutamente senso.
     private static final int BASIC_PV = 50;
