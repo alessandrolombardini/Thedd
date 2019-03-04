@@ -13,15 +13,8 @@ public class GoblinNPC extends GenericCharacter {
     private static final int BASIC_FOR = 30;
     private static final int BASIC_RIFL = 20;
     private static final String NAME = "Goblin";
-    private static final EnumMap<Statistic, StatValues> BASIC_STAT = new EnumMap<Statistic, StatValues>(
-            Statistic.class);
-
-    static {
-        BASIC_STAT.put(Statistic.PV, new StatValuesImpl(BASIC_PV));
-        BASIC_STAT.put(Statistic.COS, new StatValuesImpl(BASIC_COS));
-        BASIC_STAT.put(Statistic.FOR, new StatValuesImpl(BASIC_FOR));
-        BASIC_STAT.put(Statistic.RIFL, new StatValuesImpl(BASIC_RIFL));
-    }
+    private static final int DEFAULT_MULTIPLIER = 1;
+    private final EnumMap<Statistic, StatValues> basicStat = new EnumMap<Statistic, StatValues>(Statistic.class);
 
     /**
      * Goblin's constructor.
@@ -30,7 +23,19 @@ public class GoblinNPC extends GenericCharacter {
      */
     public GoblinNPC(final int multiplier) {
         super(NAME);
-        this.setBasicStat(BASIC_STAT);
-        // ret.addWeightedAction(new ActionImpl() , RandomActionPrority.DEFAULT);
+        if (multiplier > 0) {
+            initStat(multiplier);
+        } else {
+            initStat(DEFAULT_MULTIPLIER);
+        }
+        this.setBasicStat(basicStat);
+        // this.addWeightedAction(new ActionImpl() , RandomActionPrority.DEFAULT);
+    }
+
+    private void initStat(final int multiplier) {
+        basicStat.put(Statistic.PV, new StatValuesImpl(BASIC_PV * multiplier));
+        basicStat.put(Statistic.COS, new StatValuesImpl(BASIC_COS * multiplier));
+        basicStat.put(Statistic.FOR, new StatValuesImpl(BASIC_FOR * multiplier));
+        basicStat.put(Statistic.RIFL, new StatValuesImpl(BASIC_RIFL * multiplier));
     }
 }

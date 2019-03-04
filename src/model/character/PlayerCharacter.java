@@ -12,15 +12,7 @@ public class PlayerCharacter extends GenericCharacter {
     private static final int BASIC_COS = 30;
     private static final int BASIC_FOR = 30;
     private static final int BASIC_RIFL = 20;
-    private static final EnumMap<Statistic, StatValues> BASIC_STAT = new EnumMap<Statistic, StatValues>(
-            Statistic.class);
-
-    static {
-        BASIC_STAT.put(Statistic.PV, new StatValuesImpl(BASIC_PV));
-        BASIC_STAT.put(Statistic.COS, new StatValuesImpl(BASIC_COS));
-        BASIC_STAT.put(Statistic.FOR, new StatValuesImpl(BASIC_FOR));
-        BASIC_STAT.put(Statistic.RIFL, new StatValuesImpl(BASIC_RIFL));
-    }
+    private final EnumMap<Statistic, StatValues> basicStat = new EnumMap<Statistic, StatValues>(Statistic.class);
 
     /**
      * PlayerCharacter's constructor.
@@ -29,7 +21,15 @@ public class PlayerCharacter extends GenericCharacter {
      */
     public PlayerCharacter(final String name) {
         super(name);
-        this.setBasicStat(BASIC_STAT);
+        initStat();
+        this.setBasicStat(basicStat);
         // ret.addWeightedAction(new ActionImpl(), RandomActionPrority.DEFAULT);
+    }
+
+    private void initStat() {
+        basicStat.put(Statistic.PV, new StatValuesImpl(BASIC_PV));
+        basicStat.put(Statistic.COS, new StatValuesImpl(BASIC_COS));
+        basicStat.put(Statistic.FOR, new StatValuesImpl(BASIC_FOR));
+        basicStat.put(Statistic.RIFL, new StatValuesImpl(BASIC_RIFL));
     }
 }
