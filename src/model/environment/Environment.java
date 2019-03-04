@@ -10,6 +10,7 @@ public interface Environment {
      * This method allows to set the next floor.
      * 
      * @param floor Next floor
+     * @throws NullPointerExeption if floor is null
      */
     void setNextFloor(Floor floor);
 
