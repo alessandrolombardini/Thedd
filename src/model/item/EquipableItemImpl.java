@@ -1,11 +1,11 @@
 package model.item;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import model.character.Statistic;
+import model.combat.interfaces.ActionActor;
+import model.combat.interfaces.ActionEffect;
 
 /**
  * Implementation of {@link model.item.EquipableItem}.
@@ -28,14 +28,9 @@ public class EquipableItemImpl extends AbstractItem implements EquipableItem {
      * @param description
      *          description of the Item
      */
-    public EquipableItemImpl(final int id, final String name, final EquipableItemType t, final Map<Statistic, Integer> effects, final String description) {
+    public EquipableItemImpl(final int id, final String name, final EquipableItemType t, final List<ActionEffect> effects, final String description) {
         super(id, name, effects, description);
         this.type = Objects.requireNonNull(t);
-    }
-
-    @Override
-    public final Map<Statistic, Integer> getModifiers() {
-        return new HashMap<>(this.getEffects());
     }
 
     @Override
@@ -50,7 +45,17 @@ public class EquipableItemImpl extends AbstractItem implements EquipableItem {
 
     @Override
     public final String toString() {
-        return this.getName() + "(" + this.type + ")" + ": " + this.getEffects().entrySet().stream().map(e -> e.getKey() + " -> " + e.getValue()).collect(Collectors.joining(", ", "[", "]")) + " | " + this.getDescription();
+        return this.getName() + "(" + this.type + ")" + ": " + this.getEffects().stream().map(e -> e.getLogMessage()).collect(Collectors.joining(", ", "[", "]")) + " | " + this.getDescription();
+    }
+
+    @Override
+    public void onEquip(final ActionActor equipper) {
+        this.getEffects().forEach(e -> e.apply(equipper));
+    }
+
+    @Override
+    public void onUnequip(final ActionActor equipper) {
+        this.getEffects().stream().filter(e -> e instanceof StatisticBonusEffect).forEach(e -> ((StatisticBonusEffect)e).removeBonus());
     }
 
 }

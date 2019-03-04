@@ -1,9 +1,10 @@
 package model.item;
 
-import java.util.Map;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
-import model.character.Statistic;
+import model.combat.interfaces.ActionEffect;
 
 /**
  * Abstract class that defines the methods which tell whether a item is of a
@@ -14,7 +15,11 @@ public abstract class AbstractItem implements Item {
 
     private final int id;
     private final String name;
-    private final Map<Statistic, Integer> effects;
+    //status da applicare al pesonaggio
+    private final List<ActionEffect> effects;
+
+    //azioni da aggiungere alla lista di azioni di un personaggio
+    //private final List<Action> additionalAction;
     private final String description;
 
     /**
@@ -28,7 +33,7 @@ public abstract class AbstractItem implements Item {
      * @param description
      *          description of the Item
      */
-    public AbstractItem(final int id, final String name, final Map<Statistic, Integer> effects, final String description) {
+    public AbstractItem(final int id, final String name, final List<ActionEffect> effects, final String description) {
         this.id = id;
         this.name = Objects.requireNonNull(name);
         this.effects = Objects.requireNonNull(effects);
@@ -63,8 +68,16 @@ public abstract class AbstractItem implements Item {
      * @return
      *          the map of the effects of the item
      */
-    protected final Map<Statistic, Integer> getEffects() {
-        return effects;
+    protected final List<ActionEffect> getEffects() {
+        return Collections.unmodifiableList(effects);
+    }
+
+    /**
+     * @param newEffect
+     *  the effect to be added to the list of effect of the item.
+     */
+    protected final void addActionEffect(final ActionEffect newEffect) {
+        this.effects.add(newEffect);
     }
 
     @Override
