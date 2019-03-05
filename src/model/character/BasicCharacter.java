@@ -63,4 +63,9 @@ public interface BasicCharacter extends AutomaticActionActor {
      * @return a list of items
      */
     List<? extends Item> getEquippedItems();
+
+    /**
+     * Log of the Character.
+     */
+    void log();
 }

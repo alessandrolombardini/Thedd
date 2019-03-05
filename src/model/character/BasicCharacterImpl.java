@@ -19,6 +19,7 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
     private final EnumMap<Statistic, StatValues> stat;
     private final Inventory inventory;
     private final List<EquipableItem> equipment;
+    private static final boolean LOG = true;
 
     /**
      * GenericCharacter's constructor.
@@ -51,10 +52,10 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
     public final boolean equipItem(final int itemId) {
         final Optional<Item> it = this.inventory.getItem(itemId);
         if (it.isPresent() && it.get().isEquipable()) {
-            final EquipableItem equip = (EquipableItem) it.get(); // check
+            final EquipableItem equip = (EquipableItem) it.get();
             if (checkEquipment(equip)) {
                 this.equipment.add((EquipableItem) it.get());
-                equip.onEquip(this); // check
+                equip.onEquip(this);
                 this.inventory.removeItem(it.get());
             }
             return true;
@@ -66,7 +67,7 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
     public final void unequipItem(final int itemId) {
         for (int i = 0; i < this.equipment.size(); i++) {
             if (this.equipment.get(i).getId() == itemId) {
-                this.equipment.get(i).onUnequip(this); // check
+                this.equipment.get(i).onUnequip(this);
                 this.inventory.addItem(this.equipment.remove(i));
             }
         }
@@ -104,4 +105,15 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
         }
     }
 
+    @Override
+    public final void log() {
+        if (LOG) {
+            System.out.println("----------");
+            System.out.println("Name: " + this.getName());
+            System.out.println("Stat: " + this.stat);
+            System.out.println("Equipment: " + this.equipment);
+            System.out.println("Inventory: " + this.inventory.toString());
+            System.out.println("----------");
+        }
+    }
 }
