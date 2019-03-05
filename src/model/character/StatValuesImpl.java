@@ -45,4 +45,9 @@ public class StatValuesImpl implements StatValues {
     public final int getMax() {
         return this.max;
     }
+
+    @Override
+    public final String toString() {
+        return this.actual + "/" + this.max;
+    }
 }

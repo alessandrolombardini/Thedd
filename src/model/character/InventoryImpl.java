@@ -51,4 +51,16 @@ public class InventoryImpl implements Inventory {
         return this.items.entrySet().stream().filter(en -> en.getKey().getId() == id).map(en -> en.getKey())
                 .findFirst();
     }
+
+    @Override
+    public final String toString() {
+        String ret = "";
+
+        for (Map.Entry<Item, Integer> pair : this.items.entrySet()) {
+            ret = ret + "[ Item: " + pair.getKey().toString() + "\nNumber: " + pair.getValue() + "]\n";
+        }
+
+        return ret;
+//        return this.items.toString();
+    }
 }
