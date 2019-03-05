@@ -17,7 +17,7 @@ public final class CharacterFactory {
      * @param name chosen by the player.
      * @return a new Player Character
      */
-    public BasicCharacter createPlayerCharacter(final Optional<String> name) {
+    public static BasicCharacter createPlayerCharacter(final Optional<String> name) {
         if (name.isPresent()) {
             return new PlayerCharacter(name.get());
         }
@@ -30,7 +30,7 @@ public final class CharacterFactory {
      * @param multiplier 
      * @return a new specified Non-Player Character
      */
-    public BasicCharacter createEnemy(final EnemyCharacterType type, final int multiplier) {
+    public static BasicCharacter createEnemy(final EnemyCharacterType type, final int multiplier) {
         switch (type) {
         case GOBLIN:
             return new GoblinNPC(multiplier);
