@@ -22,5 +22,8 @@ public final class Stairs extends AbstractRoomEvent implements RoomEvent {
         return false;
     }
     
-    
+    @Override
+    public boolean isSkippable() {
+        return false;
+    }
 }
