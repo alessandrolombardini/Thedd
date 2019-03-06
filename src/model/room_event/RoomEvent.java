@@ -17,6 +17,15 @@ public interface RoomEvent {
      */
     String getName();
     
+    /**
+     * 
+     * @return whether the RoomEvent is completed
+     */
     boolean isCompleted();
     
+    /**
+     * 
+     * @return whether the RoomEvent is not mandatory
+     */
+    boolean isSkippable();
 }
