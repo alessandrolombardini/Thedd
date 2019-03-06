@@ -77,5 +77,10 @@ public abstract class ContraptionImpl extends AbstractActionActor implements Con
         }
         return this.getType() == other.getType();
     }
+    
+    @Override
+    public boolean isSkippable() {
+        return true;
+    }
 
 }
