@@ -19,7 +19,6 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
     private final EnumMap<Statistic, StatValues> stat;
     private final Inventory inventory;
     private final List<EquipableItem> equipment;
-    private static final boolean LOG = true;
 
     /**
      * GenericCharacter's constructor.
@@ -106,14 +105,8 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
     }
 
     @Override
-    public final void log() {
-        if (LOG) {
-            System.out.println("----------");
-            System.out.println("Name: " + this.getName());
-            System.out.println("Stat: " + this.stat);
-            System.out.println("Equipment: " + this.equipment);
-            System.out.println("Inventory: " + this.inventory.toString());
-            System.out.println("----------");
-        }
+    public final String getLog() {
+        return "Name: " + this.getName() + " - Stat: " + this.stat + "\nEquipment: " + this.equipment + " - Inventory: "
+                + this.inventory.toString();
     }
 }

@@ -57,10 +57,13 @@ public class InventoryImpl implements Inventory {
         String ret = "";
 
         for (Map.Entry<Item, Integer> pair : this.items.entrySet()) {
-            ret = ret + "[ Item: " + pair.getKey().toString() + "\nNumber: " + pair.getValue() + "]\n";
+            ret = ret + "[ Item: " + pair.getKey().toString() + " - Number: " + pair.getValue() + "]\n";
+        }
+
+        if (ret.equals("")) {
+            ret = "Empty\n";
         }
 
         return ret;
-//        return this.items.toString();
     }
 }

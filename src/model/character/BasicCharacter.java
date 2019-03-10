@@ -65,7 +65,9 @@ public interface BasicCharacter extends AutomaticActionActor {
     List<? extends Item> getEquippedItems();
 
     /**
-     * Log of the Character.
+     * String representation of the Character.
+     * 
+     * @return the String that describes the character.
      */
-    void log();
+    String getLog();
 }
