@@ -6,7 +6,7 @@ import model.combat.interfaces.HostileEncounter;
  *  Combat event. One should complete successfully this event before proceeding. 
  *
  */
-public interface Combat extends RoomEvent {
+public interface CombatEvent extends RoomEvent {
 
     /**
      * 
