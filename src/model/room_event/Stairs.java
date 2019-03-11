@@ -2,26 +2,20 @@ package model.room_event;
 
 /**
  * Implementation of Stairs type of {@link model.room_event.RoomEvent}.
+ * It is mandatory as they are always placed at the end of the floor.
  *
  */
-public final class Stairs extends AbstractRoomEvent implements RoomEvent {
+public final class Stairs extends AbstractFloorChangerEvent implements RoomEvent {
 
     private static final String NAME = "Stairs";
 
+    /**
+     * One can always use the Stairs.
+     */
     public Stairs() {
-        super(NAME);
-    }
-    
-    @Override
-    public RoomEventType getType() {
-        return RoomEventType.STAIRS;
+        super(NAME, () -> true);
     }
 
-    @Override
-    public boolean isCompleted() {
-        return false;
-    }
-    
     @Override
     public boolean isSkippable() {
         return false;
