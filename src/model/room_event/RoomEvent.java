@@ -5,6 +5,7 @@ package model.room_event;
  *
  */
 public interface RoomEvent {
+
     /**
      * 
      * @return the type of an event inside the room
@@ -16,13 +17,13 @@ public interface RoomEvent {
      *  the name of the contraption
      */
     String getName();
-    
+
     /**
      * 
      * @return whether the RoomEvent is completed
      */
     boolean isCompleted();
-    
+
     /**
      * 
      * @return whether the RoomEvent is not mandatory

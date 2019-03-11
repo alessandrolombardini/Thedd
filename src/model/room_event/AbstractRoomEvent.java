@@ -3,7 +3,8 @@ package model.room_event;
 import java.util.Objects;
 
 /**
- * 
+ * Abstract implementation of {@link.room_event.RoomEvent}.
+ * Each specialization has to specify what type it is, whether it can be completed and whether it is mandatory.
  *
  */
 public abstract class AbstractRoomEvent implements RoomEvent {
@@ -28,7 +29,13 @@ public abstract class AbstractRoomEvent implements RoomEvent {
     }
 
     @Override
-    public int hashCode() {
+    public abstract boolean isCompleted();
+
+    @Override
+    public abstract boolean isSkippable();
+
+    @Override
+    public final int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((name == null) ? 0 : name.hashCode());
@@ -37,7 +44,7 @@ public abstract class AbstractRoomEvent implements RoomEvent {
     }
 
     @Override
-    public boolean equals(final Object obj) {
+    public final boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
@@ -57,7 +64,4 @@ public abstract class AbstractRoomEvent implements RoomEvent {
         }
         return this.getType() == other.getType();
     }
-
-    
-    
 }
