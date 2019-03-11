@@ -9,33 +9,33 @@ import java.util.function.Supplier;
  * Class to create RoomEvents on demand.
  *
  */
-public class RoomEvents {
+public final class RoomEvents {
 
     private static final List<Supplier<Contraption>> CONTRAPTION_DATABASE = new ArrayList<>();
     private static final Random RNG = new Random();
-    
+
     static {
         CONTRAPTION_DATABASE.add(ContraptionTrap::newInstance);
         CONTRAPTION_DATABASE.add(ContraptionSanctuary::newInstance);
     }
-    
+
     private RoomEvents() {
     }
-    
+
     /**
      * 
      * @return
      *  an instance of {@link model.room_event.Stairs}.
      */
-    public static final RoomEvent getStairs() {
+    public static RoomEvent getStairs() {
         return new Stairs();
     }
     /**
      * 
      * @return
-     *  an instance of {@link model.room_event.Combat}.
+     *  an instance of {@link model.room_event.CombatEvent}.
      */
-    public static final RoomEvent getCombat() {
+    public static RoomEvent getCombat() {
         return null;
     }
     /**
@@ -43,15 +43,15 @@ public class RoomEvents {
      * @return
      *  an instance of {@link model.room_event.TreasureChest}.
      */
-    public static final RoomEvent getTreasureChest() {
+    public static RoomEvent getTreasureChest() {
         return TreasureChest.newInstance();
     }
     /**
      * 
      * @return
-     *  an instance of {@link model.room_event.Contraption}.
+     *  an instance of {@link model.room_event.InteractableActionPerformer}.
      */
-    public static final RoomEvent getContraption() {
+    public static RoomEvent getContraption() {
             return CONTRAPTION_DATABASE.get(RNG.nextInt(CONTRAPTION_DATABASE.size())).get();
     }
 }
