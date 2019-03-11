@@ -7,10 +7,10 @@ import model.combat.implementations.AbstractActionActor;
 import model.combat.interfaces.Action;
 
 /**
- * 
- *
+ * Abstract implementation of {@link model.room_event.InteractableActionPerformer}.
+ * Each specialization must specify whether it is mandatory.
  */
-public abstract class ContraptionImpl extends AbstractActionActor implements Contraption {
+public abstract class AbstractInteractableActionPerformer extends AbstractActionActor implements InteractableActionPerformer {
 
     //private final Action action;
     private boolean completed;
@@ -22,7 +22,7 @@ public abstract class ContraptionImpl extends AbstractActionActor implements Con
      * @param action
      *          action performed by the contraption
      */
-    public ContraptionImpl(final String name, final Action action) {
+    public AbstractInteractableActionPerformer(final String name, final Action action) {
         super(name);
         super.setAction(Objects.requireNonNull(action));
         this.getAction().ifPresent(a -> a.setSource(this));
@@ -32,23 +32,23 @@ public abstract class ContraptionImpl extends AbstractActionActor implements Con
 
     @Override
     public final RoomEventType getType() {
-        return RoomEventType.CONTRAPTION;
+        return RoomEventType.INTERACTABLE_ACTION_PERFORMER;
     }
-    
+
     @Override
-    public boolean isCompleted() {
+    public final boolean isCompleted() {
         return completed;
     }
-    
+
     @Override
-    public void complete() {
-        if(!completed) {
+    public final void complete() {
+        if (!completed) {
             completed = !completed;
         }
     }
-    
+
     @Override
-    public int hashCode() {
+    public final int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
@@ -57,7 +57,7 @@ public abstract class ContraptionImpl extends AbstractActionActor implements Con
     }
 
     @Override
-    public boolean equals(final Object obj) {
+    public final boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
@@ -67,7 +67,7 @@ public abstract class ContraptionImpl extends AbstractActionActor implements Con
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Contraption other = (Contraption) obj;
+        final InteractableActionPerformer other = (InteractableActionPerformer) obj;
         if (getName() == null) {
             if (other.getName() != null) {
                 return false;
@@ -77,10 +77,8 @@ public abstract class ContraptionImpl extends AbstractActionActor implements Con
         }
         return this.getType() == other.getType();
     }
-    
+
     @Override
-    public boolean isSkippable() {
-        return true;
-    }
+    public abstract boolean isSkippable();
 
 }
