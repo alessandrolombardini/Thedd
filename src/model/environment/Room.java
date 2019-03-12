@@ -1,6 +1,8 @@
 package model.environment;
 
-import java.util.Set;
+import java.util.List;
+
+import model.room_event.RoomEvent;
 
 /**
  * 
@@ -21,15 +23,7 @@ public interface Room {
      * 
      * @return a set that contains all events of the current room
      */
-    Set<RoomEvent> getEvents();
+    List<RoomEvent> getEvents();
 
-    /**
-     * This method allows to remove an event by the room. It is possible if the
-     * event is completed or it isn't mandatory.
-     * 
-     * @param roomEvent that has to be removed by the room
-     * @return true if the roomEvent has been removed
-     */
-    boolean removeEvent(RoomEvent roomEvent);
 
 }

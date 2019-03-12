@@ -1,7 +1,9 @@
 package model.environment;
 
 import java.util.Collections;
-import java.util.Set;
+import java.util.List;
+
+import model.room_event.RoomEvent;
 
 /**
  * Implementation of {@link model.environment.Room}.
@@ -9,15 +11,15 @@ import java.util.Set;
  */
 public class RoomImpl implements Room {
 
-    private final Set<RoomEvent> events;
+    private final List<RoomEvent> events;
 
     /**
      * RoomImpl constructor.
      * 
      * @param events of the room
      */
-    public RoomImpl(final Set<RoomEvent> events) {
-        this.events = Collections.unmodifiableSet(events);
+    public RoomImpl(final List<RoomEvent> events) {
+        this.events = Collections.unmodifiableList(events);
     }
 
     @Override
@@ -26,17 +28,13 @@ public class RoomImpl implements Room {
          * Ritorna true solo se all'interno della stanza non sono presenti eventi
          * combattimento o altri tipi di eventi bloccanti
          */
-        return false;
+        return events.stream().anyMatch(event -> !event.isCompleted());
     }
 
     @Override
-    public final Set<RoomEvent> getEvents() {
-        return Collections.unmodifiableSet(this.events);
+    public final List<RoomEvent> getEvents() {
+        return Collections.unmodifiableList(this.events);
     }
 
-    @Override
-    public final boolean removeEvent(final RoomEvent roomEvent) {
-        return this.events.remove(roomEvent);
-    }
 
 }
