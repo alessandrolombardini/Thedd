@@ -11,17 +11,17 @@ public enum Difficulty {
     /**
      * Easy difficulty level.
      */
-    EASY(0, "EASY"),
+    EASY(1, "EASY"),
 
     /**
      * Normal difficulty level.
      */
-    NORMAL(1, "NORMAL"),
+    NORMAL(2, "NORMAL"),
 
     /**
      * Hard difficulty level.
      */
-    HARD(2, "HARD");
+    HARD(3, "HARD");
 
     private final int levelOfDifficulty;
     private final String name;
@@ -56,7 +56,7 @@ public enum Difficulty {
      * 
      * @return a random Difficulty
      */
-    public static Difficulty getRandomDifficulty() {
+    public static Difficulty getRandom() {
         final Random rand = new Random();
         final int randomValue = rand.nextInt(Difficulty.values().length);
         return Difficulty.values()[randomValue];
