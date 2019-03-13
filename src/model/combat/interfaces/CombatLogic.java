@@ -28,9 +28,7 @@ public interface CombatLogic {
      * to the targets and updates the combat status.
      * @return the Result of the action
      */
-    ActionResult executeNextAction();
-    //NOTA: Probabilmente il Controller avrà bisogno di eseguire ogni azione manualmente, perchè deve leggere
-    //il risultato dell'azione e, se opportuno, far partire le animazioni 
+    ActionResult executeNextAction(); 
 
     /**
      * Resets the combat instance.
@@ -68,6 +66,4 @@ public interface CombatLogic {
     //boolean canSelectAction(ActionActor actor) //maybe better put in Combatant/Character
 
     //void applyModifiers();
-    
-    //List getActorsQueue -> to be used by the controller to know and tell the view about order of actions
 }
