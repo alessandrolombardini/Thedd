@@ -2,21 +2,21 @@ package model.combat.interfaces;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import model.combat.enums.TargetType;
 
 /**
- * An action that can be selected and executed in and out of combat.
+ * An action that can be executed by an {@link ActionActor} in and out of combat, actively or passively.
  * <p>
  * An action has a source ActionActor that executes it and one or more target ActionActors,
  * it provides also a base bonus or malus to the hit chance.
  * <p>
- * It can store one or more ActionEffects
+ * It can store one or more {@link ActionEffect}
  * <p>
  * An action can either target the actor's enemies, allies, just itself or even everyone
  */
-public interface Action {
-    //anche metodi per rimuovere gli effetti magari
+public interface Action extends Modifiable {
 
     //public boolean checkRequirements()
     /**
@@ -31,46 +31,45 @@ public interface Action {
     void setTargets(ActionActor target, List<ActionActor> targetedParty);
 
     /**
-     * Set the source Actor of the action.
+     * Set the source {@link ActionActor} of the action.
      * @param source the Actor 
      */
-    void setSource(ActionActor source); //ActionActor può esserlo anche un interagibile
+    void setSource(ActionActor source);
 
     /**
-     * Returns the Actor that is capable of performing this action.
+     * Returns the {@link ActionActor} that is capable of performing this action.
      * @return the source Actor
      */
     Optional<ActionActor> getSource();
 
     /**
-     * Returns the effects linked to this action.
+     * Returns the {@link AtionEffect} linked to this action.
      * @return a List of the action's effects
      */
     List<ActionEffect> getEffects();
 
     /**
-     * Adds one or more to the action.
+     * Adds one or more {@link AtionEffect} to the action.
      * @param effects a list of effects
      */
     void addEffects(List<ActionEffect> effects);
 
     /**
-     * Adds one effect to the action.
+     * Adds one {@link AtionEffect} to the action.
      * @param effect the effect to be added
      */
     void addEffect(ActionEffect effect);
 
     /**
-     * Removes one effect to the action.
+     * Removes one {@link AtionEffect} to the action.
      * @param effect the targeted effect
      */
     void removeEffect(ActionEffect effect);
 
     /**
-     * Applies all of the action's effects to the target.
-     * @param target the target of the action
+     * Applies all of the action's {@link ActionEffect} to the current target.
      */
-    void applyEffects(ActionActor target);
+    void applyEffects();
 
     /**
      * Returns a literal name for the action.
@@ -104,10 +103,9 @@ public interface Action {
 
     /**
      * Gets whether or not the target of the action is hit.
-     * @param target the target of the action
      * @return true if the target is hit, false otherwise.
      */
-    boolean isTargetHit(ActionActor target);
+    boolean isTargetHit();
 
     /**
      * Returns the list of valid targets for this action.
@@ -115,5 +113,41 @@ public interface Action {
      * @return a collection of valid targets
      */
     List<ActionActor> getValidTargets(CombatInstance combatInstance);
+
+    /**
+     * Adds a {@link Tag} to the Action.
+     * @param tag the tag to be added
+     */
+    void addTag(Tag tag);
+
+    /**
+     * Adds one or more {@link Tag} to the Action.
+     * @param tags the set of tags to be added
+     */
+    void addTags(Set<Tag> tags);
+
+    /**
+     * Gets the {@link Tag} of the Action.
+     * @return the set of tags of the action
+     */
+    Set<Tag> getTags();
+
+    /**
+     * Gets the base hit chance modifier of the Action.
+     * @return the base value for the hit chance modifier
+     */
+    double getBaseHitChance();
+
+    /**
+     * Sets the next target in the targets collection as the
+     * current target for the action.
+     */
+    void selectNextTarget();
+
+    /**
+     * Gets the current target of the action.
+     * @return the current target
+     */
+    ActionActor getCurrentTarget();
 
 }
