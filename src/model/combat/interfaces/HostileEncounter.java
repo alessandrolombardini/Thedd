@@ -12,8 +12,17 @@ import java.util.List;
 public interface HostileEncounter {
 
     /**
-     * The logic of the combat that will start.
+     * Sets the combat logic of this encounter.
+     * @param combatLogic the combat logic to be used
+     */
+    void setCombatLogic(CombatLogic combatLogic);
+
+    /**
+     * Gets the logic of the combat that will start.
+     * If the logic is not set, a NoSuchElementException is thrown.
      * @return the combat logic
+     * 
+     * @throws NoSuchElementException
      */
     CombatLogic getCombatLogic();
 
@@ -27,12 +36,9 @@ public interface HostileEncounter {
      * Adds one or more actors to the party oppose to the player.
      * @param characters the actors to be added
      */
-	void addAll(List<ActionActor> characters);
-	
-	//Note: might be better to directly provide a combat instance
-	//or just the already set up Logic
-	
-	/*Note2: might be extend with additional methods: it's highly
-	  probable that the encounter will need to also provide a
-	  messageManager/Logic */
+    void addAll(List<ActionActor> characters);
+
+    /*Note: might be extend with additional methods: it's highly
+      probable that the encounter will need to also provide a
+      messageManager/Logic */
 }
