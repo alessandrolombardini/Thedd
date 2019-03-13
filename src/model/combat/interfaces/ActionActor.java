@@ -1,14 +1,17 @@
 package model.combat.interfaces;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 /**
  * 
- * An entity capable of performing Actions in and out of combat.
- *
+ * An entity capable of performing Actions in and out of combat.<br>
+ * It also holds collections of Statuses, {@link Modifier} and {@link Tag}.
+ * 
  */
 public interface ActionActor {
+
     /**
      * Returns the literal name of the actor.
      * @return the name of the actor
@@ -16,27 +19,25 @@ public interface ActionActor {
     String getName();
 
     /**
-     * Returns the action that the actor is going to execute.
+     * Returns an Optional containing the {@link Action} that the actor is going to actively execute.
      * @return the current action, Optional.empty() if no action is present
      */
     Optional<Action> getAction();
 
     /**
-     * Sets the action that the actor is going to execute.
+     * Sets the {@link Action} that the actor is going to actively execute.
      * @param action the next action of the actor
      */
     void setAction(Action action);
 
     /**
-     * Adds the specified action to the available actions of the actor.<br>
-     * If the action is already present in the actor's collections, the
-     * previous action will be overwritten with the new one.
+     * Adds the specified {@link Action} to the available set of Actions of the actor.
      * @param action the action to be added
      */
     void addAction(Action action);
 
     /**
-     * Removes, if present, the specified action from the actor's collection
+     * Removes, if present, the specified {@link Action} from the actor's collection
      * of available actions.
      * @param action the action to be removed
      * @return true if the action was removed, false otherwise.
@@ -61,17 +62,17 @@ public interface ActionActor {
     int getPriority();
 
     /**
-     * Sets what actions the actor is capable of executing.
+     * Sets what {@link Action} the actor is capable of executing.
      * <p>
      * @param actions the list of available actions
      */
     void setAvailableActions(Set<? extends Action> actions);
 
     /**
-     * Returns the list of available actions.
+     * Returns the list of available {@link Action}.
      * @return the list of actions
      */
-    Set<? extends Action> getAvailableActions();
+    //List<Action> getAvailableActions();
 
     /**
      * Sets whether or not the actor is in combat.
@@ -87,14 +88,14 @@ public interface ActionActor {
 
     /**
      * If the actor is in combat, it returns his place (starting from 1) 
-     * in the current turn queue.
-     * Otherwise, it returns 0;
+     * in the current turn queue, as set by the {@link CombatLogic}.
+     * Otherwise, it returns 0.
      * @return the index of the character in the current turn queue
      */
     int getPlaceInRound();
 
     /**
-     * If the actor is in combat, sets the value to be returned by getPlaceInRound
+     * If the actor is in combat, sets the value to be returned by {@link ActionActor.getPlaceInRound}
      * method.
      * @param place an integer greater than 0
      */
@@ -107,4 +108,67 @@ public interface ActionActor {
      */
     void resetPlaceInRound();
 
+    /**
+     * Gets the Set of {@link Tag} of the Actor.
+     * @return a Set of Tags 
+     */
+    Set<Tag> getTags();
+
+    /**
+     * Adds one or more {@link Tag} to the Actor's Set.
+     * @param tags the Set of tags to be added
+     * @param arePermanent true if the tags are going to be not removable, false otherwise
+     */
+    void addTags(Set<Tag> tags, boolean arePermanent);
+
+    /**
+     * Adds a {@link Tag} to the Actor's Set.
+     * @param isPermanent true if the tag is going to be not removable, false otherwise
+     * @param tag the tag to be added
+     */
+    void addTag(Tag tag, boolean isPermanent);
+
+    /**
+     * Removes a {@link Tag} to the Actor's Set, if the the provided tag is not permanent.
+     * @param tag the tag to be removed
+     * @return true if the tag was removed, false otherwise
+     */
+    boolean removeTag(Tag tag);
+
+    /**
+     * Adds a {@link Modifier} to the actor.
+     * @param modifier the modifier to be added
+     * @param isPermanent true if the modifier is going to be not removable, false otherwise
+     */
+    void addModifier(Modifier modifier, boolean isPermanent);
+
+    /**
+     * Removes a {@link Modifier} to the actor, if it's not permanent.
+     * @param modifier the modifier to be added
+     */
+    void removeModifier(Modifier modifier);
+
+    /**
+     * Gets the Set of {@link Modifier} applicable to {@link Action}.
+     * @return the set of action modifiers
+     */
+    Set<Modifier> getActionModifiers();
+
+    /**
+     * Gets the Set of {@link Modifier} applicable to {@link ActionEffect.
+     * @return the set of effect modifiers
+     */
+    Set<Modifier> getEffectModifiers();
+
+    /**
+     * Gets a list containing the available actions of the actor.
+     * @return the list of actions
+     */
+    List<Action> getAvailableActionsList();
+
+    /**
+     * Gets a set containing the available actions of the actor.
+     * @return the set of actions
+     */
+    Set<Action> getAvailableActionsSet();
 }
