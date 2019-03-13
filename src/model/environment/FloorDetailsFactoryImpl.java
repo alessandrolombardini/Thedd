@@ -1,101 +1,95 @@
 package model.environment;
 
+import java.util.EnumMap;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Random;
+
+import model.environment.FloorDetails.Builder;
 
 /**
  * This class represents all details of the floor.
  *
  */
-public final class FloorDetails {
+public final class FloorDetailsFactoryImpl implements FloorDetailsFactory {
 
-    private Difficulty difficulty;
-    private int numberOfEnemies;
-    private int numberOfTreasure;
-    private int numberOfContraption;
-    private int numberOfRooms;
-    private boolean isLastFloor;
-
-    private FloorDetails() {
+    private static final double EASY_MODE_MULTIPLIER = 0.25;
+    private static final double NORMAL_MODE_MULTIPLIER = 0.5;
+    private static final double HARD_MODE_MULTIPLIER = 1;
+    private static final EnumMap<Difficulty, Double> MULTIPLIER;
+    static {
+        MULTIPLIER = new EnumMap<Difficulty, Double>(Difficulty.class);
+        MULTIPLIER.put(Difficulty.EASY, EASY_MODE_MULTIPLIER);
+        MULTIPLIER.put(Difficulty.NORMAL, NORMAL_MODE_MULTIPLIER);
+        MULTIPLIER.put(Difficulty.HARD, HARD_MODE_MULTIPLIER);
     }
 
-    /**
-     * This method allows to get the number of enemies of the floor.
-     * 
-     * @return the number of enemies
-     */
-    public int getNumberOfEnemies() {
-        return this.numberOfEnemies;
-    }
+    private final Random random;
+    private Optional<Integer> effectiveRooms;
+    private Optional<Difficulty> difficulty;
+    private Optional<Builder> builder;
 
     /**
-     * This method allows to get the number of treasures of the floor.
-     * 
-     * @return the number of treasures
+     * FloorDetailsFactory constructor.
      */
-    public int getNumberOfTreasures() {
-        return this.numberOfTreasure;
+    public FloorDetailsFactoryImpl() {
+        random = new Random(System.currentTimeMillis());
+        this.buildingReset();
     }
 
-    /**
-     * This method allows to get the number of contraptions of the floor.
-     * 
-     * @return the number of contraptions
-     */
-    public int getNumberOfContraptions() {
-        return this.numberOfContraption;
+    @Override
+    public FloorDetails createFloorDetails(final Difficulty difficulty, final int numberOfRooms,
+            final boolean lastFloor) {
+        Objects.requireNonNull(difficulty);
+        if (numberOfRooms <= 0) {
+            throw new IllegalArgumentException();
+        }
+        this.effectiveRooms = Optional.of(numberOfRooms - 1);
+        this.difficulty = Optional.of(difficulty);
+        this.builder = Optional.of(new FloorDetails.Builder(difficulty, numberOfRooms, lastFloor));
+        this.setRandomValue();
+        final FloorDetails newFloor = builder.get().build();
+        this.buildingReset();
+        return newFloor;
     }
 
-    /**
-     * This method allows to get the number of rooms of the floor.
-     * 
-     * @return the number of rooms
-     */
-    public int getNumberOfRooms() {
-        return this.numberOfRooms;
-    }
-
-    /**
-     * This method allows to get the level of difficulty of the floor.
-     * 
-     * @return the level of difficulty
-     */
-    public Difficulty getDifficult() {
-        return this.difficulty;
-    }
-
-    /**
-     * This allows to know if the floor is the last and there is a boss at the end
-     * of it.
-     * 
-     * @return true if the floor is the last
-     */
-    public boolean isLastFloor() {
-        return this.isLastFloor;
-    }
-
-    /**
-     * This method allows to get a FloorDetails' object with random value.
-     * 
-     * @param difficulty    of the floor
-     * @param numberOfRooms of the floor
-     * @param lastFloor     that define if the floor is the last
-     * @return a FloorDetails' object
-     */
-    public static FloorDetails createFloorDetails(final Difficulty difficulty, final int numberOfRooms,
-                                                  final boolean lastFloor) {
-        final FloorDetails choice = new FloorDetails();
-        choice.difficulty = difficulty;
-        choice.numberOfRooms = numberOfRooms;
-        choice.isLastFloor = lastFloor;
-        choice.setRandomValue();
-        return choice;
+    private void buildingReset() {
+        this.effectiveRooms = Optional.empty();
+        this.difficulty = Optional.empty();
+        this.builder = Optional.empty();
     }
 
     private void setRandomValue() {
-        // TODO Creare un algoritmo più efficace di generazione di numeri casuali
-        final Random rand = new Random();
-        this.numberOfEnemies = rand.nextInt(this.numberOfRooms);
-        this.numberOfContraption = rand.nextInt(this.numberOfRooms);
-        this.numberOfTreasure = rand.nextInt(this.numberOfRooms);
+        this.builder.get().enemies(this.getRandomNumberOfEnemies());
+        this.builder.get().contraptions(this.getRandomNumberOfContraptions());
+        this.builder.get().treasures(this.getRandomNumberOfTreasure());
     }
+
+    private int getRandomNumberOfEnemies() {
+        return (int) Math.round(this.effectiveRooms.get() * MULTIPLIER.get(this.difficulty.get()))
+                + this.getRandomRoundingNumber();
+    }
+
+    private int getRandomNumberOfTreasure() {
+        return (int) Math.round(this.getGaussianRoundingNumber() * MULTIPLIER.get(this.difficulty.get()));
+    }
+
+    private int getRandomNumberOfContraptions() {
+        return (int) Math.round(this.getGaussianRoundingNumber() * MULTIPLIER.get(this.difficulty.get()));
+    }
+
+    private int getRandomRoundingNumber() {
+        return (int) this.random
+                .nextInt((int) Math.round(this.effectiveRooms.get() * MULTIPLIER.get(Difficulty.EASY)) + 1);
+    }
+
+    private int getGaussianRoundingNumber() {
+        return (int) Math.round(
+                random.nextGaussian() * Math.sqrt(this.getRoundingNumberConstant()) + this.getRoundingNumberConstant());
+    }
+
+    private int getRoundingNumberConstant() {
+        return (int) Math.round(this.effectiveRooms.get() * MULTIPLIER.get(Difficulty.NORMAL));
+    }
+
 }
