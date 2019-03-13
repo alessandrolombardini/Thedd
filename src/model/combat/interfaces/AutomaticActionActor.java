@@ -2,16 +2,13 @@ package model.combat.interfaces;
 
 import java.util.List;
 
-import model.combat.enums.RandomActionPrority;
-import utils.RandomCollection;
+import model.combat.enums.RandomPrority;
+import utils.randomCollection.RandomCollection;
 
 /**
  * An actor capable of autonomously selecting an action and a target. 
  */
 public interface AutomaticActionActor extends ActionActor {
-    
-    //Add method setBehavior
-    //Add method isBehaviorActive
  
     /**
      * Makes the actor select a new Action between the ones he possesses.
@@ -47,7 +44,7 @@ public interface AutomaticActionActor extends ActionActor {
      * @param newWeight the new weight of the action
      * @return the current collection
      */
-    RandomCollection<Action> updateActionWeight(Action action, RandomActionPrority newWeight);
+    RandomCollection<Action> updateActionWeight(Action action, RandomPrority newWeight);
 
     /**
      * Adds an action to available actions of the actor and sets its weight
@@ -56,5 +53,5 @@ public interface AutomaticActionActor extends ActionActor {
      * @param weight a non negative value
      * @return the current collection
      */
-    RandomCollection<Action> addWeightedAction(Action action, RandomActionPrority weight);
+    RandomCollection<Action> addWeightedAction(Action action, RandomPrority weight);
 }
