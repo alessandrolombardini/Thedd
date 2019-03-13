@@ -1,8 +1,8 @@
 package model.combat.interfaces;
 
+import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.List;
 
-import javafx.util.Pair;
 import model.combat.enums.ActionResultType;
 
 /**
@@ -28,6 +28,7 @@ public interface ActionResult {
      * Returns a List of Pairs <target,ResultType>.
      * @return the list of results
      */
-    List<Pair<ActionActor, ActionResultType>> getResults();	
+    List<SimpleImmutableEntry<ActionActor, ActionResultType>> getResults();
+    //Might want to convert SimpleImmutableEntry to a library tuple/pair
 
 }
