@@ -1,8 +1,9 @@
-package model.item;
+package model.item.equipableitem;
 
 import java.util.ArrayList;
 
 import model.character.Statistic;
+import model.item.EquipmentStatisticBonusEffect;
 
 /**
  * One handed weapon.

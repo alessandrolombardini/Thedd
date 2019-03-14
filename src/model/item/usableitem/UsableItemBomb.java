@@ -1,8 +1,8 @@
-package model.item;
+package model.item.usableitem;
 
 import java.util.ArrayList;
 
-import model.combat.implementations.DamageEffect;
+import model.combat.action.effect.DamageEffect;
 
 public class UsableItemBomb extends UsableItemImpl {
 

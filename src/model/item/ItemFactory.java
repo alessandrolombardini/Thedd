@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import model.item.equipableitem.EquipableItemSword;
+import model.item.usableitem.UsableItemBomb;
+import model.item.usableitem.UsableItemPotion;
+
 /**
  * Factory for generating random items from a database.
  */

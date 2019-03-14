@@ -1,14 +1,16 @@
-package model.item;
+package model.item.equipableitem;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import model.combat.interfaces.ActionActor;
-import model.combat.interfaces.ActionEffect;
+import model.combat.actor.ActionActor;
+import model.combat.action.effect.ActionEffect;
+import model.item.AbstractItem;
+import model.item.Item;
 
 /**
- * Implementation of {@link model.item.EquipableItem}.
+ * Implementation of {@link model.item.equipableitem.EquipableItem}.
  *
  */
 public class EquipableItemImpl extends AbstractItem implements EquipableItem {

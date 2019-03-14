@@ -1,6 +1,7 @@
-package model.item;
+package model.item.equipableitem;
 
-import model.combat.interfaces.ActionActor;
+import model.combat.actor.ActionActor;
+import model.item.Item;
 
 /**
  * Specialization of Item which can be equipped but cannot be used.

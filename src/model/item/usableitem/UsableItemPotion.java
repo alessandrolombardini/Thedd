@@ -1,6 +1,8 @@
-package model.item;
+package model.item.usableitem;
 
 import java.util.ArrayList;
+
+import model.item.HealingEffect;
 /**
  * Class of Item Potion that heals the target.
  *

@@ -1,15 +1,17 @@
-package model.item;
+package model.item.usableitem;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import model.combat.enums.TargetType;
-import model.combat.implementations.AbstractAction;
-import model.combat.interfaces.Action;
-import model.combat.interfaces.ActionEffect;
+import model.combat.action.TargetType;
+import model.combat.action.ActionImpl;
+import model.combat.action.Action;
+import model.combat.action.effect.ActionEffect;
+import model.item.AbstractItem;
+import model.item.Item;
 
 /**
- * Implementation of {@link model.item.UsableItem}.
+ * Implementation of {@link model.item.usableitem.UsableItem}.
  *
  */
 public class UsableItemImpl extends AbstractItem implements UsableItem {
@@ -31,7 +33,7 @@ public class UsableItemImpl extends AbstractItem implements UsableItem {
 
     @Override
     public final Action getAction() {
-        return new AbstractAction(null, this.getName(), this.getEffects(), 1, TargetType.EVERYONE) { };
+        return new ActionImpl(null, this.getName(), this.getEffects(), 1, TargetType.EVERYONE);
     }
 
     @Override

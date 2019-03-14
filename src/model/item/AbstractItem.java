@@ -4,7 +4,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import model.combat.interfaces.ActionEffect;
+import model.combat.action.effect.ActionEffect;
+import model.item.equipableitem.EquipableItem;
+import model.item.usableitem.UsableItem;
 
 /**
  * Abstract class that defines the methods which tell whether a item is of a

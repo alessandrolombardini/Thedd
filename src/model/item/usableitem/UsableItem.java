@@ -1,6 +1,7 @@
-package model.item;
+package model.item.usableitem;
 
-import model.combat.interfaces.Action;
+import model.combat.action.Action;
+import model.item.Item;
 
 /**
  * Specialized interface of {@link model.item.Item} of usable items.
