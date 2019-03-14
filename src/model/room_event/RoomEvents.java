@@ -36,7 +36,7 @@ public final class RoomEvents {
      *  an instance of {@link model.room_event.CombatEvent}.
      */
     public static RoomEvent getCombat() {
-        return null;
+        return new CombatEventImpl();
     }
     /**
      * 
