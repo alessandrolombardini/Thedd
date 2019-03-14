@@ -13,11 +13,6 @@ public enum EnemyCharacterType {
     GOBLIN,
 
     /**
-     * Dark Destructor Non-Player Character.
-     */
-    DARK_DESTRUCTOR,
-
-    /**
      * Headless Non-Player Character.
      */
     HEADLESS;
