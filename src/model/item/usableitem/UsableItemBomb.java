@@ -4,6 +4,10 @@ import java.util.ArrayList;
 
 import model.combat.action.effect.DamageEffect;
 
+/**
+ * A {@link UsableItem} that deals damage to the target. 
+ *
+ */
 public class UsableItemBomb extends UsableItemImpl {
 
     private static final int ID = 1;
