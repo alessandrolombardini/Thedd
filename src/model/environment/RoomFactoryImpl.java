@@ -24,7 +24,7 @@ public class RoomFactoryImpl implements RoomFactory {
     private static final int MAX_CONTRAPTION_PER_ROOM = 3; 
 
     private final FloorDetails floorDetails;
-    private final EnumMap<Content, Integer> remainingContent;
+    private final EnumMap<RoomContent, Integer> remainingContent;
     private int roomIndex;
 
     /**
@@ -34,10 +34,10 @@ public class RoomFactoryImpl implements RoomFactory {
      */
     public RoomFactoryImpl(final FloorDetails floorChoice) {
         this.floorDetails = floorChoice;
-        this.remainingContent = new EnumMap<Content, Integer>(Content.class);
-        this.remainingContent.put(Content.ENEMY, this.floorDetails.getNumberOfEnemies());
-        this.remainingContent.put(Content.CONTRAPTION, this.floorDetails.getNumberOfContraptions());
-        this.remainingContent.put(Content.TREASURE, this.floorDetails.getNumberOfTreasures());
+        this.remainingContent = new EnumMap<RoomContent, Integer>(RoomContent.class);
+        this.remainingContent.put(RoomContent.ENEMY, this.floorDetails.getNumberOfEnemies());
+        this.remainingContent.put(RoomContent.CONTRAPTION, this.floorDetails.getNumberOfContraptions());
+        this.remainingContent.put(RoomContent.TREASURE, this.floorDetails.getNumberOfTreasures());
         this.roomIndex = -1;
     }
 
@@ -89,7 +89,7 @@ public class RoomFactoryImpl implements RoomFactory {
     }
 
     private int getRamainingInteractableAction() {
-        return this.remainingContent.get(Content.TREASURE) + this.remainingContent.get(Content.CONTRAPTION);
+        return this.remainingContent.get(RoomContent.TREASURE) + this.remainingContent.get(RoomContent.CONTRAPTION);
     }
 
     private int getRemainingBaseRooms() {
@@ -97,7 +97,7 @@ public class RoomFactoryImpl implements RoomFactory {
     }
 
     private int getRandomQuantityOfEnemies() {
-        if (this.remainingContent.get(Content.ENEMY) >= this.getRemainingBaseRooms() || this.getRandomChoice()) {
+        if (this.remainingContent.get(RoomContent.ENEMY) >= this.getRemainingBaseRooms() || this.getRandomChoice()) {
             return 1;
         }
         return 0;
@@ -113,7 +113,7 @@ public class RoomFactoryImpl implements RoomFactory {
         }
         return 0;
     }
-    
+
     private int getEnemiesMultiplier() {
         return this.floorDetails.getDifficult().getLevelOfDifficulty();
     }
