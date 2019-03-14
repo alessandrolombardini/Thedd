@@ -33,7 +33,7 @@ public class UsableItemImpl extends AbstractItem implements UsableItem {
 
     @Override
     public final Action getAction() {
-        return new ActionImpl(null, this.getName(), this.getEffects(), 1, TargetType.EVERYONE);
+        return new ActionImpl(null, this.getName(), this.getEffects(), 1, TargetType.EVERYONE, this.getDescription(), " used " + this.getName());
     }
 
     @Override
