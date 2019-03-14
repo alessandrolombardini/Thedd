@@ -25,7 +25,7 @@ public final class CharacterFactory {
     }
 
     /**
-     * Method that create a new Enemy-NonPlayerCharacter.
+     * Method that create a new Enemy Non-Player Character.
      * @param type the type of the enemy.
      * @param multiplier 
      * @return a new specified Non-Player Character
@@ -34,10 +34,17 @@ public final class CharacterFactory {
         switch (type) {
         case GOBLIN:
             return new GoblinNPC(multiplier);
-        case HEADLESS:
-            return new HeadlessNPC(multiplier);
         default:
-            return new DarkDestructorNPC(multiplier);
+            return new HeadlessNPC(multiplier);
         }
+    }
+
+    /**
+     * Method that create a new Boss Character.
+     * @param multiplier 
+     * @return a new boss.
+     */
+    public static BasicCharacter createFinalBoss(final int multiplier) {
+        return new DarkDestructorNPC(multiplier);
     }
 }
