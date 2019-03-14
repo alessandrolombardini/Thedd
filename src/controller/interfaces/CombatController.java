@@ -1,7 +1,7 @@
 package controller.interfaces;
 
-import model.combat.interfaces.ActionActor;
-import model.combat.interfaces.HostileEncounter;
+import model.combat.actor.ActionActor;
+import model.combat.common.HostileEncounter;
 
 /**
  * TO BE IGNORED SINCE IT'S CURRENTLY NOT WELL DEFINED/HIGHLY SUSCEPTIBLE TO CHANGES.
