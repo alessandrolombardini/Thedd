@@ -7,13 +7,6 @@ package model.environment;
 public interface Floor {
 
     /**
-     * This method allows to know if the current floor is the last one.
-     * 
-     * @return true if the current floor is the last one
-     */
-    boolean isLastFloor();
-
-    /**
      * This method allows to know if the current floor has other unexplored rooms.
      * 
      * @return true if the current floor has other unexplored rooms
@@ -42,4 +35,11 @@ public interface Floor {
      * @return the current room index
      */
     int getCurrentRoomIndex();
+
+    /**
+     * This method allows to know if this floor is completed.
+     * 
+     * @return true if the current floor is completed
+     */
+    boolean checkToChangeFloor();
 }
