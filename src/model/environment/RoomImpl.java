@@ -15,7 +15,6 @@ public class RoomImpl implements Room {
 
     /**
      * RoomImpl constructor.
-     * 
      * @param events of the room
      */
     public RoomImpl(final List<RoomEvent> events) {
@@ -24,11 +23,7 @@ public class RoomImpl implements Room {
 
     @Override
     public final boolean checkToMoveOn() {
-        /*
-         * Ritorna true solo se all'interno della stanza non sono presenti eventi
-         * combattimento o altri tipi di eventi bloccanti
-         */
-        return events.stream().anyMatch(event -> !event.isCompleted());
+        return events.stream().anyMatch(event -> !event.isCompleted() && !event.isSkippable());
     }
 
     @Override
