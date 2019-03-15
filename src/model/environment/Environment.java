@@ -40,5 +40,11 @@ public interface Environment {
      */
     boolean isCurrentLastFloor();
 
-
+    /**
+     * This method allows to get a list of possible next floors.
+     * 
+     * @return the list of possible next floors
+     * @throws IllegalStateException if floors are ended
+     */
+    List<FloorDetails> getFloorOptions();
 }

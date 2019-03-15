@@ -79,6 +79,16 @@ public class EnvironmentImpl implements Environment {
         return (this.getCurrentFloorIndex() + 1) == (this.numberOfFloors - 1);
     }
 
-
+    @Override
+    public final List<FloorDetails> getFloorOptions() {
+        if (this.isCurrentLastFloor()) {
+            throw new IllegalStateException();
+        }
+        final List<FloorDetails> choices;
+        choices = Stream.of(Difficulty.values())
+                        .map(d -> this.floorDeatailsFactory.createFloorDetails(d, this.numberOfRooms, this.isNextLastFloor()))
+                        .collect(Collectors.toList());
+        return choices;
+    }
 
 }
