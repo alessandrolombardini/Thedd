@@ -38,10 +38,9 @@ public final class FloorDetailsFactoryImpl implements FloorDetailsFactory {
     }
 
     @Override
-    public FloorDetails createFloorDetails(final Difficulty difficulty, final int numberOfRooms,
-            final boolean lastFloor) {
+    public FloorDetails createFloorDetails(final Difficulty difficulty, final int numberOfRooms, final boolean lastFloor) {
         Objects.requireNonNull(difficulty);
-        if (numberOfRooms <= 0) {
+        if (numberOfRooms < EnvironmentImpl.MIN_NUMBER_OF_ROOMS) {
             throw new IllegalArgumentException();
         }
         this.effectiveRooms = Optional.of(numberOfRooms - 1);
