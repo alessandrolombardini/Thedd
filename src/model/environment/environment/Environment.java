@@ -47,7 +47,7 @@ public interface Environment {
      * This method allows to get a list of possible next floors.
      * 
      * @return the list of possible next floors
-     * @throws IllegalStateException if floors are ended
+     * @throws IllegalStateException if this is the last floor, it means that floors are ended
      */
     List<FloorDetails> getFloorOptions();
 }

@@ -15,6 +15,8 @@ public interface FloorDetailsFactory {
      * @param numberOfRooms of the floor
      * @param lastFloor     that define if the floor is the last
      * @return a FloorDetails' object
+     * @throws NullPointerException if difficulty is null
+     * @throws IllegalArgumentException if the number of rooms is less than the minimum
      */
     FloorDetails createFloorDetails(Difficulty difficulty, int numberOfRooms, boolean lastFloor);
 }
