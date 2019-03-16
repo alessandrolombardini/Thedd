@@ -45,4 +45,9 @@ public class TagImpl implements Tag {
     public int hashCode() {
         return tag.hashCode();
     }
+
+    @Override
+    public String toString() {
+        return tag;
+    }
 }
