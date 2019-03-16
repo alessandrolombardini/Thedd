@@ -222,10 +222,10 @@ public class ActionImpl implements Action {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof ActionImpl)) {
+        if (!(other instanceof Action)) {
             return false;
         } else {
-            final ActionImpl o = ((ActionImpl) other);
+            final Action o = ((Action) other);
             return  Objects.equals(getName(), o.getName())
                     && Objects.equals(getDescription(), o.getDescription())
                     && Objects.equals(getLogMessage(), o.getLogMessage());
