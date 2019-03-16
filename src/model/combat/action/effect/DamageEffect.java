@@ -74,7 +74,6 @@ public class DamageEffect extends AbstractActionEffect {  //to be subdivided int
                                                             .map(t -> t.getLiteral()).collect(Collectors.joining(", "));
     }
 
-    /*
     @Override
     public boolean equals(final Object other) {
         if (super.equals(other)) {
@@ -87,6 +86,6 @@ public class DamageEffect extends AbstractActionEffect {  //to be subdivided int
 
     @Override
     public int hashCode() {
-        return super.hashCode() + Objects.hash(getBaseDamage(), getDamage());
-    }*/
+        return super.hashCode();
+    }
 }
