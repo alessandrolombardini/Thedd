@@ -12,6 +12,8 @@ import java.util.stream.IntStream;
 import model.character.BasicCharacter;
 import model.character.CharacterFactory;
 import model.character.EnemyCharacterType;
+import model.combat.common.HostileEncounter;
+import model.room_event.CombatEvent;
 import model.room_event.RoomEvent;
 import model.room_event.RoomEvents;
 
@@ -22,35 +24,41 @@ import model.room_event.RoomEvents;
 public class RoomFactoryImpl implements RoomFactory {
 
     private static final int MAX_CONTRAPTION_PER_ROOM = 3; 
+    private static final int NONE_ROOM = -1;
 
-    private final FloorDetails floorDetails;
     private final EnumMap<RoomContent, Integer> remainingContent;
+    private final Random random;
+    private final FloorDetails floorDetails;
+    private final int numberOfRooms;
     private int roomIndex;
 
     /**
      * RoomFactoryImpl constructor.
      * 
-     * @param floorChoice that describe the floor
+     * @param floorDetails that describe the floor
+     * @param numberOfRooms is the number of rooms
      */
-    public RoomFactoryImpl(final FloorDetails floorChoice) {
-        this.floorDetails = floorChoice;
+    public RoomFactoryImpl(final FloorDetails floorDetails, final int numberOfRooms) {
+        this.floorDetails = floorDetails;
+        this.numberOfRooms = numberOfRooms;
+        this.random = new Random(System.currentTimeMillis());
         this.remainingContent = new EnumMap<RoomContent, Integer>(RoomContent.class);
         this.remainingContent.put(RoomContent.ENEMY, this.floorDetails.getNumberOfEnemies());
         this.remainingContent.put(RoomContent.CONTRAPTION, this.floorDetails.getNumberOfContraptions());
         this.remainingContent.put(RoomContent.TREASURE, this.floorDetails.getNumberOfTreasures());
-        this.roomIndex = -1;
+        this.roomIndex = NONE_ROOM;
     }
 
     @Override
     public final Room createRoom() {
-        if (this.roomIndex >= this.floorDetails.getNumberOfRooms()) {
+        if (this.roomIndex >= this.numberOfRooms) {
             throw new IllegalStateException();
         }
         this.roomIndex++;
-        return this.selectRoom();
+        return this.changeRoom();
     }
 
-    private Room selectRoom() {
+    private Room changeRoom() {
         if (this.floorDetails.isLastFloor() && this.isLastRoom()) {
             return this.createBossRoom();
         } else if (this.isLastRoom()) {
@@ -61,12 +69,14 @@ public class RoomFactoryImpl implements RoomFactory {
     }
 
     private boolean isLastRoom() {
-        return this.roomIndex == (this.floorDetails.getNumberOfRooms() - 1);
+        return this.roomIndex == (this.numberOfRooms - 1);
     }
 
     private Room createBossRoom() {
-        final BasicCharacter character = CharacterFactory.createEnemy(EnemyCharacterType.DARK_DESTRUCTOR, 1); 
-        return new RoomImpl(new ArrayList<>(Arrays.asList(RoomEvents.getCombat())));
+        final CombatEvent combatEvent = RoomEvents.getCombat();
+        final HostileEncounter hostileEncounter = combatEvent.getHostileEncounter();
+        hostileEncounter.addNPC(CharacterFactory.createFinalBoss(this.getEnemiesMultiplier()));
+        return new RoomImpl(new ArrayList<>(Arrays.asList(combatEvent)));
     }
 
     private Room createStairsRoom() {
@@ -82,9 +92,12 @@ public class RoomFactoryImpl implements RoomFactory {
                                .collect(Collectors.toList()));
         final List<BasicCharacter> characters = IntStream.range(0, this.getRandomQuantityOfEnemies())
                                                          .boxed()
-                                                         .map(i -> CharacterFactory.createEnemy(EnemyCharacterType.GOBLIN, this.getEnemiesMultiplier()))
+                                                         .map(i -> CharacterFactory.createEnemy(EnemyCharacterType.getRandom(), this.getEnemiesMultiplier()))
                                                          .collect(Collectors.toList());
-        // TODO: creare l'evento combat ed aggiungere i nemici; poi aggiungierlo alla lista
+        final CombatEvent combatEvent = RoomEvents.getCombat();
+        final HostileEncounter hostileEncounter = combatEvent.getHostileEncounter();
+        hostileEncounter.addAll(characters);
+        events.add(combatEvent);
         return new RoomImpl(events);
     }
 
@@ -93,7 +106,7 @@ public class RoomFactoryImpl implements RoomFactory {
     }
 
     private int getRemainingBaseRooms() {
-        return this.floorDetails.getNumberOfRooms() - (this.roomIndex + 1) - 1;
+        return this.numberOfRooms - (this.roomIndex + 1) - 1;
     }
 
     private int getRandomQuantityOfEnemies() {
@@ -109,7 +122,7 @@ public class RoomFactoryImpl implements RoomFactory {
             final int minContraption = this.getRamainingInteractableAction()
                     - (freePlacesAfterThisRoom * MAX_CONTRAPTION_PER_ROOM);
             final int maxContraption = Integer.min(MAX_CONTRAPTION_PER_ROOM, this.getRamainingInteractableAction());
-            return this.getRandomIntegerBetween(minContraption, maxContraption);
+            return this.getRandomIntegerBetweenIntegers(minContraption, maxContraption);
         }
         return 0;
     }
@@ -119,10 +132,10 @@ public class RoomFactoryImpl implements RoomFactory {
     }
 
     private boolean getRandomChoice() {
-        return new Random().nextBoolean();
+        return this.random.nextBoolean();
     }
 
-    private int getRandomIntegerBetween(final int min, final int max) {
-        return new Random().nextInt(max - min + 1) + min;
+    private int getRandomIntegerBetweenIntegers(final int min, final int max) {
+        return this.random.nextInt(max - min + 1) + min;
     }
 }
