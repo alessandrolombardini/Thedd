@@ -14,15 +14,13 @@ public final class FloorDetails {
     private final int numberOfEnemies;
     private final int numberOfTreasure;
     private final int numberOfAction;
-    private final boolean isLastFloor;
 
-    private FloorDetails(final Difficulty difficulty, final boolean isLastFloor, final int numberOfEnemies,
-            final int numberOfTreasure, final int numberOfAction) {
+    private FloorDetails(final Difficulty difficulty, final int numberOfEnemies, final int numberOfTreasure,
+            final int numberOfAction) {
         this.difficulty = difficulty;
         this.numberOfEnemies = numberOfEnemies;
         this.numberOfTreasure = numberOfTreasure;
         this.numberOfAction = numberOfAction;
-        this.isLastFloor = isLastFloor;
     }
 
     /**
@@ -62,15 +60,6 @@ public final class FloorDetails {
     }
 
     /**
-     * This allows to know if the floor is the last and there is a boss at the end of it.
-     * 
-     * @return true if the floor is the last
-     */
-    public boolean isLastFloor() {
-        return this.isLastFloor;
-    }
-
-    /**
      * This class represent a FloorDetails builder.
      */
     public static class Builder {
@@ -83,13 +72,19 @@ public final class FloorDetails {
 
         /**
          * FloorDetails builder' constructor.
-         * 
-         * @param difficulty  of this floor
-         * @param isLastFloor is true if this floor is the last
          */
-        public Builder(final Difficulty difficulty, final boolean isLastFloor) {
+        public Builder() {
+        }
+
+        /**
+         * This method allows to set the difficulty.
+         * 
+         * @param difficulty level to set
+         * @return this builder
+         */
+        public Builder difficulty(final Difficulty difficulty) {
             this.difficulty = Optional.ofNullable(difficulty);
-            this.isLastFloor = Optional.ofNullable(isLastFloor);
+            return this;
         }
 
         /**
@@ -136,7 +131,7 @@ public final class FloorDetails {
                     || !this.numberOfEnemies.isPresent() || !this.numberOfTreasures.isPresent()) {
                 throw new IllegalStateException();
             }
-            return new FloorDetails(this.difficulty.get(), this.isLastFloor.get(), this.numberOfEnemies.get(), this.numberOfTreasures.get(),
+            return new FloorDetails(this.difficulty.get(), this.numberOfEnemies.get(), this.numberOfTreasures.get(),
                     this.numberOfContraptions.get());
         }
     }

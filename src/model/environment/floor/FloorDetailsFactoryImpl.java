@@ -36,7 +36,9 @@ public final class FloorDetailsFactoryImpl implements FloorDetailsFactory {
      */
     public FloorDetailsFactoryImpl() {
         random = new Random(System.currentTimeMillis());
-        this.buildingReset();
+        this.effectiveRooms = Optional.empty();
+        this.difficulty = Optional.empty();
+        this.builder = Optional.empty();
     }
 
     @Override
@@ -47,20 +49,13 @@ public final class FloorDetailsFactoryImpl implements FloorDetailsFactory {
         }
         this.effectiveRooms = Optional.of(numberOfRooms - 1);
         this.difficulty = Optional.of(difficulty);
-        this.builder = Optional.of(new FloorDetails.Builder(difficulty, lastFloor));
-        this.setRandomValue();
-        final FloorDetails newFloor = builder.get().build();
-        this.buildingReset();
-        return newFloor;
+        this.builder = Optional.of(new FloorDetails.Builder());
+        this.setValues();
+        return builder.get().build();
     }
 
-    private void buildingReset() {
-        this.effectiveRooms = Optional.empty();
-        this.difficulty = Optional.empty();
-        this.builder = Optional.empty();
-    }
-
-    private void setRandomValue() {
+    private void setValues() {
+        this.builder.get().difficulty(this.difficulty.get());
         this.builder.get().enemies(this.getRandomNumberOfEnemies());
         this.builder.get().contraptions(this.getRandomNumberOfContraptions());
         this.builder.get().treasures(this.getRandomNumberOfTreasure());
