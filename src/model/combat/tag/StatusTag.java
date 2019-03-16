@@ -1,6 +1,4 @@
-package model.combat.enums;
-
-import model.combat.tag.Tag;
+package model.combat.tag;
 
 /**
  * Identifies all the possible values of {@link Tag}
