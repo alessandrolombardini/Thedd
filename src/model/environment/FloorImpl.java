@@ -14,24 +14,21 @@ public class FloorImpl implements Floor {
     private final RoomFactory factory;
     private final List<Room> rooms;
     private final int numberOfRooms;
-    private final boolean isBossFloor;
     private int currentRoomIndex;
 
     /**
      * Floor constructor.
      * 
-     * @param roomFactory is the room factory of the floor
-     * @param isBossFloor define if the floor is the last
+     * @param floorDetails contains the details of this floor
      * @param numberOfRooms define the number of rooms of the floor
      * @throws NullPointerExecption if roomFactory is null
      * @throws IllegalStateExeption if floor doesn't contains rooms
      */
-    public FloorImpl(final RoomFactory roomFactory, final boolean isBossFloor, final int numberOfRooms) {
-        Objects.requireNonNull(roomFactory);
-        this.factory = roomFactory;
+    public FloorImpl(final FloorDetails floorDetails, final int numberOfRooms) {
+        Objects.requireNonNull(floorDetails);
+        this.factory = new RoomFactoryImpl(floorDetails, numberOfRooms);
         this.rooms = new ArrayList<>();
         this.numberOfRooms = numberOfRooms;
-        this.isBossFloor = isBossFloor;
         this.currentRoomIndex = -1;
         this.nextRoom();
     }
@@ -62,14 +59,14 @@ public class FloorImpl implements Floor {
         return this.currentRoomIndex;
     }
 
-    @Override
-    public final boolean isLastFloor() {
-        return this.isBossFloor;
-    }
-
     private void setNextRoom() {
         this.currentRoomIndex++;
         this.rooms.add(this.currentRoomIndex, this.factory.createRoom());
+    }
+
+    @Override
+    public boolean checkToChangeFloor() {
+        return false;
     }
 
 }
