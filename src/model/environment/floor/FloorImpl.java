@@ -1,4 +1,4 @@
-package model.environment;
+package model.environment.floor;
 
 import java.util.ArrayList;
 import java.util.List;

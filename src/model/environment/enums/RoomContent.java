@@ -1,4 +1,4 @@
-package model.environment;
+package model.environment.enums;
 
 /**
  * Representation of objects that could be inside a normal room.

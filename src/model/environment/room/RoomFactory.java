@@ -1,4 +1,4 @@
-package model.environment;
+package model.environment.room;
 
 /**
  * Interface that define a factory of rooms.

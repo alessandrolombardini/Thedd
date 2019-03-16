@@ -1,4 +1,4 @@
-package model.environment;
+package model.environment.enums;
 
 import java.util.Random;
 
@@ -57,7 +57,7 @@ public enum Difficulty {
      * @return a random Difficulty
      */
     public static Difficulty getRandom() {
-        final Random rand = new Random();
+        final Random rand = new Random(System.currentTimeMillis());
         final int randomValue = rand.nextInt(Difficulty.values().length);
         return Difficulty.values()[randomValue];
     }

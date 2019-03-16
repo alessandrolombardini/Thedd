@@ -1,4 +1,4 @@
-package model.environment;
+package model.environment.floor;
 
 /**
  * Interface that define the environment.

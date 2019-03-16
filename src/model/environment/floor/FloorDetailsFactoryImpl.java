@@ -1,4 +1,4 @@
-package model.environment;
+package model.environment.floor;
 
 import java.util.EnumMap;
 import java.util.Objects;

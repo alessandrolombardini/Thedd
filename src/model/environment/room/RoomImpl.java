@@ -1,4 +1,4 @@
-package model.environment;
+package model.environment.room;
 
 import java.util.Collections;
 import java.util.List;
