@@ -104,11 +104,11 @@ public abstract class AbstractActionEffect implements ActionEffect {
                 .collect(Collectors.toSet()));
     }
 
-    /*/**
+    /**
      * Equals override: confronts two effects based on their Tags,
-     * their source/target Tags and their log message.
+     * their source/target Tags, their log message and their description.
      */
-    /*@Override
+    @Override
     public boolean equals(final Object other) {
         if (other == this) {
             return true;
@@ -120,18 +120,19 @@ public abstract class AbstractActionEffect implements ActionEffect {
         return getTags().equals(o.getTags())
                 && getTargetTags().equals(o.getTargetTags())
                 && getSourceTags().equals(o.getSourceTags())
-                && getLogMessage().contentEquals(o.getLogMessage()); //BE CAREFUL
-    }*/
+                && getLogMessage().contentEquals(o.getLogMessage())
+                && getDescription().contentEquals(o.getDescription());
+    }
 
-    /*/**
-     * hashCode override: hashes an effects based on their Tags,
-     * their source/target Tags and their log message as per 
-     * Objects.hash() method.
+    /**
+     * hashCode override: returns a constant number.
      */
-    /*@Override
+    @Override
     public int hashCode() {
-        return Objects.hash(getTags(), getTargetTags(), getSourceTags(), getLogMessage());
-    }*/
+        //No fields in this class are immutable. Furthermore, Action effects are supposed
+        //to be used in collections not based on hashing (such as Lists).
+        return 1;
+    }
 
     /**
      * {@inheritDoc}
