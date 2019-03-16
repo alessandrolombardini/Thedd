@@ -6,6 +6,13 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import model.environment.enums.Difficulty;
+import model.environment.floor.Floor;
+import model.environment.floor.FloorDetails;
+import model.environment.floor.FloorDetailsFactory;
+import model.environment.floor.FloorDetailsFactoryImpl;
+import model.environment.floor.FloorImpl;
+
 /**
  * Implementation of {@link model.environment.Environment}.
  *

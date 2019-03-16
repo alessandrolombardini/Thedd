@@ -1,5 +1,7 @@
 package model.environment.floor;
 
+import model.environment.enums.Difficulty;
+
 /**
  * Interface that define the environment.
  * 

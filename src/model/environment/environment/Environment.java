@@ -2,6 +2,9 @@ package model.environment.environment;
 
 import java.util.List;
 
+import model.environment.floor.Floor;
+import model.environment.floor.FloorDetails;
+
 /**
  * Interface that define the environment.
  *

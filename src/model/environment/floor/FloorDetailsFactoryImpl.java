@@ -5,7 +5,9 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 
-import model.environment.FloorDetails.Builder;
+import model.environment.floor.FloorDetails.Builder;
+import model.environment.enums.Difficulty;
+import model.environment.environment.EnvironmentImpl;
 
 /**
  * This class represents all details of the floor.
@@ -45,7 +47,7 @@ public final class FloorDetailsFactoryImpl implements FloorDetailsFactory {
         }
         this.effectiveRooms = Optional.of(numberOfRooms - 1);
         this.difficulty = Optional.of(difficulty);
-        this.builder = Optional.of(new FloorDetails.Builder(difficulty, numberOfRooms, lastFloor));
+        this.builder = Optional.of(new FloorDetails.Builder(difficulty, lastFloor));
         this.setRandomValue();
         final FloorDetails newFloor = builder.get().build();
         this.buildingReset();

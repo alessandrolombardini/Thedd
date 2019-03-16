@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import model.environment.room.Room;
+import model.environment.room.RoomFactory;
+import model.environment.room.RoomFactoryImpl;
+
 
 /**
  * Implementation of {@link model.environment.Floor}.

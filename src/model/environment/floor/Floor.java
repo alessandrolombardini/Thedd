@@ -1,5 +1,7 @@
 package model.environment.floor;
 
+import model.environment.room.Room;
+
 /**
  * Interface that define the floor.
  * 

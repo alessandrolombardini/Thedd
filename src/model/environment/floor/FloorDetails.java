@@ -2,6 +2,8 @@ package model.environment.floor;
 
 import java.util.Optional;
 
+import model.environment.enums.Difficulty;
+
 /**
  * This class represent the content of a future floor.
  *

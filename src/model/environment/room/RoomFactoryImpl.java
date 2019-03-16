@@ -13,6 +13,8 @@ import model.character.BasicCharacter;
 import model.character.CharacterFactory;
 import model.character.EnemyCharacterType;
 import model.combat.common.HostileEncounter;
+import model.environment.enums.RoomContent;
+import model.environment.floor.FloorDetails;
 import model.room_event.CombatEvent;
 import model.room_event.RoomEvent;
 import model.room_event.RoomEvents;
