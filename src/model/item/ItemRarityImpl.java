@@ -1,5 +1,7 @@
 package model.item;
 
+import java.util.Random;
+
 /**
  * 
  *
@@ -36,4 +38,13 @@ public enum ItemRarityImpl implements ItemRarity {
         return baseWeight;
     }
 
+    /**
+     * 
+     * @return
+     *  a random rarity from the values of this enumeration
+     */
+    public static ItemRarity getRandomRarity() {
+       final Random r = new Random();
+       return ItemRarityImpl.values()[r.nextInt(ItemRarityImpl.values().length)]; 
+    }
 }
