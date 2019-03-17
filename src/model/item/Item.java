@@ -31,11 +31,6 @@ public interface Item {
     ItemRarity getRarity();
 
     /**
-     * @return a copy of the item which called this
-     */
-    Item copy();
-
-    /**
      * @return the id if the item
      */
     int getId();
