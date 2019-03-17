@@ -1,10 +1,7 @@
 package model.item;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 
-import model.combat.action.effect.ActionEffect;
 import model.item.equipableitem.EquipableItem;
 import model.item.usableitem.UsableItem;
 
@@ -17,9 +14,7 @@ public abstract class AbstractItem implements Item {
 
     private final int id;
     private final String name;
-    //status da applicare al pesonaggio
-    private final List<ActionEffect> effects;
-
+    private final ItemRarity rarity;
     private final String description;
 
     /**
@@ -28,15 +23,15 @@ public abstract class AbstractItem implements Item {
      *          id of the object, used only for comparison and hashing purpose
      * @param name
      *          name of the object
-     * @param effects
-     *          effects of the object
+     * @param rarity
+     *          rarity of the item
      * @param description
      *          description of the Item
      */
-    public AbstractItem(final int id, final String name, final List<ActionEffect> effects, final String description) {
+    public AbstractItem(final int id, final String name, final ItemRarity rarity, final String description) {
         this.id = id;
         this.name = Objects.requireNonNull(name);
-        this.effects = Objects.requireNonNull(effects);
+        this.rarity = Objects.requireNonNull(rarity);
         this.description = Objects.requireNonNull(description);
     }
 
@@ -63,21 +58,10 @@ public abstract class AbstractItem implements Item {
     public final boolean isUsable() {
         return this instanceof UsableItem;
     }
-    /**
-     * 
-     * @return
-     *          the map of the effects of the item
-     */
-    protected final List<ActionEffect> getEffects() {
-        return Collections.unmodifiableList(effects);
-    }
 
-    /**
-     * @param newEffect
-     *  the effect to be added to the list of effect of the item.
-     */
-    protected final void addActionEffect(final ActionEffect newEffect) {
-        this.effects.add(newEffect);
+    @Override
+    public final ItemRarity getRarity() {
+        return rarity;
     }
 
     @Override
@@ -90,6 +74,7 @@ public abstract class AbstractItem implements Item {
         final int prime = 31;
         int result = 1;
         result = prime * result + id;
+        result = prime * result + ((rarity == null) ? 0 : rarity.hashCode());
         return result;
     }
 
@@ -104,12 +89,19 @@ public abstract class AbstractItem implements Item {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final AbstractItem other = (AbstractItem) obj;
-        return id == other.id;
+        AbstractItem other = (AbstractItem) obj;
+        if (id != other.id) {
+            return false;
+        }
+        if (rarity == null) {
+            if (other.rarity != null) {
+                return false;
+            }
+        } else if (!rarity.equals(other.rarity)) {
+            return false;
+        }
+        return true;
     }
-
-    @Override
-    public abstract Item copy();
 
     @Override
     public abstract String toString();
