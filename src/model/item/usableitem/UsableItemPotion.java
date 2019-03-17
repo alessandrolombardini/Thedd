@@ -1,8 +1,8 @@
 package model.item.usableitem;
 
-import java.util.ArrayList;
-
 import model.item.HealingEffect;
+import model.item.Item;
+import model.item.ItemRarity;
 /**
  * Class of Item Potion that heals the target.
  *
@@ -14,11 +14,24 @@ public class UsableItemPotion extends UsableItemImpl {
     private static final String DESCRIPTION = "A mystical beverage that heal wounds";
     private static final double HEALING_VALUE = 20.0;
     /**
-     * Create an instance of a Potion item.
+     * Create an instance of a Potion item of a certain rarity.
+     * 
+     * @param rarity
+     *  the rarity of the potion. The higher the rarity is, the better the healing effect is.
      */
-    public UsableItemPotion() {
-        super(ID, NAME, new ArrayList<>(), DESCRIPTION);
-        this.addActionEffect(new HealingEffect(HEALING_VALUE));
+    public UsableItemPotion(final ItemRarity rarity) {
+        super(ID, NAME, rarity, DESCRIPTION);
+        this.addActionEffect(new HealingEffect(HEALING_VALUE * this.getEffectsMultiplier().get(rarity)));
     }
 
+    /**
+     * 
+     * @param rarity
+     *  the rarity of the new potion
+     * @return
+     *  a new Potion of the designed rarity
+     */
+    public static Item getNewInstance(final ItemRarity rarity) {
+        return new UsableItemPotion(rarity);
+    }
 }

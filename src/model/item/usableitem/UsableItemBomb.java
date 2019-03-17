@@ -1,8 +1,8 @@
 package model.item.usableitem;
 
-import java.util.ArrayList;
-
 import model.combat.action.effect.DamageEffect;
+import model.item.Item;
+import model.item.ItemRarity;
 
 /**
  * A {@link UsableItem} that deals damage to the target. 
@@ -16,10 +16,22 @@ public class UsableItemBomb extends UsableItemImpl {
     private static final double DAMAGE = 20.0;
 
     /**
-     * 
+     * @param rarity
+     *  the rarity of the item. The higher it is, the higher is the damage dealt by the bomb
      */
-    public UsableItemBomb() {
-        super(ID, NAME, new ArrayList<>(), DESCRIPTION);
-        this.addActionEffect(new DamageEffect(DAMAGE));
+    public UsableItemBomb(final ItemRarity rarity) {
+        super(ID, NAME, rarity, DESCRIPTION);
+        this.addActionEffect(new DamageEffect(DAMAGE * this.getEffectsMultiplier().get(rarity)));
+    }
+
+    /**
+     * 
+     * @param rarity
+     *          the rarity of the bomb
+     * @return
+     *          a new item Bomb of the designed rarity
+     */
+    public static Item getNewInstance(final ItemRarity rarity) {
+        return new UsableItemBomb(rarity);
     }
 }
