@@ -54,7 +54,7 @@ public class UsableItemImpl extends AbstractItem implements UsableItem {
 
     @Override
     public final String toString() {
-        return this.getName() + ": " + effects.stream().map(e -> e.getLogMessage()).collect(Collectors.joining(", ", "[", "]")) + " | " + this.getDescription();
+        return this.getName() + ": " + effects.stream().map(e -> e.getDescription()).collect(Collectors.joining(", ", "[", "]")) + " | " + this.getDescription();
     }
 
     @Override
