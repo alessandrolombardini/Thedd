@@ -12,7 +12,7 @@ public class UsableItemPotion extends UsableItemImpl {
     private static final int ID = 0;
     private static final String NAME = "Potion";
     private static final String DESCRIPTION = "A mystical beverage that heal wounds";
-    private static final double HEALING_VALUE = 20.0;
+    private static final double HEALING_VALUE = 0.25;
     /**
      * Create an instance of a Potion item of a certain rarity.
      * 
