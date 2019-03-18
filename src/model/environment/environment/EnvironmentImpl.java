@@ -19,15 +19,9 @@ import model.environment.floor.FloorImpl;
  */
 public class EnvironmentImpl implements Environment {
 
-    /**
-     * This constant define the minimum number of rooms for each level. 
-     */
-    public static final int MIN_NUMBER_OF_ROOMS = 1;
-    /**
-     * This constant define the minimim number of level for the map.
-     */
-    public static final int MIN_NUMBER_OF_FLOORS = 1;
 
+    private static final int MIN_NUMBER_OF_ROOMS = 1;
+    private static final int MIN_NUMBER_OF_FLOORS = 1;
     private static final int NONE_FLOOR = -1;
 
     private final List<Floor> floors;
@@ -74,7 +68,7 @@ public class EnvironmentImpl implements Environment {
             throw new IllegalStateException();
         }
         this.actuaIndexFloor++;
-        this.floors.add(this.actuaIndexFloor, new FloorImpl(floorDetails, this.numberOfRooms));
+        this.floors.add(this.actuaIndexFloor, new FloorImpl(floorDetails, this.numberOfRooms, this.isCurrentLastFloor()));
     }
 
     @Override
@@ -96,6 +90,12 @@ public class EnvironmentImpl implements Environment {
                         .map(d -> this.floorDeatailsFactory.createFloorDetails(d, this.numberOfRooms, this.isNextLastFloor()))
                         .collect(Collectors.toList());
         return choices;
+    }
+
+    @Override
+    public final String toString() {
+        return "EnvironmentImpl [numberOfFloors=" + numberOfFloors + ", numberOfRooms=" + numberOfRooms
+                + ", actuaIndexFloor=" + actuaIndexFloor + "]";
     }
 
 }
