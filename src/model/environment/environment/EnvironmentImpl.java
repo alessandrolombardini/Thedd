@@ -19,9 +19,15 @@ import model.environment.floor.FloorImpl;
  */
 public class EnvironmentImpl implements Environment {
 
+    /**
+     * Minimun number of rooms.
+     */
+    public static final int MIN_NUMBER_OF_ROOMS = 1;
+    /**
+     * Minimum number of floors.
+     */
+    public static final int MIN_NUMBER_OF_FLOORS = 1;
 
-    private static final int MIN_NUMBER_OF_ROOMS = 1;
-    private static final int MIN_NUMBER_OF_FLOORS = 1;
     private static final int NONE_FLOOR = -1;
 
     private final List<Floor> floors;
@@ -64,7 +70,7 @@ public class EnvironmentImpl implements Environment {
     @Override
     public final void setNextFloor(final FloorDetails floorDetails) {
         Objects.requireNonNull(floorDetails);
-        if (!this.floors.get(this.actuaIndexFloor).checkToChangeFloor()) {
+        if (!this.floors.isEmpty() && !this.floors.get(this.actuaIndexFloor).checkToChangeFloor()) {
             throw new IllegalStateException();
         }
         this.actuaIndexFloor++;
