@@ -25,5 +25,22 @@ public interface Room {
      */
     List<RoomEvent> getEvents();
 
+    /**
+     * This method allows to add an event to the collection.
+     * 
+     * @param event that has to be added to the room
+     * @throws NullPointerExeption if event is null
+     */
+    void addEvent(RoomEvent event);
+
+    /**
+     * This method allows to remove an event by the room.
+     * 
+     * @param event that has to be removed
+     * @return true if the event has been removed
+     * @throws NullPointerExeption if event is null
+     */
+    boolean removeEvent(RoomEvent event);
+
 
 }
