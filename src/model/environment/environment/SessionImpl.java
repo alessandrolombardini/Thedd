@@ -20,7 +20,7 @@ public final class SessionImpl implements Session {
      * @param numberOfLevels      is the number of levels of game's map
      * @param numberOfRooms       is the number of rooms of each floor of the map
      */
-    private SessionImpl(final Optional<String> playerCharacterName, final int numberOfLevels, final int numberOfRooms) {
+    public SessionImpl(final Optional<String> playerCharacterName, final int numberOfLevels, final int numberOfRooms) {
         this.playerCharacter = CharacterFactory.createPlayerCharacter(playerCharacterName);
         this.environment = new EnvironmentImpl(numberOfLevels, numberOfRooms);
     }
