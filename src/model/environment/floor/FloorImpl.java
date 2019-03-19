@@ -16,7 +16,7 @@ import model.environment.room.RoomFactoryImpl;
  */
 public class FloorImpl implements Floor {
 
-    private static final int NONE_ROOMS = -1;
+    private static final int NONE_ROOM = -1;
 
     private final RoomFactory factory;
     private final List<Room> rooms;
@@ -40,7 +40,7 @@ public class FloorImpl implements Floor {
         this.factory = new RoomFactoryImpl(floorDetails, numberOfRooms, isLastFloor);
         this.rooms = new ArrayList<>();
         this.numberOfRooms = numberOfRooms;
-        this.currentRoomIndex = NONE_ROOMS;
+        this.currentRoomIndex = NONE_ROOM;
     }
 
     @Override
@@ -52,7 +52,7 @@ public class FloorImpl implements Floor {
     public final boolean nextRoom() {
         if (!this.hasNextRoom()) {
             throw new IllegalStateException();
-        } else if (!this.rooms.get(this.currentRoomIndex).checkToMoveOn()) {
+        } else if (!this.rooms.isEmpty() && !this.rooms.get(this.currentRoomIndex).checkToMoveOn()) {
             return false;
         }
         this.setNextRoom();
@@ -61,8 +61,8 @@ public class FloorImpl implements Floor {
 
     @Override
     public final Room getCurrentRoom() {
-        if (this.currentRoomIndex == NONE_ROOMS) {
-            throw new IllegalStateException();
+        if (this.currentRoomIndex == NONE_ROOM) {
+            throw new IllegalStateException("No room setted");
         }
         return this.rooms.get(this.currentRoomIndex);
     }
@@ -80,6 +80,30 @@ public class FloorImpl implements Floor {
     private void setNextRoom() {
         this.currentRoomIndex++;
         this.rooms.add(this.currentRoomIndex, this.factory.createRoom());
+    }
+
+    @Override
+    public final String toString() {
+        return "FloorImpl [rooms=" + rooms + ", numberOfRooms=" + numberOfRooms + ", currentRoomIndex="
+                + currentRoomIndex + "]";
+    }
+
+    @Override
+    public final int hashCode() {
+        return currentRoomIndex + numberOfRooms + rooms.hashCode();
+    }
+
+    @Override
+    public final boolean equals(final Object obj) {
+        if (!Objects.nonNull(obj) || !(obj instanceof FloorImpl) || obj != this) {
+            return false;
+        } 
+        final FloorImpl other = (FloorImpl) obj;
+        if (!(this.currentRoomIndex != other.currentRoomIndex) || !(this.numberOfRooms != other.numberOfRooms)
+                || !(this.rooms.equals(other.rooms))) {
+            return false;
+        }
+        return true;
     }
 
 }
