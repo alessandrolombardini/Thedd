@@ -1,8 +1,10 @@
 package model.environment.floor;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import model.environment.enums.Difficulty;
+import model.environment.room.RoomImpl;
 
 /**
  * This class represent the content of a future floor.
@@ -13,14 +15,14 @@ public final class FloorDetails {
     private final Difficulty difficulty;
     private final int numberOfEnemies;
     private final int numberOfTreasure;
-    private final int numberOfAction;
+    private final int numberOfInteractableAction;
 
     private FloorDetails(final Difficulty difficulty, final int numberOfEnemies, final int numberOfTreasure,
             final int numberOfAction) {
         this.difficulty = difficulty;
         this.numberOfEnemies = numberOfEnemies;
         this.numberOfTreasure = numberOfTreasure;
-        this.numberOfAction = numberOfAction;
+        this.numberOfInteractableAction = numberOfAction;
     }
 
     /**
@@ -47,7 +49,7 @@ public final class FloorDetails {
      * @return the number of contraptions
      */
     public int getNumberOfContraptions() {
-        return this.numberOfAction;
+        return this.numberOfInteractableAction;
     }
 
     /**
@@ -59,6 +61,32 @@ public final class FloorDetails {
         return this.difficulty;
     }
 
+    @Override
+    public String toString() {
+        return "FloorDetails [difficulty=" + difficulty + ", numberOfEnemies=" + numberOfEnemies + ", numberOfTreasure="
+                + numberOfTreasure + ", numberOfAction=" + numberOfInteractableAction + "]";
+    }
+
+    @Override
+    public int hashCode() {
+        return difficulty.getLevelOfDifficulty() + numberOfInteractableAction  + numberOfEnemies + numberOfTreasure;
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (!Objects.nonNull(obj) || !(obj instanceof FloorDetails)) {
+            return false;
+        } else if (obj == this) {
+            return true;
+        }
+        final FloorDetails other = (FloorDetails) obj;
+        if (!(difficulty == other.difficulty) || !(numberOfInteractableAction == other.numberOfInteractableAction)
+                || !(numberOfEnemies == other.numberOfEnemies) || !(numberOfTreasure == other.numberOfTreasure)) {
+            return false;
+        }
+        return true;
+    }
+
     /**
      * This class represent a FloorDetails builder.
      */
@@ -68,7 +96,6 @@ public final class FloorDetails {
         private Optional<Integer> numberOfEnemies;
         private Optional<Integer> numberOfTreasures;
         private Optional<Integer> numberOfContraptions;
-        private Optional<Boolean> isLastFloor;
 
         /**
          * FloorDetails builder' constructor.
@@ -127,7 +154,7 @@ public final class FloorDetails {
          * @throws IllegalStateException if not all arguments are valid
          */
         public FloorDetails build() throws IllegalStateException {
-            if (!this.difficulty.isPresent() || !this.isLastFloor.isPresent() || !this.numberOfContraptions.isPresent()
+            if (!this.difficulty.isPresent() || !this.numberOfContraptions.isPresent()
                     || !this.numberOfEnemies.isPresent() || !this.numberOfTreasures.isPresent()) {
                 throw new IllegalStateException();
             }
