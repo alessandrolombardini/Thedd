@@ -29,6 +29,10 @@ public class EnvironmentImpl implements Environment {
     public static final int MIN_NUMBER_OF_FLOORS = 1;
 
     private static final int NONE_FLOOR = -1;
+    private static final String ERROR_OUTOFRANGE = "Number of floors or rooms is out of range";
+    private static final String ERROR_LASTFLOOR = "No more floors available";
+    private static final String ERROR_UNCHANGEABLEFLOOR = "The actual floor is unchangeable";
+    private static final String ERROR_UNSETTEDFLOOR = "No floors setted";
 
     private final List<Floor> floors;
     private final FloorDetailsFactory floorDeatailsFactory;
@@ -45,7 +49,7 @@ public class EnvironmentImpl implements Environment {
      */
     public EnvironmentImpl(final int numberOfFloors, final int numberOfRooms) {
         if (numberOfFloors < MIN_NUMBER_OF_FLOORS || numberOfRooms < MIN_NUMBER_OF_ROOMS) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(ERROR_OUTOFRANGE);
         }
         this.floors = new ArrayList<>();
         this.floorDeatailsFactory = new FloorDetailsFactoryImpl();
@@ -57,7 +61,7 @@ public class EnvironmentImpl implements Environment {
     @Override
     public final Floor getCurrentFloor() {
         if (this.getCurrentFloorIndex() == NONE_FLOOR) {
-            throw new IllegalStateException();
+            throw new IllegalStateException(ERROR_UNSETTEDFLOOR);
         }
         return this.floors.get(this.actuaIndexFloor);
     }
@@ -71,7 +75,7 @@ public class EnvironmentImpl implements Environment {
     public final void setNextFloor(final FloorDetails floorDetails) {
         Objects.requireNonNull(floorDetails);
         if (!this.floors.isEmpty() && !this.floors.get(this.actuaIndexFloor).checkToChangeFloor()) {
-            throw new IllegalStateException();
+            throw new IllegalStateException(ERROR_UNCHANGEABLEFLOOR);
         }
         this.actuaIndexFloor++;
         this.floors.add(this.actuaIndexFloor, new FloorImpl(floorDetails, this.numberOfRooms, this.isCurrentLastFloor()));
@@ -82,14 +86,10 @@ public class EnvironmentImpl implements Environment {
         return this.getCurrentFloorIndex() == (this.numberOfFloors - 1);
     }
 
-    private boolean isNextLastFloor() {
-        return (this.getCurrentFloorIndex() + 1) == (this.numberOfFloors - 1);
-    }
-
     @Override
     public final List<FloorDetails> getFloorOptions() {
         if (this.isCurrentLastFloor()) {
-            throw new IllegalStateException();
+            throw new IllegalStateException(ERROR_LASTFLOOR);
         }
         final List<FloorDetails> choices;
         choices = Stream.of(Difficulty.values())
@@ -98,10 +98,13 @@ public class EnvironmentImpl implements Environment {
         return choices;
     }
 
+    private boolean isNextLastFloor() {
+        return (this.getCurrentFloorIndex() + 1) == (this.numberOfFloors - 1);
+    }
+
     @Override
     public final String toString() {
         return "EnvironmentImpl [numberOfFloors=" + numberOfFloors + ", numberOfRooms=" + numberOfRooms
                 + ", actuaIndexFloor=" + actuaIndexFloor + "]";
     }
-
 }
