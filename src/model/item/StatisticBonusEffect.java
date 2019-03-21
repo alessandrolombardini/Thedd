@@ -1,8 +1,12 @@
 package model.item;
 
-import model.combat.interfaces.ActionEffect;
+import model.combat.action.effect.ActionEffect;
 
-interface StatisticBonusEffect extends ActionEffect {
+/**
+ * 
+ *
+ */
+public interface StatisticBonusEffect extends ActionEffect {
 
     /**
      * Remove the bonus applied before.

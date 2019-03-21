@@ -5,13 +5,14 @@ import java.util.Optional;
 
 import model.character.BasicCharacter;
 import model.character.Statistic;
-import model.combat.interfaces.ActionActor;
+import model.combat.action.effect.AbstractActionEffect;
+import model.combat.actor.ActionActor;
 
 /**
  * An actionEffect which represent a bonus (or malus) given by an EquipableItem.
  *
  */
-public class EquipmentStatisticBonusEffect implements StatisticBonusEffect {
+public class EquipmentStatisticBonusEffect extends AbstractActionEffect implements StatisticBonusEffect {
 
     private Optional<BasicCharacter> target;
     private final Statistic targetStat;
@@ -54,22 +55,14 @@ public class EquipmentStatisticBonusEffect implements StatisticBonusEffect {
         }
     }
 
-
-    @Override
-    public void updateEffectByTarget(final ActionActor target) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void updateEffectBySource(final ActionActor source) {
-        // TODO Auto-generated method stub
-
-    }
-
     @Override
     public final String getLogMessage() {
         return targetStat.name() + ": " + effectValue;
+    }
+
+    @Override
+    public final String getDescription() {
+        return targetStat + ": " + (effectValue > 0 ? "+" : "-") + effectValue;
     }
 
 }
