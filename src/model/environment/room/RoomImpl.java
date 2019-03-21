@@ -17,9 +17,12 @@ public class RoomImpl implements Room {
 
     /**
      * RoomImpl constructor.
+     * 
      * @param events of the room
+     * @throws NullPointerException if events is null
      */
     public RoomImpl(final List<RoomEvent> events) {
+        Objects.requireNonNull(events);
         this.events = new ArrayList<>(events);
     }
 
@@ -48,6 +51,7 @@ public class RoomImpl implements Room {
 
     @Override
     public final void addAllEvents(final List<RoomEvent> events) {
+        Objects.requireNonNull(events);
         this.events.addAll(events);
     }
 
@@ -61,6 +65,7 @@ public class RoomImpl implements Room {
     }
 
     private boolean checkEventComplete(final RoomEvent event) {
+        Objects.requireNonNull(event);
         return event.isCompleted() || event.isSkippable();
     }
 
@@ -73,13 +78,9 @@ public class RoomImpl implements Room {
     public final boolean equals(final Object obj) {
         if (!Objects.nonNull(obj) || !(obj instanceof RoomImpl)) {
             return false;
-        } else if (obj == this) {
-            return true;
-        }
+        } 
         final RoomImpl other = (RoomImpl) obj;
-        if (!Objects.nonNull(other.events) && Objects.nonNull(this.events)) {
-            return false;
-        } else if (!this.events.equals(other.events)) {
+        if (!this.events.equals(other.events)) {
             return false;
         }
         return true;

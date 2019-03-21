@@ -37,6 +37,7 @@ public interface Room {
      * This method allows to add all events passed.
      * 
      * @param events that has to be added to the room
+     * @throws NullPointerException if events is null
      */
     void addAllEvents(List<RoomEvent> events);
 
