@@ -23,12 +23,17 @@ public class EnvironmentImpl implements Environment {
      * Minimun number of rooms.
      */
     public static final int MIN_NUMBER_OF_ROOMS = 1;
+
     /**
      * Minimum number of floors.
      */
     public static final int MIN_NUMBER_OF_FLOORS = 1;
 
-    private static final int NONE_FLOOR = -1;
+    /**
+     * Index of none floors.
+     */
+    public static final int NONE_FLOORS = -1;
+
     private static final String ERROR_OUTOFRANGE = "Number of floors or rooms is out of range";
     private static final String ERROR_LASTFLOOR = "No more floors available";
     private static final String ERROR_UNCHANGEABLEFLOOR = "The actual floor is unchangeable";
@@ -55,12 +60,12 @@ public class EnvironmentImpl implements Environment {
         this.floorDeatailsFactory = new FloorDetailsFactoryImpl();
         this.numberOfFloors = numberOfFloors;
         this.numberOfRooms = numberOfRooms;
-        this.actuaIndexFloor = NONE_FLOOR;
+        this.actuaIndexFloor = NONE_FLOORS;
     }
 
     @Override
     public final Floor getCurrentFloor() {
-        if (this.getCurrentFloorIndex() == NONE_FLOOR) {
+        if (this.getCurrentFloorIndex() == NONE_FLOORS) {
             throw new IllegalStateException(ERROR_UNSETTEDFLOOR);
         }
         return this.floors.get(this.actuaIndexFloor);
@@ -83,7 +88,7 @@ public class EnvironmentImpl implements Environment {
 
     @Override
     public final boolean isCurrentLastFloor() {
-        return this.getCurrentFloorIndex() == (this.numberOfFloors - 1);
+        return this.isLastFloor(this.getCurrentFloorIndex());
     }
 
     @Override
@@ -93,13 +98,14 @@ public class EnvironmentImpl implements Environment {
         }
         final List<FloorDetails> choices;
         choices = Stream.of(Difficulty.values())
-                        .map(d -> this.floorDeatailsFactory.createFloorDetails(d, this.numberOfRooms, this.isNextLastFloor()))
+                        .map(d -> this.floorDeatailsFactory.createFloorDetails(d, this.numberOfRooms, 
+                                  this.isLastFloor(this.getCurrentFloorIndex() + 1)))
                         .collect(Collectors.toList());
         return choices;
     }
 
-    private boolean isNextLastFloor() {
-        return (this.getCurrentFloorIndex() + 1) == (this.numberOfFloors - 1);
+    private boolean isLastFloor(final int index) {
+        return index == (this.numberOfFloors - 1);
     }
 
     @Override
