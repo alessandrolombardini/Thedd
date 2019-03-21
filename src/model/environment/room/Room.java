@@ -34,6 +34,13 @@ public interface Room {
     void addEvent(RoomEvent event);
 
     /**
+     * This method allows to add all events passed.
+     * 
+     * @param events that has to be added to the room
+     */
+    void addAllEvents(List<RoomEvent> events);
+
+    /**
      * This method allows to remove an event by the room.
      * 
      * @param event that has to be removed
@@ -41,6 +48,5 @@ public interface Room {
      * @throws NullPointerExeption if event is null
      */
     boolean removeEvent(RoomEvent event);
-
 
 }

@@ -1,5 +1,6 @@
 package model.environment.room;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -19,12 +20,19 @@ public class RoomImpl implements Room {
      * @param events of the room
      */
     public RoomImpl(final List<RoomEvent> events) {
-        this.events = Collections.unmodifiableList(events);
+        this.events = new ArrayList<>(events);
+    }
+
+    /**
+     * RoomImpl constructor.
+     */
+    public RoomImpl() {
+        this(new ArrayList<>());
     }
 
     @Override
     public final boolean checkToMoveOn() {
-        return events.stream().anyMatch(event -> !this.checkRoomEventCompleted(event));
+        return events.stream().allMatch(event -> this.checkEventComplete(event));
     }
 
     @Override
@@ -39,15 +47,20 @@ public class RoomImpl implements Room {
     }
 
     @Override
+    public final void addAllEvents(final List<RoomEvent> events) {
+        this.events.addAll(events);
+    }
+
+    @Override
     public final boolean removeEvent(final RoomEvent event) {
         Objects.requireNonNull(event);
-        if (this.checkRoomEventCompleted(event)) {
+        if (this.checkEventComplete(event)) {
             return this.events.remove(event);
         }
         return false;
     }
 
-    private boolean checkRoomEventCompleted(final RoomEvent event) {
+    private boolean checkEventComplete(final RoomEvent event) {
         return event.isCompleted() || event.isSkippable();
     }
 
