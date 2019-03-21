@@ -40,4 +40,10 @@ public interface Item {
      * @return the description of the item
      */
     String getDescription();
+
+    /**
+     * 
+     * @return the description of the effects
+     */
+    String getEffectDescription();
 }

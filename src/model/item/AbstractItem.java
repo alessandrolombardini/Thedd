@@ -106,4 +106,7 @@ public abstract class AbstractItem implements Item {
     @Override
     public abstract String toString();
 
+    @Override
+    public abstract String getEffectDescription();
+
 }
