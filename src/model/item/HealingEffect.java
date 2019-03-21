@@ -20,6 +20,7 @@ public final class HealingEffect extends AbstractActionEffect implements ActionE
      *          percentage value of health healed to to the target.
      */
     public HealingEffect(final double healingValue) {
+        super();
         if (healingValue < 0.0 || healingValue > 1.0) {
             throw new IllegalStateException("Healing value must be between 0.0 and 1.0, as it is a percentage");
         }
@@ -39,12 +40,12 @@ public final class HealingEffect extends AbstractActionEffect implements ActionE
 
     @Override
     public String getLogMessage() {
-        return " is healed for " + baseHealing + "% max PV.";
+        return " is healed for " + baseHealing * 100 + "% max PV.";
     }
 
     @Override
     public String getDescription() {
-        return null;
+        return "Heals for " + baseHealing * 100 + "% max PV.";
     }
 
 }
