@@ -48,7 +48,7 @@ public class RoomFactoryImpl implements RoomFactory {
      */
     public RoomFactoryImpl(final FloorDetails floorDetails, final int numberOfRooms, final boolean isLastFloor) {
         Objects.requireNonNull(floorDetails);
-        if (numberOfRooms <= EnvironmentImpl.MIN_NUMBER_OF_ROOMS) {
+        if (numberOfRooms < EnvironmentImpl.MIN_NUMBER_OF_ROOMS) {
             throw new IllegalArgumentException();
         }
         this.floorDetails = floorDetails;
@@ -90,9 +90,11 @@ public class RoomFactoryImpl implements RoomFactory {
 
     private Room createBossRoom() {
         // TODO: check if the change is up to date
+        System.out.println(RoomEvents.getCombat().getHostileEncounter());
         final CombatEvent combatEvent = RoomEvents.getCombat();
         final HostileEncounter hostileEncounter = combatEvent.getHostileEncounter();
         hostileEncounter.addNPC(CharacterFactory.createFinalBoss(this.getEnemiesMultiplier()));
+        System.out.println(RoomEvents.getCombat().getHostileEncounter());
         return new RoomImpl(Arrays.asList(combatEvent));
     }
 
