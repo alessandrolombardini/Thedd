@@ -76,9 +76,7 @@ public final class FloorDetails {
     public boolean equals(final Object obj) {
         if (!Objects.nonNull(obj) || !(obj instanceof FloorDetails)) {
             return false;
-        } else if (obj == this) {
-            return true;
-        }
+        } 
         final FloorDetails other = (FloorDetails) obj;
         if (!(difficulty == other.difficulty) || !(numberOfInteractableAction == other.numberOfInteractableAction)
                 || !(numberOfEnemies == other.numberOfEnemies) || !(numberOfTreasure == other.numberOfTreasure)) {
