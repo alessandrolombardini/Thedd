@@ -1,3 +1,4 @@
+
 package model.environment.floor;
 
 import java.util.ArrayList;
@@ -9,14 +10,20 @@ import model.environment.room.Room;
 import model.environment.room.RoomFactory;
 import model.environment.room.RoomFactoryImpl;
 
-
 /**
  * Implementation of {@link model.environment.Floor}.
  *
  */
 public class FloorImpl implements Floor {
 
-    private static final int NONE_ROOM = -1;
+    /**
+     * Index of none rooms.
+     */
+    public static final int NONE_ROOM = -1;
+
+    private static final String ERROR_OUTOFRANGE = "The number of rooms is out of range";
+    private static final String ERROR_UNSETTEDROOM = "No roooms are setted";
+    private static final String ERROR_UNVAILABLEROOM = "No room available";
 
     private final RoomFactory factory;
     private final List<Room> rooms;
@@ -35,7 +42,7 @@ public class FloorImpl implements Floor {
     public FloorImpl(final FloorDetails floorDetails, final int numberOfRooms, final boolean isLastFloor) {
         Objects.requireNonNull(floorDetails);
         if (numberOfRooms < EnvironmentImpl.MIN_NUMBER_OF_ROOMS) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(ERROR_OUTOFRANGE);
         }
         this.factory = new RoomFactoryImpl(floorDetails, numberOfRooms, isLastFloor);
         this.rooms = new ArrayList<>();
@@ -51,7 +58,7 @@ public class FloorImpl implements Floor {
     @Override
     public final boolean nextRoom() {
         if (!this.hasNextRoom()) {
-            throw new IllegalStateException();
+            throw new IllegalStateException(ERROR_UNVAILABLEROOM);
         } else if (!this.rooms.isEmpty() && !this.rooms.get(this.currentRoomIndex).checkToMoveOn()) {
             return false;
         }
@@ -62,7 +69,7 @@ public class FloorImpl implements Floor {
     @Override
     public final Room getCurrentRoom() {
         if (this.currentRoomIndex == NONE_ROOM) {
-            throw new IllegalStateException("No room setted");
+            throw new IllegalStateException(ERROR_UNSETTEDROOM);
         }
         return this.rooms.get(this.currentRoomIndex);
     }
@@ -95,12 +102,12 @@ public class FloorImpl implements Floor {
 
     @Override
     public final boolean equals(final Object obj) {
-        if (!Objects.nonNull(obj) || !(obj instanceof FloorImpl) || obj != this) {
+        if (!Objects.nonNull(obj) ||  !(obj instanceof FloorImpl)) {
             return false;
         } 
         final FloorImpl other = (FloorImpl) obj;
-        if (!(this.currentRoomIndex != other.currentRoomIndex) || !(this.numberOfRooms != other.numberOfRooms)
-                || !(this.rooms.equals(other.rooms))) {
+        if (this.currentRoomIndex != other.currentRoomIndex || this.numberOfRooms != other.numberOfRooms
+                || !this.rooms.equals(other.rooms)) {
             return false;
         }
         return true;
