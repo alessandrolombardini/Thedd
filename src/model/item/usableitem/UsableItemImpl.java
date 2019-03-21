@@ -3,7 +3,6 @@ package model.item.usableitem;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -22,7 +21,7 @@ import model.item.ItemRarityImpl;
 public class UsableItemImpl extends AbstractItem implements UsableItem {
 
     private static final Map<ItemRarity, Integer> EFFECT_MULTIPLIERS;
-    private final List<ActionEffect> effects;
+    private final Action action;
 
     static {
         EFFECT_MULTIPLIERS = new HashMap<>();
@@ -44,27 +43,32 @@ public class UsableItemImpl extends AbstractItem implements UsableItem {
      */
     public UsableItemImpl(final int id, final String name, final ItemRarity rarity, final String description) {
         super(id, name, rarity, description);
-        effects = new ArrayList<>();
+        action = new ActionImpl(null, this.getName(), new ArrayList<>(), 1, TargetType.EVERYONE, this.getDescription(), " used " + this.getName());
     }
 
     @Override
     public final Action getAction() {
-        return new ActionImpl(null, this.getName(), effects, 1, TargetType.EVERYONE, this.getDescription(), " used " + this.getName());
+        return action;
     }
 
     @Override
     public final String toString() {
-        return this.getName() + ": " + effects.stream().map(e -> e.getDescription()).collect(Collectors.joining(", ", "[", "]")) + " | " + this.getDescription();
+        return this.getName() + ": " + this.getEffectDescription() + " | " + this.getDescription();
     }
 
     @Override
     public final void addActionEffect(final ActionEffect effect) {
-        effects.add(effect);
+        action.addEffect(effect);
     }
 
     @Override
     public final Map<ItemRarity, Integer> getEffectsMultiplier() {
         return Collections.unmodifiableMap(EFFECT_MULTIPLIERS);
+    }
+
+    @Override
+    public final String getEffectDescription() {
+        return action.getEffects().stream().map(e -> e.getDescription()).collect(Collectors.joining("\n"));
     }
 
 }
