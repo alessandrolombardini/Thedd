@@ -20,12 +20,12 @@ import model.environment.floor.FloorImpl;
 public class EnvironmentImpl implements Environment {
 
     /**
-     * Minimun number of rooms.
+     * Minimum number of rooms in game.
      */
     public static final int MIN_NUMBER_OF_ROOMS = 1;
 
     /**
-     * Minimum number of floors.
+     * Minimum number of floors in game.
      */
     public static final int MIN_NUMBER_OF_FLOORS = 1;
 
@@ -83,12 +83,12 @@ public class EnvironmentImpl implements Environment {
             throw new IllegalStateException(ERROR_UNCHANGEABLEFLOOR);
         }
         this.actuaIndexFloor++;
-        this.floors.add(this.actuaIndexFloor, new FloorImpl(floorDetails, this.numberOfRooms, this.isCurrentLastFloor()));
+        this.floors.add(this.actuaIndexFloor, new FloorImpl(floorDetails));
     }
 
     @Override
     public final boolean isCurrentLastFloor() {
-        return this.isLastFloor(this.getCurrentFloorIndex());
+        return this.isIndexLastFloor(this.getCurrentFloorIndex());
     }
 
     @Override
@@ -99,12 +99,12 @@ public class EnvironmentImpl implements Environment {
         final List<FloorDetails> choices;
         choices = Stream.of(Difficulty.values())
                         .map(d -> this.floorDeatailsFactory.createFloorDetails(d, this.numberOfRooms, 
-                                  this.isLastFloor(this.getCurrentFloorIndex() + 1)))
+                                  this.isIndexLastFloor(this.getCurrentFloorIndex() + 1)))
                         .collect(Collectors.toList());
         return choices;
     }
 
-    private boolean isLastFloor(final int index) {
+    private boolean isIndexLastFloor(final int index) {
         return index == (this.numberOfFloors - 1);
     }
 
