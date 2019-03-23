@@ -30,7 +30,7 @@ public class RoomImpl implements Room {
      * RoomImpl constructor.
      */
     public RoomImpl() {
-        this(new ArrayList<>());
+        this(Collections.<RoomEvent>emptyList());
     }
 
     @Override
