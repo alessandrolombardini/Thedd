@@ -2,9 +2,7 @@ package model.environment.floor;
 
 import java.util.Objects;
 import java.util.Optional;
-
 import model.environment.enums.Difficulty;
-import model.environment.room.RoomImpl;
 
 /**
  * This class represent the content of a future floor.
@@ -13,16 +11,29 @@ import model.environment.room.RoomImpl;
 public final class FloorDetails {
 
     private final Difficulty difficulty;
+    private final int numberOfRooms;
     private final int numberOfEnemies;
     private final int numberOfTreasure;
     private final int numberOfInteractableAction;
+    private final boolean isBossFloor;
 
-    private FloorDetails(final Difficulty difficulty, final int numberOfEnemies, final int numberOfTreasure,
-            final int numberOfAction) {
+    private FloorDetails(final Difficulty difficulty, final int numberOfRooms, final int numberOfEnemies,
+                         final int numberOfTreasure, final int numberOfContraptions, final boolean isBossFloor) {
         this.difficulty = difficulty;
+        this.numberOfRooms = numberOfRooms;
         this.numberOfEnemies = numberOfEnemies;
         this.numberOfTreasure = numberOfTreasure;
-        this.numberOfInteractableAction = numberOfAction;
+        this.numberOfInteractableAction = numberOfContraptions;
+        this.isBossFloor = isBossFloor;
+    }
+
+    /**
+     * This method allows to get the number of rooms of the floor.
+     * 
+     * @return the number of rooms
+     */
+    public int getNumberOfRooms() {
+        return this.numberOfRooms;
     }
 
     /**
@@ -61,15 +72,26 @@ public final class FloorDetails {
         return this.difficulty;
     }
 
+    /**
+     * This method allows to know if this is the floor of the boss.
+     * 
+     * @return true if is the boss floor
+     */
+    public boolean isBossFloor() {
+        return this.isBossFloor;
+    }
+
     @Override
     public String toString() {
-        return "FloorDetails [difficulty=" + difficulty + ", numberOfEnemies=" + numberOfEnemies + ", numberOfTreasure="
-                + numberOfTreasure + ", numberOfAction=" + numberOfInteractableAction + "]";
+        return "FloorDetails [difficulty=" + difficulty + ", numberOfRooms=" + numberOfRooms + ", numberOfEnemies="
+                + numberOfEnemies + ", numberOfTreasure=" + numberOfTreasure + ", numberOfInteractableAction="
+                + numberOfInteractableAction + ", boosFloor=" + isBossFloor + "]";
     }
 
     @Override
     public int hashCode() {
-        return difficulty.getLevelOfDifficulty() + numberOfInteractableAction  + numberOfEnemies + numberOfTreasure;
+        return this.difficulty.getLevelOfDifficulty() + this.numberOfInteractableAction  + this.numberOfEnemies 
+                + this.numberOfTreasure + this.numberOfRooms + (this.isBossFloor() ? 1 : 0);
     }
 
     @Override
@@ -78,8 +100,9 @@ public final class FloorDetails {
             return false;
         } 
         final FloorDetails other = (FloorDetails) obj;
-        if (!(difficulty == other.difficulty) || !(numberOfInteractableAction == other.numberOfInteractableAction)
-                || !(numberOfEnemies == other.numberOfEnemies) || !(numberOfTreasure == other.numberOfTreasure)) {
+        if (!(this.difficulty == other.difficulty) || !(this.numberOfInteractableAction == other.numberOfInteractableAction)
+                || !(this.numberOfEnemies == other.numberOfEnemies) || !(this.numberOfTreasure == other.numberOfTreasure)
+                || !(this.numberOfRooms == other.numberOfRooms) || !(this.isBossFloor == other.isBossFloor)) {
             return false;
         }
         return true;
@@ -90,16 +113,29 @@ public final class FloorDetails {
      */
     public static class Builder {
 
+        private static final String ERROR_INVALIDPARAMS = "One or more params hasn't been setted or wasn't valid";
+        private static final int MIN_NUMBER_OF_ROOMS_PER_FLOOR = 1;
+        private static final int MIN_NUMBER_OF_CONTENTS_PER_FLOOR = 0;
+
         private Optional<Difficulty> difficulty;
+        private Optional<Integer> numberOfRooms;
         private Optional<Integer> numberOfEnemies;
         private Optional<Integer> numberOfTreasures;
         private Optional<Integer> numberOfContraptions;
+        private Optional<Boolean> isBossFloor;
 
         /**
          * FloorDetails builder' constructor.
          */
         public Builder() {
+            this.difficulty = Optional.empty();
+            this.numberOfRooms = Optional.empty();
+            this.numberOfEnemies = Optional.empty();
+            this.numberOfTreasures = Optional.empty();
+            this.numberOfContraptions = Optional.empty();
+            this.isBossFloor = Optional.empty();
         }
+
 
         /**
          * This method allows to set the difficulty.
@@ -113,13 +149,24 @@ public final class FloorDetails {
         }
 
         /**
+         * This method allows to set the number of rooms.
+         * 
+         * @param numberOfRooms to set
+         * @return this builder
+         */
+        public Builder rooms(final int numberOfRooms) {
+            this.numberOfContraptions = Optional.of(numberOfRooms).filter(n -> n >= MIN_NUMBER_OF_ROOMS_PER_FLOOR);
+            return this;
+        }
+
+        /**
          * This method allows to set the number of enemies.
          * 
          * @param numberOfEnemies to set
          * @return this builder
          */
         public Builder enemies(final int numberOfEnemies) {
-            this.numberOfEnemies = Optional.ofNullable(numberOfEnemies);
+            this.numberOfEnemies = Optional.of(numberOfEnemies).filter(n -> n >= MIN_NUMBER_OF_CONTENTS_PER_FLOOR);
             return this;
         }
 
@@ -130,7 +177,7 @@ public final class FloorDetails {
          * @return this builder
          */
         public Builder treasures(final int numberOfTreasures) {
-            this.numberOfTreasures = Optional.ofNullable(numberOfTreasures);
+            this.numberOfTreasures = Optional.of(numberOfTreasures).filter(n -> n >= MIN_NUMBER_OF_CONTENTS_PER_FLOOR);
             return this;
         }
 
@@ -141,7 +188,18 @@ public final class FloorDetails {
          * @return this builder
          */
         public Builder contraptions(final int numberOfContraptions) {
-            this.numberOfContraptions = Optional.ofNullable(numberOfContraptions);
+            this.numberOfContraptions = Optional.of(numberOfContraptions).filter(n -> n >= MIN_NUMBER_OF_CONTENTS_PER_FLOOR);
+            return this;
+        }
+
+        /**
+         * This method allows to set if this is the boos floor.
+         * 
+         * @param isBossFloor it should be true if this is the boss floor
+         * @return this builder
+         */
+        public Builder boss(final boolean isBossFloor) {
+            this.isBossFloor = Optional.of(isBossFloor);
             return this;
         }
 
@@ -153,11 +211,12 @@ public final class FloorDetails {
          */
         public FloorDetails build() throws IllegalStateException {
             if (!this.difficulty.isPresent() || !this.numberOfContraptions.isPresent()
-                    || !this.numberOfEnemies.isPresent() || !this.numberOfTreasures.isPresent()) {
-                throw new IllegalStateException();
+                    || !this.numberOfEnemies.isPresent() || !this.numberOfTreasures.isPresent()
+                    || !this.numberOfRooms.isPresent() || !this.isBossFloor.isPresent()) {
+                throw new IllegalStateException(ERROR_INVALIDPARAMS);
             }
-            return new FloorDetails(this.difficulty.get(), this.numberOfEnemies.get(), this.numberOfTreasures.get(),
-                    this.numberOfContraptions.get());
+            return new FloorDetails(this.difficulty.get(), this.numberOfRooms.get(), this.numberOfEnemies.get(),
+                                    this.numberOfTreasures.get(), this.numberOfContraptions.get(), this.isBossFloor.get());
         }
     }
 
