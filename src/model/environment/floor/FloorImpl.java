@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import model.environment.environment.EnvironmentImpl;
 import model.environment.room.Room;
 import model.environment.room.RoomFactory;
 import model.environment.room.RoomFactoryImpl;
@@ -19,10 +18,9 @@ public class FloorImpl implements Floor {
     /**
      * Index of none rooms.
      */
-    public static final int NONE_ROOM = -1;
+    public static final int NONE_ROOMS = -1;
 
-    private static final String ERROR_OUTOFRANGE = "The number of rooms is out of range";
-    private static final String ERROR_UNSETTEDROOM = "No roooms are setted";
+    private static final String ERROR_UNSETTEDROOM = "No rooms are setted";
     private static final String ERROR_UNVAILABLEROOM = "No room available";
 
     private final RoomFactory factory;
@@ -34,20 +32,14 @@ public class FloorImpl implements Floor {
      * Floor constructor.
      * 
      * @param floorDetails  contains the details of this floor
-     * @param numberOfRooms define the number of rooms of the floor
-     * @param isLastFloor   is true if this is the last floor
      * @throws NullPointerExecption    if roomFactory is null
-     * @throws IllegalArgumentExeption if floor doesn't contains enought rooms
      */
-    public FloorImpl(final FloorDetails floorDetails, final int numberOfRooms, final boolean isLastFloor) {
+    public FloorImpl(final FloorDetails floorDetails) {
         Objects.requireNonNull(floorDetails);
-        if (numberOfRooms < EnvironmentImpl.MIN_NUMBER_OF_ROOMS) {
-            throw new IllegalArgumentException(ERROR_OUTOFRANGE);
-        }
-        this.factory = new RoomFactoryImpl(floorDetails, numberOfRooms, isLastFloor);
+        this.factory = new RoomFactoryImpl(floorDetails);
+        this.numberOfRooms = floorDetails.getNumberOfRooms();
         this.rooms = new ArrayList<>();
-        this.numberOfRooms = numberOfRooms;
-        this.currentRoomIndex = NONE_ROOM;
+        this.currentRoomIndex = NONE_ROOMS;
     }
 
     @Override
@@ -68,7 +60,7 @@ public class FloorImpl implements Floor {
 
     @Override
     public final Room getCurrentRoom() {
-        if (this.currentRoomIndex == NONE_ROOM) {
+        if (this.currentRoomIndex == NONE_ROOMS) {
             throw new IllegalStateException(ERROR_UNSETTEDROOM);
         }
         return this.rooms.get(this.currentRoomIndex);
