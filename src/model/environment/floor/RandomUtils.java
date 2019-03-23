@@ -41,7 +41,7 @@ public final class RandomUtils {
      * @param var is the varianza
      * @return a random integer
      */
-    public static int getRandomGaussianNumber(final int mediumVal, final int var) {
+    public static int getRandomIntegerGaussianNumber(final int mediumVal, final int var) {
         return (int) Math.round(RandomUtils.RANDOM.nextGaussian() * Math.sqrt(mediumVal) + var);
     }
 
@@ -66,7 +66,7 @@ public final class RandomUtils {
     }
 
     /**
-     * This method allows to get a random integer between 0 and maxNumber.
+     * This method allows to get a random integer between 0 and maxNumber not excluded.
      * 
      * @param maxNumber is the max value gettable
      * @return an integer
