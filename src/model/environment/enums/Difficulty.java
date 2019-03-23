@@ -1,6 +1,7 @@
 package model.environment.enums;
 
-import java.util.Random;
+import java.util.Objects;
+import model.environment.floor.RandomUtils;
 
 /**
  * Representation of difficulty levels of this game.
@@ -23,10 +24,18 @@ public enum Difficulty {
      */
     HARD(3, "HARD");
 
+
+    private static final int MIN_LEVEL_OF_DIFFICULTY = 0;
+    private static final String ERROR_LOWDIFFICULTY = "The level of difficulty is too low";
+
     private final int levelOfDifficulty;
     private final String name;
 
     Difficulty(final int levelOfDifficulty, final String name) {
+        Objects.requireNonNull(name);
+        if (levelOfDifficulty < MIN_LEVEL_OF_DIFFICULTY) {
+            throw new IllegalArgumentException(ERROR_LOWDIFFICULTY);
+        }
         this.levelOfDifficulty = levelOfDifficulty;
         this.name = name;
     }
@@ -57,8 +66,7 @@ public enum Difficulty {
      * @return a random Difficulty
      */
     public static Difficulty getRandom() {
-        final Random rand = new Random(System.currentTimeMillis());
-        final int randomValue = rand.nextInt(Difficulty.values().length);
+        final int randomValue = RandomUtils.getRandomInteger(Difficulty.values().length - 1);
         return Difficulty.values()[randomValue];
     }
 }
