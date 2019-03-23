@@ -5,16 +5,17 @@ import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import model.character.BasicCharacter;
 import model.character.CharacterFactory;
 import model.character.EnemyCharacterType;
-import model.combat.common.HostileEncounter;
+import model.combat.logic.DefaultCombatLogic;
 import model.environment.enums.RoomContent;
-import model.environment.environment.EnvironmentImpl;
 import model.environment.floor.FloorDetails;
+import model.environment.floor.FloorImpl;
 import model.environment.floor.RandomUtils;
 import model.room_event.CombatEvent;
 import model.room_event.RoomEvent;
@@ -26,37 +27,44 @@ import model.room_event.RoomEvents;
  */
 public class RoomFactoryImpl implements RoomFactory {
 
-    private static final int MAX_INTERACTABLE_ACTIONS_PER_ROOM = 3;
-    private static final int PROBABILITY_OF_CONTRAPTION = 30;
-    private static final int PROBABILITY_OF_TREASURE = 70;
-    private static final int NONE_ROOM_INDEX = -1;
+    /**
+     * Mininum interactable actions in a room.
+     */
+    public static final int MIN_INTERACTABLE_ACTION_PER_ROOM = 0;
+
+    /**
+     * Maximum interactable actions in a room.
+     */
+    public static final int MAX_INTERACTABLE_ACTIONS_PER_ROOM = 3;
+
+    /**
+     * Maximim enemies in a room.
+     */
+    public static final int MAX_ENEMIES_PER_ROOM = 1;
+
+    /**
+     * Minimum enemies in a room.
+     */
+    public static final int MIN_ENEMIES_PER_ROOM = 0;
+
+    private static final String ERROR_NOMOREROOMS = "Rooms are over";
 
     private final EnumMap<RoomContent, Integer> remainingContent;
     private final FloorDetails floorDetails;
-    private final int numberOfRooms;
-    private final boolean isLastFloor;
     private int roomIndex;
 
     /**
      * RoomFactoryImpl constructor.
      * 
      * @param floorDetails  that describe the floor
-     * @param numberOfRooms is the number of rooms
-     * @param isLastFloor   is true if the current floor is the last
      * @throws NullPointerException if floorDetails is null
-     * @throws IllegalArgumentException if the number of the rooms is less than the minimum
      */
-    public RoomFactoryImpl(final FloorDetails floorDetails, final int numberOfRooms, final boolean isLastFloor) {
+    public RoomFactoryImpl(final FloorDetails floorDetails) {
         Objects.requireNonNull(floorDetails);
-        if (numberOfRooms < EnvironmentImpl.MIN_NUMBER_OF_ROOMS) {
-            throw new IllegalArgumentException();
-        }
         this.floorDetails = floorDetails;
-        this.numberOfRooms = numberOfRooms;
-        this.isLastFloor = isLastFloor;
         this.remainingContent = new EnumMap<RoomContent, Integer>(RoomContent.class);
         this.setRemainingContent();
-        this.roomIndex = NONE_ROOM_INDEX;
+        this.roomIndex = FloorImpl.NONE_ROOMS;
     }
 
     private void setRemainingContent() {
@@ -67,35 +75,32 @@ public class RoomFactoryImpl implements RoomFactory {
 
     @Override
     public final Room createRoom() {
-        if (this.roomIndex >= (this.numberOfRooms - 1)) {
-            throw new IllegalStateException();
+        if (this.roomIndex >= (this.floorDetails.getNumberOfRooms() - 1)) {
+            throw new IllegalStateException(ERROR_NOMOREROOMS);
         }
         return this.changeRoom();
     }
 
     private Room changeRoom() {
         this.roomIndex++;
-        if (this.isLastFloor && this.isLastRoom()) {
+        if (this.floorDetails.isBossFloor() && this.isLastRoom()) {
             return this.createBossRoom();
         } else if (this.isLastRoom()) {
             return this.createStairsRoom();
-        } else {
-            return this.createBaseRoom();
-        }
+        } 
+        return this.createBaseRoom();
     }
 
     private boolean isLastRoom() {
-        return this.roomIndex == (this.numberOfRooms - 1);
+        return this.roomIndex == (this.floorDetails.getNumberOfRooms() - 1);
     }
 
     private Room createBossRoom() {
-        // TODO: check if the change is up to date
-        System.out.println(RoomEvents.getCombat().getHostileEncounter());
-        final CombatEvent combatEvent = RoomEvents.getCombat();
-        final HostileEncounter hostileEncounter = combatEvent.getHostileEncounter();
-        hostileEncounter.addNPC(CharacterFactory.createFinalBoss(this.getEnemiesMultiplier()));
-        System.out.println(RoomEvents.getCombat().getHostileEncounter());
-        return new RoomImpl(Arrays.asList(combatEvent));
+        final BasicCharacter boss = CharacterFactory.createFinalBoss(this.getEnemiesMultiplier());
+        final CombatEvent event = RoomEvents.getCombat();
+        event.getHostileEncounter().addNPC(boss);
+        event.getHostileEncounter().setCombatLogic(new DefaultCombatLogic());
+        return new RoomImpl(Arrays.asList(event));
     }
 
     private Room createStairsRoom() {
@@ -104,50 +109,76 @@ public class RoomFactoryImpl implements RoomFactory {
 
     private Room createBaseRoom() {
         final List<RoomEvent> events = new ArrayList<>();
-        events.addAll(IntStream.range(0, this.getRandomQuantityOfInteractableAction())
-                               .boxed()
-                               .map(i -> RandomUtils.getRandomWeightedBoolean(PROBABILITY_OF_TREASURE, PROBABILITY_OF_CONTRAPTION))
-                               .map(b -> b ? RoomEvents.getTreasureChest() : RoomEvents.getTreasureChest())
-                               .collect(Collectors.toList()));
-        final List<BasicCharacter> characters = IntStream.range(0, this.getRandomQuantityOfEnemies())
-                                                         .boxed()
-                                                         .map(i -> CharacterFactory.createEnemy(EnemyCharacterType.getRandom(), this.getEnemiesMultiplier()))
-                                                         .collect(Collectors.toList());
         final CombatEvent combatEvent = RoomEvents.getCombat();
-        final HostileEncounter hostileEncounter = combatEvent.getHostileEncounter();
-        characters.forEach(c -> hostileEncounter.addNPC(c));
+        IntStream.range(0, this.getQuantityOfEnemies())
+                 .boxed()
+                 .map(i -> CharacterFactory.createEnemy(EnemyCharacterType.getRandom(), this.getEnemiesMultiplier()))
+                 .forEach(c -> combatEvent.getHostileEncounter().addNPC(c));
+        combatEvent.getHostileEncounter().setCombatLogic(new DefaultCombatLogic());
         events.add(combatEvent);
+        events.addAll(IntStream.range(0, getQuantityOfInteractableAction().get(RoomContent.CONTRAPTION))
+                               .boxed()
+                               .map(b -> RoomEvents.getContraption())
+                               .collect(Collectors.toList()));
+        events.addAll(IntStream.range(0, getQuantityOfInteractableAction().get(RoomContent.TREASURE))
+                               .boxed()
+                               .map(b -> RoomEvents.getTreasureChest())
+                               .collect(Collectors.toList()));
         return new RoomImpl(events);
     }
 
-    private int getRamainingInteractableActionAvailable() {
-        return this.remainingContent.get(RoomContent.TREASURE) + this.remainingContent.get(RoomContent.CONTRAPTION);
-    }
 
-    private int getRemainingBaseRooms() {
-        return this.numberOfRooms - (this.roomIndex + 1) - 1;
-    }
-
-    private int getRandomQuantityOfEnemies() {
-        if (this.remainingContent.get(RoomContent.ENEMY) >= this.getRemainingBaseRooms() || RandomUtils.getRandomBoolean()) {
-            return 1;
+    private int getQuantityOfEnemies() {
+        if (this.remainingContent.get(RoomContent.ENEMY) >= this.getRemainingBaseRoomsToSet()
+                || RandomUtils.getRandomBoolean()) {
+            return MAX_ENEMIES_PER_ROOM;
         }
-        return 0;
+        return MIN_ENEMIES_PER_ROOM;
     }
 
-    private int getRandomQuantityOfInteractableAction() {
-        final int freePlacesAfterThisRoom = MAX_INTERACTABLE_ACTIONS_PER_ROOM * (this.getRemainingBaseRooms() - 1);
-        if (this.getRamainingInteractableActionAvailable() > freePlacesAfterThisRoom || RandomUtils.getRandomBoolean()) {
-            final int minContraption = this.getRamainingInteractableActionAvailable()
-                    - (freePlacesAfterThisRoom * MAX_INTERACTABLE_ACTIONS_PER_ROOM);
-            final int maxContraption = Integer.min(MAX_INTERACTABLE_ACTIONS_PER_ROOM, this.getRamainingInteractableActionAvailable());
-            return RandomUtils.getRandomIntegerBetweenIntegers(minContraption, maxContraption);
+    private EnumMap<RoomContent, Integer> getQuantityOfInteractableAction() {
+        final EnumMap<RoomContent, Integer> content = new EnumMap<RoomContent, Integer>(RoomContent.class);
+        content.put(RoomContent.CONTRAPTION, 0);
+        content.put(RoomContent.TREASURE, 0);
+        final int maxInteractableSettableAfterNextRoom = MAX_INTERACTABLE_ACTIONS_PER_ROOM * (this.getRemainingBaseRoomsToSet() - 1);
+        /* If the number of remaining interactable is high maybe it has to set in this room many of them to be sure to set all*/
+        if (this.getRamainingInteractableToSet() > maxInteractableSettableAfterNextRoom || RandomUtils.getRandomBoolean()) {
+            int minInteractable = 0;
+            if (this.getRamainingInteractableToSet() > maxInteractableSettableAfterNextRoom) {
+                minInteractable = this.getRamainingInteractableToSet() - maxInteractableSettableAfterNextRoom;
+            }
+            final int maxInteractable = Integer.min(MAX_INTERACTABLE_ACTIONS_PER_ROOM, this.getRamainingInteractableToSet());
+            final int numberOfInteractable =  RandomUtils.getRandomIntegerBetweenIntegers(minInteractable, maxInteractable);
+            IntStream.range(0, numberOfInteractable)
+                     .boxed()
+                     .map(i -> getAvailableRandomInteractableAction().get())
+                     .forEach(roomContent -> content.compute(roomContent, (k, v) -> v + 1));
         }
-        return 0;
+        this.remainingContent.compute(RoomContent.CONTRAPTION, (k, v) -> v - content.get(RoomContent.CONTRAPTION));
+        this.remainingContent.compute(RoomContent.TREASURE, (k, v) -> v - content.get(RoomContent.TREASURE));
+        return content;
+    }
+
+    private Optional<RoomContent> getAvailableRandomInteractableAction() {
+        Optional<RoomContent> contentType = Optional.empty();
+        if (this.remainingContent.get(RoomContent.CONTRAPTION) > 0 && RandomUtils.getRandomBoolean()) {
+            contentType = Optional.of(RoomContent.CONTRAPTION);
+        } else if (this.remainingContent.get(RoomContent.TREASURE) > 0 && !contentType.isPresent()) {
+            contentType = Optional.of(RoomContent.TREASURE);
+        }
+        return contentType;
     }
 
     private int getEnemiesMultiplier() {
         return this.floorDetails.getDifficult().getLevelOfDifficulty();
+    }
+
+    private int getRamainingInteractableToSet() {
+        return this.remainingContent.get(RoomContent.TREASURE) + this.remainingContent.get(RoomContent.CONTRAPTION);
+    }
+
+    private int getRemainingBaseRoomsToSet() {
+        return this.floorDetails.getNumberOfRooms() - (this.roomIndex + 1) - 1;
     }
 
 }
