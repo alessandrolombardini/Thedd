@@ -7,7 +7,7 @@ import model.combat.actor.ActionActor;
 import model.combat.action.effect.ActionEffect;
 
 /**
- * ActionEffect which heals the target.
+ * {@link model.combat.action.effect.ActionEffect} which heals the target by a percentage of his health.
  *
  */
 public final class HealingEffect extends AbstractActionEffect implements ActionEffect {
@@ -15,7 +15,7 @@ public final class HealingEffect extends AbstractActionEffect implements ActionE
     private final double baseHealing;
 
     /**
-     * 
+     * Construct a new effect that heals a percentage of the target health.
      * @param healingValue
      *          percentage value of health healed to to the target.
      */
