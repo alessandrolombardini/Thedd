@@ -13,7 +13,7 @@ import model.combat.modifier.Modifier;
  * to every actions of an {@link model.combat.actor.ActionActor} with the {@link model.combat.tag.Tag}
  * specified in the modifier.
  */
-public class ModifierAdderEffect extends AbstractActionEffect implements ActionEffect, StatisticBonusEffect {
+public class ModifierAdderEffect extends AbstractActionEffect implements ActionEffect, StatisticChangerEffect {
 
     private final Modifier modifier;
     private final boolean isPermanent;
