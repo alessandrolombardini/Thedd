@@ -17,7 +17,7 @@ import model.combat.actor.ActionActor;
 import model.item.AbstractItem;
 import model.item.ItemRarity;
 import model.item.ItemRarityImpl;
-import model.item.StatisticBonusEffect;
+import model.item.StatisticChangerEffect;
 
 /**
  * Implementation of {@link model.item.equipableitem.EquipableItem}.
@@ -79,7 +79,7 @@ public class EquipableItemImpl extends AbstractItem implements EquipableItem {
     @Override
     public final void onUnequip(final ActionActor equipper) {
         additionalActions.forEach(equipper::removeAction);
-        providedEffects.stream().filter(e -> e instanceof StatisticBonusEffect).forEach(e -> ((StatisticBonusEffect) e).removeBonus());
+        providedEffects.stream().filter(e -> e instanceof StatisticChangerEffect).forEach(e -> ((StatisticChangerEffect) e).removeBonus());
     }
 
     @Override
