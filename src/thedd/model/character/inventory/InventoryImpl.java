@@ -66,4 +66,21 @@ public class InventoryImpl implements Inventory {
         return this.items.get(item);
     }
 
+    @Override
+    public final int hashCode() {
+        if (hash == 0) {
+            hash = items.hashCode();
+        }
+        return hash;
+    }
+
+    @Override
+    public final boolean equals(final Object obj) {
+        if (obj instanceof InventoryImpl) {
+            final InventoryImpl other = (InventoryImpl) obj;
+            return this.getAll().equals(other.getAll());
+        }
+        return false;
+    }
+
 }

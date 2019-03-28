@@ -22,6 +22,8 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
     private final Inventory inventory;
     private final List<EquipableItem> equipment;
 
+    private int hash;
+
     /**
      * GenericCharacter's constructor.
      * 
@@ -117,4 +119,21 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
                 + this.inventory.toString();
     }
 
+    @Override
+    public final int hashCode() {
+        if (hash == 0) {
+            hash = equipment.hashCode() ^ inventory.hashCode() ^ stat.hashCode();
+        }
+        return hash;
+    }
+
+    @Override
+    public final boolean equals(final Object obj) {
+        if (obj instanceof BasicCharacterImpl) {
+            final BasicCharacterImpl other = (BasicCharacterImpl) obj;
+            return inventory.equals(other.getInventory()) && stat.equals(other.getAllStat())
+                    && equipment.equals(other.getEquippedItems());
+        }
+        return false;
+    }
 }
