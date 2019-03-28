@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
-import java.util.Optional;
-
 import model.combat.implementations.AbstractAutomaticActor;
 import model.item.EquipableItem;
 import model.item.EquipableItemType;
@@ -56,19 +54,18 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
         final EnumMap<Statistic, StatValues> ret = new EnumMap<>(Statistic.class);
         this.stat.entrySet().forEach(el -> {
             ret.put(el.getKey(), el.getValue());
-        }); // Defence copy
+        }); // done a defence copy
         return ret;
     }
 
     @Override
-    public final boolean equipItem(final int itemId) {
-        final Optional<Item> it = this.inventory.getItem(itemId);
-        if (it.isPresent() && it.get().isEquipable()) {
-            final EquipableItem equip = (EquipableItem) it.get();
-            if (checkEquipment(equip)) {
-                this.equipment.add((EquipableItem) it.get());
-                equip.onEquip(this);
-                this.inventory.removeItem(it.get());
+    public final boolean equipItem(final Item item) {
+        if (item.isEquipable()) {
+            final EquipableItem equipItem = (EquipableItem) item;
+            if (checkEquipment(equipItem)) {
+                this.equipment.add((EquipableItem) equipItem);
+                equipItem.onEquip(this);
+                this.inventory.removeItem(item);
             }
             return true;
         }
@@ -76,13 +73,10 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
     }
 
     @Override
-    public final void unequipItem(final int itemId) {
-        for (int i = 0; i < this.equipment.size(); i++) {
-            if (this.equipment.get(i).getId() == itemId) {
-                this.equipment.get(i).onUnequip(this);
-                this.inventory.addItem(this.equipment.remove(i));
-            }
-        }
+    public final void unequipItem(final Item item) {
+        final int index = equipment.indexOf(item);
+        this.equipment.get(index).onUnequip(this);
+        this.inventory.addItem(equipment.remove(index));
     }
 
     @Override
