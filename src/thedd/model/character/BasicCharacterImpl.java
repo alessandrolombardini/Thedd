@@ -1,4 +1,4 @@
-package model.character;
+package thedd.model.character;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,6 +10,10 @@ import model.combat.implementations.AbstractAutomaticActor;
 import model.item.EquipableItem;
 import model.item.EquipableItemType;
 import model.item.Item;
+import thedd.model.character.inventory.Inventory;
+import thedd.model.character.inventory.InventoryImpl;
+import thedd.model.character.statistics.StatValues;
+import thedd.model.character.statistics.Statistic;
 
 /**
  * Class that define a Generic Character.
@@ -105,7 +109,7 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
     }
 
     @Override
-    public final String getLog() {
+    public final String toString() {
         return "Name: " + this.getName() + " - Stat: " + this.stat + "\nEquipment: " + this.equipment + " - Inventory: "
                 + this.inventory.toString();
     }

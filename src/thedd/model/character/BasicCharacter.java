@@ -1,10 +1,13 @@
-package model.character;
+package thedd.model.character;
 
 import java.util.EnumMap;
 import java.util.List;
 
 import model.combat.interfaces.AutomaticActionActor;
 import model.item.Item;
+import thedd.model.character.inventory.Inventory;
+import thedd.model.character.statistics.StatValues;
+import thedd.model.character.statistics.Statistic;
 
 /**
  * Interface that define the characters.
@@ -63,11 +66,4 @@ public interface BasicCharacter extends AutomaticActionActor {
      * @return a list of items
      */
     List<? extends Item> getEquippedItems();
-
-    /**
-     * String representation of the Character.
-     * 
-     * @return the String that describes the character.
-     */
-    String getLog();
 }
