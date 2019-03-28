@@ -1,7 +1,6 @@
 package thedd.model.character.inventory;
 
 import java.util.List;
-import java.util.Optional;
 
 import model.item.Item;
 
@@ -9,14 +8,6 @@ import model.item.Item;
  * Interface that manage a collection of items.
  */
 public interface Inventory {
-
-    /**
-     * This method returns the specified item of the Inventory.
-     * 
-     * @param id the id of the object
-     * @return the item or null if is not present
-     */
-    Optional<Item> getItem(int id);
 
     /**
      * This method add the passed item in the Inventory.
@@ -33,7 +24,7 @@ public interface Inventory {
     void removeItem(Item item);
 
     /**
-     * Returns an unmodifiable list of all the items of character's inventory.
+     * Returns a list of character inventory's items.
      * 
      * @return a List of items.
      */
@@ -42,8 +33,8 @@ public interface Inventory {
     /**
      * Return the quantity of the specified Item.
      * 
-     * @param item the item
-     * @return the quantity of this Item
+     * @param item the Item
+     * @return the quantity in the inventory of this Item
      */
     int getQuantity(Item item);
 }

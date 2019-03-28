@@ -4,9 +4,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
-
 import model.item.Item;
 
 /**
@@ -17,20 +15,13 @@ public class InventoryImpl implements Inventory {
 
     private final Map<Item, Integer> items;
 
+    private int hash;
+
     /**
      * InventoryImpl constructor.
      */
     public InventoryImpl() {
         this.items = new HashMap<>();
-    }
-
-    @Override
-    public final Optional<Item> getItem(final int id) {
-        if (findItem(id).isPresent()) {
-            return Optional.of(findItem(id).get());
-        } else {
-            return Optional.empty();
-        }
     }
 
     @Override
@@ -48,11 +39,6 @@ public class InventoryImpl implements Inventory {
         if (this.items.get(item) <= 0) {
             this.items.remove(item);
         }
-    }
-
-    private Optional<Item> findItem(final int id) {
-        return this.items.entrySet().stream().filter(en -> en.getKey().getId() == id).map(en -> en.getKey())
-                .findFirst();
     }
 
     @Override
@@ -79,4 +65,5 @@ public class InventoryImpl implements Inventory {
         }
         return this.items.get(item);
     }
+
 }
