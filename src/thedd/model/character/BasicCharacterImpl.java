@@ -52,6 +52,15 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
     }
 
     @Override
+    public final EnumMap<Statistic, StatValues> getAllStat() {
+        final EnumMap<Statistic, StatValues> ret = new EnumMap<>(Statistic.class);
+        this.stat.entrySet().forEach(el -> {
+            ret.put(el.getKey(), el.getValue());
+        }); // Defence copy
+        return ret;
+    }
+
+    @Override
     public final boolean equipItem(final int itemId) {
         final Optional<Item> it = this.inventory.getItem(itemId);
         if (it.isPresent() && it.get().isEquipable()) {
@@ -113,4 +122,5 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
         return "Name: " + this.getName() + " - Stat: " + this.stat + "\nEquipment: " + this.equipment + " - Inventory: "
                 + this.inventory.toString();
     }
+
 }

@@ -39,6 +39,13 @@ public interface BasicCharacter extends AutomaticActionActor {
     StatValues getStat(Statistic stat);
 
     /**
+     * This method returns all the character's status.
+     * 
+     * @return an EnumMap that contains the values of the statistic.
+     */
+    EnumMap<Statistic, StatValues> getAllStat();
+
+    /**
      * This method return the character's inventory.
      * 
      * @return the character's inventory
