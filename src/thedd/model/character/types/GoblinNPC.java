@@ -1,6 +1,11 @@
-package model.character;
+package thedd.model.character.types;
 
 import java.util.EnumMap;
+
+import thedd.model.character.BasicCharacterImpl;
+import thedd.model.character.statistics.StatValues;
+import thedd.model.character.statistics.StatValuesImpl;
+import thedd.model.character.statistics.Statistic;
 
 /**
  * Class that implements a Goblin Non-Player Character.

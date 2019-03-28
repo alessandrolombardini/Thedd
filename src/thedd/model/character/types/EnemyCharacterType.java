@@ -1,4 +1,4 @@
-package model.character;
+package thedd.model.character.types;
 
 import java.util.Random;
 

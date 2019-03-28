@@ -1,5 +1,6 @@
-package model.character;
+package thedd.model.character.inventory;
 
+import java.util.List;
 import java.util.Optional;
 
 import model.item.Item;
@@ -30,4 +31,19 @@ public interface Inventory {
      * @param item theItem that is going to be removed
      */
     void removeItem(Item item);
+
+    /**
+     * Returns an unmodifiable list of all the items of character's inventory.
+     * 
+     * @return a List of items.
+     */
+    List<Item> getAll();
+
+    /**
+     * Return the quantity of the specified Item.
+     * 
+     * @param item the item
+     * @return the quantity of this Item
+     */
+    int getQuantity(Item item);
 }

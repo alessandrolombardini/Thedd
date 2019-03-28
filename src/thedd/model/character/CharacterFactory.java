@@ -1,6 +1,12 @@
-package model.character;
+package thedd.model.character;
 
 import java.util.Optional;
+
+import thedd.model.character.types.DarkDestructorNPC;
+import thedd.model.character.types.EnemyCharacterType;
+import thedd.model.character.types.GoblinNPC;
+import thedd.model.character.types.HeadlessNPC;
+import thedd.model.character.types.PlayerCharacter;
 
 /**
  * Implementation of a character factory.
