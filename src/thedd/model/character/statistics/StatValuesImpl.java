@@ -1,4 +1,4 @@
-package model.character;
+package thedd.model.character.statistics;
 
 /**
  * This class represents statistics' pair of current and max value.

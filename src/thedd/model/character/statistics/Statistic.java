@@ -1,4 +1,4 @@
-package model.character;
+package thedd.model.character.statistics;
 
 /**
  * Representation of the statistics of game's characters.
