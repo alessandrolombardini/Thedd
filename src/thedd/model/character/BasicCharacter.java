@@ -56,7 +56,7 @@ public interface BasicCharacter extends AutomaticActionActor {
      * This method equip the specified item.
      * 
      * @param item the item to be equipped.
-     * @return true if the item is correctly equipped, otherwise false.
+     * @return true if the item is successfully equipped, otherwise false.
      */
     boolean equipItem(Item item);
 
@@ -64,8 +64,9 @@ public interface BasicCharacter extends AutomaticActionActor {
      * This method remove the item from the equipped ones.
      * 
      * @param item the item to be removed.
+     * @return true if the item is successfully unequipped, otherwise false.
      */
-    void unequipItem(Item item);
+    boolean unequipItem(Item item);
 
     /**
      * This method returns a list with all the equipped items.

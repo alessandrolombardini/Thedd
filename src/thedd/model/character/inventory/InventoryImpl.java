@@ -14,7 +14,6 @@ import model.item.Item;
 public class InventoryImpl implements Inventory {
 
     private final Map<Item, Integer> items;
-
     private int hash;
 
     /**
@@ -25,20 +24,31 @@ public class InventoryImpl implements Inventory {
     }
 
     @Override
-    public final void addItem(final Item item) {
+    public final boolean addItem(final Item item) {
+        if (item == null) {
+            return false;
+        }
         if (this.items.containsKey(item)) {
             this.items.put(item, this.items.get(item) + 1);
         } else {
             this.items.put(item, 1);
         }
+        return true;
     }
 
     @Override
-    public final void removeItem(final Item item) {
+    public final boolean removeItem(final Item item) {
+        if (item == null) {
+            return false;
+        }
+        if (!this.items.containsKey(item)) {
+            return false;
+        }
         this.items.put(item, this.items.get(item) - 1);
         if (this.items.get(item) <= 0) {
             this.items.remove(item);
         }
+        return true;
     }
 
     @Override
@@ -60,10 +70,14 @@ public class InventoryImpl implements Inventory {
 
     @Override
     public final int getQuantity(final Item item) {
-        if (this.items.get(item) == null) {
-            return 0;
+        if (item == null) {
+            throw new IllegalArgumentException();
         }
-        return this.items.get(item);
+        if (!this.items.containsKey(item)) {
+            return 0;
+        } else {
+            return this.items.get(item);
+        }
     }
 
     @Override
@@ -82,5 +96,4 @@ public class InventoryImpl implements Inventory {
         }
         return false;
     }
-
 }

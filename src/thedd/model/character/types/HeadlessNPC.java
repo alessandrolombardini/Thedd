@@ -1,7 +1,6 @@
 package thedd.model.character.types;
 
 import java.util.EnumMap;
-
 import thedd.model.character.BasicCharacterImpl;
 import thedd.model.character.statistics.StatValues;
 import thedd.model.character.statistics.StatValuesImpl;
@@ -11,15 +10,13 @@ import thedd.model.character.statistics.Statistic;
  * Class that implements a Headless Non-Player Character.
  */
 public class HeadlessNPC extends BasicCharacterImpl {
-
-    // Questi valori sono messi a caso e credo non abbiano assolutamente senso.
     private static final int BASIC_PV = 50;
     private static final int BASIC_COS = 30;
     private static final int BASIC_FOR = 30;
     private static final int BASIC_RIFL = 20;
     private static final String NAME = "Headless";
     private static final int DEFAULT_MULTIPLIER = 1;
-    private final EnumMap<Statistic, StatValues> basicStat = new EnumMap<Statistic, StatValues>(Statistic.class);
+    private final EnumMap<Statistic, StatValues> basicStat;
 
     /**
      * Headless' constructor.
@@ -28,6 +25,7 @@ public class HeadlessNPC extends BasicCharacterImpl {
      */
     public HeadlessNPC(final int multiplier) {
         super(NAME);
+        basicStat = new EnumMap<Statistic, StatValues>(Statistic.class);
         if (multiplier > 0) {
             initStat(multiplier);
         } else {

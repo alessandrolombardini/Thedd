@@ -11,15 +11,13 @@ import thedd.model.character.statistics.Statistic;
  * Class that implements a Goblin Non-Player Character.
  */
 public class GoblinNPC extends BasicCharacterImpl {
-
-    // Questi valori sono messi a caso e credo non abbiano assolutamente senso.
     private static final int BASIC_PV = 50;
     private static final int BASIC_COS = 30;
     private static final int BASIC_FOR = 30;
     private static final int BASIC_RIFL = 20;
     private static final String NAME = "Goblin";
     private static final int DEFAULT_MULTIPLIER = 1;
-    private final EnumMap<Statistic, StatValues> basicStat = new EnumMap<Statistic, StatValues>(Statistic.class);
+    private final EnumMap<Statistic, StatValues> basicStat;
 
     /**
      * Goblin's constructor.
@@ -28,6 +26,7 @@ public class GoblinNPC extends BasicCharacterImpl {
      */
     public GoblinNPC(final int multiplier) {
         super(NAME);
+        basicStat = new EnumMap<Statistic, StatValues>(Statistic.class);
         if (multiplier > 0) {
             initStat(multiplier);
         } else {

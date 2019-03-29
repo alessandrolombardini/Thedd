@@ -13,42 +13,39 @@ import thedd.model.character.types.PlayerCharacter;
  */
 public final class CharacterFactory {
 
-    private static final String DEFAULT_PC_NAME = "Player";
-
     private CharacterFactory() {
     }
 
     /**
      * Method that create a new PlayerCharacter.
+     * 
      * @param name chosen by the player.
-     * @return a new Player Character
+     * @return a Player Character.
      */
     public static BasicCharacter createPlayerCharacter(final Optional<String> name) {
-        if (name.isPresent()) {
-            return new PlayerCharacter(name.get());
-        }
-        return new PlayerCharacter(DEFAULT_PC_NAME);
+        return new PlayerCharacter(name);
     }
 
     /**
      * Method that create a new Enemy Non-Player Character.
-     * @param type the type of the enemy.
-     * @param multiplier 
-     * @return a new specified Non-Player Character
+     * 
+     * @param type       the type of the enemy.
+     * @param multiplier a rate multiplied to basic statistics.
+     * @return a Non-Player Character.
      */
     public static BasicCharacter createEnemy(final EnemyCharacterType type, final int multiplier) {
-        switch (type) {
-        case GOBLIN:
+        if (type.equals(EnemyCharacterType.GOBLIN)) {
             return new GoblinNPC(multiplier);
-        default:
+        } else {
             return new HeadlessNPC(multiplier);
         }
     }
 
     /**
      * Method that create a new Boss Character.
-     * @param multiplier 
-     * @return a new boss.
+     * 
+     * @param multiplier a rate multiplied to basic statistics.
+     * @return a Boss Non-PlayerCharacter.
      */
     public static BasicCharacter createFinalBoss(final int multiplier) {
         return new DarkDestructorNPC(multiplier);

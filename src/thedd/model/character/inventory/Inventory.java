@@ -13,15 +13,17 @@ public interface Inventory {
      * This method add the passed item in the Inventory.
      * 
      * @param item the item to add
+     * @return true if the addiction went successful.
      */
-    void addItem(Item item);
+    boolean addItem(Item item);
 
     /**
      * This method remove the specified item from the Inventory.
      * 
      * @param item theItem that is going to be removed
+     * @return true if the removal went successful.
      */
-    void removeItem(Item item);
+    boolean removeItem(Item item);
 
     /**
      * Returns a list of character inventory's items.

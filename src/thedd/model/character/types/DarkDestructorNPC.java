@@ -11,15 +11,13 @@ import thedd.model.character.statistics.Statistic;
  * Class that implements a DarkDestructor Non-Player Character.
  */
 public class DarkDestructorNPC extends BasicCharacterImpl {
-
-    // Questi valori sono messi a caso e credo non abbiano assolutamente senso.
     private static final int BASIC_PV = 50;
     private static final int BASIC_COS = 30;
     private static final int BASIC_FOR = 30;
     private static final int BASIC_RIFL = 20;
     private static final String NAME = "Dark_Destructor";
     private static final int DEFAULT_MULTIPLIER = 1;
-    private final EnumMap<Statistic, StatValues> basicStat = new EnumMap<Statistic, StatValues>(Statistic.class);
+    private final EnumMap<Statistic, StatValues> basicStat;
 
     /**
      * DarkDestructor's constructor.
@@ -28,6 +26,7 @@ public class DarkDestructorNPC extends BasicCharacterImpl {
      */
     public DarkDestructorNPC(final int multiplier) {
         super(NAME);
+        basicStat = new EnumMap<Statistic, StatValues>(Statistic.class);
         if (multiplier > 0) {
             initStat(multiplier);
         } else {

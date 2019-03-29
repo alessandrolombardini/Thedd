@@ -48,6 +48,9 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
 
     @Override
     public final StatValues getStat(final Statistic stat) {
+        if (stat == null) {
+            throw new IllegalArgumentException();
+        }
         return this.stat.get(stat);
     }
 
@@ -62,6 +65,9 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
 
     @Override
     public final boolean equipItem(final Item item) {
+        if (item == null) {
+            return false;
+        }
         if (item.isEquipable()) {
             final EquipableItem equipItem = (EquipableItem) item;
             if (checkEquipment(equipItem)) {
@@ -75,10 +81,17 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
     }
 
     @Override
-    public final void unequipItem(final Item item) {
+    public final boolean unequipItem(final Item item) {
+        if (item == null) {
+            return false;
+        }
         final int index = equipment.indexOf(item);
+        if (index == -1) {
+            return false;
+        }
         this.equipment.get(index).onUnequip(this);
         this.inventory.addItem(equipment.remove(index));
+        return true;
     }
 
     @Override
