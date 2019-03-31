@@ -11,6 +11,7 @@ import model.item.Item;
 import thedd.model.character.inventory.Inventory;
 import thedd.model.character.inventory.InventoryImpl;
 import thedd.model.character.statistics.StatValues;
+import thedd.model.character.statistics.StatValuesImpl;
 import thedd.model.character.statistics.Statistic;
 
 /**
@@ -27,23 +28,30 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
     /**
      * GenericCharacter's constructor.
      * 
-     * @param name , the name of the character.
+     * @param name       the name of the character.
+     * @param multiplier rate multiplied at the basic statistics.
      */
-    protected BasicCharacterImpl(final String name) {
+    protected BasicCharacterImpl(final String name, final double multiplier) {
         super(name);
         this.stat = new EnumMap<>(Statistic.class);
+        setBasicStat(multiplier);
         this.inventory = new InventoryImpl();
         this.equipment = new ArrayList<>();
     }
 
-    @Override
-    public final void setBasicStat(final EnumMap<Statistic, StatValues> basicStat) {
-        this.stat.putAll(basicStat);
+    // This method sets the basic statistics of the character.
+    private final void setBasicStat(final double multiplier) {
+        this.stat.put(Statistic.HEALTH_POINT,
+                new StatValuesImpl((int) (Statistic.HEALTH_POINT.getBasicValue() * multiplier)));
+        this.stat.put(Statistic.AGILITY, new StatValuesImpl((int) (Statistic.AGILITY.getBasicValue() * multiplier)));
+        this.stat.put(Statistic.CONSTITUTION,
+                new StatValuesImpl((int) (Statistic.CONSTITUTION.getBasicValue() * multiplier)));
+        this.stat.put(Statistic.STRENGTH, new StatValuesImpl((int) (Statistic.STRENGTH.getBasicValue() * multiplier)));
     }
 
     @Override
     public final boolean isAlive() {
-        return this.stat.get(Statistic.PV).getActual() > 0;
+        return this.stat.get(Statistic.HEALTH_POINT).getActual() > 0;
     }
 
     @Override
@@ -106,7 +114,7 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
 
     @Override
     public final int getPriority() {
-        return this.stat.get(Statistic.RIFL).getActual();
+        return this.stat.get(Statistic.AGILITY).getActual();
     }
 
     // Returns true if this Item can be equipped, else false.

@@ -15,13 +15,6 @@ import thedd.model.character.statistics.Statistic;
 public interface BasicCharacter extends AutomaticActionActor {
 
     /**
-     * This method sets the default statistics of the character.
-     * 
-     * @param basicStat an EnumMap composed by the statistics' values.
-     */
-    void setBasicStat(EnumMap<Statistic, StatValues> basicStat);
-
-    /**
      * This method allows to know if the character is alive.
      * 
      * @return true if current character is alive, otherwise false.

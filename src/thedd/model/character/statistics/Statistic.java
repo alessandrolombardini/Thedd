@@ -1,20 +1,30 @@
 package thedd.model.character.statistics;
 
 /**
- * Representation of the statistics of game's characters.
+ * Representation of characters' statistics.
  */
 public enum Statistic {
 
-    /** Punti Vita. */
-    PV,
+    /** Represents the amount of damage a character can take before dying. */
+    HEALTH_POINT(20),
 
-    /** Costituzione. */
-    COS,
+    /** Represents the character's physical toughness. */
+    CONSTITUTION(5),
 
-    /** Forza. */
-    FOR,
+    /** Represents the character's physical power. */
+    STRENGTH(10),
 
-    /** Riflessi. */
-    RIFL;
+    /** Represents a measure of how agile a character is. */
+    AGILITY(5);
+    
+    private final int basicValue;
+    
+    private Statistic (final int value) {
+        this.basicValue = value;
+    }
+    
+    public int getBasicValue() {
+        return this.basicValue;
+    }
 
 }
