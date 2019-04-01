@@ -1,6 +1,6 @@
-package model.environment.floor;
+package thedd.model.world.floor;
 
-import model.environment.room.Room;
+import thedd.model.world.room.Room;
 
 /**
  * Interface that define the floor.

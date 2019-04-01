@@ -1,4 +1,4 @@
-package model.environment.room;
+package thedd.model.world.room;
 
 /**
  * Interface that define a factory of rooms.

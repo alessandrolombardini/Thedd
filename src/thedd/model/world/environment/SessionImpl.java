@@ -1,4 +1,4 @@
-package model.environment.environment;
+package thedd.model.world.environment;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -7,7 +7,7 @@ import model.character.BasicCharacter;
 import model.character.CharacterFactory;
 
 /**
- * Implementation of {@link model.environment.Session}.
+ * Implementation of {@link thedd.model.world.Session}.
  */
 public final class SessionImpl implements Session {
 

@@ -1,4 +1,4 @@
-package model.environment.enums;
+package thedd.model.world.enums;
 
 /**
  * Representation of objects that could be inside a normal room.

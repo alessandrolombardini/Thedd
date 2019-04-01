@@ -1,4 +1,4 @@
-package model.environment.environment;
+package thedd.model.world.environment;
 
 import model.character.BasicCharacter;
 

@@ -1,16 +1,16 @@
 
-package model.environment.floor;
+package thedd.model.world.floor;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import model.environment.room.Room;
-import model.environment.room.RoomFactory;
-import model.environment.room.RoomFactoryImpl;
+import thedd.model.world.room.Room;
+import thedd.model.world.room.RoomFactory;
+import thedd.model.world.room.RoomFactoryImpl;
 
 /**
- * Implementation of {@link model.environment.Floor}.
+ * Implementation of {@link thedd.model.world.Floor}.
  *
  */
 public class FloorImpl implements Floor {

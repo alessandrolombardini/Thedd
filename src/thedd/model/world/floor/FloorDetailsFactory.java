@@ -1,6 +1,6 @@
-package model.environment.floor;
+package thedd.model.world.floor;
 
-import model.environment.enums.Difficulty;
+import thedd.model.world.enums.Difficulty;
 
 /**
  * Interface that define the environment.

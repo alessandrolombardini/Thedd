@@ -1,7 +1,8 @@
-package model.environment.floor;
+package thedd.model.world.floor;
 
 import java.util.Optional;
-import model.environment.enums.Difficulty;
+
+import thedd.model.world.enums.Difficulty;
 
 /**
  * This class represent the content of a future floor.

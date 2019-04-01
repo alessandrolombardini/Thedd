@@ -1,7 +1,8 @@
-package model.environment.enums;
+package thedd.model.world.enums;
 
 import java.util.Objects;
-import model.environment.floor.RandomUtils;
+
+import thedd.model.world.floor.RandomUtils;
 
 /**
  * Representation of difficulty levels of this game.

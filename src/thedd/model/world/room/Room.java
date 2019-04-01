@@ -1,4 +1,4 @@
-package model.environment.room;
+package thedd.model.world.room;
 
 import java.util.List;
 

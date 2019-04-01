@@ -1,10 +1,10 @@
-package model.environment.floor;
+package thedd.model.world.floor;
 
 import java.util.EnumMap;
 import java.util.Objects;
 
-import model.environment.enums.Difficulty;
-import model.environment.room.RoomFactoryImpl;
+import thedd.model.world.enums.Difficulty;
+import thedd.model.world.room.RoomFactoryImpl;
 
 /**
  * This class is a factory of random details of a new floor based on value that the constructor recive.

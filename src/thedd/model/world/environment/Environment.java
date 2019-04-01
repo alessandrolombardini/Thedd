@@ -1,9 +1,9 @@
-package model.environment.environment;
+package thedd.model.world.environment;
 
 import java.util.List;
 
-import model.environment.floor.Floor;
-import model.environment.floor.FloorDetails;
+import thedd.model.world.floor.Floor;
+import thedd.model.world.floor.FloorDetails;
 
 /**
  * Interface that define the environment.

@@ -1,4 +1,4 @@
-package model.environment.room;
+package thedd.model.world.room;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,7 +8,7 @@ import java.util.Objects;
 import model.room_event.RoomEvent;
 
 /**
- * Implementation of {@link model.environment.Room}.
+ * Implementation of {@link thedd.model.world.Room}.
  * 
  */
 public class RoomImpl implements Room {

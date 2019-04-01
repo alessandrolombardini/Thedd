@@ -1,4 +1,4 @@
-package model.environment.environment;
+package thedd.model.world.environment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,15 +6,15 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import model.environment.enums.Difficulty;
-import model.environment.floor.Floor;
-import model.environment.floor.FloorDetails;
-import model.environment.floor.FloorDetailsFactory;
-import model.environment.floor.FloorDetailsFactoryImpl;
-import model.environment.floor.FloorImpl;
+import thedd.model.world.enums.Difficulty;
+import thedd.model.world.floor.Floor;
+import thedd.model.world.floor.FloorDetails;
+import thedd.model.world.floor.FloorDetailsFactory;
+import thedd.model.world.floor.FloorDetailsFactoryImpl;
+import thedd.model.world.floor.FloorImpl;
 
 /**
- * Implementation of {@link model.environment.Environment}.
+ * Implementation of {@link thedd.model.world.Environment}.
  *
  */
 public class EnvironmentImpl implements Environment {

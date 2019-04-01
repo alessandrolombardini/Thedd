@@ -1,4 +1,4 @@
-package model.environment.room;
+package thedd.model.world.room;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,16 +13,16 @@ import model.character.BasicCharacter;
 import model.character.CharacterFactory;
 import model.character.EnemyCharacterType;
 import model.combat.logic.DefaultCombatLogic;
-import model.environment.enums.RoomContent;
-import model.environment.floor.FloorDetails;
-import model.environment.floor.FloorImpl;
-import model.environment.floor.RandomUtils;
 import model.room_event.CombatEvent;
 import model.room_event.RoomEvent;
 import model.room_event.RoomEvents;
+import thedd.model.world.enums.RoomContent;
+import thedd.model.world.floor.FloorDetails;
+import thedd.model.world.floor.FloorImpl;
+import thedd.model.world.floor.RandomUtils;
 
 /**
- * Implementation of {@link model.environment.RoomFactory}.
+ * Implementation of {@link thedd.model.world.RoomFactory}.
  * 
  */
 public class RoomFactoryImpl implements RoomFactory {
