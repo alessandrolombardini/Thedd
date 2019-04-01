@@ -104,20 +104,18 @@ public class FloorImpl implements Floor {
 
     @Override
     public final int hashCode() {
-        return currentRoomIndex + numberOfRooms + rooms.hashCode();
+        return currentRoomIndex ^ numberOfRooms ^ rooms.hashCode();
     }
 
     @Override
     public final boolean equals(final Object obj) {
-        if (!Objects.nonNull(obj) ||  !(obj instanceof FloorImpl)) {
-            return false;
-        } 
-        final FloorImpl other = (FloorImpl) obj;
-        if (this.currentRoomIndex != other.currentRoomIndex || this.numberOfRooms != other.numberOfRooms
-                || !this.rooms.equals(other.rooms)) {
-            return false;
+        if (obj instanceof FloorImpl) {
+            final FloorImpl other = (FloorImpl) obj;
+            return this.currentRoomIndex == other.currentRoomIndex 
+                    && this.numberOfRooms == other.numberOfRooms
+                    && this.rooms.equals(other.rooms);
         }
-        return true;
+        return false;
     }
 
 }
