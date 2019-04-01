@@ -1,6 +1,7 @@
 package thedd.model;
 
 
+import thedd.model.world.environment.Session;
 import thedd.model.world.environment.SessionImpl.SessionBuilder;
 
 /**

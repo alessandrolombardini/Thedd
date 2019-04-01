@@ -4,6 +4,8 @@ import java.util.Objects;
 
 import thedd.model.Model;
 import thedd.model.ModelImpl;
+import thedd.model.world.environment.EnvironmentImpl;
+import thedd.model.world.environment.SessionImpl.SessionBuilder;
 import thedd.view.View;
 
 /**

@@ -2,6 +2,8 @@ package thedd.model;
 
 import java.util.Optional;
 
+import thedd.model.world.environment.Session;
+import thedd.model.world.environment.SessionImpl;
 import thedd.model.world.environment.SessionImpl.SessionBuilder;
 
 /**
