@@ -13,7 +13,7 @@ public final class FloorDetails {
     private final int numberOfRooms;
     private final int numberOfEnemies;
     private final int numberOfTreasure;
-    private final int numberOfInteractableAction;
+    private final int numberOfContraptions;
     private final boolean isBossFloor;
 
     private FloorDetails(final Difficulty difficulty, final int numberOfRooms, final int numberOfEnemies,
@@ -22,7 +22,7 @@ public final class FloorDetails {
         this.numberOfRooms = numberOfRooms;
         this.numberOfEnemies = numberOfEnemies;
         this.numberOfTreasure = numberOfTreasure;
-        this.numberOfInteractableAction = numberOfContraptions;
+        this.numberOfContraptions = numberOfContraptions;
         this.isBossFloor = isBossFloor;
     }
 
@@ -59,7 +59,7 @@ public final class FloorDetails {
      * @return the number of contraptions
      */
     public int getNumberOfContraptions() {
-        return this.numberOfInteractableAction;
+        return this.numberOfContraptions;
     }
 
     /**
@@ -83,13 +83,13 @@ public final class FloorDetails {
     @Override
     public String toString() {
         return "FloorDetails [difficulty=" + difficulty + ", numberOfRooms=" + numberOfRooms + ", numberOfEnemies="
-                + numberOfEnemies + ", numberOfTreasure=" + numberOfTreasure + ", numberOfInteractableAction="
-                + numberOfInteractableAction + ", boosFloor=" + isBossFloor + "]";
+                + numberOfEnemies + ", numberOfTreasure=" + numberOfTreasure + ", numberOfContraptions="
+                + numberOfContraptions + ", boosFloor=" + isBossFloor + "]";
     }
 
     @Override
     public int hashCode() {
-        return this.difficulty.getLevelOfDifficulty() ^ this.numberOfInteractableAction  ^ this.numberOfEnemies 
+        return this.difficulty.getLevelOfDifficulty() ^ this.numberOfContraptions  ^ this.numberOfEnemies 
                 ^ this.numberOfTreasure ^ this.numberOfRooms ^ (this.isBossFloor() ? 1 : 0);
     }
 
@@ -98,7 +98,7 @@ public final class FloorDetails {
         if (obj instanceof FloorDetails) {
             final FloorDetails other = (FloorDetails) obj;
             return this.difficulty == other.difficulty 
-                    && this.numberOfInteractableAction == other.numberOfInteractableAction
+                    && this.numberOfContraptions == other.numberOfContraptions
                     && this.numberOfEnemies == other.numberOfEnemies
                     && this.numberOfTreasure == other.numberOfTreasure
                     && this.numberOfRooms == other.numberOfRooms
