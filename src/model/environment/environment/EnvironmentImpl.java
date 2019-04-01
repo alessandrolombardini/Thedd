@@ -63,6 +63,9 @@ public class EnvironmentImpl implements Environment {
         this.actuaIndexFloor = NONE_FLOORS;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final Floor getCurrentFloor() {
         if (this.getCurrentFloorIndex() == NONE_FLOORS) {
@@ -71,11 +74,17 @@ public class EnvironmentImpl implements Environment {
         return this.floors.get(this.actuaIndexFloor);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final int getCurrentFloorIndex() {
         return this.actuaIndexFloor;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final void setNextFloor(final FloorDetails floorDetails) {
         Objects.requireNonNull(floorDetails);
@@ -86,11 +95,17 @@ public class EnvironmentImpl implements Environment {
         this.floors.add(this.actuaIndexFloor, new FloorImpl(floorDetails));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final boolean isCurrentLastFloor() {
         return this.isIndexLastFloor(this.getCurrentFloorIndex());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final List<FloorDetails> getFloorOptions() {
         if (this.isCurrentLastFloor()) {

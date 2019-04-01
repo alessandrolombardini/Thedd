@@ -30,6 +30,9 @@ public final class FloorDetailsFactoryImpl implements FloorDetailsFactory {
      */
     public FloorDetailsFactoryImpl() { }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FloorDetails createFloorDetails(final Difficulty difficulty, final int numberOfRooms, final boolean lastFloor) {
         Objects.requireNonNull(difficulty);

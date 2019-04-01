@@ -42,11 +42,17 @@ public class FloorImpl implements Floor {
         this.currentRoomIndex = NONE_ROOMS;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final boolean hasNextRoom() {
         return this.currentRoomIndex < (this.numberOfRooms - 1);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final boolean nextRoom() {
         if (!this.hasNextRoom()) {
@@ -58,6 +64,9 @@ public class FloorImpl implements Floor {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final Room getCurrentRoom() {
         if (this.currentRoomIndex == NONE_ROOMS) {
@@ -66,11 +75,17 @@ public class FloorImpl implements Floor {
         return this.rooms.get(this.currentRoomIndex);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final int getCurrentRoomIndex() {
         return this.currentRoomIndex;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final boolean checkToChangeFloor() {
         return !this.hasNextRoom() && this.rooms.get(this.currentRoomIndex).checkToMoveOn();

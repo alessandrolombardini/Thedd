@@ -73,6 +73,9 @@ public class RoomFactoryImpl implements RoomFactory {
         this.remainingContent.put(RoomContent.TREASURE, this.floorDetails.getNumberOfTreasures());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final Room createRoom() {
         if (this.roomIndex >= (this.floorDetails.getNumberOfRooms() - 1)) {

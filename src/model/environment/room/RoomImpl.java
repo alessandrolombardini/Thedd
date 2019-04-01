@@ -33,28 +33,43 @@ public class RoomImpl implements Room {
         this(Collections.<RoomEvent>emptyList());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final boolean checkToMoveOn() {
         return events.stream().allMatch(event -> this.checkEventComplete(event));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final List<RoomEvent> getEvents() {
         return Collections.unmodifiableList(this.events);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final void addEvent(final RoomEvent event) {
         Objects.requireNonNull(event);
         this.events.add(event);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final void addAllEvents(final List<RoomEvent> events) {
         Objects.requireNonNull(events);
         this.events.addAll(events);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final boolean removeEvent(final RoomEvent event) {
         Objects.requireNonNull(event);
