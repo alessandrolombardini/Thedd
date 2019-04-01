@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.Button?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<BorderPane fx:id="menu" stylesheets="styles/style.css" 
+	xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="thedd.view.controller.MainMenuController">
+   
+   <center>
+      <VBox alignment="CENTER" spacing="35.0" BorderPane.alignment="CENTER">
+         <children>  
+       		<Button text="New game" mnemonicParsing="false" onAction="#handleNewGameButtonAction"/>
+    		<Button text="Exit" mnemonicParsing="false" onAction="#handleExitButtonAction"/>
+         </children>
+      </VBox>
+   </center>
+   
+   <top>
+      <Label text="The dark destruction" textAlignment="CENTER" BorderPane.alignment="CENTER"/>
+   </top>
+   
+</BorderPane>
