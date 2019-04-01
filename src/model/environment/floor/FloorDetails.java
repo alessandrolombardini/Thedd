@@ -1,6 +1,5 @@
 package model.environment.floor;
 
-import java.util.Objects;
 import java.util.Optional;
 import model.environment.enums.Difficulty;
 
@@ -90,22 +89,22 @@ public final class FloorDetails {
 
     @Override
     public int hashCode() {
-        return this.difficulty.getLevelOfDifficulty() + this.numberOfInteractableAction  + this.numberOfEnemies 
-                + this.numberOfTreasure + this.numberOfRooms + (this.isBossFloor() ? 1 : 0);
+        return this.difficulty.getLevelOfDifficulty() ^ this.numberOfInteractableAction  ^ this.numberOfEnemies 
+                ^ this.numberOfTreasure ^ this.numberOfRooms ^ (this.isBossFloor() ? 1 : 0);
     }
 
     @Override
     public boolean equals(final Object obj) {
-        if (!Objects.nonNull(obj) || !(obj instanceof FloorDetails)) {
-            return false;
+        if (obj instanceof FloorDetails) {
+            final FloorDetails other = (FloorDetails) obj;
+            return this.difficulty == other.difficulty 
+                    && this.numberOfInteractableAction == other.numberOfInteractableAction
+                    && this.numberOfEnemies == other.numberOfEnemies
+                    && this.numberOfTreasure == other.numberOfTreasure
+                    && this.numberOfRooms == other.numberOfRooms
+                    && this.isBossFloor == other.isBossFloor;
         } 
-        final FloorDetails other = (FloorDetails) obj;
-        if (!(this.difficulty == other.difficulty) || !(this.numberOfInteractableAction == other.numberOfInteractableAction)
-                || !(this.numberOfEnemies == other.numberOfEnemies) || !(this.numberOfTreasure == other.numberOfTreasure)
-                || !(this.numberOfRooms == other.numberOfRooms) || !(this.isBossFloor == other.isBossFloor)) {
-            return false;
-        }
-        return true;
+        return false;
     }
 
     /**
