@@ -86,19 +86,16 @@ public class RoomImpl implements Room {
 
     @Override
     public final int hashCode() {
-        return Objects.nonNull(events) ? events.hashCode() : 0;
+        return events.hashCode();
     }
 
     @Override
     public final boolean equals(final Object obj) {
-        if (!Objects.nonNull(obj) || !(obj instanceof RoomImpl)) {
-            return false;
-        } 
-        final RoomImpl other = (RoomImpl) obj;
-        if (!this.events.equals(other.events)) {
-            return false;
+        if (obj instanceof RoomImpl) {
+            final RoomImpl other = (RoomImpl) obj;
+            return this.events.equals(other.events);
         }
-        return true;
+        return false;
     }
 
     @Override
