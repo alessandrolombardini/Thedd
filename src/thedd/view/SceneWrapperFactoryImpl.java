@@ -26,10 +26,9 @@ public class SceneWrapperFactoryImpl implements SceneWrapperFactory {
 
     {
         viewSupplier = new EnumMap<ApplicationState, Supplier<SceneWrapper>>(ApplicationState.class);
-        viewSupplier.put(ApplicationState.PRE_MENU, () -> this.getOneNodeView(GameSubView.PRE_MENU));
         viewSupplier.put(ApplicationState.MENU, () -> this.getOneNodeView(GameSubView.MENU));
         viewSupplier.put(ApplicationState.NEW_GAME, () -> this.getOneNodeView(GameSubView.NEW_GAME));
-        viewSupplier.put(ApplicationState.SETTINGS, () -> this.getThreeNodeView(GameSubView.MENU, 
+        viewSupplier.put(ApplicationState.GAME, () -> this.getThreeNodeView(GameSubView.MENU, 
                                                                                 GameSubView.MENU, 
                                                                                 GameSubView.MENU));
     }
