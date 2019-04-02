@@ -24,15 +24,6 @@ public class SceneWrapperFactoryImpl implements SceneWrapperFactory {
     private final View view;
     private final Controller controller;
 
-    {
-        viewSupplier = new EnumMap<ApplicationState, Supplier<SceneWrapper>>(ApplicationState.class);
-        viewSupplier.put(ApplicationState.MENU, () -> this.getOneNodeView(GameSubView.MENU));
-        viewSupplier.put(ApplicationState.NEW_GAME, () -> this.getOneNodeView(GameSubView.NEW_GAME));
-        viewSupplier.put(ApplicationState.GAME, () -> this.getThreeNodeView(GameSubView.MENU, 
-                                                                                GameSubView.MENU, 
-                                                                                GameSubView.MENU));
-    }
-
     /**
      * Create new instance of SceneWrapperFactory.
      * 
@@ -44,6 +35,8 @@ public class SceneWrapperFactoryImpl implements SceneWrapperFactory {
         Objects.requireNonNull(controller);
         this.view = view;
         this.controller = controller;
+        viewSupplier = new EnumMap<ApplicationState, Supplier<SceneWrapper>>(ApplicationState.class);
+        this.addSubViewToSupplier();
     }
 
     /**
@@ -53,6 +46,14 @@ public class SceneWrapperFactoryImpl implements SceneWrapperFactory {
     public final SceneWrapper getSubView(final ApplicationState state) {
         Objects.requireNonNull(state);
         return viewSupplier.get(state).get();
+    }
+
+    private void addSubViewToSupplier() {
+        viewSupplier.put(ApplicationState.MENU, () -> this.getOneNodeView(GameSubView.MENU));
+        viewSupplier.put(ApplicationState.NEW_GAME, () -> this.getOneNodeView(GameSubView.NEW_GAME));
+        viewSupplier.put(ApplicationState.GAME, () -> this.getThreeNodeView(GameSubView.MENU, 
+                                                                                GameSubView.MENU, 
+                                                                                GameSubView.MENU));
     }
 
     private SceneWrapper getOneNodeView(final GameSubView scene) {
