@@ -17,8 +17,10 @@ import thedd.view.dialog.DialogFactoryImpl;
 public class ViewImpl extends Application implements View {
 
     private static final String GAME_NAME = "The dark destruction";
-    private static final double MIN_WIDTH = Screen.getPrimary().getBounds().getWidth() / 3;
-    private static final double MIN_HEIGHT = Screen.getPrimary().getBounds().getHeight() / 4;
+    private static final double STAGE_WIDTH = Screen.getPrimary().getBounds().getWidth() / 4 * 3;
+    private static final double STAGE_HEIGHT = Screen.getPrimary().getBounds().getHeight() / 4 * 3;
+    private static final double STAGE_MIN_WIDTH = Screen.getPrimary().getBounds().getWidth() / 4 * 2;
+    private static final double STAGE_MIN_HEIGHT = Screen.getPrimary().getBounds().getHeight() / 4 * 2;
     private static final ApplicationState FIRST_APP_STATE = ApplicationState.MENU; 
 
     private final SceneWrapperFactory sceneFactory;
@@ -78,10 +80,11 @@ public class ViewImpl extends Application implements View {
 
     private void initView() {
         this.stage.setTitle(GAME_NAME);
-        this.stage.setMinHeight(MIN_HEIGHT);
-        this.stage.setMinWidth(MIN_WIDTH);
+        this.stage.setMinHeight(STAGE_MIN_HEIGHT);
+        this.stage.setMinWidth(STAGE_MIN_WIDTH);
+        this.stage.setHeight(STAGE_HEIGHT);
+        this.stage.setWidth(STAGE_WIDTH);
         this.stage.setResizable(true);
-        //this.stage.setMaximized(true);
         this.setView(FIRST_APP_STATE);
     }
 
