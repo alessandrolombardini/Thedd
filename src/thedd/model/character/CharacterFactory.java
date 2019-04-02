@@ -7,6 +7,7 @@ import thedd.model.character.types.GoblinNPC;
 import thedd.model.character.types.HeadlessNPC;
 import thedd.model.character.types.Multiplier;
 import thedd.model.character.types.PlayerCharacter;
+import thedd.model.world.enums.Difficulty;
 
 /**
  * Implementation of a character factory.
@@ -29,45 +30,46 @@ public final class CharacterFactory {
      * Method that create a new PlayerCharacter.
      * 
      * @param name chosen by the player.
+     * @param difficulty a rate multiplied to basic statistics.
      * @return a Player Character.
      */
-    public static BasicCharacter createPlayerCharacter(final Optional<String> name, final Multiplier multiplier) {
-        if (multiplier == null || name == null) {
-            throw new NullPointerException();
+    public static BasicCharacter createPlayerCharacter(final Optional<String> name, final Difficulty difficulty) {
+        if (difficulty == null || name == null) {
+            throw new IllegalArgumentException();
         }
         return new PlayerCharacter(name.isPresent() ? name.get() : DEFAULT_PC_NAME,
-                multiplier.getRate() * generateRandomRate() * PC_RATE);
+                difficulty.getLevelOfDifficulty() * generateRandomRate() * PC_RATE);
     }
 
     /**
      * Method that create a new Enemy Non-Player Character.
      * 
      * @param type       the type of the enemy.
-     * @param multiplier rate multiplied to basic statistics.
+     * @param difficulty rate multiplied to basic statistics.
      * @return a Non-Player Character.
      */
-    public static BasicCharacter createEnemy(final EnemyCharacterType type, final Multiplier multiplier) {
-        if (type == null || multiplier == null) {
-            throw new NullPointerException();
+    public static BasicCharacter createEnemy(final EnemyCharacterType type, final Difficulty difficulty) {
+        if (type == null || difficulty == null) {
+            throw new IllegalArgumentException();
         }
         if (type == EnemyCharacterType.GOBLIN) {
-            return new GoblinNPC(type.toString(), generateRandomRate() * multiplier.getRate());
+            return new GoblinNPC(type.toString(), generateRandomRate() * difficulty.getLevelOfDifficulty());
         } else {
-            return new HeadlessNPC(type.toString(), multiplier.getRate() * generateRandomRate());
+            return new HeadlessNPC(type.toString(), difficulty.getLevelOfDifficulty() * generateRandomRate());
         }
     }
 
     /**
      * Method that create a new Boss Character.
      * 
-     * @param multiplier a rate multiplied to basic statistics.
+     * @param difficulty a rate multiplied to basic statistics.
      * @return a Boss Non-PlayerCharacter.
      */
-    public static BasicCharacter createFinalBoss(final Multiplier multiplier) {
-        if (multiplier == null) {
-            throw new NullPointerException();
+    public static BasicCharacter createFinalBoss(final Difficulty difficulty) {
+        if (difficulty == null) {
+            throw new IllegalArgumentException();
         }
-        return new DarkDestructorNPC(BOSS_NAME, multiplier.getRate() * BOSS_RATE * generateRandomRate());
+        return new DarkDestructorNPC(BOSS_NAME, difficulty.getLevelOfDifficulty() * BOSS_RATE * generateRandomRate());
     }
 
     // Generate Random value between 1 and 2.
