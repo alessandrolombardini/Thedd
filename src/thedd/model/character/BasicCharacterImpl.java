@@ -74,7 +74,7 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
     @Override
     public final boolean equipItem(final Item item) {
         if (item == null) {
-            return false;
+            throw new IllegalArgumentException();
         }
         if (item.isEquipable()) {
             final EquipableItem equipItem = (EquipableItem) item;
@@ -91,7 +91,7 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
     @Override
     public final boolean unequipItem(final Item item) {
         if (item == null) {
-            return false;
+            throw new IllegalArgumentException();
         }
         final int index = equipment.indexOf(item);
         if (index == -1) {
