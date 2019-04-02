@@ -1,47 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
-<?import java.net.URL?>
 
-<BorderPane id="panel" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="thedd.view.controller.PlayMenuController">
+<BorderPane id="playSettings" prefHeight="600.0" prefWidth="800.0" stylesheets="styles/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="thedd.view.controller.PlayMenuController">
+   <top>
+      <Label text="PLAY SETTINGS" BorderPane.alignment="CENTER" />
+   </top>
    <center>
-      <GridPane BorderPane.alignment="CENTER">
-        
-         <columnConstraints>
-          		<ColumnConstraints hgrow="SOMETIMES"/>
-         </columnConstraints>
-         <rowConstraints>
-          		<RowConstraints vgrow="SOMETIMES" />
-         </rowConstraints>
-         
+      <VBox alignment="CENTER" prefHeight="500.0" prefWidth="800.0">
          <children>
-				<Text text="Welcome" />
- 
-	    		<Label text="Player name" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-   		 		<TextField fx:id="playerNameField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
- 
-    			<Label text="Number of rooms" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-    			<TextField fx:id="numberOfRoomsField" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-
-				<Label text="Number of floors" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-   	 			<TextField fx:id="numberOfFloorsField" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
-    
-	    		<Label text="A" fx:id="errorLabel" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
-         	</children>
-         </GridPane>
+            <GridPane prefHeight="450.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+              <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="277.0" minWidth="246.0" prefWidth="270.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="276.0" minWidth="234.0" prefWidth="276.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" />
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints vgrow="SOMETIMES" />
+                  <RowConstraints vgrow="SOMETIMES" />
+                  <RowConstraints vgrow="SOMETIMES" />
+                  <RowConstraints vgrow="SOMETIMES" />
+                <RowConstraints vgrow="SOMETIMES" />
+                <RowConstraints vgrow="SOMETIMES" />
+              </rowConstraints>
+              <children>
+				    <TextField fx:id="playerNameField" GridPane.halignment="RIGHT" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
+				   	<TextField fx:id="numberOfRoomsField" GridPane.halignment="RIGHT" GridPane.columnIndex="3" GridPane.rowIndex="2"/>
+  				  	<TextField fx:id="numberOfFloorsField" GridPane.halignment="RIGHT" GridPane.columnIndex="3" GridPane.rowIndex="3"/>
+				   	<Label text="Player name:" GridPane.halignment="LEFT" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+					<Label text="Number of floors:" GridPane.halignment="LEFT" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+					<Label text="Number of rooms:" GridPane.halignment="LEFT" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+					<Button mnemonicParsing="false" onAction="#handlePlayButtonAction" text="APPLY" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+               </children>
+            </GridPane>
+         </children>
+      </VBox>
    </center>
-   <bottom>
-      <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <center>
-            <Button mnemonicParsing="false" text="Play" BorderPane.alignment="CENTER" onAction="#handlePlayButtonAction"/>
-         </center>
-      </BorderPane>
-   </bottom>
-   
-
 </BorderPane>
