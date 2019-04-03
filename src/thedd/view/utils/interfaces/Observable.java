@@ -17,7 +17,7 @@ public interface Observable<T> {
      * Register a new {@link thedd.view.utils.interfaces.Observer} which will be notified.
      * 
      * @throws IllegalArgumentException
-     *          if the Observer is not accepted by this Observable
+     *          if the Observer is not accepted by this Observable or the value passed is null
      * @param newObserver
      *          the new Observer to register
      */
