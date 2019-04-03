@@ -5,7 +5,6 @@ import thedd.model.character.types.DarkDestructorNPC;
 import thedd.model.character.types.EnemyCharacterType;
 import thedd.model.character.types.GoblinNPC;
 import thedd.model.character.types.HeadlessNPC;
-import thedd.model.character.types.Multiplier;
 import thedd.model.character.types.PlayerCharacter;
 import thedd.model.world.enums.Difficulty;
 
@@ -17,7 +16,7 @@ public final class CharacterFactory {
     private static final int UPPER = 20;
     private static final int LOWER = 10;
     // Default player and boss names
-    private final static String BOSS_NAME = "Dark Destructor";
+    private static final String BOSS_NAME = "Dark Destructor";
     private static final String DEFAULT_PC_NAME = "Player";
     // Default multiplier for Boss and PlayerCharacter
     private static final double BOSS_RATE = 3;
@@ -29,7 +28,7 @@ public final class CharacterFactory {
     /**
      * Method that create a new PlayerCharacter.
      * 
-     * @param name chosen by the player.
+     * @param name       chosen by the player.
      * @param difficulty a rate multiplied to basic statistics.
      * @return a Player Character.
      */
@@ -73,7 +72,7 @@ public final class CharacterFactory {
     }
 
     // Generate Random value between 1 and 2.
-    private final static double generateRandomRate() {
+    private static double generateRandomRate() {
         return ((Math.random() * (UPPER - LOWER)) + LOWER) / LOWER;
     }
 }
