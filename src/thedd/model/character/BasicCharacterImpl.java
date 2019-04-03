@@ -40,7 +40,7 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
     }
 
     // This method sets the basic statistics of the character.
-    private final void setBasicStat(final double multiplier) {
+    private void setBasicStat(final double multiplier) {
         this.stat.put(Statistic.HEALTH_POINT,
                 new StatValuesImpl((int) (Statistic.HEALTH_POINT.getBasicValue() * multiplier)));
         this.stat.put(Statistic.AGILITY, new StatValuesImpl((int) (Statistic.AGILITY.getBasicValue() * multiplier)));
