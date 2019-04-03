@@ -3,8 +3,9 @@ package thedd.model.world.environment;
 import java.util.Objects;
 import java.util.Optional;
 
-import model.character.BasicCharacter;
-import model.character.CharacterFactory;
+import thedd.model.character.BasicCharacter;
+import thedd.model.character.CharacterFactory;
+import thedd.model.world.enums.Difficulty;
 
 /**
  * Implementation of {@link thedd.model.world.Session}.
@@ -26,7 +27,7 @@ public final class SessionImpl implements Session {
      */
     private SessionImpl(final Optional<String> playerCharacterName, final int numberOfLevels, final int numberOfRooms) {
         Objects.requireNonNull(playerCharacterName);
-        this.playerCharacter = CharacterFactory.createPlayerCharacter(playerCharacterName);
+        this.playerCharacter = CharacterFactory.createPlayerCharacter(playerCharacterName, Difficulty.NORMAL);
         this.environment = new EnvironmentImpl(numberOfLevels, numberOfRooms);
     }
 
