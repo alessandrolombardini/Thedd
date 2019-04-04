@@ -1,26 +1,21 @@
 package model.combat.modifier;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-
+import java.util.List;
 import model.combat.common.Modifiable;
-import model.combat.tag.Tag;
+import model.combat.requirements.Requirement;
 
 /**
  * Abstract implementations of Modifiers' basic behavior.
+ * @param <T> the type of the accepted modifiable entities
  */
-public abstract class AbstractModifier implements Modifier {
+public abstract class AbstractModifier<T extends Modifiable> implements Modifier<T> {
 
-    private final Set<Tag> modifiableTargetTags = new HashSet<>();
-    private final Set<Tag> targetActorTargetTags = new HashSet<>();
-    private final Set<Tag> sourceActorTargetTags = new HashSet<>();
-    private final Set<Tag> modifiableUnallowedTags = new HashSet<>();
-    private final Set<Tag> targetActorUnallowedTags = new HashSet<>();
-    private final Set<Tag> sourceActorUnallowedTags = new HashSet<>();
     private boolean percentage;
     private double value;
     private ModifierActivation type;
+    private final List<Requirement<T>> requirements = new ArrayList<>();
 
     /**
      * Constructor for the abstract class.
@@ -86,87 +81,33 @@ public abstract class AbstractModifier implements Modifier {
      * {@inheritDoc}
      */
     @Override
-    public void addModifiableTargetTag(final Tag tag, final boolean isAllowed) {
-        Set<Tag> targetSet = isAllowed ? modifiableTargetTags : modifiableUnallowedTags;
-        targetSet.add(tag);
+    public boolean accept(final T modifiable) {
+        if (modifiable == null) {
+            return false;
+        }
+        return getRequirements().stream().allMatch(r -> r.isFulfilled(modifiable));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void addTargetActorTargetTag(final Tag tag, final boolean isAllowed) {
-        Set<Tag> targetSet = isAllowed ? targetActorTargetTags : targetActorUnallowedTags;
-        targetSet.add(tag);
+    public abstract void modify(T modifiable);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void addRequirement(final Requirement<T> requirement) {
+        requirements.add(requirement);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void addSourceActorTargetTag(final Tag tag, final boolean isAllowed) {
-        Set<Tag> targetSet = isAllowed ? sourceActorTargetTags : sourceActorTargetTags;
-        targetSet.add(tag);
+    public List<Requirement<T>> getRequirements() {
+        return Collections.unmodifiableList(requirements);
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean removeModifiableTargetTag(final Tag tag, final boolean isAllowed) {
-        Set<Tag> targetSet = isAllowed ? modifiableTargetTags : modifiableUnallowedTags;
-        return targetSet.remove(tag);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean removeTargetActorTargetTag(final Tag tag, final boolean isAllowed) {
-        Set<Tag> targetSet = isAllowed ? targetActorTargetTags : targetActorUnallowedTags;
-        return targetSet.remove(tag);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean removeSourceActorTargetTag(final Tag tag, final boolean isAllowed) {
-        Set<Tag> targetSet = isAllowed ? sourceActorTargetTags : sourceActorUnallowedTags;
-        return targetSet.remove(tag);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Set<Tag> getModifiableTargetTags(final boolean allowed) {
-        Set<Tag> targetSet = allowed ? modifiableTargetTags : modifiableUnallowedTags;
-        return Collections.unmodifiableSet(targetSet);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Set<Tag> getTargetActorTargetTags(final boolean allowed) {
-        Set<Tag> targetSet = allowed ? targetActorTargetTags : targetActorUnallowedTags;
-        return Collections.unmodifiableSet(targetSet);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Set<Tag> getSourceActorTargetTags(final boolean allowed) {
-        Set<Tag> targetSet = allowed ? sourceActorTargetTags : sourceActorUnallowedTags;
-        return Collections.unmodifiableSet(targetSet);
-    }
-
-    @Override
-    public abstract boolean accept(Modifiable modifiable);
-
-    @Override
-    public abstract void modify(Modifiable modifiable);
 
 }
