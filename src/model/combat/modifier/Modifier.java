@@ -1,105 +1,15 @@
 package model.combat.modifier;
 
-import java.util.Set;
-
-import model.combat.action.Action;
-import model.combat.action.effect.ActionEffect;
-import model.combat.actor.ActionActor;
+import java.util.List;
 import model.combat.common.Modifiable;
-import model.combat.tag.Tag;
+import model.combat.requirements.Requirement;
 
 /**
- * An entity that can modify the attributes of another entity based
- * on Tags.
- * <p>
- * Modifiable entities, such as {@link Action} and {@link ActionEffect}
- *  may have Tags and may provide the Tags of the entity
- *  (Example: an {@link ActionActor}) executing and being targeted by them.
+ * An entity that can modify the attributes of another entity that
+ * fulfills certain requirements.
+ * @param <T> the type of the modifiable entity
  */
-public interface Modifier {
-
-    /**
-     * Adds a {@link Tag} to the collection of tags of the Modifiable
-     * that will be evaluated when running the accept method.
-     * @param tag the tag to be added
-     * @param isAllowed true if the modifiable must have the provided tag
-     *        in order to be accepted, false if it must not.
-     */
-    void addModifiableTargetTag(Tag tag, boolean isAllowed);
-
-    /**
-     * Adds a {@link Tag} to the collection of tags of the Modifiable's
-     * Target that will be evaluated when running the accept method.
-     * @param tag the tag to be added
-     * @param isAllowed true if the modifiable's target must have the provided tag
-     *        in order to be accepted, false if it must not.
-     */
-    void addTargetActorTargetTag(Tag tag, boolean isAllowed);
-
-    /**
-     * Adds a {@link Tag} to the collection of tags of the Modifiable's
-     * Source that will be evaluated when running the accept method.
-     * @param tag the tag to be added
-     * @param isAllowed true if the modifiable's source must have the provided tag
-     *        in order to be accepted, false if it must not.
-     */
-    void addSourceActorTargetTag(Tag tag, boolean isAllowed);
-
-    /**
-     * Removes a {@link Tag} from the collection of tags of the Modifiable
-     * that will be evaluated when running the accept method.
-     * @param tag the tag to be removed
-     * @param isAllowed true if the modifiable must have the provided tag
-     *        in order to be accepted, false if it must not.
-     * @return true if the tag is removed, false otherwise
-     */
-    boolean removeModifiableTargetTag(Tag tag, boolean isAllowed);
-
-    /**
-     * Removes a {@link Tag} from the collection of tags of the Modifiable's
-     * Target that will be evaluated when running the accept method.
-     * @param tag the tag to be removed
-     * @param isAllowed true if the modifiable's target must have the provided tag
-     *        in order to be accepted, false if it must not.
-     * @return true if the tag is removed, false otherwise
-     */
-    boolean removeTargetActorTargetTag(Tag tag, boolean isAllowed);
-
-    /**
-     * Removes a {@link Tag} from the collection of tags of the Modifiable's
-     * Source that will be evaluated when running the accept method.
-     * @param tag the tag to be removed
-     * @param isAllowed true if the modifiable's source must have the provided tag
-     *        in order to be accepted, false if it must not.
-     * @return true if the tag is removed, false otherwise
-     */
-    boolean removeSourceActorTargetTag(Tag tag, boolean isAllowed);
-
-    /**
-     * Gets the collection of targeted (allowed of not) Modifiable {@link Tag}.
-     * @param allowed true to return the collection of allowed tags, false to
-     *          return the one of unallowed ones.
-     * @return the collection of specified tags
-     */
-    Set<Tag> getModifiableTargetTags(boolean allowed);
-
-    /**
-     * Gets the collection of targeted (allowed of not) Modifiable's target
-     * {@link Tag}.
-     * @param allowed true to return the collection of allowed tags, false to
-     *          return the one of unallowed ones.
-     * @return the collection of specified tags
-     */
-    Set<Tag> getTargetActorTargetTags(boolean allowed);
-
-    /**
-     * Gets the collection of targeted (allowed of not) Modifiable's source
-     * {@link Tag}.
-     * @param allowed true to return the collection of allowed tags, false to
-     *          return the one of unallowed ones.
-     * @return the collection of specified tags
-     */
-    Set<Tag> getSourceActorTargetTags(boolean allowed);
+public interface Modifier<T extends Modifiable> {
 
     /**
      * Sets the value of this modifier.
@@ -126,13 +36,13 @@ public interface Modifier {
     boolean isPercentage();
 
     /**
-     * Gets the modifier activation condition.
+     * Gets the modifier activation temporal condition.
      * @return the {@link ModifierActivation} of the modifier
      */
     ModifierActivation getModifierActivation();
 
     /**
-     * Sets the {@link ModifierActivation} condition of the modifier
+     * Sets the {@link ModifierActivation} condition of the modifier.
      * @param type the modifier activation condition
      */
     void setModifierActivation(ModifierActivation type);
@@ -142,12 +52,28 @@ public interface Modifier {
      * @param modifiable the Modifiable to be accepted
      * @return true if the parameter can be modified by this modifier, false otherwise
      */
-    boolean accept(Modifiable modifiable);
+    boolean accept(T modifiable);
 
     /**
      * Modifies the specified Modifiable.<br>
-     * The accept method must be called beforehand to check if the modifiable is valid.
+     * The {@link #accept} method must be called beforehand to check if the modifiable
+     * is valid.<br>
+     * Doing otherwise may result in exceptions.
      * @param modifiable the modifiable to be modified
      */
-    void modify(Modifiable modifiable);
+    void modify(T modifiable);
+
+    /**
+     * Adds a {@link Requirement} to the modifier that must be satisfied for the modifier
+     * to be applied.
+     * @param requirement the requirement to be added
+     */
+    void addRequirement(Requirement<T> requirement);
+
+    /**
+     * Gets the collection of {@link Requirement}.
+     * @return the requirements of this modifier
+     */
+    List<Requirement<T>> getRequirements();
+
 }
