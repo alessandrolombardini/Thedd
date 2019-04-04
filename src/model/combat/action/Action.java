@@ -1,14 +1,14 @@
 package model.combat.action;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 import model.combat.action.effect.ActionEffect;
 import model.combat.actor.ActionActor;
-import model.combat.common.CombatInstance;
 import model.combat.common.Modifiable;
-import model.combat.tag.Tag;
+import model.combat.common.SourceHolder;
+import model.combat.common.TargetHolder;
+import model.combat.instance.ActionExecutionInstance;
+import model.combat.tag.Taggable;
 
 /**
  * An action that can be executed by an {@link ActionActor} in and out of combat, actively or passively.
@@ -20,14 +20,14 @@ import model.combat.tag.Tag;
  * <p>
  * An action can either target the actor's enemies, allies, just itself or even everyone
  */
-public interface Action extends Modifiable {
+public interface Action extends Modifiable, Taggable, SourceHolder, TargetHolder {
 
-    //public boolean checkRequirements()
     /**
      * Sets one or more targets to the action.
      * <p>
      * Once the main target it's selected the action, if it can target multiple actors,
-     * will determine which of the other actors belonging to the provided targeted party will be targeted
+     * will determine which of the other actors belonging to the provided list of actors
+     * will be targeted
      * 
      * @param target the main target selected by the player
      * @param targetedParty List of the possible other targets
@@ -35,45 +35,34 @@ public interface Action extends Modifiable {
     void setTargets(ActionActor target, List<ActionActor> targetedParty);
 
     /**
-     * Set the source {@link ActionActor} of the action.
-     * @param source the Actor 
-     */
-    void setSource(ActionActor source);
-
-    /**
-     * Returns the {@link ActionActor} that is capable of performing this action.
-     * @return the source Actor
-     */
-    Optional<ActionActor> getSource();
-
-    /**
-     * Returns the {@link AtionEffect} linked to this action.
+     * Returns the {@link ActionEffect} linked to this action.
      * @return a List of the action's effects
      */
     List<ActionEffect> getEffects();
 
     /**
-     * Adds one or more {@link AtionEffect} to the action.
+     * Adds one or more {@link ActionEffect} to the action.
      * @param effects a list of effects
      */
     void addEffects(List<ActionEffect> effects);
 
     /**
-     * Adds one {@link AtionEffect} to the action.
+     * Adds one {@link ActionEffect} to the action.
      * @param effect the effect to be added
      */
     void addEffect(ActionEffect effect);
 
     /**
-     * Removes one {@link AtionEffect} to the action.
+     * Removes one {@link ActionEffect} to the action.
      * @param effect the targeted effect
      */
     void removeEffect(ActionEffect effect);
 
     /**
      * Applies all of the action's {@link ActionEffect} to the current target.
+     * @param target the target on which to apply the effects
      */
-    void applyEffects();
+    void applyEffects(ActionActor target);
 
     /**
      * Returns a literal name for the action.
@@ -88,10 +77,12 @@ public interface Action extends Modifiable {
     List<ActionActor> getTargets();
 
     /**
-     * Returns the action's modifier to the hitChance (a value between 0.0 and 1.0).
-     * @return the hit chance modifier
+     * Returns the action's chance to hit the provided
+     * target (a value between 0.0 and 1.0).
+     * @param target the tested target of the action
+     * @return the chance to roll a hit against the provided target
      */
-    double getHitChanceModifier();
+    double getHitChance(ActionActor target);
 
     /**
      * Returns the target type of this action.
@@ -106,75 +97,75 @@ public interface Action extends Modifiable {
     void setTargetType(TargetType targetType);
 
     /**
-     * Gets whether or not the target of the action is hit.
-     * @return true if the target is hit, false otherwise.
+     * Gets whether or not the last roll to hit was a success.
+     * @return the result of the last call to {@link #rollToHit}.
      */
     boolean isTargetHit();
 
     /**
+     * Makes a roll to determine whether the provided target
+     * is hit or not by the action.<p>
      * Updates the value returned by {@link #isTargetHit()}.
+     * @param target the target to hit
      */
-    void rollToHit();
+    void rollToHit(ActionActor target);
 
     /**
      * Returns the list of valid targets for this action.
-     * @param combatInstance the combat instance in which this action is executed
+     * @param instance the instance in which this action is executed
      * @return a collection of valid targets
      */
-    List<ActionActor> getValidTargets(CombatInstance combatInstance);
+    List<ActionActor> getValidTargets(ActionExecutionInstance instance);
 
     /**
-     * Adds a {@link Tag} to the Action.
-     * @param tag the tag to be added
-     */
-    void addTag(Tag tag);
-
-    /**
-     * Adds one or more {@link Tag} to the Action.
-     * @param tags the set of tags to be added
-     */
-    void addTags(Set<Tag> tags);
-
-    /**
-     * Gets the {@link Tag} of the Action.
-     * @return the set of tags of the action
-     */
-    Set<Tag> getTags();
-
-    /**
-     * Gets the base hit chance modifier of the Action.
-     * @return the base value for the hit chance modifier
+     * Gets the base hit chance of the Action.
+     * @return the base value for the hit chance
      */
     double getBaseHitChance();
 
     /**
-     * Sets the next target in the targets collection as the
-     * current target for the action.
-     */
-    void selectNextTarget();
-
-    /**
-     * Gets the current target of the action.
-     * @return the current target
-     */
-    ActionActor getCurrentTarget();
-
-    /**
      * Gets a string describing the outcome of the action.
-     * <p>
-     * Example:<br>
-     * source.name " strikes " target.name " with a mighty blow:";<br>
+     * @param target the target of the action
+     * @param success true if the action scored a hit, false otherwise
      * @return a description of of the outcome of the action
      */
-    String getLogMessage();
+    String getLogMessage(ActionActor target, boolean success);
 
     /**
      * Gets a text describing the action.
-     * <p>
-     * Example:<br>
-     * source.name " strikes his foe with a mighty blow [..]";<br>
      * @return a description of the action.
      */
     String getDescription();
+
+    /**
+     * Adds the provided value to the action's hit-chance.
+     * @param value the value to be added
+     */
+    void addToCurrentHitChance(double value);
+
+    /**
+     * Gets a copy of the action.
+     * @return a copy of the action
+     */
+    Action getCopy();
+
+    /**
+     * Gets a preview of the effects of this action.
+     * @param target the candidate target of this action
+     * @return a preview of the effects of the action
+     */
+    String getEffectsPreview(ActionActor target);
+
+    /**
+     * Sets the source of the action.
+     * @param source the new source of the action
+     */
+    void setSource(ActionActor source);
+
+    /**
+     * Gets the category of the action.
+     * @return the category of the action
+     */
+    ActionCategory getCategory();
 
 }
