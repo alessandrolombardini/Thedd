@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import thedd.view.explorationpane.enums.PartyType;
@@ -24,6 +25,7 @@ public class ActorViewerImpl extends ImageView implements Observable<Pair<PartyT
     private final PartyType partySide;
     private final int partyPosition;
     private final List<Observer<Pair<PartyType, Integer>>> registeredObservers;
+    private final Tooltip tooltip;
 
     /**
      * Create a new instance of ActorViewer which visualize an actor of the party partySide, 
@@ -40,6 +42,12 @@ public class ActorViewerImpl extends ImageView implements Observable<Pair<PartyT
         this.partySide = Objects.requireNonNull(partySide);
         this.partyPosition = partyPosition;
         registeredObservers = new ArrayList<>();
+        this.setOnMouseClicked(e -> this.emit());
+
+        tooltip = new Tooltip();
+        Tooltip.install(this, tooltip);
+        this.setOnMouseEntered(e -> tooltip.show(this, 0.0, 0.0));
+        this.setOnMouseExited(e -> tooltip.hide());
     }
 
     @Override
@@ -72,6 +80,11 @@ public class ActorViewerImpl extends ImageView implements Observable<Pair<PartyT
     @Override
     public final int getPartyPosition() {
         return partyPosition;
+    }
+
+    @Override
+    public final void updateTooltipText(final String newText) {
+        tooltip.setText(Objects.requireNonNull(newText));
     }
 
 
