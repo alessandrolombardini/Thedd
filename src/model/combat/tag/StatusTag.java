@@ -1,18 +1,22 @@
 package model.combat.tag;
 
 /**
- * Identifies all the possible values of {@link Tag}
- * related to statues.
+ * Tags that an {@link ActionActor} can get when
+ * a {@Status} is applied.
  */
 public enum StatusTag implements Tag {
-    ;
 
-    private final String literal;
+    POISONED("Poisoned");
+
+    private String literal;
 
     StatusTag(final String literal) {
         this.literal = literal;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getLiteral() {
         return literal;
