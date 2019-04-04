@@ -1,12 +1,12 @@
 package model.combat.modifier;
 
+import model.combat.action.effect.ActionEffect;
 import model.combat.action.effect.DamageEffect;
-import model.combat.common.Modifiable;
 
 /**
  * A modifier which modifies effects of type {@link DamageEffect}.
  */
-public class DamageModifier extends AbstractEffectModifier {
+public class DamageModifier extends AbstractModifier<ActionEffect> {
 
     /**
      * @param value the value to be added to the effect
@@ -18,17 +18,14 @@ public class DamageModifier extends AbstractEffectModifier {
     }
 
     /**
-     * Adds the value to the damage, such as:
+     * Adds the value to the damage, such as:<br>
      * damageToBeAdded = isPercentage ? DamageEffect.getDamage() * getValue : getValue;
      * @throws ClassCastException
      */
     @Override
-    public void modify(final Modifiable effect) {
-            //rendere DamageEffect un'interfaccia
-            //modifier = isPercentage ? ((DamageEffect)effect).getDamage() * getValue : getValue;
-            //(DamageEffect)effect).setDamage(getDamage + modifier)
-            //TODELETE
-        ((DamageEffect) effect).addToDamage(getValue());
+    public void modify(final ActionEffect effect) {
+        double modifier = isPercentage() ? ((DamageEffect) effect).getDamage() * getValue() : getValue();
+        ((DamageEffect) effect).addToDamage(modifier);
     }
 
     /**
@@ -37,7 +34,7 @@ public class DamageModifier extends AbstractEffectModifier {
      * @param effect the effect to be accepted
      */
     @Override
-    public boolean accept(final Modifiable effect) {
+    public boolean accept(final ActionEffect effect) {
         return super.accept(effect) && (effect instanceof DamageEffect);
     }
 
