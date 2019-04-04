@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
-import model.combat.implementations.AbstractAutomaticActor;
-import model.item.EquipableItem;
-import model.item.EquipableItemType;
+
+import model.combat.actor.AbstractAutomaticActor;
 import model.item.Item;
+import model.item.equipableitem.EquipableItem;
+import model.item.equipableitem.EquipableItemType;
 import thedd.model.character.inventory.Inventory;
 import thedd.model.character.inventory.InventoryImpl;
 import thedd.model.character.statistics.StatValues;

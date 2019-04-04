@@ -2,8 +2,9 @@ package thedd.model.world.floor;
 
 import java.util.Random;
 
-import utils.RandomCollection;
-import utils.RandomListImpl;
+import utils.randomcollection.RandomCollection;
+import utils.randomcollection.RandomListImpl;
+
 
 /**
  * This class contains some usefull method to get random number.

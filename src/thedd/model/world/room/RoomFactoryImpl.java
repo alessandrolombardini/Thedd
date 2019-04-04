@@ -9,13 +9,14 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import model.character.BasicCharacter;
-import model.character.CharacterFactory;
-import model.character.EnemyCharacterType;
+import thedd.model.character.BasicCharacter;
+import thedd.model.character.CharacterFactory;
+import thedd.model.character.types.EnemyCharacterType;
 import model.combat.logic.DefaultCombatLogic;
 import model.room_event.CombatEvent;
 import model.room_event.RoomEvent;
 import model.room_event.RoomEvents;
+import thedd.model.world.enums.Difficulty;
 import thedd.model.world.enums.RoomContent;
 import thedd.model.world.floor.FloorDetails;
 import thedd.model.world.floor.FloorImpl;
@@ -172,8 +173,8 @@ public class RoomFactoryImpl implements RoomFactory {
         return contentType;
     }
 
-    private int getEnemiesMultiplier() {
-        return this.floorDetails.getDifficult().getLevelOfDifficulty();
+    private Difficulty getEnemiesMultiplier() {
+        return this.floorDetails.getDifficult();
     }
 
     private int getRamainingInteractableToSet() {

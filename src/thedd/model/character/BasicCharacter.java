@@ -3,7 +3,7 @@ package thedd.model.character;
 import java.util.EnumMap;
 import java.util.List;
 
-import model.combat.interfaces.AutomaticActionActor;
+import model.combat.actor.AutomaticActionActor;
 import model.item.Item;
 import thedd.model.character.inventory.Inventory;
 import thedd.model.character.statistics.StatValues;
