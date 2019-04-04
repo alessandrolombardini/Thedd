@@ -1,7 +1,7 @@
 package controller.interfaces;
 
 import model.combat.actor.ActionActor;
-import model.combat.common.HostileEncounter;
+import model.combat.encounter.HostileEncounter;
 
 /**
  * TO BE IGNORED SINCE IT'S CURRENTLY NOT WELL DEFINED/HIGHLY SUSCEPTIBLE TO CHANGES.
@@ -60,5 +60,9 @@ public interface CombatController {
      *  set combatMessageManager
      *  signal view -> view.startCombat()\view.showActions(session.currentCharacter);
      * }
+     */
+    
+    /*
+     * executesingleaction(action, instance)
      */
 }

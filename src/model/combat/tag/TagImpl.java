@@ -46,6 +46,9 @@ public class TagImpl implements Tag {
         return tag.hashCode();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return tag;

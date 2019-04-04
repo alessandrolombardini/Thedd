@@ -1,7 +1,5 @@
 package model.combat.modifier;
 
-import model.combat.actor.ActionActor;
-
 /**
  *  Defines when a {@link Modifier} has to be
  *  activated.
