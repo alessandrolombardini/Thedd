@@ -2,6 +2,7 @@ package model.combat.action.effect;
 
 import java.util.Collections;
 import java.util.LinkedHashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -18,12 +19,18 @@ public abstract class AbstractActionEffect implements ActionEffect {
 
     private final Set<Tag> tags = new LinkedHashSet<>();
     private final Set<Tag> permanentTags = new LinkedHashSet<>();
-    private final Set<Tag> targetTags = new LinkedHashSet<>();
-    private final Set<Tag> sourceTags = new LinkedHashSet<>();
+    private Optional<ActionActor> source = Optional.empty();
+    private Optional<ActionActor> target = Optional.empty();
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public abstract void apply(ActionActor target);
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public abstract String getLogMessage();
 
@@ -31,9 +38,20 @@ public abstract class AbstractActionEffect implements ActionEffect {
      * {@inheritDoc}
      */
     @Override
+    public abstract String getDescription();
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public abstract String getPreviewMessage();
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void updateEffectByTarget(final ActionActor target) {
-        targetTags.clear();
-        targetTags.addAll(target.getTags());
+        this.target = Optional.of(target);
         target.getEffectModifiers().stream()
                                     .filter(m -> m.getModifierActivation() == ModifierActivation.ACTIVE_ON_DEFENCE
                                             || m.getModifierActivation() == ModifierActivation.ALWAYS_ACTIVE)
@@ -46,8 +64,7 @@ public abstract class AbstractActionEffect implements ActionEffect {
      */
     @Override
     public void updateEffectBySource(final ActionActor source) {
-        sourceTags.clear();
-        sourceTags.addAll(source.getTags());
+        this.source = Optional.of(source);
         source.getEffectModifiers().stream()
                                     .filter(m -> m.getModifierActivation() == ModifierActivation.ACTIVE_ON_ATTACK
                                             || m.getModifierActivation() == ModifierActivation.ALWAYS_ACTIVE)
@@ -63,7 +80,9 @@ public abstract class AbstractActionEffect implements ActionEffect {
         if (arePermanent) {
             permanentTags.addAll(tags);
         } else {
-            tags.addAll(tags.stream().filter(permanentTags::contains).collect(Collectors.toSet()));
+            tags.addAll(tags.stream()
+                    .filter(permanentTags::contains)
+                    .collect(Collectors.toSet()));
         }
     }
 
@@ -77,22 +96,6 @@ public abstract class AbstractActionEffect implements ActionEffect {
         } else if (!permanentTags.contains(tag)) {
             tags.add(tag);
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Set<Tag> getTargetTags() {
-        return Collections.unmodifiableSet(targetTags);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Set<Tag> getSourceTags() {
-        return Collections.unmodifiableSet(sourceTags);
     }
 
     /**
@@ -116,10 +119,10 @@ public abstract class AbstractActionEffect implements ActionEffect {
         if (!(other instanceof ActionEffect)) {
             return false;
         }
-        final ActionEffect o = ((ActionEffect) other);
+        final ActionEffect o = (ActionEffect) other;
         return getTags().equals(o.getTags())
-                && getTargetTags().equals(o.getTargetTags())
-                && getSourceTags().equals(o.getSourceTags())
+                && getTarget().equals(o.getTarget())
+                && getSource().equals(o.getSource())
                 && getLogMessage().contentEquals(o.getLogMessage())
                 && getDescription().contentEquals(o.getDescription());
     }
@@ -131,6 +134,7 @@ public abstract class AbstractActionEffect implements ActionEffect {
     public int hashCode() {
         //No fields in this class are immutable. Furthermore, Action effects are supposed
         //to be used in collections not based on hashing (such as Lists).
+        //This solution, while being far from optimal, does follow the rules dictated by the method's contract
         return 1;
     }
 
@@ -140,6 +144,22 @@ public abstract class AbstractActionEffect implements ActionEffect {
     @Override
     public boolean removeTag(final Tag tag) {
         return tags.remove(tag);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<ActionActor> getSource() {
+        return source;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<ActionActor> getTarget() {
+        return target;
     }
 
 }
