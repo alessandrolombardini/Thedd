@@ -5,8 +5,10 @@ package model.combat.tag;
  * related to actions.
  */
 public enum ActionTag implements Tag {
-    //TO BE FILLED
-    ;
+
+    OFFENSIVE("Offensive action"),
+    DEFENSIVE("Defensive action"),
+    BUFF("Buff");
 
     private final String literal;
 
