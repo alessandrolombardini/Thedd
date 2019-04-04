@@ -182,8 +182,8 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
             return;
         }
 
-        if (actorsQueue.isEmpty() && actionsQueue.isEmpty() &&
-                combatInstance.getCombatStatus() == CombatStatus.ROUND_IN_PROGRESS) {
+        if (actorsQueue.isEmpty() && actionsQueue.isEmpty() 
+                && combatInstance.getCombatStatus() == CombatStatus.ROUND_IN_PROGRESS) {
             combatInstance.setCombatStatus(CombatStatus.ROUND_ENDED);
             combatInstance.getAllParties().forEach(ActionActor::resetSelectedAction);
             combatInstance.getAllParties().forEach(a -> a.getStatuses().forEach(s -> s.setIsUpdated(false)));
