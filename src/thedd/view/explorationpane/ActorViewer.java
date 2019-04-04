@@ -20,4 +20,11 @@ public interface ActorViewer {
      *          the party position
      */
     int getPartyPosition();
+
+    /**
+     * Substitute the text of the tooltip, if is present, with the new text.
+     * @param newText
+     *          the new text to display in the tooltip
+     */
+    void updateTooltipText(String newText);
 }
