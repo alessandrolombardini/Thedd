@@ -14,6 +14,7 @@ import model.combat.actor.ActionActor;
 public class ActionResultImpl implements ActionResult {
 
     private final Action action;
+    //TODO: change immutableEntry to Apache Pair
     private final List<AbstractMap.SimpleImmutableEntry<ActionActor, ActionResultType>> results;
 
     /**
