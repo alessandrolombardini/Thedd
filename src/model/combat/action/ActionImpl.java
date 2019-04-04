@@ -8,10 +8,14 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import model.combat.action.effect.ActionEffect;
+import model.combat.action.targeting.ActionTargeting;
 import model.combat.actor.ActionActor;
-import model.combat.common.CombatInstance;
+import model.combat.instance.ActionExecutionInstance;
+import model.combat.modifier.ModifierActivation;
 import model.combat.tag.Tag;
 
 /**
@@ -19,17 +23,20 @@ import model.combat.tag.Tag;
  */
 public class ActionImpl implements Action {
     private final List<ActionActor> targets = new ArrayList<ActionActor>();
-    private Optional<ActionActor> source;
-    private Optional<ActionActor> currentTarget = Optional.empty();
     private final List<ActionEffect> effects = new ArrayList<>();
     private final Set<Tag> tags = new HashSet<Tag>();
-    private String name;
-    private int nextTargetIndex;
+    private final Set<Tag> permanentTags = new HashSet<Tag>();
+    private final LogMessageType logMessage;
+    private final ActionCategory category; 
+    private Optional<ActionActor> source = Optional.empty();
+    private Optional<ActionActor> currentTarget = Optional.empty();
+    private double currentHitChance;
     private double baseHitChance;
-    private TargetType targetType;
     private boolean targetHit = false;
-    private String logMessage;
+    private TargetType targetType;
     private String description;
+    private String name;
+    private final ActionTargeting targeting;
     //manaRequirement? generic getRequirements?
 
     /**
@@ -37,12 +44,16 @@ public class ActionImpl implements Action {
      * @param name the literal name of the action
      * @param baseHitChance the base hit chance (a number between 0.0 and 1.0)
      * @param targetType what kind of Actor the action can target
-     * @param description a description of the action, see {@link #getDescription()}
-     * @param logMessage a message for the logger, see {@link #getLogMessage()}
+     * @param description a description of the action
+     * @param logMessage the category of message for the logger
+     * @param category the category of the action
+     * @param targeting the targeting system of the action
      */
-    public ActionImpl(final String name, final double baseHitChance, final TargetType targetType,
-            final String description, final String logMessage) {
-        this(null, name, Collections.<ActionEffect>emptyList(), baseHitChance, targetType, description, logMessage);
+    public ActionImpl(final String name, final ActionCategory category,
+            final ActionTargeting targeting, final double baseHitChance,
+            final TargetType targetType, final String description,
+            final LogMessageType logMessage) {
+        this(null, name, Collections.<ActionEffect>emptyList(), category, targeting, baseHitChance, targetType, description, logMessage);
     } 
 
     /**
@@ -51,12 +62,16 @@ public class ActionImpl implements Action {
      * @param name the literal name of the action
      * @param baseHitChance the base hit chance (a number between 0.0 and 1.0)
      * @param targetType what kind of Actor the action can target
-     * @param description a description of the action, see {@link #getDescription()}
-     * @param logMessage a message for the logger, see {@link #getLogMessage()}
+     * @param description a description of the action
+     * @param logMessage the category of message for the logger
+     * @param category the category of the action
+     * @param targeting the targeting system of the action
      */
-    public ActionImpl(final ActionActor source, final String name, final double baseHitChance, final TargetType targetType,
-            final String description, final String logMessage) {
-        this(source, name, Collections.<ActionEffect>emptyList(), baseHitChance, targetType, description, logMessage);
+    public ActionImpl(final ActionActor source, final String name,
+            final ActionCategory category, final ActionTargeting targeting,
+            final double baseHitChance, final TargetType targetType, 
+            final String description, final LogMessageType logMessage) {
+        this(source, name, Collections.<ActionEffect>emptyList(), category, targeting, baseHitChance, targetType, description, logMessage);
     }
 
     /**
@@ -66,14 +81,20 @@ public class ActionImpl implements Action {
      * @param effects the list of {@link ActionEffect} associated with this action
      * @param baseHitChance the base hit chance (a number between 0.0 and 1.0)
      * @param targetType what kind of Actor the action can target
-     * @param description a description of the action, see {@link #getDescription()}
-     * @param logMessage a message for the logger, see {@link #getLogMessage()}
+     * @param description a description of the action
+     * @param logMessage the category of message for the logger
+     * @param category the category of the action
+     * @param targeting the targeting system of the action
      */
-    public ActionImpl(final ActionActor source, final String name, final List<ActionEffect> effects, final double baseHitChance, final TargetType targetType,
-            final String description, final String logMessage) {
+    public ActionImpl(final ActionActor source, final String name,
+            final List<ActionEffect> effects, final ActionCategory category,
+            final ActionTargeting targeting,  final double baseHitChance,
+            final TargetType targetType, final String description,
+            final LogMessageType logMessage) {
+        this.targeting = Objects.requireNonNull(targeting);
+        this.category = category;
         this.source = Optional.ofNullable(source);
         this.description = description;
-        this.logMessage = logMessage;
         this.name = name;
         this.baseHitChance = baseHitChance;
         this.targetType = targetType;
@@ -81,6 +102,15 @@ public class ActionImpl implements Action {
             this.source.ifPresent(effect::updateEffectBySource);
             this.effects.add(effect);
         }
+        this.logMessage = logMessage;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ActionCategory getCategory() {
+        return category;
     }
 
     /**
@@ -89,9 +119,7 @@ public class ActionImpl implements Action {
     @Override
     public void setTargets(final ActionActor target, final List<ActionActor> targetedParty) {
         targets.clear();
-        targets.add(Objects.requireNonNull(target));
-        nextTargetIndex = 1;
-        currentTarget = Optional.ofNullable(targets.get(0));
+        targets.addAll(targeting.getTargets(target, targetedParty));
     }
 
     /**
@@ -99,24 +127,15 @@ public class ActionImpl implements Action {
      */
     @Override
     public List<ActionActor> getTargets() {
-        return targets;
+        return Collections.unmodifiableList(targets);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void selectNextTarget() {
-        currentTarget = nextTargetIndex > targets.size() ? Optional.empty() : Optional.ofNullable(targets.get(nextTargetIndex));
-        nextTargetIndex++;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ActionActor getCurrentTarget() {
-        return currentTarget.get();
+    public Optional<ActionActor> getTarget() {
+        return currentTarget;
     }
 
     /**
@@ -161,14 +180,27 @@ public class ActionImpl implements Action {
      * {@inheritDoc}
      */
     @Override
-    public void applyEffects() {
-        if (currentTarget != null) {
+    public void applyEffects(final ActionActor target) {
+        if (target != null) {
             effects.stream().forEach((e) -> {
                 e.updateEffectBySource(getSource().get());
-                e.updateEffectByTarget(getCurrentTarget());
-                e.apply(getCurrentTarget());
+                e.updateEffectByTarget(target);
+                e.apply(target);
             });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getEffectsPreview(final ActionActor target) {
+        final StringBuilder sb = new StringBuilder();
+        effects.stream().forEach((e) -> {
+            sb.append(e.getPreviewMessage());
+            sb.append("\n");
+        });
+        return sb.toString();
     }
 
     /**
@@ -189,13 +221,36 @@ public class ActionImpl implements Action {
 
     /**
      * {@inheritDoc}
+     * @param target the tested target, null to get the hitchance modified only by the source
      */
     @Override
-    public double getHitChanceModifier() {
-        //Ritorno baseHitChance più tutti i risultati dei vari modificaori correnti della source di tipi
-        //??? DefenceModifier, AttackModifier etc..
-        //A seconda del caso, obvs (controlla se questa azione è di tipo difensivo, offensivo o che so altro
-        return baseHitChance;
+    public double getHitChance(final ActionActor target) {
+        currentTarget =  Optional.ofNullable(target);
+        currentHitChance = getBaseHitChance();
+        if (source.isPresent()) {
+            source.get().getActionModifiers().stream()
+                    .filter(m -> m.getModifierActivation() == ModifierActivation.ACTIVE_ON_ATTACK
+                    || m.getModifierActivation() == ModifierActivation.ALWAYS_ACTIVE)
+                    .filter(m -> m.accept(this))
+                    .forEach(m -> m.modify(this));
+        }
+
+        if (currentTarget.isPresent()) {
+            currentTarget.get().getActionModifiers().stream()
+                    .filter(m -> m.getModifierActivation() == ModifierActivation.ACTIVE_ON_DEFENCE
+                    || m.getModifierActivation() == ModifierActivation.ALWAYS_ACTIVE)
+                    .filter(m -> m.accept(this))
+                    .forEach(m -> m.modify(this));
+        }
+        return currentHitChance;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void addToCurrentHitChance(final double value) {
+        currentHitChance += value;
     }
 
     /**
@@ -227,8 +282,8 @@ public class ActionImpl implements Action {
         } else {
             final Action o = ((Action) other);
             return  Objects.equals(getName(), o.getName())
-                    && Objects.equals(getDescription(), o.getDescription())
-                    && Objects.equals(getLogMessage(), o.getLogMessage());
+                    && getBaseHitChance() == o.getBaseHitChance()
+                    && getSource().equals(o.getSource());
         }
     }
 
@@ -237,7 +292,7 @@ public class ActionImpl implements Action {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getLogMessage(), getDescription());
+        return Objects.hash(getName(), getBaseHitChance());
     }
 
     /**
@@ -252,26 +307,11 @@ public class ActionImpl implements Action {
      * {@inheritDoc}
      */
     @Override
-    public List<ActionActor> getValidTargets(final CombatInstance combatInstance) {
-        //Da astrarre
-        if (getSource().isPresent()) {
+    public List<ActionActor> getValidTargets(final ActionExecutionInstance combatInstance) {
+        if (!getSource().isPresent()) {
             return Collections.emptyList();
         }
-        final ActionActor source = getSource().get();
-        switch (getTargetType()) {
-        case ALLY:
-            return combatInstance.getNPCsParty().contains(source) ? combatInstance.getPlayerParty() 
-                    : combatInstance.getNPCsParty();
-        case EVERYONE:
-            return combatInstance.getAllParties();
-        case FOE:
-            return combatInstance.getPlayerParty().contains(source) ? combatInstance.getNPCsParty() 
-                    : combatInstance.getPlayerParty();
-        case SELF:
-            return Collections.singletonList((ActionActor) source);
-        default:
-            throw new IllegalStateException("Target type of the action was not found");
-        }
+        return targeting.getValidTargets(combatInstance, this);
     }
 
     /**
@@ -286,71 +326,30 @@ public class ActionImpl implements Action {
      * {@inheritDoc}
      */
     @Override
-    public void addTag(final Tag tag) {
-        tags.add(tag);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void addTags(final Set<Tag> tags) {
-        tags.addAll(tags);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Set<Tag> getTags() {
-        return Collections.unmodifiableSet(tags);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public double getBaseHitChance() {
         return baseHitChance;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void rollToHit() {
-      //DA ASTRARRE
-        final ActionActor target = getCurrentTarget();
+    public void rollToHit(final ActionActor target) {
         if (target == null) {
             targetHit = false;
         } else {
-            //offensiveStrategy/defensiveStrategy, collezioni di ActionHitStrategy (implementazioni: reflexStrategy, willpowerStrategy etc...)
-            final Random dice = new Random(); //classe utils.DiceRoller potrebbe essere comoda?
-            double sourceModifier, actionModifier, targetModifier, sourceStatusesModifiers, targetStatusesModifier;
-
-            actionModifier = getHitChanceModifier();
-
-            if (getTargetType() != TargetType.ALLY && getTargetType() != TargetType.SELF) { 
-                /*
-                 * sourceChance = currentActor.getPriority() (e getPriority richiamerà getCurrentReflexes a sto punto)
-                 * modificare poi baseChance in modo da decidersi
-                 */
-                //if target.getClass() == ActionActor.class -> targetModifier = target.getReflexes etc... -> anche il check è da spostare nella strategy
-                //if (target.getAction() instanceof AbstractDefensiveAction) {
-                //defenceModifier = target.getAction().getModifier()
-                //}
-                //successThreshold = tutti i modificatori sopra combinati in qualche modo (addizione probs)
-                final double successThreshold = actionModifier;
-                targetHit =  dice.nextDouble() < successThreshold;
-            } else {
-                targetHit =  true;
-            }
+            final Random dice = new Random();
+            targetHit = dice.nextDouble() < getHitChance(target);
         }
     }
 
     /**
      * {@inheritDoc}
+     * @param success 
      */
     @Override
-    public String getLogMessage() {
-        return logMessage == null ? "[Action log message missing]" : logMessage;
+    public String getLogMessage(final ActionActor target, boolean success) {
+        return logMessage.getLogMessage(success, this, target);
     }
 
     /**
@@ -359,6 +358,61 @@ public class ActionImpl implements Action {
     @Override
     public String getDescription() {
         return description == null ? "[Action description missing]" : description;
+    }
+
+    @Override
+    public Action getCopy() {
+        final Action copy = new ActionImpl(getName(), getCategory(), targeting, getBaseHitChance(), getTargetType(), getDescription(), logMessage);
+        copy.addEffects(getEffects());
+        copy.addTags(tags, false);
+        copy.addTags(permanentTags, true);
+        source.ifPresent(copy::setSource);
+        if(!targets.isEmpty()) {
+            final ActionActor originalTarget = targets.get(0);
+            copy.setTargets(originalTarget, targets);
+        }
+        return copy;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Set<Tag> getTags() {
+        return Collections.unmodifiableSet(Stream.concat(tags.stream(), permanentTags.stream())
+                .collect(Collectors.toSet()));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void addTags(final Set<Tag> tags, final boolean arePermanent) {
+        if (arePermanent) {
+            permanentTags.addAll(tags);
+        } else {
+            this.tags.addAll(tags.stream().filter(permanentTags::contains).collect(Collectors.toSet()));
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void addTag(final Tag tag, final boolean isPermanent) {
+        if (isPermanent) {
+            permanentTags.add(tag);
+        } else if (!permanentTags.contains(tag)) {
+            tags.add(tag);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean removeTag(final Tag tag) {
+        return tags.remove(tag);
     }
 
 }
