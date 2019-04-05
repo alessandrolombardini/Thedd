@@ -1,4 +1,4 @@
-package thedd.model.world.enums;
+package thedd.model.world.room;
 
 /**
  * Representation of objects that could be inside a normal room.

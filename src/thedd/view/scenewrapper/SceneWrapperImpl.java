@@ -1,10 +1,11 @@
-package thedd.view;
+package thedd.view.scenewrapper;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
 import javafx.scene.Scene;
+import thedd.view.controller.SubViewControllerImpl;
 
 /**
  * Implementations of {@link SceneWrapper}.
@@ -13,8 +14,8 @@ public class SceneWrapperImpl implements SceneWrapper {
 
     private static final int MIN_NUM_OF_VIEW_CONTROLLERS = 1;
 
-    private final Scene scene;
     private final List<SubViewControllerImpl> subViewController;
+    private final Scene scene;
 
     /**
      * Create a new instance of SceneWrapper.

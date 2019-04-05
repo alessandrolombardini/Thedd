@@ -10,6 +10,9 @@ import thedd.controller.Controller;
 import thedd.controller.ControllerImpl;
 import thedd.view.dialog.DialogFactory;
 import thedd.view.dialog.DialogFactoryImpl;
+import thedd.view.scenewrapper.SceneWrapper;
+import thedd.view.scenewrapper.SceneWrapperFactory;
+import thedd.view.scenewrapper.SceneWrapperFactoryImpl;
 
 /**
  * Implementation of {@link View}.

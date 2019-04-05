@@ -6,7 +6,7 @@ import thedd.model.character.types.EnemyCharacterType;
 import thedd.model.character.types.GoblinNPC;
 import thedd.model.character.types.HeadlessNPC;
 import thedd.model.character.types.PlayerCharacter;
-import thedd.model.world.enums.Difficulty;
+import thedd.model.world.Difficulty;
 
 /**
  * Implementation of a character factory.

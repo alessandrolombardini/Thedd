@@ -1,4 +1,6 @@
-package thedd.view;
+package thedd.view.scenewrapper;
+
+import thedd.view.ApplicationViewState;
 
 /**
  * Interface describing a {@link SceneWrapper} factory. 

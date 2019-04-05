@@ -16,11 +16,10 @@ import model.combat.logic.DefaultCombatLogic;
 import model.room_event.CombatEvent;
 import model.room_event.RoomEvent;
 import model.room_event.RoomEvents;
-import thedd.model.world.enums.Difficulty;
-import thedd.model.world.enums.RoomContent;
+import thedd.model.world.Difficulty;
 import thedd.model.world.floor.FloorDetails;
 import thedd.model.world.floor.FloorImpl;
-import thedd.model.world.floor.RandomUtils;
+import thedd.utils.RandomUtils;
 
 /**
  * Implementation of {@link thedd.model.world.RoomFactory}.

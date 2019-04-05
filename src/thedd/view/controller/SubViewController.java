@@ -1,6 +1,7 @@
-package thedd.view;
+package thedd.view.controller;
 
 import thedd.controller.Controller;
+import thedd.view.View;
 import thedd.view.dialog.DialogFactory;
 
 /**

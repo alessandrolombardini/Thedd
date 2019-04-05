@@ -6,7 +6,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import thedd.model.world.enums.Difficulty;
+import thedd.model.world.Difficulty;
 import thedd.model.world.floor.Floor;
 import thedd.model.world.floor.FloorDetails;
 import thedd.model.world.floor.FloorDetailsFactory;

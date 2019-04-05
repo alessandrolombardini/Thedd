@@ -2,7 +2,6 @@ package thedd.view.controller;
 
 import javafx.fxml.FXML;
 import thedd.view.ApplicationViewState;
-import thedd.view.SubViewControllerImpl;
 
 /**
  * View controller of scene menu.

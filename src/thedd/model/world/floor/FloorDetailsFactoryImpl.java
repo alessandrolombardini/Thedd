@@ -3,8 +3,9 @@ package thedd.model.world.floor;
 import java.util.EnumMap;
 import java.util.Objects;
 
-import thedd.model.world.enums.Difficulty;
+import thedd.model.world.Difficulty;
 import thedd.model.world.room.RoomFactoryImpl;
+import thedd.utils.RandomUtils;
 
 /**
  * This class is a factory of random details of a new floor based on value that the constructor recive.

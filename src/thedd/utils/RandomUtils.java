@@ -1,4 +1,4 @@
-package thedd.model.world.floor;
+package thedd.utils;
 
 import java.util.Random;
 

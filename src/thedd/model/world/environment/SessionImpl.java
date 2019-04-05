@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import thedd.model.character.BasicCharacter;
 import thedd.model.character.CharacterFactory;
-import thedd.model.world.enums.Difficulty;
+import thedd.model.world.Difficulty;
 
 /**
  * Implementation of {@link thedd.model.world.Session}.

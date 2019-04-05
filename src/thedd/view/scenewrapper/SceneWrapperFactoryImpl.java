@@ -1,4 +1,4 @@
-package thedd.view;
+package thedd.view.scenewrapper;
 
 import java.io.IOException;
 import java.net.URL;
@@ -14,6 +14,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import thedd.controller.Controller;
+import thedd.view.ApplicationViewState;
+import thedd.view.View;
+import thedd.view.controller.SubViewControllerImpl;
 
 /**
  * Implementation of {@link SceneWrapperFactory}.

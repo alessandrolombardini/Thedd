@@ -4,7 +4,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import thedd.view.ApplicationViewState;
-import thedd.view.SubViewControllerImpl;
 
 /**
  * View controller of the new game scene.
@@ -27,9 +26,9 @@ public class PlayMenuController extends SubViewControllerImpl {
     @FXML
     private Label errorLabel;
 
+
     /**
-     * 
-     * @param event
+     *Start new game.
      */
     @FXML
     protected void handlePlayButtonAction() {
