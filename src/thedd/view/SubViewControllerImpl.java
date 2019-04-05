@@ -8,7 +8,7 @@ import thedd.view.dialog.DialogFactory;
 /**
  * Implementation of the {@link SubViewController}.
  */
-public class SubViewControllerImpl {
+public class SubViewControllerImpl implements SubViewController {
 
     private View view;
     private Controller controller;
@@ -27,11 +27,13 @@ public class SubViewControllerImpl {
      * @param controller
      *          controller reference
      */
-    public void init(final View view, final Controller controller) {
+    @Override
+    public final void init(final View view, final Controller controller) {
         Objects.requireNonNull(view);
         Objects.requireNonNull(controller);
         this.view = view;
         this.controller = controller;
+        this.startController();
     }
 
     /**
@@ -40,10 +42,23 @@ public class SubViewControllerImpl {
      * @param dialogFactory
      *          dialogFactory reference
      */
+    @Override
     public final void setDialogFactory(final DialogFactory dialogFactory) {
         Objects.requireNonNull(dialogFactory);
         this.dialogFactory = dialogFactory;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void update() { }
+
+    /**
+     * This method is called when the controller is initialized.
+     * Should be overrided if the view controller need to do something when it's initialized.
+     */
+    protected void startController() { }
 
     /**
      * Getter of the Controller.
@@ -75,9 +90,4 @@ public class SubViewControllerImpl {
         return this.dialogFactory;
     }
 
-    /**
-     * This method could be overrided by under class to set what they have to do 
-     * when the view require to be updated.
-     */
-    protected void update() { }
 }
