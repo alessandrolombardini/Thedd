@@ -11,7 +11,7 @@ import model.combat.action.result.ActionResultImpl;
 import model.combat.action.result.ActionResultType;
 import model.combat.actor.ActionActor;
 import model.combat.instance.ActionExecutionInstance;
-import model.combat.instance.ExecutionInstaceImpl;
+import model.combat.instance.ExecutionInstanceImpl;
 import model.combat.instance.CombatStatus;
 import model.combat.status.Status;
 
@@ -23,7 +23,7 @@ import model.combat.status.Status;
  */
 public class StatusUpdateActionExecutor implements ActionExecutor {
 
-    private ActionExecutionInstance instance = new ExecutionInstaceImpl();
+    private ActionExecutionInstance instance = new ExecutionInstanceImpl();
     private boolean done = false;
     private final List<Status> queue = new ArrayList<>();
     private Optional<Status> currentStatus = Optional.empty();
