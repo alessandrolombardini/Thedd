@@ -2,6 +2,7 @@ package thedd.controller;
 
 import java.util.Objects;
 
+import javafx.application.Platform;
 import thedd.model.Model;
 import thedd.model.ModelImpl;
 import thedd.model.world.environment.EnvironmentImpl;
@@ -49,7 +50,16 @@ public class ControllerImpl implements Controller {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final void closeApplication() {
+        Platform.exit();
+    }
+
     private boolean checkNumber(final String number) {
         return !number.isEmpty() && number.chars().allMatch(Character::isDigit);
     }
+
 }
