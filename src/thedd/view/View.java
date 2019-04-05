@@ -12,7 +12,7 @@ public interface View {
      * @param state
      *          the state of application of the wanted view
      */
-    void setView(ApplicationState state);
+    void setView(ApplicationViewState state);
 
     /**
      * Update the view.

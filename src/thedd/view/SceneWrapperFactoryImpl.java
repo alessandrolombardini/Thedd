@@ -20,7 +20,7 @@ import thedd.controller.Controller;
  */
 public class SceneWrapperFactoryImpl implements SceneWrapperFactory {
 
-    private final EnumMap<ApplicationState, Supplier<SceneWrapper>> viewSupplier;
+    private final EnumMap<ApplicationViewState, Supplier<SceneWrapper>> viewSupplier;
     private final View view;
     private final Controller controller;
 
@@ -35,7 +35,7 @@ public class SceneWrapperFactoryImpl implements SceneWrapperFactory {
         Objects.requireNonNull(controller);
         this.view = view;
         this.controller = controller;
-        viewSupplier = new EnumMap<ApplicationState, Supplier<SceneWrapper>>(ApplicationState.class);
+        viewSupplier = new EnumMap<ApplicationViewState, Supplier<SceneWrapper>>(ApplicationViewState.class);
         this.addSubViewToSupplier();
     }
 
@@ -43,15 +43,16 @@ public class SceneWrapperFactoryImpl implements SceneWrapperFactory {
      * {@inheritDoc}
      */
     @Override
-    public final SceneWrapper getSubView(final ApplicationState state) {
+    public final SceneWrapper getSubView(final ApplicationViewState state) {
         Objects.requireNonNull(state);
         return viewSupplier.get(state).get();
     }
 
     private void addSubViewToSupplier() {
-        viewSupplier.put(ApplicationState.MENU, () -> this.getOneNodeView(GameSubView.MENU));
-        viewSupplier.put(ApplicationState.NEW_GAME, () -> this.getOneNodeView(GameSubView.NEW_GAME));
-        viewSupplier.put(ApplicationState.GAME, () -> this.getThreeNodeView(GameSubView.MENU, 
+        viewSupplier.put(ApplicationViewState.MENU, () -> this.getOneNodeView(GameSubView.MENU));
+        viewSupplier.put(ApplicationViewState.NEW_GAME, () -> this.getOneNodeView(GameSubView.NEW_GAME));
+        viewSupplier.put(ApplicationViewState.GAME_OVER, () -> this.getOneNodeView(GameSubView.GAME_OVER));
+        viewSupplier.put(ApplicationViewState.GAME, () -> this.getThreeNodeView(GameSubView.MENU, 
                                                                                 GameSubView.MENU, 
                                                                                 GameSubView.MENU));
     }

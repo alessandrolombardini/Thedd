@@ -3,17 +3,12 @@ package thedd.view;
 /**
  * Enum descibing possible application status. 
  */
-public enum ApplicationState {
+public enum ApplicationViewState {
 
     /**
      * Menu state.
      */
     MENU, 
-
-    /**
-     * Settings state. 
-     */
-    SETTINGS, 
 
     /**
      * State where the user set values of new game session. 
@@ -23,5 +18,10 @@ public enum ApplicationState {
     /**
      * Game state.
      */
-    GAME;
+    GAME,
+
+    /**
+     * Game over state.
+     */
+    GAME_OVER;
 }

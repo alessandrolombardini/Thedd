@@ -21,7 +21,7 @@ public class ViewImpl extends Application implements View {
     private static final double STAGE_HEIGHT = Screen.getPrimary().getBounds().getHeight() / 4 * 3;
     private static final double STAGE_MIN_WIDTH = Screen.getPrimary().getBounds().getWidth() / 4 * 2;
     private static final double STAGE_MIN_HEIGHT = Screen.getPrimary().getBounds().getHeight() / 4 * 2;
-    private static final ApplicationState FIRST_APP_STATE = ApplicationState.MENU; 
+    private static final ApplicationViewState FIRST_APP_STATE = ApplicationViewState.MENU; 
 
     private final SceneWrapperFactory sceneFactory;
     private final DialogFactory dialogFactory;
@@ -54,7 +54,7 @@ public class ViewImpl extends Application implements View {
      * {@inheritDoc}
      */
     @Override
-    public final void setView(final ApplicationState state) {
+    public final void setView(final ApplicationViewState state) {
         Objects.requireNonNull(state);
         this.actualSubView = this.sceneFactory.getSubView(state);
         this.actualSubView.getControllers().forEach(c -> c.setDialogFactory(this.dialogFactory));

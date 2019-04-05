@@ -6,12 +6,12 @@ package thedd.view;
 public interface SceneWrapperFactory {
 
     /**
-     * Method to get a scene with its controllers.
+     * Method to get a scene with its component's controllers.
      * 
      * @param state
      *          state of application
      * @return
-     *          the scene representing the application state 
+     *          the scene and its view controllers representing the application state 
      */
-    SceneWrapper getSubView(ApplicationState state);
+    SceneWrapper getSubView(ApplicationViewState state);
 }
