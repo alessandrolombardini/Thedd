@@ -1,8 +1,8 @@
-package model.item.usableitem;
+package thedd.model.item.usableitem;
 
 import model.combat.action.effect.DamageEffect;
-import model.item.Item;
-import model.item.ItemRarity;
+import thedd.model.item.Item;
+import thedd.model.item.ItemRarity;
 
 /**
  * A {@link UsableItem} that deals damage to the target. 

@@ -1,10 +1,10 @@
-package model.item.equipableitem;
+package thedd.model.item.equipableitem;
 
 import model.combat.modifier.DamageModifier;
 import model.combat.modifier.ModifierActivation;
-import model.item.Item;
-import model.item.ItemRarity;
-import model.item.ModifierAdderEffect;
+import thedd.model.item.Item;
+import thedd.model.item.ItemRarity;
+import thedd.model.item.ModifierAdderEffect;
 
 /**
  * One handed weapon.

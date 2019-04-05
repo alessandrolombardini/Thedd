@@ -1,4 +1,4 @@
-package model.item.equipableitem;
+package thedd.model.item.equipableitem;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,13 +14,13 @@ import org.apache.commons.lang3.tuple.Pair;
 import model.combat.action.Action;
 import model.combat.action.effect.ActionEffect;
 import model.combat.actor.ActionActor;
-import model.item.AbstractItem;
-import model.item.ItemRarity;
-import model.item.ItemRarityImpl;
-import model.item.StatisticChangerEffect;
+import thedd.model.item.AbstractItem;
+import thedd.model.item.ItemRarity;
+import thedd.model.item.ItemRarityImpl;
+import thedd.model.item.StatisticChangerEffect;
 
 /**
- * Implementation of {@link model.item.equipableitem.EquipableItem}.
+ * Implementation of {@link thedd.model.item.equipableitem.EquipableItem}.
  *
  */
 public class EquipableItemImpl extends AbstractItem implements EquipableItem {

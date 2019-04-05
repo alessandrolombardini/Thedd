@@ -1,4 +1,4 @@
-package model.item.usableitem;
+package thedd.model.item.usableitem;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,12 +10,12 @@ import model.combat.action.Action;
 import model.combat.action.ActionImpl;
 import model.combat.action.TargetType;
 import model.combat.action.effect.ActionEffect;
-import model.item.AbstractItem;
-import model.item.ItemRarity;
-import model.item.ItemRarityImpl;
+import thedd.model.item.AbstractItem;
+import thedd.model.item.ItemRarity;
+import thedd.model.item.ItemRarityImpl;
 
 /**
- * Implementation of {@link model.item.usableitem.UsableItem}.
+ * Implementation of {@link thedd.model.item.usableitem.UsableItem}.
  *
  */
 public class UsableItemImpl extends AbstractItem implements UsableItem {

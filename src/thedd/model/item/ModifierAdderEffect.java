@@ -1,4 +1,4 @@
-package model.item;
+package thedd.model.item;
 
 import java.util.Objects;
 import java.util.Optional;

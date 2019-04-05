@@ -1,14 +1,14 @@
-package model.item.usableitem;
+package thedd.model.item.usableitem;
 
 import java.util.Map;
 
 import model.combat.action.Action;
 import model.combat.action.effect.ActionEffect;
-import model.item.Item;
-import model.item.ItemRarity;
+import thedd.model.item.Item;
+import thedd.model.item.ItemRarity;
 
 /**
- * Specialized interface of {@link model.item.Item} of usable items.
+ * Specialized interface of {@link thedd.model.item.Item} of usable items.
  *
  */
 public interface UsableItem extends Item {

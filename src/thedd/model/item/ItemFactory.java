@@ -1,4 +1,4 @@
-package model.item;
+package thedd.model.item;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,10 +8,10 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import model.character.Statistic;
-import model.item.equipableitem.EquipableItem;
-import model.item.equipableitem.EquipableItemSword;
-import model.item.usableitem.UsableItemBomb;
-import model.item.usableitem.UsableItemPotion;
+import thedd.model.item.equipableitem.EquipableItem;
+import thedd.model.item.equipableitem.EquipableItemSword;
+import thedd.model.item.usableitem.UsableItemBomb;
+import thedd.model.item.usableitem.UsableItemPotion;
 import utils.randomcollection.RandomList;
 import utils.randomcollection.RandomListImpl;
 import utils.randomcollection.weightedItem.WeightedItemImpl;
@@ -44,7 +44,7 @@ public final class ItemFactory {
     }
 
     /**
-     * Return a new {@link model.item.Item}. If an {@link model.item.equipableitem.EquipableItem}
+     * Return a new {@link thedd.model.item.Item}. If an {@link thedd.model.item.equipableitem.EquipableItem}
      * is extracted, then additional {@link model.combat.action.Action} and {@link model.combat.action.effect.ActionEffect}
      * are added as well, accordingly with the rarity of the item; otherwise the new item is returned without additions.
      * 

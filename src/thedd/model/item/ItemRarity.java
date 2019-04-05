@@ -1,4 +1,4 @@
-package model.item;
+package thedd.model.item;
 
 /**
  *  Rarity of an item. It can change the modifiers of an Item, 

@@ -1,8 +1,8 @@
-package model.item.usableitem;
+package thedd.model.item.usableitem;
 
-import model.item.HealingEffect;
-import model.item.Item;
-import model.item.ItemRarity;
+import thedd.model.item.HealingEffect;
+import thedd.model.item.Item;
+import thedd.model.item.ItemRarity;
 /**
  * Class of Item Potion that heals the target.
  *

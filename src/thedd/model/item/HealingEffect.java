@@ -1,4 +1,4 @@
-package model.item;
+package thedd.model.item;
 
 import model.character.BasicCharacter;
 import model.character.Statistic;

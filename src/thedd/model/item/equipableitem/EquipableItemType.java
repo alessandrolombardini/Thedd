@@ -1,7 +1,7 @@
-package model.item.equipableitem;
+package thedd.model.item.equipableitem;
 
 /**
- * Types of {@link model.item.equipableitem.EquipableItem}.
+ * Types of {@link thedd.model.item.equipableitem.EquipableItem}.
  *
  */
 public enum EquipableItemType {

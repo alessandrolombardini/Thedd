@@ -1,9 +1,9 @@
-package model.item;
+package thedd.model.item;
 
 import java.util.Objects;
 
-import model.item.equipableitem.EquipableItem;
-import model.item.usableitem.UsableItem;
+import thedd.model.item.equipableitem.EquipableItem;
+import thedd.model.item.usableitem.UsableItem;
 
 /**
  * Abstract class that defines the methods which tell whether a item is of a

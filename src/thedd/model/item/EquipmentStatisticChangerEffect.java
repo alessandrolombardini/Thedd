@@ -1,4 +1,4 @@
-package model.item;
+package thedd.model.item;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -10,7 +10,7 @@ import model.combat.actor.ActionActor;
 
 /**
  * This {@link model.combat.action.effect.ActionEffect} which represent a change of a statistic
- * given by an {@link model.item.equipableitem.EquipableItem}.
+ * given by an {@link thedd.model.item.equipableitem.EquipableItem}.
  *
  */
 public class EquipmentStatisticChangerEffect extends AbstractActionEffect implements StatisticChangerEffect {

@@ -1,4 +1,4 @@
-package model.item.equipableitem;
+package thedd.model.item.equipableitem;
 
 import java.util.List;
 import java.util.Map;
@@ -8,8 +8,8 @@ import org.apache.commons.lang3.tuple.Pair;
 import model.combat.action.Action;
 import model.combat.action.effect.ActionEffect;
 import model.combat.actor.ActionActor;
-import model.item.Item;
-import model.item.ItemRarity;
+import thedd.model.item.Item;
+import thedd.model.item.ItemRarity;
 
 /**
  * Specialization of Item which can be equipped but cannot be used.
@@ -40,7 +40,7 @@ public interface EquipableItem extends Item {
     void onUnequip(ActionActor equipper);
 
     /**
-     * Returns the map of pair key-value where the key is a value of {@link model.item.ItemRarity} and
+     * Returns the map of pair key-value where the key is a value of {@link thedd.model.item.ItemRarity} and
      * the value is represented by a {@link org.apache.commons.lang3.tuple.Pair} in which
      * the left value is the number of {@link model.combat.modifier.Modifier}s granted by the item when equipped and the right value is the number
      * of additional {@link model.combat.action.Action}s granted by the item when equipped.

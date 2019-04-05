@@ -1,4 +1,4 @@
-package model.item;
+package thedd.model.item;
 
 /**
  * An interface to represent items. Any specialization need to extend this interface.
