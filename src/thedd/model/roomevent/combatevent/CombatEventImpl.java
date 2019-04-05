@@ -1,8 +1,8 @@
 package thedd.model.roomevent.combatevent;
 
-import model.combat.enums.CombatStatus;
-import model.combat.implementations.HostileEncounterImpl;
-import model.combat.interfaces.HostileEncounter;
+import thedd.model.combat.encounter.HostileEncounter;
+import thedd.model.combat.encounter.HostileEncounterImpl;
+import thedd.model.combat.instance.CombatStatus;
 import thedd.model.roomevent.AbstractRoomEvent;
 import thedd.model.roomevent.RoomEventType;
 
@@ -35,7 +35,7 @@ public final class CombatEventImpl extends AbstractRoomEvent implements CombatEv
 
     @Override
     public boolean isCompleted() {
-        return hostileEncounter.getCombatLogic().getCombatStatus() == CombatStatus.PLAYER_LOST || hostileEncounter.getCombatLogic().getCombatStatus() == CombatStatus.PLAYER_WON;
+        return hostileEncounter.getCombatLogic().getExecutionStatus() == CombatStatus.PLAYER_WON;
     }
 
     @Override
