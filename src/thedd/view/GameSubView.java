@@ -8,11 +8,6 @@ import java.util.Objects;
 public enum GameSubView {
 
     /**
-     * Pre menu scene.
-     */
-    PRE_MENU("preMenu_form.fxml"),
-
-    /**
      * Menu scene.
      */
     MENU("mainMenu_form.fxml"),
@@ -23,9 +18,9 @@ public enum GameSubView {
     NEW_GAME("playMenu_form.fxml"),
 
     /**
-     * Setting scene.
+     * Game over scene.
      */
-    SETTING("settings_form.fxml");
+    GAME_OVER("gameOver_form.fxml");
 
     /**
      * Use of the char '/' becouse it's used by istructions that required that type of char, doesn't 
