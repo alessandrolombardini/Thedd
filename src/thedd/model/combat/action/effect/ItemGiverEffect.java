@@ -6,15 +6,17 @@ import model.item.Item;
 import model.item.ItemFactory;
 
 /**
- * {@link model.combat.interfaces.ActionEffect} specialization which allow to add an {@link model.item.Item} to a target inventory.
+ * {@link model.combat.interfaces.ActionEffect} specialization
+ * which allow to add an {@link model.item.Item} to a target inventory.
  *
  */
 public final class ItemGiverEffect implements ActionEffect {
     //If a luck-like statistic is implemented,
     //then the item can change based on that value with method updateEffectByTarget
     private final Item itemGiven;
+    
     /**
-     * 
+     * Create a new effect which gives a random item to the target. 
      */
     public ItemGiverEffect() {
         itemGiven = ItemFactory.getRandomItem();

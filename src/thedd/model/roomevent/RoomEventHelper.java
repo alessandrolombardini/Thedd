@@ -16,7 +16,7 @@ import thedd.model.roomevent.interactableactionperformer.TreasureChest;
  * Class to create RoomEvents on demand.
  *
  */
-public final class RoomEvents {
+public final class RoomEventHelper {
 
     private static final List<Supplier<Contraption>> CONTRAPTION_DATABASE = new ArrayList<>();
     private static final Random RNG = new Random();
@@ -26,7 +26,7 @@ public final class RoomEvents {
         CONTRAPTION_DATABASE.add(ContraptionSanctuary::newInstance);
     }
 
-    private RoomEvents() {
+    private RoomEventHelper() {
     }
 
     /**

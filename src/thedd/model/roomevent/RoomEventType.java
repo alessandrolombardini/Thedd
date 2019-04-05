@@ -10,7 +10,8 @@ public enum RoomEventType {
      */
     COMBAT_EVENT, 
     /**
-     * In the room there are stairs. If stairs are present in a room, then they should be the only event inside that room.
+     * In the room there are stairs.
+     * If stairs are present in a room, then they should be the only event inside that room.
      */
     FLOOR_CHANGER_EVENT, 
     /**

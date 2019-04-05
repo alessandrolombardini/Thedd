@@ -12,7 +12,7 @@ public abstract class AbstractRoomEvent implements RoomEvent {
     private final String name;
 
     /**
-     * 
+     * Create an abstract instance of RoomEvent with a name.
      * @param name
      *  the name of the room event
      */
