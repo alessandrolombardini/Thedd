@@ -1,6 +1,6 @@
 package thedd.model.roomevent.combatevent;
 
-import model.combat.interfaces.HostileEncounter;
+import thedd.model.combat.encounter.HostileEncounter;
 import thedd.model.roomevent.RoomEvent;
 
 /**
