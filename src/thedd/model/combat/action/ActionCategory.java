@@ -5,6 +5,7 @@ public enum ActionCategory {
     STANDARD,
     SPECIAL,
     ITEM, 
-    STATUS
+    STATUS,
+    INTERACTABLE
 
 }
