@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Optional;
 
 import model.combat.implementations.AbstractAutomaticActor;
-import model.item.EquipableItem;
-import model.item.EquipableItemType;
-import model.item.Item;
+import thedd.model.item.EquipableItem;
+import thedd.model.item.EquipableItemType;
+import thedd.model.item.Item;
 
 /**
  * Class that define a Generic Character.

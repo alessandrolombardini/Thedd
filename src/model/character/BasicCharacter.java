@@ -1,7 +1,8 @@
 package model.character;
 
 import java.util.List;
-import model.item.Item;
+
+import thedd.model.item.Item;
 
 /**
  * Interface that define the characters.

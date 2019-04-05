@@ -2,9 +2,9 @@ package model.character;
 
 import java.util.Optional;
 
-import model.item.EquipableItem;
-import model.item.Item;
-import model.item.UsableItem;
+import thedd.model.item.EquipableItem;
+import thedd.model.item.Item;
+import thedd.model.item.UsableItem;
 
 /**
  * Interface that manage a collection of items.

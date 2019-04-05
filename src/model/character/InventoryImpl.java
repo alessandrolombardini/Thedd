@@ -3,11 +3,12 @@ package model.character;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Optional;
 
-import model.item.EquipableItem;
-import model.item.Item;
-import model.item.UsableItem;
+import thedd.model.item.EquipableItem;
+import thedd.model.item.Item;
+import thedd.model.item.UsableItem;
+
+import java.util.Optional;
 
 /**
  * Implementation of Inventory interface.
