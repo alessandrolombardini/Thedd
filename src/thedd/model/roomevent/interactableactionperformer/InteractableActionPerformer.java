@@ -1,6 +1,6 @@
 package thedd.model.roomevent.interactableactionperformer;
 
-import model.combat.interfaces.ActionActor;
+import thedd.model.combat.actor.ActionActor;
 import thedd.model.roomevent.RoomEvent;
 
 /**
