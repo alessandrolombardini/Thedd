@@ -1,4 +1,4 @@
-package model.room_event;
+package thedd.model.combat.action.effect;
 
 import model.combat.interfaces.ActionActor;
 import model.combat.interfaces.ActionEffect;
