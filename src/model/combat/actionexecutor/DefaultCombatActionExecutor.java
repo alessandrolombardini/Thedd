@@ -15,7 +15,7 @@ import model.combat.action.result.ActionResultType;
 import model.combat.actor.ActionActor;
 import model.combat.actor.automatic.AutomaticActionActor;
 import model.combat.instance.ActionExecutionInstance;
-import model.combat.instance.CombatInstance;
+import model.combat.instance.ExecutionInstaceImpl;
 import model.combat.instance.CombatStatus;
 import model.combat.status.Status;
 import model.combat.tag.TagImpl;
@@ -34,7 +34,7 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
 
     private Optional<Action> currentAction = Optional.empty();
     private Optional<ActionActor> currentActor = Optional.empty();
-    private ActionExecutionInstance combatInstance = new CombatInstance();
+    private ActionExecutionInstance combatInstance = new ExecutionInstaceImpl();
     private Optional<ActionResult> currentActionResult = Optional.empty();
     private final List<Action> actionsQueue = new LinkedList<>(); //A queue of actions that will be executed before the current actor's one
     private final List<ActionActor> actorsQueue = new LinkedList<>();
