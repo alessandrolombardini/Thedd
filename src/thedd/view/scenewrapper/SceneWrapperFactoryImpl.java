@@ -1,5 +1,6 @@
 package thedd.view.scenewrapper;
 
+import java.awt.geom.IllegalPathStateException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -23,7 +24,8 @@ import thedd.view.controller.SubViewControllerImpl;
  */
 public class SceneWrapperFactoryImpl implements SceneWrapperFactory {
 
-    private final EnumMap<ApplicationViewState, Supplier<SceneWrapper>> viewSupplier;
+    private static final String ERROR_FXMLNOTFOUND = "FXML not found";
+
     private final View view;
     private final Controller controller;
 
@@ -38,8 +40,6 @@ public class SceneWrapperFactoryImpl implements SceneWrapperFactory {
         Objects.requireNonNull(controller);
         this.view = view;
         this.controller = controller;
-        viewSupplier = new EnumMap<ApplicationViewState, Supplier<SceneWrapper>>(ApplicationViewState.class);
-        this.addSubViewToSupplier();
     }
 
     /**
@@ -48,40 +48,34 @@ public class SceneWrapperFactoryImpl implements SceneWrapperFactory {
     @Override
     public final SceneWrapper getSubView(final ApplicationViewState state) {
         Objects.requireNonNull(state);
-        return viewSupplier.get(state).get();
+        return state.isOneNode() ? this.getOneNodeView(state.getSubViews().stream().findFirst().get())
+                                 : this.getThreeNodeView(state.getSubViews());
     }
 
-    private void addSubViewToSupplier() {
-        viewSupplier.put(ApplicationViewState.MENU, () -> this.getOneNodeView(GameSubView.MENU));
-        viewSupplier.put(ApplicationViewState.NEW_GAME, () -> this.getOneNodeView(GameSubView.NEW_GAME));
-        viewSupplier.put(ApplicationViewState.GAME_OVER, () -> this.getOneNodeView(GameSubView.GAME_OVER));
-        viewSupplier.put(ApplicationViewState.GAME, () -> this.getThreeNodeView(GameSubView.MENU, 
-                                                                                GameSubView.MENU, 
-                                                                                GameSubView.MENU));
-    }
-
-    private SceneWrapper getOneNodeView(final GameSubView scene) {
-        Objects.requireNonNull(scene);
+    private SceneWrapper getOneNodeView(final GameSubView subView) {
+        Objects.requireNonNull(subView);
         final List<SubViewControllerImpl> controllers = new ArrayList<>();
-        final NodeWrapper content = this.loadNode(scene);
+        final NodeWrapper content = this.loadNode(subView);
         controllers.add(content.getController());
         return new SceneWrapperImpl(new Scene((Parent) content.getNode()), controllers);
     }
 
-    private SceneWrapper getThreeNodeView(final GameSubView sceneUpSx, final GameSubView sceneUpDx,
-                                          final GameSubView sceneDown) {
-        Objects.requireNonNull(sceneUpSx);
-        Objects.requireNonNull(sceneUpDx);
-        Objects.requireNonNull(sceneDown);
+    private SceneWrapper getThreeNodeView(final List<GameSubView> subViews) {
+        /** 
+         * Da rifare per due motivi:
+         * - 1 Non so come gestire la suddivisione dello schermo 
+         * - 2 Non so come 
+         */
+        Objects.requireNonNull(subViews);
         final List<SubViewControllerImpl> controllers = new ArrayList<>();
         final BorderPane border = new BorderPane();
-        NodeWrapper content = this.loadNode(sceneUpSx);
+        NodeWrapper content = this.loadNode(subViews.get(0));
         border.setCenter(content.getNode());
         controllers.add(content.getController());
-        content = this.loadNode(sceneUpDx);
+        content = this.loadNode(subViews.get(1));
         border.setBottom(content.getNode());
         controllers.add(content.getController());
-        content = this.loadNode(sceneDown);
+        content = this.loadNode(subViews.get(2));
         border.setTop(content.getNode());
         controllers.add(content.getController());
         return new SceneWrapperImpl(new Scene(border), controllers);
@@ -98,7 +92,7 @@ public class SceneWrapperFactoryImpl implements SceneWrapperFactory {
             subViewController.init(view, controller);
             return new NodeWrapper(node, subViewController);
         } catch (IOException e) {
-            throw new IllegalStateException();
+            throw new IllegalPathStateException(ERROR_FXMLNOTFOUND);
         }
     }
 

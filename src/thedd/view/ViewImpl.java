@@ -1,6 +1,7 @@
 package thedd.view;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -19,18 +20,20 @@ import thedd.view.scenewrapper.SceneWrapperFactoryImpl;
  */
 public class ViewImpl extends Application implements View {
 
+    private static final String ERROR_STAGEUNSETTED = "Stage is not setted";
+
     private static final String GAME_NAME = "The dark destruction";
     private static final double STAGE_WIDTH = Screen.getPrimary().getBounds().getWidth() / 4 * 3;
     private static final double STAGE_HEIGHT = Screen.getPrimary().getBounds().getHeight() / 4 * 3;
     private static final double STAGE_MIN_WIDTH = Screen.getPrimary().getBounds().getWidth() / 4 * 2;
     private static final double STAGE_MIN_HEIGHT = Screen.getPrimary().getBounds().getHeight() / 4 * 2;
-    private static final ApplicationViewState FIRST_APP_STATE = ApplicationViewState.MENU; 
+    private static final ApplicationViewState FIRST_APP_STATE = ApplicationViewState.MENU;
 
     private final SceneWrapperFactory sceneFactory;
     private final DialogFactory dialogFactory;
-    private Stage stage;
-    private Controller controller;
-    private SceneWrapper actualSubView;
+    private final Controller controller;
+    private Optional<Stage> stage;
+    private Optional<SceneWrapper> actualScene;
     private boolean viewStarted;
 
     /**
@@ -40,6 +43,8 @@ public class ViewImpl extends Application implements View {
         this.controller = new ControllerImpl(this);
         this.sceneFactory = new SceneWrapperFactoryImpl(this, controller);
         this.dialogFactory = new DialogFactoryImpl();
+        this.stage = Optional.empty();
+        this.actualScene = Optional.empty();
         this.viewStarted = false;
     }
 
@@ -49,7 +54,10 @@ public class ViewImpl extends Application implements View {
     @Override
     public final void start(final Stage primaryStage) throws Exception {
         Objects.requireNonNull(primaryStage);
-        this.stage = primaryStage;
+        if (this.stage.isPresent()) {
+            throw new IllegalStateException(ERROR_STAGEUNSETTED);
+        }
+        this.stage = Optional.of(primaryStage);
         this.initView();
     }
 
@@ -57,18 +65,22 @@ public class ViewImpl extends Application implements View {
      * {@inheritDoc}
      */
     @Override
-    public final void setView(final ApplicationViewState state) {
+    public final void setScene(final ApplicationViewState state) {
         Objects.requireNonNull(state);
-        this.actualSubView = this.sceneFactory.getSubView(state);
-        this.actualSubView.getControllers().forEach(c -> c.setDialogFactory(this.dialogFactory));
-        final Scene newScene = this.actualSubView.getScene();
-        final double width = this.stage.getWidth();
-        final double height = this.stage.getHeight();
-        this.stage.setScene(newScene);
-        this.stage.setWidth(width);
-        this.stage.setHeight(height);
+        if (!this.stage.isPresent()) {
+            throw new IllegalStateException(ERROR_STAGEUNSETTED);
+        }
+        this.actualScene = Optional.of(this.sceneFactory.getSubView(state));
+        this.actualScene.get().getControllers().forEach(c -> c.setDialogFactory(this.dialogFactory));
+        final Scene newScene = this.actualScene.get().getScene();
+        final Stage stage = this.stage.get();
+        final double width = stage.getWidth();
+        final double height = stage.getHeight();
+        stage.setScene(newScene);
+        stage.setWidth(width);
+        stage.setHeight(height);
         if (!this.viewStarted) {
-            this.stage.show();
+            stage.show();
             this.viewStarted = true;
         }
     }
@@ -78,17 +90,23 @@ public class ViewImpl extends Application implements View {
      */
     @Override
     public final void update() {
-        this.actualSubView.getControllers().forEach(c -> c.update());
+        if (this.actualScene.isPresent()) {
+            this.actualScene.get().getControllers().forEach(c -> c.update());
+        }
     }
 
     private void initView() {
-        this.stage.setTitle(GAME_NAME);
-        this.stage.setMinHeight(STAGE_MIN_HEIGHT);
-        this.stage.setMinWidth(STAGE_MIN_WIDTH);
-        this.stage.setHeight(STAGE_HEIGHT);
-        this.stage.setWidth(STAGE_WIDTH);
-        this.stage.setResizable(true);
-        this.setView(FIRST_APP_STATE);
+        if (!this.stage.isPresent()) {
+            throw new IllegalStateException(ERROR_STAGEUNSETTED);
+        }
+        final Stage stage = this.stage.get();
+        stage.setTitle(GAME_NAME);
+        stage.setMinHeight(STAGE_MIN_HEIGHT);
+        stage.setMinWidth(STAGE_MIN_WIDTH);
+        stage.setHeight(STAGE_HEIGHT);
+        stage.setWidth(STAGE_WIDTH);
+        stage.setResizable(true);
+        setScene(FIRST_APP_STATE);
     }
 
 }

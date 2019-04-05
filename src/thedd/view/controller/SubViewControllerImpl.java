@@ -1,6 +1,7 @@
 package thedd.view.controller;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import thedd.controller.Controller;
 import thedd.view.View;
@@ -11,42 +12,44 @@ import thedd.view.dialog.DialogFactory;
  */
 public class SubViewControllerImpl implements SubViewController {
 
-    private View view;
-    private Controller controller;
-    private DialogFactory dialogFactory;
+    private static final String ERROR_ALREDYEXIST = "Has been alredy setted";
+    private static final String ERROR_NOSETTED = "Component not yet setted";
+
+    private Optional<View> view;
+    private Optional<Controller> controller;
+    private Optional<DialogFactory> dialogFactory;
 
     /**
      * Constructor of SubViewControllerImpl.
      */
-    protected SubViewControllerImpl() { }
+    protected SubViewControllerImpl() { 
+        this.view = Optional.empty();
+        this.controller = Optional.empty();
+        this.dialogFactory = Optional.empty();
+    }
 
     /**
-     * Initialize the scene controller.
-     * 
-     * @param view
-     *          view reference
-     * @param controller
-     *          controller reference
+     * {@inheritDoc}
      */
     @Override
     public final void init(final View view, final Controller controller) {
         Objects.requireNonNull(view);
         Objects.requireNonNull(controller);
-        this.view = view;
-        this.controller = controller;
+        if (this.view.isPresent() || this.controller.isPresent()) {
+            throw new IllegalStateException(ERROR_ALREDYEXIST);
+        }
+        this.view = Optional.of(view);
+        this.controller = Optional.of(controller);
         this.startController();
     }
 
     /**
-     * Setter of {@link DialogFactory}.
-     * 
-     * @param dialogFactory
-     *          dialogFactory reference
+     * {@inheritDoc}
      */
     @Override
     public final void setDialogFactory(final DialogFactory dialogFactory) {
         Objects.requireNonNull(dialogFactory);
-        this.dialogFactory = dialogFactory;
+        this.dialogFactory = Optional.of(dialogFactory);
     }
 
     /**
@@ -66,9 +69,15 @@ public class SubViewControllerImpl implements SubViewController {
      * 
      * @return
      *          the controller
+     *
+     * @throws IllegalStateException
+     *          if the controller hasn't been setted
      */
     protected Controller getController() {
-        return this.controller;
+        if (!this.controller.isPresent()) {
+            throw new IllegalStateException(ERROR_NOSETTED);
+        }
+        return this.controller.get();
     }
 
     /**
@@ -76,9 +85,15 @@ public class SubViewControllerImpl implements SubViewController {
      * 
      * @return
      *          the view
+     *
+     * @throws IllegalStateException
+     *          if the view hasn't been setted
      */
     protected View getView() {
-        return this.view;
+        if (!this.view.isPresent()) {
+            throw new IllegalStateException(ERROR_NOSETTED);
+        }
+        return this.view.get();
     }
 
     /**
@@ -86,9 +101,15 @@ public class SubViewControllerImpl implements SubViewController {
      * 
      * @return 
      *          the dialogFactory
+     *
+     * @throws IllegalStateException
+     *          if the dialog hasn't been setted
      */
     protected DialogFactory getDialogFactory() {
-        return this.dialogFactory;
+        if (!this.dialogFactory.isPresent()) {
+            throw new IllegalStateException(ERROR_NOSETTED);
+        }
+        return this.dialogFactory.get();
     }
 
 }

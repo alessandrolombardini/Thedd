@@ -13,7 +13,7 @@ public class GameOverController extends SubViewControllerImpl {
      */
     @FXML
     protected final void handleBackToMenuButtonAction() {
-        this.getView().setView(ApplicationViewState.MENU);
+        this.getView().setScene(ApplicationViewState.MENU);
     }
 
     /**

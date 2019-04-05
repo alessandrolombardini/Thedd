@@ -12,6 +12,7 @@ import thedd.view.controller.SubViewControllerImpl;
  */
 public class SceneWrapperImpl implements SceneWrapper {
 
+    private static final String ERROR_UNVALIDCONTROLLERS = "Number of view controller is not enought";
     private static final int MIN_NUM_OF_VIEW_CONTROLLERS = 1;
 
     private final List<SubViewControllerImpl> subViewController;
@@ -28,7 +29,7 @@ public class SceneWrapperImpl implements SceneWrapper {
         Objects.requireNonNull(scene);
         Objects.requireNonNull(viewControllers);
         if (viewControllers.size() < MIN_NUM_OF_VIEW_CONTROLLERS) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(ERROR_UNVALIDCONTROLLERS);
         }
         this.scene = scene;
         this.subViewController = Collections.unmodifiableList(viewControllers);

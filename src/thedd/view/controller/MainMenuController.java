@@ -13,7 +13,7 @@ public class MainMenuController extends SubViewControllerImpl {
      */
     @FXML
     protected final void handleNewGameButtonAction() {
-        this.getView().setView(ApplicationViewState.NEW_GAME);
+        this.getView().setScene(ApplicationViewState.NEW_GAME);
     }
 
     /**

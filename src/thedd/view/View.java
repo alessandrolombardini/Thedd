@@ -7,12 +7,12 @@ package thedd.view;
 public interface View {
 
     /**
-     * Set view of a given state.
+     * Set scene of a given state.
      * 
      * @param state
      *          the state of application of the wanted view
      */
-    void setView(ApplicationViewState state);
+    void setScene(ApplicationViewState state);
 
     /**
      * Update the view.

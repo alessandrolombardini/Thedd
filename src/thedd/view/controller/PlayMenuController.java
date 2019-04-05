@@ -39,7 +39,7 @@ public class PlayMenuController extends SubViewControllerImpl {
                                                  this.numberOfFloorsField.getText())) {
             this.getDialogFactory().createErrorDialog(ERROR_TITLE_INPUTERROR, ERROR_TEXT_NONVALIDVALUE).show();
         } else {
-            this.getView().setView(ApplicationViewState.GAME_OVER);
+            this.getView().setScene(ApplicationViewState.GAME_OVER);
         }
     }
 }
