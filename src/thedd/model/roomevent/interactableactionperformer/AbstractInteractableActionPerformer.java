@@ -1,10 +1,9 @@
 package thedd.model.roomevent.interactableactionperformer;
 
-import java.util.Arrays;
 import java.util.Objects;
 
-import model.combat.implementations.AbstractActionActor;
-import model.combat.interfaces.Action;
+import thedd.model.combat.action.Action;
+import thedd.model.combat.actor.AbstractActionActor;
 import thedd.model.roomevent.RoomEventType;
 
 /**
@@ -13,7 +12,6 @@ import thedd.model.roomevent.RoomEventType;
  */
 public abstract class AbstractInteractableActionPerformer extends AbstractActionActor implements InteractableActionPerformer {
 
-    //private final Action action;
     private boolean completed;
 
     /**
@@ -25,9 +23,8 @@ public abstract class AbstractInteractableActionPerformer extends AbstractAction
      */
     public AbstractInteractableActionPerformer(final String name, final Action action) {
         super(name);
-        super.setAction(Objects.requireNonNull(action));
-        this.getAction().ifPresent(a -> a.setSource(this));
-        this.setAvailableActionsList(Arrays.asList(action));
+        super.addActionToAvailable(Objects.requireNonNull(action));
+        action.setSource(this);
         this.completed = false;
     }
 
@@ -81,5 +78,10 @@ public abstract class AbstractInteractableActionPerformer extends AbstractAction
 
     @Override
     public abstract boolean isSkippable();
+
+    @Override
+    public final int getPriority() {
+        return -1;
+    }
 
 }
