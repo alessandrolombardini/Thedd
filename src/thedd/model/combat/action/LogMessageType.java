@@ -23,7 +23,16 @@ public enum LogMessageType {
     /**
      * Actions provided by items.
      */
-    ITEM_ACTION;
+    ITEM_ACTION,
+    
+    /**
+     * Actions provided by {@link thedd.model.roomevent.interactableactionperformer.Contraption}.
+     */
+    CONTRAPTION_ACTION,
+    /**
+     * Actions provided by {@link thedd.model.roomevent.interactableactionperformer.TreasureChest}.
+     */
+    TREASURE_ACTION;
 
     /**
      * Gets the message associated with the specified action.
@@ -46,6 +55,12 @@ public enum LogMessageType {
         case STATUS_ACTION:
             return success ? String.format("%s has failed to resist %s", target.getName(), action.getName())
                     : String.format("%s has resisted %s", target.getName(), action.getName());
+        case CONTRAPTION_ACTION:
+            return success ? String.format("%s activated %s", target.getName(), action.getName())
+                    : String.format("%s avoided %s", target.getName(), action.getName());
+        case TREASURE_ACTION: 
+            return success ? String.format("%s opened %s", target.getName(), action.getName())
+                    : String.format("%s failed to open %s", target.getName(), action.getName());
         default:
             return "[Log message missing]";
         }
