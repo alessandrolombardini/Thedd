@@ -13,7 +13,7 @@ public final class ItemGiverEffect extends AbstractActionEffect {
     //If a luck-like statistic is implemented,
     //then the item can change based on that value with method updateEffectByTarget
     private final Item itemGiven;
-    
+
     /**
      * Create a new effect which gives a random item to the target. 
      */

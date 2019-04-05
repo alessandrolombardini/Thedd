@@ -24,7 +24,7 @@ public enum LogMessageType {
      * Actions provided by items.
      */
     ITEM_ACTION,
-    
+
     /**
      * Actions provided by {@link thedd.model.roomevent.interactableactionperformer.Contraption}.
      */
