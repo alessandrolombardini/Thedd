@@ -1,7 +1,7 @@
-package model.room_event;
+package thedd.model.roomevent;
 
 /**
- * Generic event inside a room. It has a {@link model.room_event.RoomEventType}.
+ * Generic event inside a room. It has a {@link thedd.model.roomevent.RoomEventType}.
  *
  */
 public interface RoomEvent {

@@ -1,11 +1,13 @@
-package model.room_event;
+package thedd.model.roomevent.combatevent;
 
 import model.combat.enums.CombatStatus;
 import model.combat.implementations.HostileEncounterImpl;
 import model.combat.interfaces.HostileEncounter;
+import thedd.model.roomevent.AbstractRoomEvent;
+import thedd.model.roomevent.RoomEventType;
 
 /**
- * Implementation of {@link model.room_event.CombatEvent}.
+ * Implementation of {@link thedd.model.roomevent.combatevent.CombatEvent}.
  *
  */
 public final class CombatEventImpl extends AbstractRoomEvent implements CombatEvent {

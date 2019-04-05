@@ -1,6 +1,7 @@
-package model.room_event;
+package thedd.model.roomevent.combatevent;
 
 import model.combat.interfaces.HostileEncounter;
+import thedd.model.roomevent.RoomEvent;
 
 /**
  *  Combat event. One should complete successfully this event before proceeding. 

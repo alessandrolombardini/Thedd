@@ -1,13 +1,14 @@
-package model.room_event;
+package thedd.model.roomevent.interactableactionperformer;
 
 import java.util.Arrays;
 
 import model.combat.enums.TargetType;
 import model.combat.implementations.AbstractAction;
 import model.combat.interfaces.Action;
+import thedd.model.combat.action.effect.ItemGiverEffect;
 
 /**
- * Specialization of {@link model.room_event.InteractableActionPerformer}.
+ * Specialization of {@link thedd.model.roomevent.interactableactionperformer.InteractableActionPerformer}.
  * It gives to the interactor a random item.
  */
 public class TreasureChest extends AbstractInteractableActionPerformer implements InteractableActionPerformer {

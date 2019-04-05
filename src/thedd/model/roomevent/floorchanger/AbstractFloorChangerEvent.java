@@ -1,6 +1,9 @@
-package model.room_event;
+package thedd.model.roomevent.floorchanger;
 
 import java.util.function.BooleanSupplier;
+
+import thedd.model.roomevent.AbstractRoomEvent;
+import thedd.model.roomevent.RoomEventType;
 
 /**
  * Abstract implementation of {@link model.room_event.FloorChanger}. 

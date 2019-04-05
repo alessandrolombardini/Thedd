@@ -1,4 +1,4 @@
-package model.room_event;
+package thedd.model.roomevent;
 
 /**
  * Possible events that can be found in a room.

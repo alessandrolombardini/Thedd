@@ -1,7 +1,9 @@
-package model.room_event;
+package thedd.model.roomevent.floorchanger;
+
+import thedd.model.roomevent.RoomEvent;
 
 /**
- * Implementation of Stairs type of {@link model.room_event.RoomEvent}.
+ * Implementation of Stairs type of {@link thedd.model.roomevent.RoomEvent}.
  * It is mandatory as they are always placed at the end of the floor.
  *
  */

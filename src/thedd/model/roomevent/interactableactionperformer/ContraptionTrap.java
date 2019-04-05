@@ -1,4 +1,4 @@
-package model.room_event;
+package thedd.model.roomevent.interactableactionperformer;
 
 import java.util.ArrayList;
 
@@ -8,7 +8,7 @@ import model.combat.implementations.DamageEffect;
 import model.combat.interfaces.Action;
 
 /**
- * Specialization if {@link model.room_event.InteractableActionPerformer}.
+ * Specialization if {@link thedd.model.roomevent.interactableactionperformer.InteractableActionPerformer}.
  * It deals damage to the target. 
  */
 public class ContraptionTrap extends AbstractInteractableActionPerformer implements Contraption {

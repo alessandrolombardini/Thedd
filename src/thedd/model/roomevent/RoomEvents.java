@@ -1,9 +1,16 @@
-package model.room_event;
+package thedd.model.roomevent;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
+
+import thedd.model.roomevent.combatevent.CombatEventImpl;
+import thedd.model.roomevent.floorchanger.Stairs;
+import thedd.model.roomevent.interactableactionperformer.Contraption;
+import thedd.model.roomevent.interactableactionperformer.ContraptionSanctuary;
+import thedd.model.roomevent.interactableactionperformer.ContraptionTrap;
+import thedd.model.roomevent.interactableactionperformer.TreasureChest;
 
 /**
  * Class to create RoomEvents on demand.
@@ -25,7 +32,7 @@ public final class RoomEvents {
     /**
      * 
      * @return
-     *  an instance of {@link model.room_event.Stairs}.
+     *  an instance of {@link thedd.model.roomevent.floorchanger.Stairs}.
      */
     public static RoomEvent getStairs() {
         return new Stairs();
@@ -33,7 +40,7 @@ public final class RoomEvents {
     /**
      * 
      * @return
-     *  an instance of {@link model.room_event.CombatEvent}.
+     *  an instance of {@link thedd.model.roomevent.combatevent.CombatEvent}.
      */
     public static RoomEvent getCombat() {
         return new CombatEventImpl();
@@ -41,7 +48,7 @@ public final class RoomEvents {
     /**
      * 
      * @return
-     *  an instance of {@link model.room_event.TreasureChest}.
+     *  an instance of {@link thedd.model.roomevent.interactableactionperformer.TreasureChest}.
      */
     public static RoomEvent getTreasureChest() {
         return TreasureChest.newInstance();
@@ -49,7 +56,7 @@ public final class RoomEvents {
     /**
      * 
      * @return
-     *  an instance of {@link model.room_event.InteractableActionPerformer}.
+     *  an instance of {@link thedd.model.roomevent.interactableactionperformer.InteractableActionPerformer}.
      */
     public static RoomEvent getContraption() {
             return CONTRAPTION_DATABASE.get(RNG.nextInt(CONTRAPTION_DATABASE.size())).get();

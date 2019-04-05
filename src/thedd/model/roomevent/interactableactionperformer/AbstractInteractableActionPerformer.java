@@ -1,13 +1,14 @@
-package model.room_event;
+package thedd.model.roomevent.interactableactionperformer;
 
 import java.util.Arrays;
 import java.util.Objects;
 
 import model.combat.implementations.AbstractActionActor;
 import model.combat.interfaces.Action;
+import thedd.model.roomevent.RoomEventType;
 
 /**
- * Abstract implementation of {@link model.room_event.InteractableActionPerformer}.
+ * Abstract implementation of {@link thedd.model.roomevent.interactableactionperformer.InteractableActionPerformer}.
  * Each specialization must specify whether it is mandatory.
  */
 public abstract class AbstractInteractableActionPerformer extends AbstractActionActor implements InteractableActionPerformer {

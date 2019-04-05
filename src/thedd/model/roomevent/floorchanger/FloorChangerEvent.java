@@ -1,5 +1,6 @@
-package model.room_event;
+package thedd.model.roomevent.floorchanger;
 
+import thedd.model.roomevent.RoomEvent;
 
 /**
  * An event that permit the player to change floor if a certain condition is met.

@@ -1,4 +1,4 @@
-package model.room_event;
+package thedd.model.roomevent.interactableactionperformer;
 
 import java.util.ArrayList;
 
@@ -8,7 +8,7 @@ import model.combat.interfaces.Action;
 import model.item.HealingEffect;
 
 /**
- * Specialization of {@link model.room_event.InteractableActionPerformer}.
+ * Specialization of {@link thedd.model.roomevent.interactableactionperformer.InteractableActionPerformer}.
  * On interaction it fully heals the one or more character.
  */
 public class ContraptionSanctuary extends AbstractInteractableActionPerformer implements Contraption {

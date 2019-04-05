@@ -1,4 +1,4 @@
-package model.room_event;
+package thedd.model.roomevent;
 
 import java.util.Objects;
 
