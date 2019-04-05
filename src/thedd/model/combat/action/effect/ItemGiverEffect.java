@@ -1,16 +1,15 @@
 package thedd.model.combat.action.effect;
 
-import model.combat.interfaces.ActionActor;
-import model.combat.interfaces.ActionEffect;
 import model.item.Item;
 import model.item.ItemFactory;
+import thedd.model.combat.actor.ActionActor;
 
 /**
  * {@link model.combat.interfaces.ActionEffect} specialization
  * which allow to add an {@link model.item.Item} to a target inventory.
  *
  */
-public final class ItemGiverEffect implements ActionEffect {
+public final class ItemGiverEffect extends AbstractActionEffect {
     //If a luck-like statistic is implemented,
     //then the item can change based on that value with method updateEffectByTarget
     private final Item itemGiven;
@@ -19,6 +18,7 @@ public final class ItemGiverEffect implements ActionEffect {
      * Create a new effect which gives a random item to the target. 
      */
     public ItemGiverEffect() {
+        super();
         itemGiven = ItemFactory.getRandomItem();
     }
 
@@ -31,25 +31,19 @@ public final class ItemGiverEffect implements ActionEffect {
         }
     }
 
-    /**
-     * Unused for this type of ActionEffect with no 'luck'-like stat present in characters.
-     */
-    @Override
-    public void updateEffectByTarget(final ActionActor target) {
-
-    }
-
-    /**
-     * Unused for this type of ActionEffect with no 'luck'-like stat present in characters.
-     */
-    @Override
-    public void updateEffectBySource(final ActionActor source) {
-
-    }
-
     @Override
     public String getLogMessage() {
         return " found " + itemGiven.getName() + ".";
+    }
+
+    @Override
+    public String getDescription() {
+        return "Gives an item to the target.";
+    }
+
+    @Override
+    public String getPreviewMessage() {
+        return getLogMessage();
     }
 
 }
