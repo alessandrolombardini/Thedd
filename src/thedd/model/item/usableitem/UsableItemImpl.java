@@ -1,15 +1,17 @@
 package thedd.model.item.usableitem;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import model.combat.action.Action;
-import model.combat.action.ActionImpl;
-import model.combat.action.TargetType;
-import model.combat.action.effect.ActionEffect;
+import thedd.model.combat.action.Action;
+import thedd.model.combat.action.ActionCategory;
+import thedd.model.combat.action.ActionImpl;
+import thedd.model.combat.action.LogMessageType;
+import thedd.model.combat.action.TargetType;
+import thedd.model.combat.action.effect.ActionEffect;
+import thedd.model.combat.action.targeting.DefaultTargeting;
 import thedd.model.item.AbstractItem;
 import thedd.model.item.ItemRarity;
 import thedd.model.item.ItemRarityImpl;
@@ -43,7 +45,10 @@ public class UsableItemImpl extends AbstractItem implements UsableItem {
      */
     public UsableItemImpl(final int id, final String name, final ItemRarity rarity, final String description) {
         super(id, name, rarity, description);
-        action = new ActionImpl(null, this.getName(), new ArrayList<>(), 1, TargetType.EVERYONE, this.getDescription(), " used " + this.getName());
+        action = new ActionImpl(this.getName(), ActionCategory.ITEM, 
+                                new DefaultTargeting(), 1.0,
+                                TargetType.EVERYONE, this.getDescription(),
+                                LogMessageType.ITEM_ACTION);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package thedd.model.item.usableitem;
 
-import thedd.model.item.HealingEffect;
+import thedd.model.combat.action.effect.HealingEffect;
 import thedd.model.item.Item;
 import thedd.model.item.ItemRarity;
 /**
