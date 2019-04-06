@@ -15,8 +15,10 @@ public interface Environment {
      * This method allows to set the next floor.
      * 
      * @param floorDetails is the details of the floor that has to be setted
-     * @throws NullPointerExeption   if floorDetails is null
-     * @throws IllegalStateException if the current floor isn't completed
+     * @throws NullPointerExeption     if floorDetails is null
+     * @throws IllegalStateException   if the current floor isn't completed
+     * @throws IllegalArgumentExeption if floorDetails doesn't own to given
+     *                                 environment floor options.
      */
     void setNextFloor(FloorDetails floorDetails);
 
@@ -29,8 +31,8 @@ public interface Environment {
     Floor getCurrentFloor();
 
     /**
-     * This method allows to get the current floor index.
-     * The index is -1 if there aren't floor yet.
+     * This method allows to get the current floor index. The index is -1 if there
+     * aren't floor yet.
      * 
      * @return the current floor index
      */
@@ -47,7 +49,8 @@ public interface Environment {
      * This method allows to get a list of possible next floors.
      * 
      * @return the list of possible next floors
-     * @throws IllegalStateException if this is the last floor, it means that floors are ended
+     * @throws IllegalStateException if this is the last floor, it means that floors
+     *                               are ended
      */
     List<FloorDetails> getFloorOptions();
 }
