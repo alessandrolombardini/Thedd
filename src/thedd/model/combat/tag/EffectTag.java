@@ -3,7 +3,7 @@ package thedd.model.combat.tag;
 public enum EffectTag implements Tag {
 
     NORMAL_DAMAGE("Normal damage"),
-    POISON_DAMAGE("Poisond damage");
+    POISON_DAMAGE("Poison damage");
 
     private String literal;
 
