@@ -11,13 +11,13 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
-import model.combat.action.Action;
-import model.combat.action.effect.ActionEffect;
-import model.combat.actor.ActionActor;
+import thedd.model.combat.action.Action;
+import thedd.model.combat.action.effect.ActionEffect;
+import thedd.model.combat.action.effect.RemovableEffect;
+import thedd.model.combat.actor.ActionActor;
 import thedd.model.item.AbstractItem;
 import thedd.model.item.ItemRarity;
 import thedd.model.item.ItemRarityImpl;
-import thedd.model.item.StatisticChangerEffect;
 
 /**
  * Implementation of {@link thedd.model.item.equipableitem.EquipableItem}.
@@ -72,14 +72,14 @@ public class EquipableItemImpl extends AbstractItem implements EquipableItem {
 
     @Override
     public final void onEquip(final ActionActor equipper) {
-        additionalActions.forEach(equipper::addAction);
+        additionalActions.forEach(equipper::addActionToAvailable);
         providedEffects.forEach(e -> e.apply(equipper));
     }
 
     @Override
     public final void onUnequip(final ActionActor equipper) {
-        additionalActions.forEach(equipper::removeAction);
-        providedEffects.stream().filter(e -> e instanceof StatisticChangerEffect).forEach(e -> ((StatisticChangerEffect) e).removeBonus());
+        additionalActions.forEach(equipper::removeActionFromAvailable);
+        providedEffects.stream().filter(e -> e instanceof RemovableEffect).forEach(e -> ((RemovableEffect) e).removeBonus());
     }
 
     @Override
