@@ -82,16 +82,12 @@ public interface ActionActor extends Taggable {
     void setAvailableActions(Set<Action> actions);
 
     /**
-     * Gets a list containing the available actions of the actor.
+     * Gets a list of copies of the actors' available actions.<br>
+     * The copies are also modified by the actors' modifiers of the
+     * RETRIEVING_ACTION type.
      * @return the list of actions
      */
     List<Action> getAvailableActionsList();
-
-    /**
-     * Gets a set containing the available actions of the actor.
-     * @return the set of actions
-     */
-    Set<Action> getAvailableActionsSet();
 
     /**
      * Returns the actor's priority.
