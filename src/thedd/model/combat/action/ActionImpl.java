@@ -8,6 +8,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -15,6 +16,8 @@ import thedd.model.combat.action.effect.ActionEffect;
 import thedd.model.combat.action.targeting.ActionTargeting;
 import thedd.model.combat.actor.ActionActor;
 import thedd.model.combat.instance.ActionExecutionInstance;
+import thedd.model.combat.modifier.HitChanceModifier;
+import thedd.model.combat.modifier.Modifier;
 import thedd.model.combat.modifier.ModifierActivation;
 import thedd.model.combat.tag.Tag;
 
@@ -37,7 +40,6 @@ public class ActionImpl implements Action {
     private String description;
     private String name;
     private final ActionTargeting targeting;
-    //manaRequirement? generic getRequirements?
 
     /**
      * Public constructor.
@@ -98,10 +100,8 @@ public class ActionImpl implements Action {
         this.name = name;
         this.baseHitChance = baseHitChance;
         this.targetType = targetType;
-        for (final ActionEffect effect : effects) {
-            this.source.ifPresent(effect::updateEffectBySource);
-            this.effects.add(effect);
-        }
+        this.effects.addAll(effects);
+        this.source.ifPresent(s -> effects.forEach(e -> e.setSource(s)));
         this.logMessage = logMessage;
     }
 
@@ -144,7 +144,7 @@ public class ActionImpl implements Action {
     @Override
     public void setSource(final ActionActor source) {
         this.source = Optional.of(source);
-        effects.forEach(e -> e.updateEffectBySource(source));
+        effects.forEach(e -> e.setSource(source));
     }
 
     /**
@@ -163,13 +163,11 @@ public class ActionImpl implements Action {
     @Override
     public void addEffect(final ActionEffect effect) {
         effects.add(Objects.requireNonNull(effect));
-        if (source.isPresent()) {
-            effect.updateEffectBySource(source.get());
-        }
+        source.ifPresent(s -> effects.forEach(e -> e.setSource(s)));
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritDoc}f
      */
     @Override
     public List<ActionEffect> getEffects() {
@@ -177,10 +175,15 @@ public class ActionImpl implements Action {
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritDoc}<p>
+     * Tries to apply all the modifiers (excluding the hit
+     * chance modifiers) of the source (those which are
+     * active on attack) and the target (those which are 
+     * active on defense).
      */
     @Override
     public void applyEffects(final ActionActor target) {
+        applyModifiers(target, (m) -> !(m instanceof HitChanceModifier));
         if (target != null) {
             effects.stream().forEach((e) -> {
                 e.updateEffectBySource(getSource().get());
@@ -220,28 +223,17 @@ public class ActionImpl implements Action {
     }
 
     /**
-     * {@inheritDoc}
-     * @param target the tested target, null to get the hitchance modified only by the source
+     * {@inheritDoc}<p>
+     * 
+     * Tries to apply all the hit chance modifiers of the 
+     * source (those which are active on attack) and the
+     * target (those which are active on defense).
      */
     @Override
     public double getHitChance(final ActionActor target) {
         currentTarget =  Optional.ofNullable(target);
         currentHitChance = getBaseHitChance();
-        if (source.isPresent()) {
-            source.get().getActionModifiers().stream()
-                    .filter(m -> m.getModifierActivation() == ModifierActivation.ACTIVE_ON_ATTACK
-                    || m.getModifierActivation() == ModifierActivation.ALWAYS_ACTIVE)
-                    .filter(m -> m.accept(this))
-                    .forEach(m -> m.modify(this));
-        }
-
-        if (currentTarget.isPresent()) {
-            currentTarget.get().getActionModifiers().stream()
-                    .filter(m -> m.getModifierActivation() == ModifierActivation.ACTIVE_ON_DEFENCE
-                    || m.getModifierActivation() == ModifierActivation.ALWAYS_ACTIVE)
-                    .filter(m -> m.accept(this))
-                    .forEach(m -> m.modify(this));
-        }
+        applyModifiers(target, (m) -> m instanceof HitChanceModifier); 
         return currentHitChance;
     }
 
@@ -345,10 +337,9 @@ public class ActionImpl implements Action {
 
     /**
      * {@inheritDoc}
-     * @param success 
      */
     @Override
-    public String getLogMessage(final ActionActor target, boolean success) {
+    public String getLogMessage(final ActionActor target, final boolean success) {
         return logMessage.getLogMessage(success, this, target);
     }
 
@@ -360,14 +351,17 @@ public class ActionImpl implements Action {
         return description == null ? "[Action description missing]" : description;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Action getCopy() {
         final Action copy = new ActionImpl(getName(), getCategory(), targeting, getBaseHitChance(), getTargetType(), getDescription(), logMessage);
-        copy.addEffects(getEffects());
+        getEffects().forEach(e -> copy.addEffect(e.getCopy()));
         copy.addTags(tags, false);
         copy.addTags(permanentTags, true);
         source.ifPresent(copy::setSource);
-        if(!targets.isEmpty()) {
+        if (!targets.isEmpty()) {
             final ActionActor originalTarget = targets.get(0);
             copy.setTargets(originalTarget, targets);
         }
@@ -415,4 +409,31 @@ public class ActionImpl implements Action {
         return tags.remove(tag);
     }
 
+    /**
+     * Not implemented, use {@link #setTargets}.
+     * @throws UnsupportedOperationException
+     */
+    @Override
+    public void setTarget(final ActionActor target) {
+        throw new UnsupportedOperationException("Not supported, use setTargets instead");
+    }
+
+    private void applyModifiers(final ActionActor target, final Predicate<Modifier<Action>> filterHitChance) {
+        currentTarget =  Optional.ofNullable(target);
+        if (source.isPresent()) {
+            source.get().getActionModifiers().stream()
+                    .filter(filterHitChance::test)
+                    .filter(m -> m.getModifierActivation() == ModifierActivation.ACTIVE_ON_ATTACK)
+                    .filter(m -> m.accept(this))
+                    .forEach(m -> m.modify(this));
+        }
+
+        if (currentTarget.isPresent()) {
+            currentTarget.get().getActionModifiers().stream()
+                    .filter(filterHitChance::test)
+                    .filter(m -> m.getModifierActivation() == ModifierActivation.ACTIVE_ON_DEFENCE)
+                    .filter(m -> m.accept(this))
+                    .forEach(m -> m.modify(this));
+        }
+    }
 }
