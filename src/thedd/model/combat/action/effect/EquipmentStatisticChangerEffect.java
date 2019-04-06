@@ -73,4 +73,9 @@ public final class EquipmentStatisticChangerEffect extends AbstractActionEffect 
         return getDescription();
     }
 
+    @Override
+    public ActionEffect getCopy() {
+        return new EquipmentStatisticChangerEffect(targetStat, effectValue);
+    }
+
 }

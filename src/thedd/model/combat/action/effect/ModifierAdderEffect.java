@@ -64,4 +64,9 @@ public final class ModifierAdderEffect extends AbstractActionEffect implements A
     public String getPreviewMessage() {
         return getDescription();
     }
+
+    @Override
+    public ActionEffect getCopy() {
+        return new ModifierAdderEffect(modifier, isPermanent);
+    }
 }
