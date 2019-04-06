@@ -1,6 +1,6 @@
 package thedd.model.item.usableitem;
 
-import model.combat.action.effect.DamageEffect;
+import thedd.model.combat.action.effect.DamageEffect;
 import thedd.model.item.Item;
 import thedd.model.item.ItemRarity;
 

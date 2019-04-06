@@ -2,8 +2,8 @@ package thedd.model.item.usableitem;
 
 import java.util.Map;
 
-import model.combat.action.Action;
-import model.combat.action.effect.ActionEffect;
+import thedd.model.combat.action.Action;
+import thedd.model.combat.action.effect.ActionEffect;
 import thedd.model.item.Item;
 import thedd.model.item.ItemRarity;
 
