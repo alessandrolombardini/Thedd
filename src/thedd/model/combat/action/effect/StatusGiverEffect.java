@@ -20,7 +20,13 @@ public class StatusGiverEffect extends AbstractActionEffect {
 
     @Override
     public final String getDescription() {
-        return status.getDescription();
+        final StringBuilder sb = new StringBuilder();
+        return sb.append("Applies ")
+                 .append(status.getName())
+                 .append(" (")
+                 .append(status.getBaseDuration())
+                 .append(" turns)")
+                 .toString();
     }
 
     /**
@@ -39,6 +45,17 @@ public class StatusGiverEffect extends AbstractActionEffect {
     @Override
     public final String getPreviewMessage() {
         return "Applies " + status.getName(); 
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ActionEffect getCopy() {
+        final ActionEffect copy = new StatusGiverEffect(status);
+        copy.addTags(getPermanentTags(), true);
+        copy.addTags(getNonPermanentTags(), false);
+        return copy;
     }
 
 }

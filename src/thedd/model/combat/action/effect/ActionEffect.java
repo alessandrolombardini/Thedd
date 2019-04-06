@@ -53,4 +53,10 @@ public interface ActionEffect extends Modifiable, Taggable, SourceHolder, Target
      * @return a string previewing the effect
      */
     String getPreviewMessage();
+
+    /**
+     * Gets a copy of the effect.
+     * @return a copy of the effect
+     */
+    ActionEffect getCopy();
 }
