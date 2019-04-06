@@ -13,53 +13,15 @@ import thedd.model.combat.requirements.Requirement;
  */
 public abstract class AbstractModifier<T extends Modifiable> implements Modifier<T> {
 
-    private boolean percentage;
-    private double value;
     private ModifierActivation type;
     private final List<Requirement<T>> requirements = new ArrayList<>();
 
     /**
      * Constructor for the abstract class.
-     * @param value the value that will be applied to the modifiable
-     * @param isPercentage true if the value shall be treated as a percentage
      * @param type declares whether this modifier should be applied on attack, defense or everytime
      */
-    protected AbstractModifier(final double value, final boolean isPercentage, final ModifierActivation type) {
-        this.value = value;
-        this.percentage = isPercentage;
+    protected AbstractModifier(final ModifierActivation type) {
         this.type = type;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setValue(final double value) {
-        this.value = value;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setIsPercentage(final boolean isPercentage) {
-        this.percentage = isPercentage;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public double getValue() {
-        return value;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isPercentage() {
-        return percentage;
     }
 
     /**
