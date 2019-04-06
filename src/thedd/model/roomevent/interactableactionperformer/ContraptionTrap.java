@@ -32,7 +32,7 @@ public class ContraptionTrap extends AbstractInteractableActionPerformer impleme
      * Create a new Trap and set the action.
      */
     public ContraptionTrap() {
-        super(NAME, ACTION);
+        super(NAME, ACTION.getCopy());
     }
 
     /**

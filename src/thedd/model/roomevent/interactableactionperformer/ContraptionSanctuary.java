@@ -30,7 +30,7 @@ public class ContraptionSanctuary extends AbstractInteractableActionPerformer im
      * Create a new Sanctuary and set his Action to heal everybody in the target's party.
      */
     public ContraptionSanctuary() {
-        super(NAME, ACTION);
+        super(NAME, ACTION.getCopy());
     }
 
     /**
