@@ -1,19 +1,19 @@
-package thedd.model.item;
+package thedd.model.combat.action.effect;
 
 import java.util.Objects;
 import java.util.Optional;
 
-import model.character.BasicCharacter;
-import model.character.Statistic;
-import model.combat.action.effect.AbstractActionEffect;
-import model.combat.actor.ActionActor;
+import thedd.model.character.BasicCharacter;
+import thedd.model.character.statistics.Statistic;
+import thedd.model.combat.actor.ActionActor;
+
 
 /**
  * This {@link model.combat.action.effect.ActionEffect} which represent a change of a statistic
  * given by an {@link thedd.model.item.equipableitem.EquipableItem}.
  *
  */
-public class EquipmentStatisticChangerEffect extends AbstractActionEffect implements StatisticChangerEffect {
+public final class EquipmentStatisticChangerEffect extends AbstractActionEffect implements RemovableEffect {
 
     private Optional<BasicCharacter> target;
     private final Statistic targetStat;
@@ -34,7 +34,7 @@ public class EquipmentStatisticChangerEffect extends AbstractActionEffect implem
     }
 
     @Override
-    public final void apply(final ActionActor target) {
+    public void apply(final ActionActor target) {
         if (target instanceof BasicCharacter) {
             if (!this.target.isPresent()) {
                 this.target = Optional.of((BasicCharacter) target);
@@ -48,7 +48,7 @@ public class EquipmentStatisticChangerEffect extends AbstractActionEffect implem
     }
 
     @Override
-    public final void removeBonus() {
+    public void removeBonus() {
         if (this.target.isPresent()) {
             this.target.get().getStat(targetStat).updateMax(-effectValue);
             this.target = Optional.empty();
@@ -58,13 +58,19 @@ public class EquipmentStatisticChangerEffect extends AbstractActionEffect implem
     }
 
     @Override
-    public final String getLogMessage() {
+    public String getLogMessage() {
         return targetStat.name() + ": " + effectValue;
     }
 
     @Override
-    public final String getDescription() {
-        return targetStat + ": " + (effectValue > 0 ? "+" : "-") + effectValue;
+    public String getDescription() {
+        return (effectValue > 0 ? "Adds " : "Subtract ") + Math.abs(effectValue) 
+               + (effectValue > 0 ? " to " : " from ") + targetStat;
+    }
+
+    @Override
+    public String getPreviewMessage() {
+        return getDescription();
     }
 
 }
