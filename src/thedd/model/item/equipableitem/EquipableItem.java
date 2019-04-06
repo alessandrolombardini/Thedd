@@ -5,9 +5,9 @@ import java.util.Map;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import model.combat.action.Action;
-import model.combat.action.effect.ActionEffect;
-import model.combat.actor.ActionActor;
+import thedd.model.combat.action.Action;
+import thedd.model.combat.action.effect.ActionEffect;
+import thedd.model.combat.actor.ActionActor;
 import thedd.model.item.Item;
 import thedd.model.item.ItemRarity;
 
