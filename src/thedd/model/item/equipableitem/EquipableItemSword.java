@@ -1,9 +1,13 @@
 package thedd.model.item.equipableitem;
 
 
-import thedd.model.combat.action.effect.ModifierAdderEffect;
-import thedd.model.combat.modifier.DamageModifier;
-import thedd.model.combat.modifier.ModifierActivation;
+import java.util.Arrays;
+
+import thedd.model.combat.action.effect.ActionModifierAdderEffect;
+import thedd.model.combat.modifier.DamageAdderModifier;
+import thedd.model.combat.requirements.tags.EffectTagsRequirement;
+import thedd.model.combat.requirements.tags.TagRequirementType;
+import thedd.model.combat.tag.EffectTag;
 import thedd.model.item.Item;
 import thedd.model.item.ItemRarity;
 
@@ -25,7 +29,14 @@ public class EquipableItemSword extends EquipableItemImpl {
      */
     public EquipableItemSword(final ItemRarity rarity) {
         super(ID, NAME, TYPE, rarity, DESCRIPTION);
-        //this.addActionEffect(new ModifierAdderEffect(new DamageModifier(BASE_DAMAGE, false, ModifierActivation.ACTIVE_ON_ATTACK), false));
+        this.addActionEffect(
+            new ActionModifierAdderEffect(
+                new DamageAdderModifier(BASE_DAMAGE, 
+                                        Arrays.asList(new EffectTagsRequirement<>(false, 
+                                                                                  TagRequirementType.REQUIRED,
+                                                                                  Arrays.asList(EffectTag.NORMAL_DAMAGE))),
+                                        EffectTag.NORMAL_DAMAGE), 
+                false));
     }
 
     /**
