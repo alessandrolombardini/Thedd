@@ -1,21 +1,22 @@
-package thedd.model.item;
+package thedd.model.combat.action.effect;
 
 import java.util.Objects;
 import java.util.Optional;
 
-import model.combat.action.effect.AbstractActionEffect;
-import model.combat.action.effect.ActionEffect;
-import model.combat.actor.ActionActor;
-import model.combat.modifier.Modifier;
+import thedd.model.combat.action.Action;
+import thedd.model.combat.actor.ActionActor;
+import thedd.model.combat.modifier.Modifier;
+
+
 
 /**
  * {@link model.combat.action.effect.ActionEffect} which adds one {@link model.combat.modifier.Modifier}
  * to every actions of an {@link model.combat.actor.ActionActor} with the {@link model.combat.tag.Tag}
  * specified in the modifier.
  */
-public class ModifierAdderEffect extends AbstractActionEffect implements ActionEffect, StatisticChangerEffect {
+public final class ModifierAdderEffect extends AbstractActionEffect implements ActionEffect, RemovableEffect {
 
-    private final Modifier modifier;
+    private final Modifier<Action> modifier;
     private final boolean isPermanent;
     private Optional<ActionActor> target;
 
@@ -26,36 +27,41 @@ public class ModifierAdderEffect extends AbstractActionEffect implements ActionE
      * @param isPermanent
      *          whether the modifier is permanent
      */
-    public ModifierAdderEffect(final Modifier modifier, final boolean isPermanent) {
+    public ModifierAdderEffect(final Modifier<Action> modifier, final boolean isPermanent) {
         this.modifier = modifier;
         this.isPermanent = isPermanent;
         target = Optional.empty();
     }
 
     @Override
-    public final String getDescription() {
+    public String getDescription() {
         return modifier.toString();
     }
 
     @Override
-    public final void apply(final ActionActor target) {
+    public void apply(final ActionActor target) {
         this.target = Optional.of(Objects.requireNonNull(target));
-        this.target.get().addModifier(modifier, isPermanent);
+        this.target.get().addActionModifier(modifier, isPermanent);
     }
 
     @Override
-    public final void removeBonus() {
+    public void removeBonus() {
         if (!target.isPresent()) {
             throw new IllegalStateException("This effect is not applied to any target;");
         } else {
             if (!isPermanent) {
-                this.target.get().removeModifier(modifier);
+                this.target.get().removeActionModifier(modifier);
             }
         }
     }
 
     @Override
-    public final String getLogMessage() {
-        return null;
+    public String getLogMessage() {
+        return getDescription();
+    }
+
+    @Override
+    public String getPreviewMessage() {
+        return getDescription();
     }
 }
