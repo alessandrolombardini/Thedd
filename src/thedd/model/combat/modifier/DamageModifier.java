@@ -6,7 +6,7 @@ import thedd.model.combat.action.effect.DamageEffect;
 /**
  * A modifier which modifies effects of type {@link DamageEffect}.
  */
-public class DamageModifier extends AbstractModifier<ActionEffect> {
+public class DamageModifier extends AbstractValueModifier<ActionEffect> {
 
     /**
      * @param value the value to be added to the effect
