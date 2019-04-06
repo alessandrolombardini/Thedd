@@ -5,7 +5,7 @@ import thedd.model.combat.action.Action;
 /**
  * A modifier that modifies an {@link Action}'s hit chance. 
  */
-public class HitChanceModifier extends AbstractModifier<Action> {
+public class HitChanceModifier extends AbstractValueModifier<Action> {
 
     /**
      * @param value the value that will be applied to the modifiable
