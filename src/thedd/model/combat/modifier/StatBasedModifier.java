@@ -5,7 +5,7 @@ import java.util.List;
 import thedd.model.combat.common.Modifiable;
 import thedd.model.combat.requirements.Requirement;
 
-public class StatBasedModifier implements Modifier<Modifiable> {
+public class StatBasedModifier implements ValueModifier<Modifiable> {
 
     private final Modifier<Modifiable> modifier;
 
