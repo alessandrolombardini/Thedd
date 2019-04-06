@@ -89,7 +89,7 @@ public class EquipableItemImpl extends AbstractItem implements EquipableItem {
 
     @Override
     public final String getEffectDescription() {
-        return null;
+        return providedEffects.stream().map(e -> e.getDescription()).collect(Collectors.joining("\n"));
     }
 
     @Override
