@@ -1,10 +1,8 @@
-package thedd.model.item;
+package thedd.model.combat.action.effect;
 
-import model.character.BasicCharacter;
-import model.character.Statistic;
-import model.combat.action.effect.AbstractActionEffect;
-import model.combat.actor.ActionActor;
-import model.combat.action.effect.ActionEffect;
+import thedd.model.character.BasicCharacter;
+import thedd.model.character.statistics.Statistic;
+import thedd.model.combat.actor.ActionActor;
 
 /**
  * {@link model.combat.action.effect.ActionEffect} which heals the target by a percentage of his health.
@@ -31,8 +29,8 @@ public final class HealingEffect extends AbstractActionEffect implements ActionE
     public void apply(final ActionActor target) {
         if (target instanceof BasicCharacter) {
             final BasicCharacter t = ((BasicCharacter) target);
-            final int roundedFlatHealing = (int) Math.round(t.getStat(Statistic.PV).getMax() * baseHealing);
-            t.getStat(Statistic.PV).updateActual(roundedFlatHealing);
+            final int roundedFlatHealing = (int) Math.round(t.getStat(Statistic.HEALTH_POINT).getMax() * baseHealing);
+            t.getStat(Statistic.HEALTH_POINT).updateActual(roundedFlatHealing);
         } else {
             throw new IllegalArgumentException("Target must be a BasicCharacter");
         }
@@ -40,12 +38,17 @@ public final class HealingEffect extends AbstractActionEffect implements ActionE
 
     @Override
     public String getLogMessage() {
-        return " is healed for " + baseHealing * 100 + "% max PV.";
+        return " is healed for " + baseHealing * 100 + "% max HP.";
     }
 
     @Override
     public String getDescription() {
-        return "Heals for " + baseHealing * 100 + "% max PV.";
+        return "Heals for " + baseHealing * 100 + "% max HP.";
+    }
+
+    @Override
+    public String getPreviewMessage() {
+        return getLogMessage();
     }
 
 }
