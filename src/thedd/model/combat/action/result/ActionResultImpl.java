@@ -1,10 +1,9 @@
 package thedd.model.combat.action.result;
 
-import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import thedd.model.combat.action.Action;
 import thedd.model.combat.actor.ActionActor;
 
@@ -14,8 +13,7 @@ import thedd.model.combat.actor.ActionActor;
 public class ActionResultImpl implements ActionResult {
 
     private final Action action;
-    //TODO: change immutableEntry to Apache Pair
-    private final List<AbstractMap.SimpleImmutableEntry<ActionActor, ActionResultType>> results;
+    private final List<ImmutablePair<ActionActor, ActionResultType>> results;
 
     /**
      * Public constructor.
@@ -23,7 +21,7 @@ public class ActionResultImpl implements ActionResult {
      */
     public ActionResultImpl(final Action action) {
         this.action = action;
-        this.results = new ArrayList<AbstractMap.SimpleImmutableEntry<ActionActor, ActionResultType>>();
+        this.results = new ArrayList<ImmutablePair<ActionActor, ActionResultType>>();
     }
 
     /**
@@ -39,14 +37,14 @@ public class ActionResultImpl implements ActionResult {
      */
     @Override
     public void addResult(final ActionActor target, final ActionResultType result) {
-        results.add(new AbstractMap.SimpleImmutableEntry<ActionActor, ActionResultType>(target, result));
+        results.add(new ImmutablePair<ActionActor, ActionResultType>(target, result));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<AbstractMap.SimpleImmutableEntry<ActionActor, ActionResultType>> getResults() {
+    public List<ImmutablePair<ActionActor, ActionResultType>> getResults() {
         return Collections.unmodifiableList(results);
     }
 
