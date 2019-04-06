@@ -6,7 +6,7 @@ package thedd.model.combat.action.effect;
  * be grated to the target after the removal.
  *
  */
-public interface StatisticChangerEffect extends ActionEffect {
+public interface RemovableEffect extends ActionEffect {
 
     /**
      * Remove the bonus applied before.
