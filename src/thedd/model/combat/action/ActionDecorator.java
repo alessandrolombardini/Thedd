@@ -264,4 +264,12 @@ public class ActionDecorator implements Action {
         return action.getCategory();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setTarget(final ActionActor target) {
+        action.setTarget(target);
+    }
+
 }
