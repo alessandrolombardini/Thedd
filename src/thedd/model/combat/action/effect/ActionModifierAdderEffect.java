@@ -14,7 +14,7 @@ import thedd.model.combat.modifier.Modifier;
  * to every actions of an {@link model.combat.actor.ActionActor} with the {@link model.combat.tag.Tag}
  * specified in the modifier.
  */
-public final class ModifierAdderEffect extends AbstractActionEffect implements ActionEffect, RemovableEffect {
+public final class ActionModifierAdderEffect extends AbstractActionEffect implements ActionEffect, RemovableEffect {
 
     private final Modifier<Action> modifier;
     private final boolean isPermanent;
@@ -27,7 +27,7 @@ public final class ModifierAdderEffect extends AbstractActionEffect implements A
      * @param isPermanent
      *          whether the modifier is permanent
      */
-    public ModifierAdderEffect(final Modifier<Action> modifier, final boolean isPermanent) {
+    public ActionModifierAdderEffect(final Modifier<Action> modifier, final boolean isPermanent) {
         this.modifier = modifier;
         this.isPermanent = isPermanent;
         target = Optional.empty();
@@ -67,6 +67,6 @@ public final class ModifierAdderEffect extends AbstractActionEffect implements A
 
     @Override
     public ActionEffect getCopy() {
-        return new ModifierAdderEffect(modifier, isPermanent);
+        return new ActionModifierAdderEffect(modifier, isPermanent);
     }
 }
