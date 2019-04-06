@@ -5,16 +5,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
-import model.character.Statistic;
 import thedd.model.item.equipableitem.EquipableItem;
 import thedd.model.item.equipableitem.EquipableItemSword;
 import thedd.model.item.usableitem.UsableItemBomb;
 import thedd.model.item.usableitem.UsableItemPotion;
-import utils.randomcollection.RandomList;
-import utils.randomcollection.RandomListImpl;
-import utils.randomcollection.weightedItem.WeightedItemImpl;
+import thedd.utils.randomcollections.list.RandomList;
+import thedd.utils.randomcollections.list.RandomListImpl;
+import thedd.utils.randomcollections.weightedItem.WeightedItemImpl;
 
 /**
  * Factory for generating random items from a database.
