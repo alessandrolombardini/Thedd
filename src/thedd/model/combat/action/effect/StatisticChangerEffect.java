@@ -1,6 +1,4 @@
-package thedd.model.item;
-
-import model.combat.action.effect.ActionEffect;
+package thedd.model.combat.action.effect;
 
 /**
  * {@link model.combat.action.effect.ActionEffect} which change a {@link model.character.Statistic} 
