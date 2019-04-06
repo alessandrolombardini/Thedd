@@ -1,10 +1,11 @@
 package thedd.model.item.equipableitem;
 
-import model.combat.modifier.DamageModifier;
-import model.combat.modifier.ModifierActivation;
+
+import thedd.model.combat.action.effect.ModifierAdderEffect;
+import thedd.model.combat.modifier.DamageModifier;
+import thedd.model.combat.modifier.ModifierActivation;
 import thedd.model.item.Item;
 import thedd.model.item.ItemRarity;
-import thedd.model.item.ModifierAdderEffect;
 
 /**
  * One handed weapon.
@@ -24,7 +25,7 @@ public class EquipableItemSword extends EquipableItemImpl {
      */
     public EquipableItemSword(final ItemRarity rarity) {
         super(ID, NAME, TYPE, rarity, DESCRIPTION);
-        this.addActionEffect(new ModifierAdderEffect(new DamageModifier(BASE_DAMAGE, false, ModifierActivation.ACTIVE_ON_ATTACK), false));
+        //this.addActionEffect(new ModifierAdderEffect(new DamageModifier(BASE_DAMAGE, false, ModifierActivation.ACTIVE_ON_ATTACK), false));
     }
 
     /**
