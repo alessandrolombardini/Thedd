@@ -37,7 +37,7 @@ public class DamageEffect extends AbstractActionEffect {
 
     @Override
     public final String getLogMessage() {
-        return "Dealt " + dealtDamage + " HP damage ";
+        return appendTags("Dealt " + dealtDamage + " HP damage ");
     }
 
     @Override
@@ -46,7 +46,17 @@ public class DamageEffect extends AbstractActionEffect {
         getTarget().ifPresent(this::updateEffectByTarget);
         final String result =  "Deals " + damage + " HP damage ";
         damage = baseDamage;
-        return result;
+        return appendTags(result);
+    }
+
+    private String appendTags(final String original) {
+        if (getTags().isEmpty()) {
+            return original;
+        } else {
+            return original.concat(getTags().stream()
+                                            .map(t -> t.getLiteral())
+                                            .collect(Collectors.joining("/", "[", "]")));
+        }
     }
 
     /**
@@ -81,8 +91,7 @@ public class DamageEffect extends AbstractActionEffect {
     public String getDescription() {
         //This appends all the effect tags at the end of the description, maybe it would be better to
         //put the tags only on the action description.
-        return "Deals " + damage + " HP damage \nTags:" + getTags().stream()
-                                                            .map(t -> t.getLiteral()).collect(Collectors.joining(", "));
+        return appendTags("Deals " + damage + " HP damage ");
     }
 
     /**
@@ -103,5 +112,19 @@ public class DamageEffect extends AbstractActionEffect {
     @Override
     public final int hashCode() {
         return Objects.hash(super.hashCode(), getBaseDamage());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ActionEffect getCopy() {
+        final ActionEffect copy = new DamageEffect(baseDamage);
+        copy.addTags(getPermanentTags(), true);
+        copy.addTags(getNonPermanentTags(), false);
+        if (Double.compare(damage, baseDamage) != 0) {
+            ((DamageEffect) copy).addToDamage(damage - baseDamage);
+        }
+        return copy;
     }
 }
