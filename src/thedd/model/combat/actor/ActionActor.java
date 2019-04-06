@@ -84,7 +84,8 @@ public interface ActionActor extends Taggable {
     /**
      * Gets a list of copies of the actors' available actions.<br>
      * The copies are also modified by the actors' modifiers of the
-     * RETRIEVING_ACTION type.
+     * RETRIEVING_ACTION type.<br>
+     * Effects of the copies are also updated in the same manner.
      * @return the list of actions
      */
     List<Action> getAvailableActionsList();
