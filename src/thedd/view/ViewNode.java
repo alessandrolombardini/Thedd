@@ -1,11 +1,11 @@
-package thedd.view.scenewrapper;
+package thedd.view;
 
 import java.util.Objects;
 
 /**
  * Enum representing the scene of application.
  */
-public enum GameSubView {
+public enum ViewNode {
 
     /**
      * Menu scene.
@@ -20,7 +20,12 @@ public enum GameSubView {
     /**
      * Game over scene.
      */
-    GAME_OVER("gameOver_form.fxml");
+    GAME_OVER("gameOver_form.fxml"),
+
+    /**
+     * Game over scene.
+     */
+    GAME("game_form.fxml");
 
     /**
      * Use of the char '/' becouse it's used by istructions that required that type of char, doesn't 
@@ -36,7 +41,7 @@ public enum GameSubView {
      * @param nameOfFxml
      *          of fxml scene
      */
-    GameSubView(final String nameOfFxml) {
+    ViewNode(final String nameOfFxml) {
         Objects.requireNonNull(nameOfFxml);
         this.nameOfFxml = nameOfFxml;
     }

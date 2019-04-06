@@ -1,9 +1,7 @@
 package thedd.view.scenewrapper;
 
-import java.util.List;
-
 import javafx.scene.Scene;
-import thedd.view.controller.SubViewControllerImpl;
+import thedd.view.controller.SubViewController;
 
 /**
  * Interface describing a wrapper of scene and view controllers of its components.
@@ -11,12 +9,12 @@ import thedd.view.controller.SubViewControllerImpl;
 public interface SceneWrapper {
 
     /**
-     * Getter of view controllers of scene components.
+     * Getter of view controller of scene component.
      * 
      * @return 
      *          list of view controllers
      */
-    List<SubViewControllerImpl> getControllers();
+    SubViewController getController();
 
     /**
      * Getter of the scene.

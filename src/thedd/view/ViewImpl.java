@@ -70,8 +70,9 @@ public class ViewImpl extends Application implements View {
         if (!this.stage.isPresent()) {
             throw new IllegalStateException(ERROR_STAGEUNSETTED);
         }
-        this.actualScene = Optional.of(this.sceneFactory.getSubView(state));
-        this.actualScene.get().getControllers().forEach(c -> c.setDialogFactory(this.dialogFactory));
+        this.actualScene = Optional.of(this.sceneFactory.getScene(state));
+        this.actualScene.get().getController().setDialogFactory(this.dialogFactory);
+        this.actualScene.get().getController().update();
         final Scene newScene = this.actualScene.get().getScene();
         final Stage stage = this.stage.get();
         final double width = stage.getWidth();
@@ -91,7 +92,7 @@ public class ViewImpl extends Application implements View {
     @Override
     public final void update() {
         if (this.actualScene.isPresent()) {
-            this.actualScene.get().getControllers().forEach(c -> c.update());
+            this.actualScene.get().getController().update();
         }
     }
 

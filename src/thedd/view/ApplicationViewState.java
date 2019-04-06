@@ -1,12 +1,5 @@
 package thedd.view;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import thedd.view.scenewrapper.GameSubView;
-
 /**
  * Enum descibing possible application status.
  */
@@ -15,53 +8,35 @@ public enum ApplicationViewState {
     /**
      * Menu state.
      */
-    MENU(GameSubView.MENU),
+    MENU(ViewNode.MENU),
 
     /**
      * State where the user set values of new game session.
      */
-    NEW_GAME(GameSubView.NEW_GAME),
+    NEW_GAME(ViewNode.NEW_GAME),
 
     /**
      * Game state.
      */
-    GAME(Arrays.asList(GameSubView.MENU, GameSubView.MENU, GameSubView.MENU)),
+    GAME(ViewNode.GAME),
 
     /**
      * Game over state.
      */
-    GAME_OVER(GameSubView.GAME_OVER);
+    GAME_OVER(ViewNode.GAME_OVER);
 
-    private final List<GameSubView> gameSubViews;
-    private final boolean isOneNode;
+    private final ViewNode gameSubView;
 
-    ApplicationViewState(final List<GameSubView> subViews) {
-        this.gameSubViews = Collections.unmodifiableList(subViews);
-        this.isOneNode = false;
-    }
-
-    ApplicationViewState(final GameSubView subView) {
-        this.gameSubViews = Arrays.asList(subView);
-        this.isOneNode = true;
+    ApplicationViewState(final ViewNode subView) {
+        this.gameSubView = subView;
     }
 
     /**
-     * Allows to get all one that makes the entire view state.
+     * Allows to get the view node that describe this view state.
      * 
-     * @return ordered list of all GameSubView nodes of this view state start from
-     *         up-sx to down-dx.
+     * @return ViewNode of this view state
      */
-    public List<GameSubView> getSubViews() {
-        return Collections.unmodifiableList(this.gameSubViews);
-    }
-
-    /**
-     * Allows to know if this view state is made up by one node or more (three in
-     * generaly).
-     * 
-     * @return true is this view state is made up by one node
-     */
-    public boolean isOneNode() {
-        return this.isOneNode;
+    public ViewNode getViewNode() {
+        return this.gameSubView;
     }
 }

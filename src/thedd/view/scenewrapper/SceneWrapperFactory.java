@@ -15,5 +15,5 @@ public interface SceneWrapperFactory {
      * @return
      *          the scene and its view controllers representing the application state 
      */
-    SceneWrapper getSubView(ApplicationViewState state);
+    SceneWrapper getScene(ApplicationViewState state);
 }
