@@ -7,18 +7,15 @@ import java.util.Objects;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import thedd.controller.Controller;
-import thedd.view.ApplicationViewState;
 import thedd.view.View;
 import thedd.view.ViewNode;
 import thedd.view.controller.SubViewControllerImpl;
 
 /**
- * Implementation of {@link SceneWrapperFactory}.
+ * Implementation of {@link ViewNodeWrapperFactory}.
  */
-public class SceneWrapperFactoryImpl implements SceneWrapperFactory {
+public class ViewNodeWrapperFactoryImpl implements ViewNodeWrapperFactory {
 
     private static final String ERROR_FXMLNOTFOUND = "FXML not found";
 
@@ -26,12 +23,12 @@ public class SceneWrapperFactoryImpl implements SceneWrapperFactory {
     private final Controller controller;
 
     /**
-     * Create new instance of SceneWrapperFactory.
+     * Create new instance of ViewNodeWrapperFactory.
      * 
      * @param view       view reference
      * @param controller controller reference
      */
-    public SceneWrapperFactoryImpl(final View view, final Controller controller) {
+    public ViewNodeWrapperFactoryImpl(final View view, final Controller controller) {
         Objects.requireNonNull(view);
         Objects.requireNonNull(controller);
         this.view = view;
@@ -42,11 +39,11 @@ public class SceneWrapperFactoryImpl implements SceneWrapperFactory {
      * {@inheritDoc}
      */
     @Override
-    public final SceneWrapper getScene(final ApplicationViewState state) {
-        return this.loadNode(state.getViewNode());
+    public final ViewNodeWrapper getNode(final ViewNode viewNode) {
+        return this.loadNode(viewNode);
     }
 
-    private SceneWrapper loadNode(final ViewNode nodeIdentifier) {
+    private ViewNodeWrapper loadNode(final ViewNode nodeIdentifier) {
         Objects.requireNonNull(nodeIdentifier);
         try {
             final FXMLLoader loader = new FXMLLoader();
@@ -55,7 +52,7 @@ public class SceneWrapperFactoryImpl implements SceneWrapperFactory {
             final Node node = (Node) loader.load();
             final SubViewControllerImpl subViewController = loader.getController();
             subViewController.init(view, controller);
-            return new SceneWrapperImpl(new Scene((Parent) node), subViewController);
+            return new ViewNodeWrapperImpl(node, subViewController);
         } catch (IOException e) {
             throw new IllegalPathStateException(ERROR_FXMLNOTFOUND);
         }

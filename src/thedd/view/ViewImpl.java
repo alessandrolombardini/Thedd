@@ -4,6 +4,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javafx.application.Application;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -11,9 +12,9 @@ import thedd.controller.Controller;
 import thedd.controller.ControllerImpl;
 import thedd.view.dialog.DialogFactory;
 import thedd.view.dialog.DialogFactoryImpl;
-import thedd.view.scenewrapper.SceneWrapper;
-import thedd.view.scenewrapper.SceneWrapperFactory;
-import thedd.view.scenewrapper.SceneWrapperFactoryImpl;
+import thedd.view.scenewrapper.ViewNodeWrapper;
+import thedd.view.scenewrapper.ViewNodeWrapperFactory;
+import thedd.view.scenewrapper.ViewNodeWrapperFactoryImpl;
 
 /**
  * Implementation of {@link View}.
@@ -29,11 +30,11 @@ public class ViewImpl extends Application implements View {
     private static final double STAGE_MIN_HEIGHT = Screen.getPrimary().getBounds().getHeight() / 4 * 2;
     private static final ApplicationViewState FIRST_APP_STATE = ApplicationViewState.MENU;
 
-    private final SceneWrapperFactory sceneFactory;
+    private final ViewNodeWrapperFactory viewNodeWrapperFactory;
     private final DialogFactory dialogFactory;
     private final Controller controller;
     private Optional<Stage> stage;
-    private Optional<SceneWrapper> actualScene;
+    private Optional<ViewNodeWrapper> actualScene;
     private boolean viewStarted;
 
     /**
@@ -41,7 +42,7 @@ public class ViewImpl extends Application implements View {
      */
     public ViewImpl() {
         this.controller = new ControllerImpl(this);
-        this.sceneFactory = new SceneWrapperFactoryImpl(this, controller);
+        this.viewNodeWrapperFactory = new ViewNodeWrapperFactoryImpl(this, controller);
         this.dialogFactory = new DialogFactoryImpl();
         this.stage = Optional.empty();
         this.actualScene = Optional.empty();
@@ -70,10 +71,10 @@ public class ViewImpl extends Application implements View {
         if (!this.stage.isPresent()) {
             throw new IllegalStateException(ERROR_STAGEUNSETTED);
         }
-        this.actualScene = Optional.of(this.sceneFactory.getScene(state));
+        this.actualScene = Optional.of(this.viewNodeWrapperFactory.getNode(state.getViewNode()));
         this.actualScene.get().getController().setDialogFactory(this.dialogFactory);
         this.actualScene.get().getController().update();
-        final Scene newScene = this.actualScene.get().getScene();
+        final Scene newScene = new Scene((Parent) this.actualScene.get().getNode());
         final Stage stage = this.stage.get();
         final double width = stage.getWidth();
         final double height = stage.getHeight();
