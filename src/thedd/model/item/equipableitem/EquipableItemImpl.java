@@ -67,7 +67,12 @@ public class EquipableItemImpl extends AbstractItem implements EquipableItem {
 
     @Override
     public final String toString() {
-        return this.getName() + "(" + this.type + ")" + "{" + this.getRarity() + "}" + ": " + providedEffects.stream().map(e -> e.getDescription()).collect(Collectors.joining(", ", "[", "]")) + " | " + this.getDescription();
+        return this.getName() 
+               + "(" + this.type + ")" 
+               + "{" + this.getRarity() + "}" + ": " 
+               + providedEffects.stream().map(e -> e.getDescription()).collect(Collectors.joining(", ", "[", "]")) + " | " 
+               + (additionalActions.isEmpty() ? "" : "Provides " + additionalActions.stream().map(a -> a.getName()).collect(Collectors.joining("; "))) + " | "
+               + this.getDescription();
     }
 
     @Override
