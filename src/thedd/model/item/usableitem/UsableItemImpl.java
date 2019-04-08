@@ -3,6 +3,7 @@ package thedd.model.item.usableitem;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import thedd.model.combat.action.Action;
@@ -74,6 +75,23 @@ public class UsableItemImpl extends AbstractItem implements UsableItem {
     @Override
     public final String getEffectDescription() {
         return action.getEffects().stream().map(e -> e.getDescription()).collect(Collectors.joining("\n"));
+    }
+
+    @Override
+    public final boolean equals(final Object obj) {
+        if (!super.equals(obj)) {
+            return false;
+        }
+        if (!(obj instanceof UsableItemImpl)) {
+            return false;
+        }
+        final UsableItemImpl other = ((UsableItemImpl) obj);
+        return other.getAction().equals(this.action);
+    }
+
+    @Override
+    public final int hashCode() {
+        return Objects.hash(super.hashCode(), action);
     }
 
 }
