@@ -48,4 +48,40 @@ public final class DamageAdderModifier extends AbstractModifier<Action> implemen
         return "Adds " + value + " to " + addedTag.getLiteral();
     }
 
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((addedTag == null) ? 0 : addedTag.hashCode());
+        long temp;
+        temp = Double.doubleToLongBits(value);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final DamageAdderModifier other = (DamageAdderModifier) obj;
+        if (addedTag == null) {
+            if (other.addedTag != null) {
+                return false;
+            }
+        } else if (!addedTag.equals(other.addedTag)) {
+            return false;
+        }
+        if (Double.doubleToLongBits(value) != Double.doubleToLongBits(other.value)) {
+            return false;
+        }
+        return this.getRequirements().stream().allMatch(r -> other.getRequirements().contains(r));
+    }
+
 }
