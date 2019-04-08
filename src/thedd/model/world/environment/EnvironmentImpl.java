@@ -60,8 +60,8 @@ public class EnvironmentImpl implements Environment {
         if (numberOfFloors < MIN_NUMBER_OF_FLOORS || numberOfRooms < MIN_NUMBER_OF_ROOMS) {
             throw new IllegalArgumentException(ERROR_OUTOFRANGE);
         }
-        this.floors = new ArrayList<>();
         this.floorDeatailsFactory = new FloorDetailsFactoryImpl();
+        this.floors = new ArrayList<>();
         this.numberOfFloors = numberOfFloors;
         this.numberOfRooms = numberOfRooms;
         this.floorOptions = Optional.empty();
@@ -76,7 +76,7 @@ public class EnvironmentImpl implements Environment {
         if (this.getCurrentFloorIndex() == NONE_FLOORS) {
             throw new IllegalStateException(ERROR_UNSETTEDFLOOR);
         }
-        return this.floors.get(this.actuaIndexFloor);
+        return this.floors.get(this.getCurrentFloorIndex());
     }
 
     /**
@@ -93,7 +93,7 @@ public class EnvironmentImpl implements Environment {
     @Override
     public final void setNextFloor(final FloorDetails floorDetails) {
         Objects.requireNonNull(floorDetails);
-        if (!this.floors.isEmpty() && !this.floors.get(this.actuaIndexFloor).checkToChangeFloor()) {
+        if (!this.floors.isEmpty() && !this.floors.get(this.getCurrentFloorIndex()).checkToChangeFloor()) {
             throw new IllegalStateException(ERROR_UNCHANGEABLEFLOOR);
         } else if (!this.floorOptions.isPresent() || !this.floorOptions.get().contains(floorDetails)) {
             throw new IllegalArgumentException(ERROR_UNVALIDNEXTFLOOR);
@@ -108,7 +108,7 @@ public class EnvironmentImpl implements Environment {
      */
     @Override
     public final boolean isCurrentLastFloor() {
-        return this.isIndexLastFloor(this.getCurrentFloorIndex());
+        return this.isLastFloor(this.getCurrentFloorIndex());
     }
 
     /**
@@ -122,20 +122,21 @@ public class EnvironmentImpl implements Environment {
             return this.floorOptions.get();
         }
         final List<FloorDetails> choices;
-        choices = Stream.of(Difficulty.values()).map(d -> this.floorDeatailsFactory.createFloorDetails(d,
-                this.numberOfRooms, this.isIndexLastFloor(this.getCurrentFloorIndex() + 1)))
-                .collect(Collectors.toList());
+        choices = Stream.of(Difficulty.values())
+                        .map(d -> this.floorDeatailsFactory.createFloorDetails(d, this.numberOfRooms,
+                                                                  this.isLastFloor(this.getCurrentFloorIndex() + 1)))
+                        .collect(Collectors.toList());
         this.floorOptions = Optional.of(choices);
         return choices;
     }
 
-    private boolean isIndexLastFloor(final int index) {
+    private boolean isLastFloor(final int index) {
         return index == (this.numberOfFloors - 1);
     }
 
     @Override
     public final String toString() {
-        return "EnvironmentImpl [numberOfFloors=" + numberOfFloors + ", numberOfRooms=" + numberOfRooms
-                + ", actuaIndexFloor=" + actuaIndexFloor + "]";
+        return "EnvironmentImpl [numberOfFloors=" + this.numberOfFloors + ", numberOfRooms=" + this.numberOfRooms
+                + ", actuaIndexFloor=" + this.actuaIndexFloor + "]";
     }
 }

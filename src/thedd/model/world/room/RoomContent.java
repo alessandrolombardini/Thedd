@@ -1,8 +1,7 @@
 package thedd.model.world.room;
 
 /**
- * Representation of objects that could be inside a normal room.
- * 
+ * Representation of objects that could be inside a base room.
  */
 public enum RoomContent {
 

@@ -56,15 +56,15 @@ public class RoomFactoryImpl implements RoomFactory {
     /**
      * RoomFactoryImpl constructor.
      * 
-     * @param floorDetails  that describe the floor
+     * @param floorDetails that describe the floor
      * @throws NullPointerException if floorDetails is null
      */
     public RoomFactoryImpl(final FloorDetails floorDetails) {
         Objects.requireNonNull(floorDetails);
         this.floorDetails = floorDetails;
         this.remainingContent = new EnumMap<RoomContent, Integer>(RoomContent.class);
-        this.setRemainingContent();
         this.roomIndex = FloorImpl.NONE_ROOMS;
+        this.setRemainingContent();
     }
 
     private void setRemainingContent() {
@@ -90,7 +90,7 @@ public class RoomFactoryImpl implements RoomFactory {
             return this.createBossRoom();
         } else if (this.isLastRoom()) {
             return this.createStairsRoom();
-        } 
+        }
         return this.createBaseRoom();
     }
 
