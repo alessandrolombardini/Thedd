@@ -28,6 +28,7 @@ public final class EquipmentStatisticChangerEffect extends AbstractActionEffect 
      *  the value used to update the statistic
      */
     public EquipmentStatisticChangerEffect(final Statistic stat, final int value) {
+        super();
         targetStat = Objects.requireNonNull(stat);
         effectValue = value;
         target = Optional.empty();
@@ -38,7 +39,11 @@ public final class EquipmentStatisticChangerEffect extends AbstractActionEffect 
         if (target instanceof BasicCharacter) {
             if (!this.target.isPresent()) {
                 this.target = Optional.of((BasicCharacter) target);
-                this.target.get().getStat(targetStat).updateMax(effectValue);
+                if (targetStat == Statistic.HEALTH_POINT) {
+                    this.target.get().getStat(targetStat).updateMax(effectValue);
+                } else {
+                    this.target.get().getStat(targetStat).updateActual(effectValue);
+                }
             } else {
                 throw new IllegalStateException("The bonus is already applied");
             }
@@ -50,7 +55,11 @@ public final class EquipmentStatisticChangerEffect extends AbstractActionEffect 
     @Override
     public void removeBonus() {
         if (this.target.isPresent()) {
-            this.target.get().getStat(targetStat).updateMax(-effectValue);
+            if (targetStat == Statistic.HEALTH_POINT) {
+                this.target.get().getStat(targetStat).updateMax(-effectValue);
+            } else {
+                this.target.get().getStat(targetStat).updateActual(-effectValue);
+            }
             this.target = Optional.empty();
         } else {
             throw new IllegalStateException("The bonus is not applied to any target");
@@ -76,6 +85,30 @@ public final class EquipmentStatisticChangerEffect extends AbstractActionEffect 
     @Override
     public ActionEffect getCopy() {
         return new EquipmentStatisticChangerEffect(targetStat, effectValue);
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + effectValue;
+        result = prime * result + ((targetStat == null) ? 0 : targetStat.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!super.equals(obj)) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final EquipmentStatisticChangerEffect other = (EquipmentStatisticChangerEffect) obj;
+        return (effectValue == other.effectValue && targetStat == other.targetStat);
     }
 
 }
