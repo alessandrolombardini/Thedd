@@ -33,7 +33,7 @@ public final class FloorDetailsFactoryImpl implements FloorDetailsFactory {
                                                                             numberOfIteragibleSetted);
         final int numberOfTreasures = this.getRandomNumberOfTreasure(numberOfRooms - 1, difficulty,
                                                                      numberOfContraptions);
-        return new FloorDetails.Builder().difficulty(difficulty)
+        return new FloorDetailsImpl.FloorDetailsBuilder().difficulty(difficulty)
                                          .rooms(numberOfRooms).boss(lastFloor)
                                          .enemies(this.getRandomNumberOfEnemies(numberOfRooms - 1, difficulty))
                                          .contraptions(numberOfContraptions)
