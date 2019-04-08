@@ -127,4 +127,22 @@ public class EquipableItemImpl extends AbstractItem implements EquipableItem {
         return Collections.unmodifiableList(additionalActions);
     }
 
+    @Override
+    public final int hashCode() {
+        return Objects.hash(super.hashCode(), additionalActions, providedEffects, type);
+    }
+
+    @Override
+    public final boolean equals(final Object obj) {
+        if (!super.equals(obj)) {
+            return false;
+        }
+        final EquipableItemImpl other = (EquipableItemImpl) obj;
+        if (this.type != other.type) {
+            return false;
+        }
+        return this.additionalActions.containsAll(other.additionalActions)
+               && this.providedEffects.containsAll(other.providedEffects);
+    }
+
 }
