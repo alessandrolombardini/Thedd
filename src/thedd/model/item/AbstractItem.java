@@ -70,43 +70,40 @@ public abstract class AbstractItem implements Item {
     }
 
     @Override
-    public final int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + id;
-        result = prime * result + ((rarity == null) ? 0 : rarity.hashCode());
-        return result;
-    }
+    public abstract String toString();
 
     @Override
-    public final boolean equals(final Object obj) {
+    public abstract String getEffectDescription();
+
+    /**
+     * Override should call this method before checking anything else. 
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(description, id, name, rarity);
+    }
+
+    /**
+     * Overrides should call this method before checking anything else.
+     * @param obj
+     *          the object to check
+     * @return
+     *          whether the object is an equal AbstractItem
+     */
+    @Override
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
         if (obj == null) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
+        if (!(obj instanceof AbstractItem)) {
             return false;
         }
-        AbstractItem other = (AbstractItem) obj;
-        if (id != other.id) {
-            return false;
-        }
-        if (rarity == null) {
-            if (other.rarity != null) {
-                return false;
-            }
-        } else if (!rarity.equals(other.rarity)) {
-            return false;
-        }
-        return true;
+        final AbstractItem other = (AbstractItem) obj;
+        return Objects.equals(description, other.description) && id == other.id && Objects.equals(name, other.name)
+                && Objects.equals(rarity, other.rarity);
     }
-
-    @Override
-    public abstract String toString();
-
-    @Override
-    public abstract String getEffectDescription();
 
 }
