@@ -85,4 +85,44 @@ public final class DamageResistanceAdderEffect extends AbstractActionEffect impl
         return new DamageResistanceAdderEffect(value, resistanceTag, isPermanent, isPercentage);
     }
 
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        final int ternaryTruePrime = 1231;
+        final int ternaryFalsePrime = 1237;
+        int result = super.hashCode();
+        result = prime * result + (isPercentage ? ternaryTruePrime : ternaryFalsePrime);
+        result = prime * result + (isPermanent ? ternaryTruePrime : ternaryFalsePrime);
+        result = prime * result + ((resistanceTag == null) ? 0 : resistanceTag.hashCode());
+        long temp;
+        temp = Double.doubleToLongBits(value);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!super.equals(obj)) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final DamageResistanceAdderEffect other = (DamageResistanceAdderEffect) obj;
+        if (isPercentage != other.isPercentage) {
+            return false;
+        }
+        if (isPermanent != other.isPermanent) {
+            return false;
+        }
+        if (resistanceTag != other.resistanceTag) {
+            return false;
+        }
+        return Double.doubleToLongBits(value) == Double.doubleToLongBits(other.value);
+    }
+
+
 }
