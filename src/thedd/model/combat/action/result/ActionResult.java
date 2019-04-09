@@ -29,5 +29,5 @@ public interface ActionResult {
      * @return the list of results
      */
     List<ImmutablePair<ActionActor, ActionResultType>> getResults();
-    
+
 }

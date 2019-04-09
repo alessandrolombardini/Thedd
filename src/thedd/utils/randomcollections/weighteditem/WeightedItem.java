@@ -1,4 +1,4 @@
-package thedd.utils.randomcollections.weightedItem;
+package thedd.utils.randomcollections.weighteditem;
 
 /**
  * An item to be used in a {@link RandomCollection}<br>

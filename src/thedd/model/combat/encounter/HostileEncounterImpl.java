@@ -14,7 +14,7 @@ import thedd.model.combat.actor.ActionActor;
 public final class HostileEncounterImpl implements HostileEncounter {
 
     private ActionExecutor combatLogic;
-    private List<ActionActor> npcs = new ArrayList<>();
+    private final List<ActionActor> npcs = new ArrayList<>();
     /**
      * Basic constructor. Initializes combatLogic with null and 
      * adds an empty list of enemies to the combat instance. 

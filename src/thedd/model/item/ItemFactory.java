@@ -27,7 +27,7 @@ import thedd.model.item.usableitem.UsableItemBomb;
 import thedd.model.item.usableitem.UsableItemPotion;
 import thedd.utils.randomcollections.list.RandomList;
 import thedd.utils.randomcollections.list.RandomListImpl;
-import thedd.utils.randomcollections.weightedItem.WeightedItemImpl;
+import thedd.utils.randomcollections.weighteditem.WeightedItemImpl;
 
 /**
  * Factory for generating random items from a database.

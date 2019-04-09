@@ -23,7 +23,7 @@ public class PoisonStatusAction extends ActionImpl {
      */
     public PoisonStatusAction() {
         super(null, "Poisoning", ActionCategory.STATUS, new DefaultTargeting(), HITCHANCE, TargetType.SELF, null, LogMessageType.STATUS_ACTION);
-        ActionEffect effect = new DamageEffect(DAMAGE);
+        final ActionEffect effect = new DamageEffect(DAMAGE);
         effect.addTag(EffectTag.POISON_DAMAGE, true);
         addEffect(effect);
     }

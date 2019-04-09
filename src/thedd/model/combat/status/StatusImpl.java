@@ -24,10 +24,10 @@ public class StatusImpl implements Status {
     private int remainingTurns;
     private Optional<ActionActor> afflictedActor = Optional.empty();
     private Optional<Action> currentAction;
-    private boolean updated = false;
-    private Set<Tag> tags = new HashSet<>();
+    private boolean updated;
+    private final Set<Tag> tags = new HashSet<>();
     private final String name;
-    private boolean initialized = false;
+    private boolean initialized;
 
     /**
      * Constructor for a Status.
@@ -117,28 +117,28 @@ public class StatusImpl implements Status {
         final StringBuilder description = new StringBuilder();
         description.append("DURATION: ");
         description.append(baseDuration > 0 ? baseDuration : " permanent");
-        description.append("\n");
+        description.append('\n');
         if (activationAction.isPresent()) {
-            String text = activationType == StatusActivationFrequency.ONE_TIME ? "ONE TIME:" : "EVERY ROUND:";
+            final String text = activationType == StatusActivationFrequency.ONE_TIME ? "ONE TIME:" : "EVERY ROUND:";
             description.append(text);
-            description.append("\n");
+            description.append('\n');
             if (afflictedActor.isPresent()) {
                 description.append(activationAction.get().getEffectsPreview(afflictedActor.get()));
             } else {
                 description.append(activationAction.get().getEffectsPreview(null));
             }
-            description.append("\n");
+            description.append('\n');
         }
         if (deactivationAction.isPresent()) {
-            String text = "WHEN EXPIRED";
+            final String text = "WHEN EXPIRED";
             description.append(text);
-            description.append("\n");
+            description.append('\n');
             if (afflictedActor.isPresent()) {
                 description.append(deactivationAction.get().getEffectsPreview(afflictedActor.get()));
             } else {
                 description.append(deactivationAction.get().getEffectsPreview(null));
             }
-            description.append("\n");
+            description.append('\n');
         }
         return description.toString();
     }

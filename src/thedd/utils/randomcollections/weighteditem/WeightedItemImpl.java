@@ -1,4 +1,4 @@
-package thedd.utils.randomcollections.weightedItem;
+package thedd.utils.randomcollections.weighteditem;
 
 import java.util.Objects;
 

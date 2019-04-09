@@ -10,8 +10,8 @@ import java.util.stream.Collectors;
 import thedd.utils.randomcollections.AbstractRandomCollection;
 import thedd.utils.randomcollections.RandomCollection;
 import thedd.utils.randomcollections.RandomPrority;
-import thedd.utils.randomcollections.weightedItem.WeightedItem;
-import thedd.utils.randomcollections.weightedItem.WeightedItemImpl;
+import thedd.utils.randomcollections.weighteditem.WeightedItem;
+import thedd.utils.randomcollections.weighteditem.WeightedItemImpl;
 
 /**
  * An implementation of RandomCollection which uses a Set as a base Collection.
@@ -197,11 +197,11 @@ public class RandomSetImpl<E> extends AbstractRandomCollection<E> implements Ran
      */
     @Override
     public boolean retainAll(final Collection<?> c) {
-        boolean changed = false;
         if (c == null) {
             return false;
         }
-        for (Iterator<E> i = getSet().iterator(); i.hasNext();) {
+        boolean changed = false;
+        for (final Iterator<E> i = getSet().iterator(); i.hasNext();) {
             if (!c.contains(i.next())) {
                 remove(i);
                 changed = true;

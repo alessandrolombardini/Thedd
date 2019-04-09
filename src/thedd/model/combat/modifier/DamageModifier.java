@@ -24,7 +24,7 @@ public class DamageModifier extends AbstractValueModifier<ActionEffect> {
      */
     @Override
     public void modify(final ActionEffect effect) {
-        double modifier = isPercentage() ? ((DamageEffect) effect).getDamage() * getValue() : getValue();
+        final double modifier = isPercentage() ? ((DamageEffect) effect).getDamage() * getValue() : getValue();
         ((DamageEffect) effect).addToDamage(modifier);
     }
 

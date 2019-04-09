@@ -2,7 +2,7 @@ package thedd.utils.randomcollections;
 
 import java.util.Collection;
 
-import thedd.utils.randomcollections.weightedItem.WeightedItem;
+import thedd.utils.randomcollections.weighteditem.WeightedItem;
 
 /**
  * A collection capable of executing random weighted selection.

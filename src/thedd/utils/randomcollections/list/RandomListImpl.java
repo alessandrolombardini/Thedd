@@ -11,8 +11,8 @@ import java.util.stream.Collectors;
 import thedd.utils.randomcollections.AbstractRandomCollection;
 import thedd.utils.randomcollections.RandomCollection;
 import thedd.utils.randomcollections.RandomPrority;
-import thedd.utils.randomcollections.weightedItem.WeightedItem;
-import thedd.utils.randomcollections.weightedItem.WeightedItemImpl;
+import thedd.utils.randomcollections.weighteditem.WeightedItem;
+import thedd.utils.randomcollections.weighteditem.WeightedItemImpl;
 
 /**
  * An implementation of RandomCollection which uses a List as a base Collection.

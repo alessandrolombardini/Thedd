@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
-import thedd.utils.randomcollections.weightedItem.WeightedItem;
+import thedd.utils.randomcollections.weighteditem.WeightedItem;
 
 /**
  * Abstract class with common implementations for variants of RandomCollection.

@@ -13,7 +13,7 @@ import thedd.utils.randomcollections.RandomCollection;
 import thedd.utils.randomcollections.RandomPrority;
 import thedd.utils.randomcollections.set.RandomSet;
 import thedd.utils.randomcollections.set.RandomSetImpl;
-import thedd.utils.randomcollections.weightedItem.WeightedItem;
+import thedd.utils.randomcollections.weighteditem.WeightedItem;
 
 /**
  * Abstract implementation of AutomaticActionActor, also extends AbstractActionActor.
@@ -144,8 +144,7 @@ public abstract class AbstractAutomaticActor extends AbstractActionActor impleme
 
         @Override
         public Action getCopy() {
-            final Action copy = new WeightedAction(super.getCopy(), getWeight());
-            return copy;
+            return new WeightedAction(super.getCopy(), getWeight());
         }
     }
 
