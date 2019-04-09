@@ -20,7 +20,7 @@ public class ContraptionTrap extends AbstractInteractableActionPerformer impleme
     private static final double BASE_DAMAGE = 20.0;
 
     static {
-        final String description = "";
+        final String description = "A nasty contraption which hurts who fail to avoid it.";
         ACTION = new ActionImpl(NAME, ActionCategory.INTERACTABLE,
                                  new DefaultTargeting(), 1.0, 
                                  TargetType.EVERYONE, description,

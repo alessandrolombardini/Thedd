@@ -18,7 +18,7 @@ public class ContraptionSanctuary extends AbstractInteractableActionPerformer im
     private static final Action ACTION;
 
     static {
-        final String description = "";
+        final String description = "A sanctuary which heals wayfares who stop by.";
         ACTION = new ActionImpl(NAME, ActionCategory.INTERACTABLE, 
                                  new DefaultTargeting(), 1.0, 
                                  TargetType.EVERYONE, description, 

@@ -17,7 +17,7 @@ public class TreasureChest extends AbstractInteractableActionPerformer implement
     private static final String NAME = "Treasure Chest";
     private static final Action ACTION;
     static {
-        final String description = "An item has been found";
+        final String description = "A chest that contains an unknown item.";
         ACTION = new ActionImpl(NAME, ActionCategory.INTERACTABLE, 
                                 new DefaultTargeting(), 1.0, 
                                 TargetType.EVERYONE, description, 
