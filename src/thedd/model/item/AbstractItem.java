@@ -1,9 +1,9 @@
-package model.item;
+package thedd.model.item;
 
-import java.util.Map;
 import java.util.Objects;
 
-import model.character.Statistic;
+import thedd.model.item.equipableitem.EquipableItem;
+import thedd.model.item.usableitem.UsableItem;
 
 /**
  * Abstract class that defines the methods which tell whether a item is of a
@@ -14,7 +14,7 @@ public abstract class AbstractItem implements Item {
 
     private final int id;
     private final String name;
-    private final Map<Statistic, Integer> effects;
+    private final ItemRarity rarity;
     private final String description;
 
     /**
@@ -23,15 +23,15 @@ public abstract class AbstractItem implements Item {
      *          id of the object, used only for comparison and hashing purpose
      * @param name
      *          name of the object
-     * @param effects
-     *          effects of the object
+     * @param rarity
+     *          rarity of the item
      * @param description
      *          description of the Item
      */
-    public AbstractItem(final int id, final String name, final Map<Statistic, Integer> effects, final String description) {
+    public AbstractItem(final int id, final String name, final ItemRarity rarity, final String description) {
         this.id = id;
         this.name = Objects.requireNonNull(name);
-        this.effects = Objects.requireNonNull(effects);
+        this.rarity = Objects.requireNonNull(rarity);
         this.description = Objects.requireNonNull(description);
     }
 
@@ -58,13 +58,10 @@ public abstract class AbstractItem implements Item {
     public final boolean isUsable() {
         return this instanceof UsableItem;
     }
-    /**
-     * 
-     * @return
-     *          the map of the effects of the item
-     */
-    protected final Map<Statistic, Integer> getEffects() {
-        return effects;
+
+    @Override
+    public final ItemRarity getRarity() {
+        return rarity;
     }
 
     @Override
@@ -73,32 +70,40 @@ public abstract class AbstractItem implements Item {
     }
 
     @Override
-    public final int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + id;
-        return result;
-    }
+    public abstract String toString();
 
     @Override
-    public final boolean equals(final Object obj) {
+    public abstract String getEffectDescription();
+
+    /**
+     * Override should call this method before checking anything else. 
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(description, id, name, rarity);
+    }
+
+    /**
+     * Overrides should call this method before checking anything else.
+     * @param obj
+     *          the object to check
+     * @return
+     *          whether the object is an equal AbstractItem
+     */
+    @Override
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
         if (obj == null) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
+        if (!(obj instanceof AbstractItem)) {
             return false;
         }
         final AbstractItem other = (AbstractItem) obj;
-        return id == other.id;
+        return Objects.equals(description, other.description) && id == other.id && Objects.equals(name, other.name)
+                && Objects.equals(rarity, other.rarity);
     }
-
-    @Override
-    public abstract Item copy();
-
-    @Override
-    public abstract String toString();
 
 }

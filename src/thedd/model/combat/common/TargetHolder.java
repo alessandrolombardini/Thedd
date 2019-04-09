@@ -16,4 +16,10 @@ public interface TargetHolder {
      */
     Optional<ActionActor> getTarget();
 
+    /**
+     * Sets the target of this entity.
+     * @param target the target actor
+     */
+    void setTarget(ActionActor target);
+
 }

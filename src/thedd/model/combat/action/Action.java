@@ -79,7 +79,7 @@ public interface Action extends Modifiable, Taggable, SourceHolder, TargetHolder
     /**
      * Returns the action's chance to hit the provided
      * target (a value between 0.0 and 1.0).
-     * @param target the tested target of the action
+     * @param target the tested target, null to get the hitchance modified only by the source
      * @return the chance to roll a hit against the provided target
      */
     double getHitChance(ActionActor target);
@@ -155,12 +155,6 @@ public interface Action extends Modifiable, Taggable, SourceHolder, TargetHolder
      * @return a preview of the effects of the action
      */
     String getEffectsPreview(ActionActor target);
-
-    /**
-     * Sets the source of the action.
-     * @param source the new source of the action
-     */
-    void setSource(ActionActor source);
 
     /**
      * Gets the category of the action.

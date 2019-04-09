@@ -1,7 +1,7 @@
-package model.item;
+package thedd.model.item.equipableitem;
 
 /**
- * Types of {@link model.item.EquipableItem}.
+ * Types of {@link thedd.model.item.equipableitem.EquipableItem}.
  *
  */
 public enum EquipableItemType {
@@ -55,6 +55,5 @@ public enum EquipableItemType {
      */
     public static int getMaxNumOfRings() {
         return MAX_NUM_OF_RINGS;
-   }
-
+    }
 }

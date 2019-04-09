@@ -15,6 +15,7 @@ import java.util.stream.Stream;
 import thedd.model.combat.action.Action;
 import thedd.model.combat.action.effect.ActionEffect;
 import thedd.model.combat.modifier.Modifier;
+import thedd.model.combat.modifier.ModifierActivation;
 import thedd.model.combat.status.Status;
 import thedd.model.combat.tag.Tag;
 
@@ -59,7 +60,13 @@ public abstract class AbstractActionActor implements ActionActor {
      */
     @Override
     public Optional<Action> getSelectedAction() {
-        return selectedAction;
+        Optional<Action> result;
+        if (selectedAction.isPresent()) {
+            result = Optional.of(updateAction(selectedAction.get().getCopy()));
+        } else {
+            result = Optional.empty();
+        }
+        return result;
     }
 
     /**
@@ -106,15 +113,9 @@ public abstract class AbstractActionActor implements ActionActor {
      */
     @Override
     public List<Action> getAvailableActionsList() {
-        return Collections.unmodifiableSet(availableActions).stream().collect(Collectors.toList());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Set<Action> getAvailableActionsSet() {
-        return Collections.unmodifiableSet(availableActions);
+        final List<Action> actions = new ArrayList<>();
+        availableActions.forEach(a -> actions.add(updateAction(a.getCopy())));
+        return actions;
     }
 
     /**
@@ -334,7 +335,7 @@ public abstract class AbstractActionActor implements ActionActor {
         final AbstractActionActor o = (AbstractActionActor) other;
         return getName().equals(o.getName())
                 && getTags().equals(o.getTags())
-                && getAvailableActionsSet().equals(o.getAvailableActionsSet());
+                && getAvailableActionsList().equals(o.getAvailableActionsList());
     }
 
     /**
@@ -345,6 +346,25 @@ public abstract class AbstractActionActor implements ActionActor {
         //Name is the only field which doesn't change
         //Weak hash, but there won't be many actors at the same time in the application.
         return Objects.hash(getName());
+    }
+
+    /**
+     * Updates the action that has to be retrieved and all of its effects.
+     * @param action the action to be updated
+     * @return the updated action
+     */
+    private Action updateAction(final Action action) {
+        getActionModifiers().stream()
+                            .filter(m -> m.getModifierActivation() == ModifierActivation.RETRIEVING_ACTION)
+                            .filter(m -> m.accept(action))
+                            .forEach(m -> m.modify(action));
+        action.getEffects().forEach(e -> {
+            getEffectModifiers().stream()
+                                .filter(m -> m.getModifierActivation() == ModifierActivation.RETRIEVING_ACTION)
+                                .filter(m -> m.accept(e))
+                                .forEach(m -> m.modify(e));
+        });
+        return action;
     }
 
 }

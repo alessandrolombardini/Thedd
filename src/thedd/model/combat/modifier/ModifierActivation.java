@@ -17,8 +17,8 @@ public enum ModifierActivation {
      */
     ACTIVE_ON_DEFENCE,
     /**
-     * The modifier is always active and his accept method
-     * should be always called.
+     * The modifier is tested when retrieving the action
+     * from the actor, regardless of the role of the actor.
      */
-    ALWAYS_ACTIVE;
+    RETRIEVING_ACTION;
 }

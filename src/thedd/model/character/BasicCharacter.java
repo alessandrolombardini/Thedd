@@ -1,20 +1,18 @@
-package model.character;
+package thedd.model.character;
 
+import java.util.EnumMap;
 import java.util.List;
+
+import model.combat.interfaces.AutomaticActionActor;
 import model.item.Item;
+import thedd.model.character.inventory.Inventory;
+import thedd.model.character.statistics.StatValues;
+import thedd.model.character.statistics.Statistic;
 
 /**
  * Interface that define the characters.
  */
-public interface Character {
-
-    /**
-     * This method modify the actual status of the current character.
-     * 
-     * @param stat  the statistic to update.
-     * @param value the value updated to the specified statistic.
-     */
-    void updateStat(Statistic stat, int value);
+public interface BasicCharacter extends AutomaticActionActor {
 
     /**
      * This method allows to know if the character is alive.
@@ -34,6 +32,13 @@ public interface Character {
     StatValues getStat(Statistic stat);
 
     /**
+     * This method returns all the character's status.
+     * 
+     * @return an EnumMap that contains the values of the statistic.
+     */
+    EnumMap<Statistic, StatValues> getAllStat();
+
+    /**
      * This method return the character's inventory.
      * 
      * @return the character's inventory
@@ -41,20 +46,20 @@ public interface Character {
     Inventory getInventory();
 
     /**
-     * This method equip the specified item, updating character's statistics.
+     * This method equip the specified item.
      * 
-     * @param itemid the id of the item to be equipped.
-     * @return true if the item is correctly equipped, otherwise false.
+     * @param item the item to be equipped.
+     * @return true if the item is successfully equipped, otherwise false.
      */
-    boolean equipItem(int itemid);
+    boolean equipItem(Item item);
 
     /**
-     * This method remove the specified item to the equipped ones and automatically
-     * update character's statistics.
+     * This method remove the item from the equipped ones.
      * 
-     * @param itemId the id of the item to be removed.
+     * @param item the item to be removed.
+     * @return true if the item is successfully unequipped, otherwise false.
      */
-    void removeItem(int itemId);
+    boolean unequipItem(Item item);
 
     /**
      * This method returns a list with all the equipped items.

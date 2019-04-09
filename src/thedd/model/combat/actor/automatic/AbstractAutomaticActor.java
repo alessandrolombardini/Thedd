@@ -114,7 +114,7 @@ public abstract class AbstractAutomaticActor extends AbstractActionActor impleme
      */
     protected RandomSet<Action> getRandomSet() {
         final RandomSet<Action> set = new RandomSetImpl<>();
-        set.addAll(getAvailableActionsSet());
+        set.addAll(getAvailableActionsList());
         return set;
     }
 

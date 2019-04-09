@@ -1,8 +1,9 @@
 package thedd.model.combat.action.effect;
 
-import model.item.Item;
-import model.item.ItemFactory;
+import thedd.model.character.BasicCharacter;
 import thedd.model.combat.actor.ActionActor;
+import thedd.model.item.Item;
+import thedd.model.item.ItemFactory;
 
 /**
  * {@link model.combat.interfaces.ActionEffect} specialization
@@ -22,10 +23,16 @@ public final class ItemGiverEffect extends AbstractActionEffect {
         itemGiven = ItemFactory.getRandomItem();
     }
 
+    private ItemGiverEffect(final Item itemGiven) {
+        super();
+        this.itemGiven = itemGiven;
+    }
+
+
     @Override
     public void apply(final ActionActor target) {
-        if (target instanceof model.character.Character) {
-            ((model.character.Character) target).getInventory().addItem(itemGiven);
+        if (target instanceof BasicCharacter) {
+            ((BasicCharacter) target).getInventory().addItem(itemGiven);
         } else {
             throw new IllegalArgumentException("This effect can be applied only to ActionActor of type Character");
         }
@@ -44,6 +51,11 @@ public final class ItemGiverEffect extends AbstractActionEffect {
     @Override
     public String getPreviewMessage() {
         return getLogMessage();
+    }
+
+    @Override
+    public ActionEffect getCopy() {
+        return new ItemGiverEffect(itemGiven);
     }
 
 }

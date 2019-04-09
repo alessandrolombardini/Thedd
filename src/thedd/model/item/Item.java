@@ -1,7 +1,7 @@
-package model.item;
+package thedd.model.item;
 
 /**
- * An interface to rappresent items. Any specialization need to extend this interface.
+ * An interface to represent items. Any specialization need to extend this interface.
  *
  */
 public interface Item {
@@ -25,9 +25,10 @@ public interface Item {
     boolean isUsable();
 
     /**
-     * @return a copy of the item which called this
+     * 
+     * @return the rarity of the item.
      */
-    Item copy();
+    ItemRarity getRarity();
 
     /**
      * @return the id if the item
@@ -39,4 +40,10 @@ public interface Item {
      * @return the description of the item
      */
     String getDescription();
+
+    /**
+     * 
+     * @return the description of the effects
+     */
+    String getEffectDescription();
 }

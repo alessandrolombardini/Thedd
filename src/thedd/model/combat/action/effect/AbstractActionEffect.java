@@ -2,6 +2,7 @@ package thedd.model.combat.action.effect;
 
 import java.util.Collections;
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -46,51 +47,38 @@ public abstract class AbstractActionEffect implements ActionEffect {
     @Override
     public abstract String getPreviewMessage();
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void updateEffectByTarget(final ActionActor target) {
-        this.target = Optional.of(target);
+    public abstract ActionEffect getCopy();
+
+    @Override
+    public final void updateEffectByTarget(final ActionActor target) {
         target.getEffectModifiers().stream()
-                                    .filter(m -> m.getModifierActivation() == ModifierActivation.ACTIVE_ON_DEFENCE
-                                            || m.getModifierActivation() == ModifierActivation.ALWAYS_ACTIVE)
+                                    .filter(m -> m.getModifierActivation() == ModifierActivation.ACTIVE_ON_DEFENCE)
                                     .filter(m -> m.accept(this))
                                     .forEach(m -> m.modify(this));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void updateEffectBySource(final ActionActor source) {
-        this.source = Optional.of(source);
+    public final void updateEffectBySource(final ActionActor source) {
         source.getEffectModifiers().stream()
-                                    .filter(m -> m.getModifierActivation() == ModifierActivation.ACTIVE_ON_ATTACK
-                                            || m.getModifierActivation() == ModifierActivation.ALWAYS_ACTIVE)
+                                    .filter(m -> m.getModifierActivation() == ModifierActivation.ACTIVE_ON_ATTACK)
                                     .filter(m -> m.accept(this))
                                     .forEach(m -> m.modify(this));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void addTags(final Set<Tag> tags, final boolean arePermanent) {
+    public final void addTags(final Set<Tag> tags, final boolean arePermanent) {
         if (arePermanent) {
             permanentTags.addAll(tags);
         } else {
-            tags.addAll(tags.stream()
+            this.tags.addAll(tags.stream()
                     .filter(permanentTags::contains)
                     .collect(Collectors.toSet()));
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void addTag(final Tag tag, final boolean isPermanent) {
+    public final void addTag(final Tag tag, final boolean isPermanent) {
         if (isPermanent) {
             permanentTags.add(tag);
         } else if (!permanentTags.contains(tag)) {
@@ -98,11 +86,8 @@ public abstract class AbstractActionEffect implements ActionEffect {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Set<Tag> getTags() {
+    public final Set<Tag> getTags() {
         return Collections.unmodifiableSet(Stream.concat(tags.stream(), permanentTags.stream())
                 .collect(Collectors.toSet()));
     }
@@ -132,34 +117,47 @@ public abstract class AbstractActionEffect implements ActionEffect {
      */
     @Override
     public int hashCode() {
-        //No fields in this class are immutable. Furthermore, Action effects are supposed
-        //to be used in collections not based on hashing (such as Lists).
-        //This solution, while being far from optimal, does follow the rules dictated by the method's contract
-        return 1;
+        //The only truly immutable field.
+        return Objects.hash(getDescription());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public boolean removeTag(final Tag tag) {
+    public final boolean removeTag(final Tag tag) {
         return tags.remove(tag);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Optional<ActionActor> getSource() {
+    public final Optional<ActionActor> getSource() {
         return source;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Optional<ActionActor> getTarget() {
+    public final Optional<ActionActor> getTarget() {
         return target;
+    }
+
+    @Override
+    public final void setSource(final ActionActor source) {
+        this.source = Optional.of(source);
+    }
+
+    @Override
+    public final void setTarget(final ActionActor target) {
+        this.target = Optional.of(target);
+    }
+
+    /**
+     * @return the set of permanent tags
+     */
+    protected final Set<Tag> getPermanentTags() {
+        return Collections.unmodifiableSet(permanentTags);
+    }
+
+    /**
+     * @return the set of non permanent tags
+     */
+    protected final Set<Tag> getNonPermanentTags() {
+        return Collections.unmodifiableSet(tags);
     }
 
 }

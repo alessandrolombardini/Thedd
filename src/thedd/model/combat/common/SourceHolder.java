@@ -16,4 +16,10 @@ public interface SourceHolder {
      */
     Optional<ActionActor> getSource();
 
+    /**
+     * Sets the source of this entity.
+     * @param source the source actor
+     */
+    void setSource(ActionActor source);
+
 }

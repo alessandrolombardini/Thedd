@@ -51,4 +51,9 @@ public final class HealingEffect extends AbstractActionEffect implements ActionE
         return getLogMessage();
     }
 
+    @Override
+    public ActionEffect getCopy() {
+        return new HealingEffect(baseHealing);
+    }
+
 }
