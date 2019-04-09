@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
 
+import thedd.model.roomevent.combatevent.CombatEvent;
 import thedd.model.roomevent.combatevent.CombatEventImpl;
+import thedd.model.roomevent.floorchanger.FloorChangerEvent;
 import thedd.model.roomevent.floorchanger.Stairs;
 import thedd.model.roomevent.interactableactionperformer.Contraption;
 import thedd.model.roomevent.interactableactionperformer.ContraptionSanctuary;
@@ -34,7 +36,7 @@ public final class RoomEventHelper {
      * @return
      *  an instance of {@link thedd.model.roomevent.floorchanger.Stairs}.
      */
-    public static RoomEvent getStairs() {
+    public static FloorChangerEvent getStairs() {
         return new Stairs();
     }
     /**
@@ -42,7 +44,7 @@ public final class RoomEventHelper {
      * @return
      *  an instance of {@link thedd.model.roomevent.combatevent.CombatEvent}.
      */
-    public static RoomEvent getCombat() {
+    public static CombatEvent getCombat() {
         return new CombatEventImpl();
     }
     /**

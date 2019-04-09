@@ -2,7 +2,7 @@ package thedd.model.world.room;
 
 import java.util.List;
 
-import model.room_event.RoomEvent;
+import thedd.model.roomevent.RoomEvent;
 
 /**
  * 

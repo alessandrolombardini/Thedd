@@ -2,8 +2,8 @@ package thedd.model.world.floor;
 
 import java.util.Random;
 
-import utils.randomcollection.RandomCollection;
-import utils.randomcollection.RandomListImpl;
+import thedd.utils.randomcollections.RandomCollection;
+import thedd.utils.randomcollections.list.RandomListImpl;
 
 
 /**

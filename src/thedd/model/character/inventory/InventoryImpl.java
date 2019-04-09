@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import model.item.Item;
+import thedd.model.item.Item;
 
 /**
  * Implementation of Inventory interface.

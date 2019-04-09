@@ -12,10 +12,10 @@ import java.util.stream.IntStream;
 import thedd.model.character.BasicCharacter;
 import thedd.model.character.CharacterFactory;
 import thedd.model.character.types.EnemyCharacterType;
-import model.combat.logic.DefaultCombatLogic;
-import model.room_event.CombatEvent;
-import model.room_event.RoomEvent;
-import model.room_event.RoomEvents;
+import thedd.model.combat.actionexecutor.DefaultCombatActionExecutor;
+import thedd.model.roomevent.RoomEvent;
+import thedd.model.roomevent.RoomEventHelper;
+import thedd.model.roomevent.combatevent.CombatEvent;
 import thedd.model.world.enums.Difficulty;
 import thedd.model.world.enums.RoomContent;
 import thedd.model.world.floor.FloorDetails;
@@ -101,32 +101,32 @@ public class RoomFactoryImpl implements RoomFactory {
 
     private Room createBossRoom() {
         final BasicCharacter boss = CharacterFactory.createFinalBoss(this.getEnemiesMultiplier());
-        final CombatEvent event = RoomEvents.getCombat();
+        final CombatEvent event = RoomEventHelper.getCombat();
         event.getHostileEncounter().addNPC(boss);
-        event.getHostileEncounter().setCombatLogic(new DefaultCombatLogic());
+        event.getHostileEncounter().setCombatLogic(new DefaultCombatActionExecutor(event.getHostileEncounter().getNPCs()));
         return new RoomImpl(Arrays.asList(event));
     }
 
     private Room createStairsRoom() {
-        return new RoomImpl(Arrays.asList(RoomEvents.getStairs()));
+        return new RoomImpl(Arrays.asList(RoomEventHelper.getStairs()));
     }
 
     private Room createBaseRoom() {
         final List<RoomEvent> events = new ArrayList<>();
-        final CombatEvent combatEvent = RoomEvents.getCombat();
+        final CombatEvent combatEvent = RoomEventHelper.getCombat();
         IntStream.range(0, this.getQuantityOfEnemies())
                  .boxed()
                  .map(i -> CharacterFactory.createEnemy(EnemyCharacterType.getRandom(), this.getEnemiesMultiplier()))
                  .forEach(c -> combatEvent.getHostileEncounter().addNPC(c));
-        combatEvent.getHostileEncounter().setCombatLogic(new DefaultCombatLogic());
+        combatEvent.getHostileEncounter().setCombatLogic(new DefaultCombatActionExecutor(combatEvent.getHostileEncounter().getNPCs()));
         events.add(combatEvent);
         events.addAll(IntStream.range(0, getQuantityOfInteractableAction().get(RoomContent.CONTRAPTION))
                                .boxed()
-                               .map(b -> RoomEvents.getContraption())
+                               .map(b -> RoomEventHelper.getContraption())
                                .collect(Collectors.toList()));
         events.addAll(IntStream.range(0, getQuantityOfInteractableAction().get(RoomContent.TREASURE))
                                .boxed()
-                               .map(b -> RoomEvents.getTreasureChest())
+                               .map(b -> RoomEventHelper.getTreasureChest())
                                .collect(Collectors.toList()));
         return new RoomImpl(events);
     }
