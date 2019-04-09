@@ -5,6 +5,7 @@ import thedd.model.combat.action.ActionCategory;
 import thedd.model.combat.action.ActionImpl;
 import thedd.model.combat.action.LogMessageType;
 import thedd.model.combat.action.TargetType;
+import thedd.model.combat.action.effect.HealingEffect;
 import thedd.model.combat.action.targeting.DefaultTargeting;
 
 /**
@@ -22,10 +23,9 @@ public class ContraptionSanctuary extends AbstractInteractableActionPerformer im
                                  new DefaultTargeting(), 1.0, 
                                  TargetType.EVERYONE, description, 
                                  LogMessageType.CONTRAPTION_ACTION);
-        //TODO ACTION.addEffect(new HealingEffect(1.0));
-        
+        ACTION.addEffect(new HealingEffect(1.0));
     }
-    
+
     /**
      * Create a new Sanctuary and set his Action to heal everybody in the target's party.
      */
