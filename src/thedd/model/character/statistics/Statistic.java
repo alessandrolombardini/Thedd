@@ -16,13 +16,18 @@ public enum Statistic {
 
     /** Represents a measure of how agile a character is. */
     AGILITY(5);
-    
+
     private final int basicValue;
-    
-    private Statistic (final int value) {
+
+    Statistic(final int value) {
         this.basicValue = value;
     }
-    
+
+    /**
+     * This method returns the basic value of the selected statistic.
+     * 
+     * @return a int value
+     */
     public int getBasicValue() {
         return this.basicValue;
     }

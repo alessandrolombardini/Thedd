@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
-import model.combat.implementations.AbstractAutomaticActor;
-import model.item.EquipableItem;
-import model.item.EquipableItemType;
+
+import model.combat.actor.AbstractAutomaticActor;
 import model.item.Item;
+import model.item.equipableitem.EquipableItem;
+import model.item.equipableitem.EquipableItemType;
 import thedd.model.character.inventory.Inventory;
 import thedd.model.character.inventory.InventoryImpl;
 import thedd.model.character.statistics.StatValues;
@@ -40,7 +41,7 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
     }
 
     // This method sets the basic statistics of the character.
-    private final void setBasicStat(final double multiplier) {
+    private void setBasicStat(final double multiplier) {
         this.stat.put(Statistic.HEALTH_POINT,
                 new StatValuesImpl((int) (Statistic.HEALTH_POINT.getBasicValue() * multiplier)));
         this.stat.put(Statistic.AGILITY, new StatValuesImpl((int) (Statistic.AGILITY.getBasicValue() * multiplier)));

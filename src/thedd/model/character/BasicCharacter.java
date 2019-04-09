@@ -3,7 +3,6 @@ package thedd.model.character;
 import java.util.EnumMap;
 import java.util.List;
 
-
 import thedd.model.character.inventory.Inventory;
 import thedd.model.character.statistics.StatValues;
 import thedd.model.character.statistics.Statistic;
