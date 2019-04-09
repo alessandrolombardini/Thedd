@@ -136,7 +136,7 @@ public final class FloorDetailsImpl implements FloorDetails {
          * @param difficulty level to set
          * @return this builder
          */
-        public FloorDetailsBuilder difficulty(final Difficulty difficulty) {
+        public FloorDetailsBuilder setDifficulty(final Difficulty difficulty) {
             this.difficulty = Optional.ofNullable(difficulty);
             return this;
         }
@@ -147,8 +147,8 @@ public final class FloorDetailsImpl implements FloorDetails {
          * @param numberOfRooms to set
          * @return this builder
          */
-        public FloorDetailsBuilder rooms(final int numberOfRooms) {
-            this.numberOfContraptions = Optional.of(numberOfRooms).filter(n -> n >= MIN_NUMBER_OF_ROOMS_PER_FLOOR);
+        public FloorDetailsBuilder setNumberOfRooms(final int numberOfRooms) {
+            this.numberOfRooms = Optional.of(numberOfRooms).filter(n -> n >= MIN_NUMBER_OF_ROOMS_PER_FLOOR);
             return this;
         }
 
@@ -158,7 +158,7 @@ public final class FloorDetailsImpl implements FloorDetails {
          * @param numberOfEnemies to set
          * @return this builder
          */
-        public FloorDetailsBuilder enemies(final int numberOfEnemies) {
+        public FloorDetailsBuilder setNumberOfEnemies(final int numberOfEnemies) {
             this.numberOfEnemies = Optional.of(numberOfEnemies).filter(n -> n >= MIN_NUMBER_OF_CONTENTS_PER_FLOOR);
             return this;
         }
@@ -169,7 +169,7 @@ public final class FloorDetailsImpl implements FloorDetails {
          * @param numberOfTreasures to set
          * @return this builder
          */
-        public FloorDetailsBuilder treasures(final int numberOfTreasures) {
+        public FloorDetailsBuilder setNumberOfTreasures(final int numberOfTreasures) {
             this.numberOfTreasures = Optional.of(numberOfTreasures).filter(n -> n >= MIN_NUMBER_OF_CONTENTS_PER_FLOOR);
             return this;
         }
@@ -180,7 +180,7 @@ public final class FloorDetailsImpl implements FloorDetails {
          * @param numberOfContraptions to set
          * @return this builder
          */
-        public FloorDetailsBuilder contraptions(final int numberOfContraptions) {
+        public FloorDetailsBuilder setNumberOfContraptions(final int numberOfContraptions) {
             this.numberOfContraptions = Optional.of(numberOfContraptions)
                                                 .filter(n -> n >= MIN_NUMBER_OF_CONTENTS_PER_FLOOR);
             return this;
@@ -192,7 +192,7 @@ public final class FloorDetailsImpl implements FloorDetails {
          * @param isBossFloor it should be true if this is the boss floor
          * @return this builder
          */
-        public FloorDetailsBuilder boss(final boolean isBossFloor) {
+        public FloorDetailsBuilder setIsLastFloor(final boolean isBossFloor) {
             this.isBossFloor = Optional.of(isBossFloor);
             return this;
         }

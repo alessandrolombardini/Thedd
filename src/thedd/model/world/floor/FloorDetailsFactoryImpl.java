@@ -14,11 +14,6 @@ public final class FloorDetailsFactoryImpl implements FloorDetailsFactory {
     private static final int MIN_NUMBER_OF_ROOMS = 0;
 
     /**
-     * FloorDetailsFactory constructor.
-     */
-    public FloorDetailsFactoryImpl() { }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -33,11 +28,13 @@ public final class FloorDetailsFactoryImpl implements FloorDetailsFactory {
                                                                             numberOfIteragibleSetted);
         final int numberOfTreasures = this.getRandomNumberOfTreasure(numberOfRooms - 1, difficulty,
                                                                      numberOfContraptions);
-        return new FloorDetailsImpl.FloorDetailsBuilder().difficulty(difficulty)
-                                         .rooms(numberOfRooms).boss(lastFloor)
-                                         .enemies(this.getRandomNumberOfEnemies(numberOfRooms - 1, difficulty))
-                                         .contraptions(numberOfContraptions)
-                                         .treasures(numberOfTreasures).build();
+        return new FloorDetailsImpl.FloorDetailsBuilder().setDifficulty(difficulty)
+                                         .setNumberOfRooms(numberOfRooms)
+                                         .setIsLastFloor(lastFloor)
+                                         .setNumberOfEnemies(this.getRandomNumberOfEnemies(numberOfRooms - 1, difficulty))
+                                         .setNumberOfContraptions(numberOfContraptions)
+                                         .setNumberOfTreasures(numberOfTreasures)
+                                         .build();
     }
 
     private int getRandomNumberOfEnemies(final int effectiveNumberOfRooms, final Difficulty difficulty) {
