@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 import thedd.model.item.Item;
+
 
 /**
  * Implementation of Inventory interface.
@@ -54,7 +56,7 @@ public class InventoryImpl implements Inventory {
     @Override
     public final String toString() {
         String ret = "";
-        for (Map.Entry<Item, Integer> pair : this.items.entrySet()) {
+        for (final Map.Entry<Item, Integer> pair : this.items.entrySet()) {
             ret = ret + "[ Item: " + pair.getKey().toString() + " - Number: " + pair.getValue() + "]\n";
         }
         if (ret.equals("")) {

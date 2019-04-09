@@ -28,6 +28,7 @@ public final class ActionModifierAdderEffect extends AbstractActionEffect implem
      *          whether the modifier is permanent
      */
     public ActionModifierAdderEffect(final Modifier<Action> modifier, final boolean isPermanent) {
+        super();
         this.modifier = modifier;
         this.isPermanent = isPermanent;
         target = Optional.empty();

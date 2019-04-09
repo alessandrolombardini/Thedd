@@ -15,6 +15,7 @@ public class StatusGiverEffect extends AbstractActionEffect {
      * @param status the status that will be applied to the target of the effect
      */
     public StatusGiverEffect(final Status status) {
+        super();
         this.status = status;
     }
 

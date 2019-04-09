@@ -35,7 +35,7 @@ public class ActionImpl implements Action {
     private Optional<ActionActor> currentTarget = Optional.empty();
     private double currentHitChance;
     private double baseHitChance;
-    private boolean targetHit = false;
+    private boolean targetHit;
     private TargetType targetType;
     private String description;
     private String name;
@@ -201,7 +201,7 @@ public class ActionImpl implements Action {
         final StringBuilder sb = new StringBuilder();
         effects.stream().forEach((e) -> {
             sb.append(e.getPreviewMessage());
-            sb.append("\n");
+            sb.append('\n');
         });
         return sb.toString();
     }
