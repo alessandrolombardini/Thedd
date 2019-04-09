@@ -1,7 +1,5 @@
 package thedd.model.combat.actor;
 
-import java.util.AbstractMap;
-import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -11,7 +9,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import thedd.model.combat.action.Action;
 import thedd.model.combat.action.effect.ActionEffect;
 import thedd.model.combat.modifier.Modifier;
@@ -24,9 +22,8 @@ import thedd.model.combat.tag.Tag;
  */
 public abstract class AbstractActionActor implements ActionActor {
 
-    //TODO: change immutableEntry to Apache commons Pair
-    private final List<AbstractMap.SimpleImmutableEntry<Modifier<Action>, Boolean>> actionModifiers = new ArrayList<>();
-    private final List<AbstractMap.SimpleImmutableEntry<Modifier<ActionEffect>, Boolean>> effectModifiers = new ArrayList<>();
+    private final List<ImmutablePair<Modifier<Action>, Boolean>> actionModifiers = new ArrayList<>();
+    private final List<ImmutablePair<Modifier<ActionEffect>, Boolean>> effectModifiers = new ArrayList<>();
     private final List<Status> statuses = new ArrayList<>();
     private final Set<Tag> permanentTags = new LinkedHashSet<>();
     private final Set<Tag> tags = new LinkedHashSet<>();
@@ -198,7 +195,7 @@ public abstract class AbstractActionActor implements ActionActor {
      */
     @Override
     public void addActionModifier(final Modifier<Action> modifier, final boolean isPermanent) {
-        actionModifiers.add(new SimpleImmutableEntry<>(modifier, isPermanent));
+        actionModifiers.add(new ImmutablePair<>(modifier, isPermanent));
     }
 
     /**
@@ -206,7 +203,7 @@ public abstract class AbstractActionActor implements ActionActor {
      */
     @Override
     public void addEffectModifier(final Modifier<ActionEffect> modifier, final boolean isPermanent) {
-        effectModifiers.add(new SimpleImmutableEntry<>(modifier, isPermanent));
+        effectModifiers.add(new ImmutablePair<>(modifier, isPermanent));
     }
 
     /**
@@ -236,7 +233,7 @@ public abstract class AbstractActionActor implements ActionActor {
      */
     @Override
     public void removeActionModifier(final Modifier<Action> modifier) {
-        final Optional<SimpleImmutableEntry<Modifier<Action>, Boolean>> target = actionModifiers.stream()
+        final Optional<ImmutablePair<Modifier<Action>, Boolean>> target = actionModifiers.stream()
                                                        .filter(m -> !m.getValue())
                                                        .filter(m -> m.getKey().equals(modifier))
                                                        .findFirst();
@@ -248,7 +245,7 @@ public abstract class AbstractActionActor implements ActionActor {
      */
     @Override
     public void removeEffectModifier(final Modifier<ActionEffect> modifier) {
-        final Optional<SimpleImmutableEntry<Modifier<ActionEffect>, Boolean>> target = effectModifiers.stream()
+        final Optional<ImmutablePair<Modifier<ActionEffect>, Boolean>> target = effectModifiers.stream()
                                                        .filter(m -> !m.getValue())
                                                        .filter(m -> m.getKey().equals(modifier))
                                                        .findFirst();
