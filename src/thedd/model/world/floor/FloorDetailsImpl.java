@@ -3,10 +3,10 @@ package thedd.model.world.floor;
 import java.util.Optional;
 
 import thedd.model.world.Difficulty;
+import thedd.model.world.environment.EnvironmentImpl;
 
 /**
  * This class represent the content of a future floor.
- *
  */
 public final class FloorDetailsImpl implements FloorDetails {
 
@@ -15,16 +15,17 @@ public final class FloorDetailsImpl implements FloorDetails {
     private final int numberOfEnemies;
     private final int numberOfTreasure;
     private final int numberOfContraptions;
-    private final boolean isBossFloor;
+    private final boolean isLastFloor;
 
     private FloorDetailsImpl(final Difficulty difficulty, final int numberOfRooms, final int numberOfEnemies,
-                             final int numberOfTreasure, final int numberOfContraptions, final boolean isBossFloor) {
+                             final int numberOfTreasure, final int numberOfContraptions, 
+                             final boolean isLastFloor) {
         this.difficulty = difficulty;
         this.numberOfRooms = numberOfRooms;
         this.numberOfEnemies = numberOfEnemies;
         this.numberOfTreasure = numberOfTreasure;
         this.numberOfContraptions = numberOfContraptions;
-        this.isBossFloor = isBossFloor;
+        this.isLastFloor = isLastFloor;
     }
 
     /**
@@ -72,14 +73,14 @@ public final class FloorDetailsImpl implements FloorDetails {
      */
     @Override
     public boolean isBossFloor() {
-        return this.isBossFloor;
+        return this.isLastFloor;
     }
 
     @Override
     public String toString() {
         return "FloorDetails [difficulty=" + this.difficulty + ", numberOfRooms=" + this.numberOfRooms
                 + ", numberOfEnemies=" + this.numberOfEnemies + ", numberOfTreasure=" + this.numberOfTreasure
-                + ", numberOfContraptions=" + this.numberOfContraptions + ", boosFloor=" + this.isBossFloor + "]";
+                + ", numberOfContraptions=" + this.numberOfContraptions + ", boosFloor=" + this.isLastFloor + "]";
     }
 
     @Override
@@ -94,131 +95,115 @@ public final class FloorDetailsImpl implements FloorDetails {
             final FloorDetailsImpl other = (FloorDetailsImpl) obj;
             return this.difficulty == other.difficulty 
                     && this.numberOfContraptions == other.numberOfContraptions
-                    && this.numberOfEnemies == other.numberOfEnemies
+                    && this.numberOfEnemies == other.numberOfEnemies 
                     && this.numberOfTreasure == other.numberOfTreasure
-                    && this.numberOfRooms == other.numberOfRooms
-                    && this.isBossFloor == other.isBossFloor;
-        } 
+                    && this.numberOfRooms == other.numberOfRooms 
+                    && this.isLastFloor == other.isLastFloor;
+        }
         return false;
     }
 
     /**
-     * This class represent a FloorDetails builder.
+     * Implementation of {@link thedd.model.world.floor.FloorDetailsBuilder}.
      */
-    public static class FloorDetailsBuilder {
+    public static class FloorDetailsBuilderImpl implements FloorDetailsBuilder {
 
         private static final String ERROR_INVALIDPARAMS = "One or more params hasn't been setted or wasn't valid";
-        private static final int MIN_NUMBER_OF_ROOMS_PER_FLOOR = 1;
-        private static final int MIN_NUMBER_OF_CONTENTS_PER_FLOOR = 0;
+        private static final int MIN_NUMBER_CONTENTS_PER_FLOOR = 0;
 
         private Optional<Difficulty> difficulty;
         private Optional<Integer> numberOfRooms;
         private Optional<Integer> numberOfEnemies;
         private Optional<Integer> numberOfTreasures;
         private Optional<Integer> numberOfContraptions;
-        private Optional<Boolean> isBossFloor;
+        private Optional<Boolean> isLastFloor;
 
         /**
-         * FloorDetails builder' constructor.
+         * FloorDetailsBuilderImpl constructor.
          */
-        public FloorDetailsBuilder() {
+        public FloorDetailsBuilderImpl() {
             this.difficulty = Optional.empty();
             this.numberOfRooms = Optional.empty();
             this.numberOfEnemies = Optional.empty();
             this.numberOfTreasures = Optional.empty();
             this.numberOfContraptions = Optional.empty();
-            this.isBossFloor = Optional.empty();
+            this.isLastFloor = Optional.empty();
         }
 
         /**
-         * This method allows to set the difficulty.
-         * 
-         * @param difficulty level to set
-         * @return this builder
+         * {@inheritDoc}
          */
-        public FloorDetailsBuilder setDifficulty(final Difficulty difficulty) {
+        @Override
+        public final FloorDetailsBuilder setDifficulty(final Difficulty difficulty) {
             this.difficulty = Optional.ofNullable(difficulty);
             return this;
         }
 
         /**
-         * This method allows to set the number of rooms.
-         * 
-         * @param numberOfRooms to set
-         * @return this builder
+         * {@inheritDoc}
          */
-        public FloorDetailsBuilder setNumberOfRooms(final int numberOfRooms) {
-            this.numberOfRooms = Optional.of(numberOfRooms).filter(n -> n >= MIN_NUMBER_OF_ROOMS_PER_FLOOR);
+        @Override
+        public final FloorDetailsBuilder setNumberOfRooms(final int numOfRooms) {
+            this.numberOfRooms = Optional.of(numOfRooms).filter(n -> n >= EnvironmentImpl.MIN_NUMBER_OF_ROOMS);
             return this;
         }
 
         /**
-         * This method allows to set the number of enemies.
-         * 
-         * @param numberOfEnemies to set
-         * @return this builder
+         * {@inheritDoc}
          */
-        public FloorDetailsBuilder setNumberOfEnemies(final int numberOfEnemies) {
-            this.numberOfEnemies = Optional.of(numberOfEnemies).filter(n -> n >= MIN_NUMBER_OF_CONTENTS_PER_FLOOR);
+        @Override
+        public final FloorDetailsBuilder setNumberOfEnemies(final int numOfEnemies) {
+            this.numberOfEnemies = Optional.of(numOfEnemies).filter(n -> n >= MIN_NUMBER_CONTENTS_PER_FLOOR);
             return this;
         }
 
         /**
-         * This method allows to set the number of treasures.
-         * 
-         * @param numberOfTreasures to set
-         * @return this builder
+         * {@inheritDoc}
          */
-        public FloorDetailsBuilder setNumberOfTreasures(final int numberOfTreasures) {
-            this.numberOfTreasures = Optional.of(numberOfTreasures).filter(n -> n >= MIN_NUMBER_OF_CONTENTS_PER_FLOOR);
+        @Override
+        public final FloorDetailsBuilder setNumberOfTreasures(final int numOfTreasures) {
+            this.numberOfTreasures = Optional.of(numOfTreasures).filter(n -> n >= MIN_NUMBER_CONTENTS_PER_FLOOR);
             return this;
         }
 
         /**
-         * This method allows to set the number of contraptions.
-         * 
-         * @param numberOfContraptions to set
-         * @return this builder
+         * {@inheritDoc}
          */
-        public FloorDetailsBuilder setNumberOfContraptions(final int numberOfContraptions) {
-            this.numberOfContraptions = Optional.of(numberOfContraptions)
-                                                .filter(n -> n >= MIN_NUMBER_OF_CONTENTS_PER_FLOOR);
+        @Override
+        public final FloorDetailsBuilder setNumberOfContraptions(final int numOfContraptions) {
+            this.numberOfContraptions = Optional.of(numOfContraptions).filter(n -> n >= MIN_NUMBER_CONTENTS_PER_FLOOR);
             return this;
         }
 
         /**
-         * This method allows to set if this is the boos floor.
-         * 
-         * @param isBossFloor it should be true if this is the boss floor
-         * @return this builder
+         * {@inheritDoc}
          */
-        public FloorDetailsBuilder setIsLastFloor(final boolean isBossFloor) {
-            this.isBossFloor = Optional.of(isBossFloor);
+        @Override
+        public final FloorDetailsBuilder setIsLastFloor(final boolean isLastFloor) {
+            this.isLastFloor = Optional.of(isLastFloor);
             return this;
         }
 
         /**
-         * This method allows to build the FloorDetails object.
-         * 
-         * @return FloorDetails object
-         * @throws IllegalStateException if not all arguments are valid
+         * {@inheritDoc}
          */
-        public FloorDetailsImpl build() throws IllegalStateException {
+        @Override
+        public final FloorDetails build() throws IllegalStateException {
             if (!this.difficulty.isPresent() || !this.numberOfContraptions.isPresent()
                     || !this.numberOfEnemies.isPresent() || !this.numberOfTreasures.isPresent()
-                    || !this.numberOfRooms.isPresent() || !this.isBossFloor.isPresent()) {
+                    || !this.numberOfRooms.isPresent() || !this.isLastFloor.isPresent()) {
                 throw new IllegalStateException(ERROR_INVALIDPARAMS);
             }
             return new FloorDetailsImpl(this.difficulty.get(), this.numberOfRooms.get(), this.numberOfEnemies.get(),
                                         this.numberOfTreasures.get(), this.numberOfContraptions.get(), 
-                                        this.isBossFloor.get());
+                                        this.isLastFloor.get());
         }
 
         @Override
         public final String toString() {
-            return "Builder [difficulty=" + difficulty + ", numberOfRooms=" + numberOfRooms + ", numberOfEnemies="
-                    + numberOfEnemies + ", numberOfTreasures=" + numberOfTreasures + ", numberOfContraptions="
-                    + numberOfContraptions + ", isBossFloor=" + isBossFloor + "]";
+            return "Builder [difficulty=" + this.difficulty + ", numberOfRooms=" + this.numberOfRooms
+                    + ", numberOfEnemies=" + this.numberOfEnemies + ", numberOfTreasures=" + this.numberOfTreasures
+                    + ", numberOfContraptions=" + this.numberOfContraptions + ", isBossFloor=" + this.isLastFloor + "]";
         }
 
     }

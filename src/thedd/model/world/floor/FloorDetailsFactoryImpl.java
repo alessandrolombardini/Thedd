@@ -2,6 +2,7 @@ package thedd.model.world.floor;
 
 import java.util.Objects;
 import thedd.model.world.Difficulty;
+import thedd.model.world.environment.EnvironmentImpl;
 import thedd.model.world.room.RoomFactoryImpl;
 import thedd.utils.RandomUtils;
 
@@ -11,7 +12,6 @@ import thedd.utils.RandomUtils;
 public final class FloorDetailsFactoryImpl implements FloorDetailsFactory {
 
     private static final String ERROR_NONVALIDROOMS = "Number of rooms is not valid";
-    private static final int MIN_NUMBER_OF_ROOMS = 0;
 
     /**
      * {@inheritDoc}
@@ -20,7 +20,7 @@ public final class FloorDetailsFactoryImpl implements FloorDetailsFactory {
     public FloorDetails createFloorDetails(final Difficulty difficulty, final int numberOfRooms,
                                            final boolean lastFloor) {
         Objects.requireNonNull(difficulty);
-        if (numberOfRooms <= MIN_NUMBER_OF_ROOMS) {
+        if (numberOfRooms <= EnvironmentImpl.MIN_NUMBER_OF_ROOMS) {
             throw new IllegalArgumentException(ERROR_NONVALIDROOMS);
         }
         final int numberOfIteragibleSetted = 0;
@@ -28,13 +28,14 @@ public final class FloorDetailsFactoryImpl implements FloorDetailsFactory {
                                                                             numberOfIteragibleSetted);
         final int numberOfTreasures = this.getRandomNumberOfTreasure(numberOfRooms - 1, difficulty,
                                                                      numberOfContraptions);
-        return new FloorDetailsImpl.FloorDetailsBuilder().setDifficulty(difficulty)
-                                         .setNumberOfRooms(numberOfRooms)
-                                         .setIsLastFloor(lastFloor)
-                                         .setNumberOfEnemies(this.getRandomNumberOfEnemies(numberOfRooms - 1, difficulty))
-                                         .setNumberOfContraptions(numberOfContraptions)
-                                         .setNumberOfTreasures(numberOfTreasures)
-                                         .build();
+        final int numberOfEnemies = this.getRandomNumberOfEnemies(numberOfRooms - 1, difficulty);
+        return new FloorDetailsImpl.FloorDetailsBuilderImpl().setDifficulty(difficulty)
+                                                             .setNumberOfRooms(numberOfRooms)
+                                                             .setIsLastFloor(lastFloor)
+                                                             .setNumberOfEnemies(numberOfEnemies)
+                                                             .setNumberOfContraptions(numberOfContraptions)
+                                                             .setNumberOfTreasures(numberOfTreasures)
+                                                             .build();
     }
 
     private int getRandomNumberOfEnemies(final int effectiveNumberOfRooms, final Difficulty difficulty) {

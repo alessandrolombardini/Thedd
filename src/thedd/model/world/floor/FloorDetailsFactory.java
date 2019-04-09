@@ -17,7 +17,7 @@ public interface FloorDetailsFactory {
      * @return a FloorDetails' object
      * @throws NullPointerException     if difficulty is null
      * @throws IllegalArgumentException if the number of rooms is less than the
-     *                                  MIN_NUMBER_OF_ROOMS or MIN_NUMBER_OF_FLOORS.
+     *                                  MIN_NUMBER_OF_ROOMS constant of EnvironmentImpl.
      */
     FloorDetails createFloorDetails(Difficulty difficulty, int numberOfRooms, boolean lastFloor);
 }
