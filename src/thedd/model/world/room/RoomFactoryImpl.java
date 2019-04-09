@@ -62,12 +62,8 @@ public class RoomFactoryImpl implements RoomFactory {
     public RoomFactoryImpl(final FloorDetails floorDetails) {
         Objects.requireNonNull(floorDetails);
         this.floorDetails = floorDetails;
-        this.remainingContent = new EnumMap<RoomContent, Integer>(RoomContent.class);
         this.roomIndex = FloorImpl.NONE_ROOMS;
-        this.setRemainingContent();
-    }
-
-    private void setRemainingContent() {
+        this.remainingContent = new EnumMap<RoomContent, Integer>(RoomContent.class);
         this.remainingContent.put(RoomContent.ENEMY, this.floorDetails.getNumberOfEnemies());
         this.remainingContent.put(RoomContent.CONTRAPTION, this.floorDetails.getNumberOfContraptions());
         this.remainingContent.put(RoomContent.TREASURE, this.floorDetails.getNumberOfTreasures());
