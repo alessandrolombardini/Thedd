@@ -24,6 +24,12 @@ import thedd.model.combat.modifier.DamageAdderModifier;
 import thedd.model.combat.status.poison.PoisonStatus;
 import thedd.model.combat.tag.EffectTag;
 import thedd.model.item.equipableitem.EquipableItem;
+import thedd.model.item.equipableitem.implementations.EquipableItemAmulet;
+import thedd.model.item.equipableitem.implementations.EquipableItemChest;
+import thedd.model.item.equipableitem.implementations.EquipableItemGloves;
+import thedd.model.item.equipableitem.implementations.EquipableItemGreaves;
+import thedd.model.item.equipableitem.implementations.EquipableItemHelmet;
+import thedd.model.item.equipableitem.implementations.EquipableItemRing;
 import thedd.model.item.equipableitem.implementations.EquipableItemShield;
 import thedd.model.item.equipableitem.implementations.EquipableItemSword;
 import thedd.model.item.equipableitem.implementations.EquipableItemTwoHandedAxe;
@@ -66,6 +72,13 @@ public final class ItemFactory {
         DATABASE.add(EquipableItemSword::getNewInstance);
         DATABASE.add(EquipableItemShield::getNewInstance);
         DATABASE.add(EquipableItemTwoHandedAxe::getNewInstance);
+        DATABASE.add(EquipableItemChest::getNewInstance);
+        DATABASE.add(EquipableItemGloves::getNewInstance);
+        DATABASE.add(EquipableItemAmulet::getNewInstance);
+        DATABASE.add(EquipableItemGreaves::getNewInstance);
+        DATABASE.add(EquipableItemRing::getNewInstance);
+        DATABASE.add(EquipableItemHelmet::getNewInstance);
+
     }
 
     /**
