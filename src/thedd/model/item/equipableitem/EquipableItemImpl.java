@@ -26,6 +26,7 @@ import thedd.model.item.ItemRarityImpl;
 public class EquipableItemImpl extends AbstractItem implements EquipableItem {
 
     private static final Map<ItemRarity, Pair<Integer, Integer>> RARITY_MODIFIERS;
+    private static final int NUM_OF_BASE_MODIFIERS = 1;
 
     static {
         RARITY_MODIFIERS = new HashMap<>();
@@ -84,7 +85,7 @@ public class EquipableItemImpl extends AbstractItem implements EquipableItem {
     @Override
     public final void onUnequip(final ActionActor equipper) {
         additionalActions.forEach(equipper::removeActionFromAvailable);
-        providedEffects.stream().filter(e -> e instanceof RemovableEffect).forEach(e -> ((RemovableEffect) e).removeBonus());
+        providedEffects.stream().filter(e -> e instanceof RemovableEffect).forEach(e -> ((RemovableEffect) e).remove());
     }
 
     @Override
@@ -99,8 +100,7 @@ public class EquipableItemImpl extends AbstractItem implements EquipableItem {
 
     @Override
     public final void addActionEffect(final ActionEffect newEffect) {
-        final int maxNumOfEffects = this.getRarityModifiers().get(this.getRarity()).getLeft()
-                                    + (this.getType().isWeapon() ? 1 : 0);
+        final int maxNumOfEffects = this.getRarityModifiers().get(this.getRarity()).getLeft() + NUM_OF_BASE_MODIFIERS;
         if (providedEffects.size() < maxNumOfEffects) {
             providedEffects.add(newEffect);
         } else {
@@ -143,6 +143,11 @@ public class EquipableItemImpl extends AbstractItem implements EquipableItem {
         }
         return this.additionalActions.containsAll(other.additionalActions)
                && this.providedEffects.containsAll(other.providedEffects);
+    }
+
+    @Override
+    public final int getNumOfBaseModifiers() {
+        return NUM_OF_BASE_MODIFIERS;
     }
 
 }
