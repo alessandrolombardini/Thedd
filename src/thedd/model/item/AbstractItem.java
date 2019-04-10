@@ -46,7 +46,7 @@ public abstract class AbstractItem implements Item {
 
     @Override
     public final String getName() {
-        return this.rarity.getLiteral() + this.name;
+        return this.rarity.getLiteral() + " " + this.name;
     }
 
     @Override
