@@ -39,4 +39,18 @@ public interface UsableItem extends Item {
      */
     Map<ItemRarity, Integer> getEffectsMultiplier();
 
+    /**
+     * Return whether the item can be used during a combat.
+     * @return
+     *  whether the item can be used in a combat
+     */
+    boolean isUsableInCombat();
+
+    /**
+     * Returns whether the item can be used out of combat.
+     * @return
+     *  whether the item can be used out of combat
+     */
+    boolean isUsableOutOfCombat();
+
 }

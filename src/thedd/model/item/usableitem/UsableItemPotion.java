@@ -21,7 +21,7 @@ public class UsableItemPotion extends UsableItemImpl {
      *  the rarity of the potion
      */
     public UsableItemPotion(final ItemRarity rarity) {
-        super(ID, NAME, rarity, DESCRIPTION);
+        super(ID, NAME, rarity, DESCRIPTION, true, true);
         this.addActionEffect(new HealingEffect(HEALING_VALUE * this.getEffectsMultiplier().get(rarity)));
     }
 

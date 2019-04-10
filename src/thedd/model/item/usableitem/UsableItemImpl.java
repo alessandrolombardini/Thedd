@@ -25,6 +25,8 @@ public class UsableItemImpl extends AbstractItem implements UsableItem {
 
     private static final Map<ItemRarity, Integer> EFFECT_MULTIPLIERS;
     private final Action action;
+    private final boolean usableInCombat;
+    private final boolean usableOutOfCombat;
 
     static {
         EFFECT_MULTIPLIERS = new HashMap<>();
@@ -46,9 +48,17 @@ public class UsableItemImpl extends AbstractItem implements UsableItem {
      *  rarity of the item
      * @param description
      *  description of the Item
+     * @param usableInCombat
+     *  whether the item is usable in a combat 
+     * @param usableOutOfCombat
+     *  whether the item is usable outside a combat
      */
-    public UsableItemImpl(final int id, final String name, final ItemRarity rarity, final String description) {
+    public UsableItemImpl(final int id, final String name,
+                          final ItemRarity rarity, final String description,
+                          final boolean usableInCombat, final boolean usableOutOfCombat) {
         super(id, name, rarity, description);
+        this.usableInCombat = usableInCombat;
+        this.usableOutOfCombat = usableOutOfCombat;
         action = new ActionImpl(this.getName(), ActionCategory.ITEM, 
                                 new DefaultTargeting(), 1.0,
                                 TargetType.EVERYONE, this.getDescription(),
@@ -95,6 +105,16 @@ public class UsableItemImpl extends AbstractItem implements UsableItem {
     @Override
     public final int hashCode() {
         return Objects.hash(super.hashCode(), action);
+    }
+
+    @Override
+    public final boolean isUsableInCombat() {
+        return usableInCombat;
+    }
+
+    @Override
+    public final boolean isUsableOutOfCombat() {
+        return usableOutOfCombat;
     }
 
 }

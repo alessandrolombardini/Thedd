@@ -20,7 +20,7 @@ public class UsableItemBomb extends UsableItemImpl {
      *  the rarity of the item. The higher it is, the higher is the damage dealt by the bomb
      */
     public UsableItemBomb(final ItemRarity rarity) {
-        super(ID, NAME, rarity, DESCRIPTION);
+        super(ID, NAME, rarity, DESCRIPTION, true, false);
         this.addActionEffect(new DamageEffect(DAMAGE * this.getEffectsMultiplier().get(rarity)));
     }
 
