@@ -22,7 +22,7 @@ public class EquipableItemSword extends EquipableItemImpl {
     private static final int ID = -1;
     private static final String NAME = "Sword";
     private static final EquipableItemType TYPE = EquipableItemType.ONE_HANDED;
-    private static final String DESCRIPTION = "A sword";
+    private static final String DESCRIPTION = "A blade. It is a good companion for everyday hunting, but some of them are capable of a lot more.";
     private static final int BASE_DAMAGE = 3;
     /**
      * Create a Sword item and add his innate effect,
