@@ -3,7 +3,7 @@ package thedd.model.combat.modifier;
 import thedd.model.combat.common.Modifiable;
 
 /**
- * Abstract implementation of the {@link ValueModifier} interface. 
+ * Abstract implementation of the {@link ValueModifier} interface.
  * @param <T> the type of the modifier
  */
 public abstract class AbstractValueModifier<T extends Modifiable> extends AbstractModifier<T> implements ValueModifier<T> {
