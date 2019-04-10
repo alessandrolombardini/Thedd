@@ -6,7 +6,7 @@ import thedd.view.ApplicationViewState;
 /**
  * View controller of game over scene.
  */
-public class GameOverController extends SubViewControllerImpl {
+public class GameOverController extends ViewNodeControllerImpl {
 
     /**
      * Back to menu scene.

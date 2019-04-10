@@ -10,7 +10,7 @@ import javafx.scene.Node;
 import thedd.controller.Controller;
 import thedd.view.View;
 import thedd.view.ViewNode;
-import thedd.view.controller.SubViewControllerImpl;
+import thedd.view.controller.ViewNodeControllerImpl;
 
 /**
  * Implementation of {@link ViewNodeWrapperFactory}.
@@ -50,7 +50,7 @@ public class ViewNodeWrapperFactoryImpl implements ViewNodeWrapperFactory {
             final URL location = ClassLoader.getSystemClassLoader().getResource(nodeIdentifier.getFXMLPath());
             loader.setLocation(location);
             final Node node = (Node) loader.load();
-            final SubViewControllerImpl subViewController = loader.getController();
+            final ViewNodeControllerImpl subViewController = loader.getController();
             subViewController.init(view, controller);
             return new ViewNodeWrapperImpl(node, subViewController);
         } catch (IOException e) {

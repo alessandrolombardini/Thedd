@@ -7,7 +7,7 @@ import thedd.view.dialog.DialogFactory;
 /**
  * Interface describing a SubViewController.
  */
-public interface SubViewController {
+public interface ViewNodeController {
 
     /**
      * Setter of {@link DialogFactory}.

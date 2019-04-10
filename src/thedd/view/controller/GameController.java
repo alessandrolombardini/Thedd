@@ -14,7 +14,7 @@ import thedd.view.scenewrapper.ViewNodeWrapperFactoryImpl;
 /**
  * View controller of game scene.
  */
-public class GameController extends SubViewControllerImpl {
+public class GameController extends ViewNodeControllerImpl {
 
     @FXML
     private AnchorPane inventoryContent;
@@ -29,7 +29,7 @@ public class GameController extends SubViewControllerImpl {
     private static final ViewNode NODE_DOWN_SX = ViewNode.MENU;
     private static final ViewNode NODE_DOWN_DX = ViewNode.MENU;
 
-    private final List<SubViewController> viewControllers;
+    private final List<ViewNodeController> viewControllers;
     private Optional<ViewNodeWrapperFactory> factory;
 
     /**

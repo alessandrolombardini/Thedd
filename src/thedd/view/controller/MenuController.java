@@ -6,7 +6,7 @@ import thedd.view.ApplicationViewState;
 /**
  * View controller of scene menu.
  */
-public class MenuController extends SubViewControllerImpl {
+public class MenuController extends ViewNodeControllerImpl {
 
     /**
      * Go to new game scene.

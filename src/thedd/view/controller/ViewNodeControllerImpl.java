@@ -8,9 +8,9 @@ import thedd.view.View;
 import thedd.view.dialog.DialogFactory;
 
 /**
- * Implementation of the {@link SubViewController}.
+ * Implementation of the {@link ViewNodeController}.
  */
-public abstract class SubViewControllerImpl implements SubViewController {
+public abstract class ViewNodeControllerImpl implements ViewNodeController {
 
     private static final String ERROR_ALREDYEXIST = "Has been alredy setted";
     private static final String ERROR_NOSETTED = "Component not yet setted";
@@ -22,7 +22,7 @@ public abstract class SubViewControllerImpl implements SubViewController {
     /**
      * Constructor of SubViewControllerImpl.
      */
-    protected SubViewControllerImpl() { 
+    protected ViewNodeControllerImpl() { 
         this.view = Optional.empty();
         this.controller = Optional.empty();
         this.dialogFactory = Optional.empty();
