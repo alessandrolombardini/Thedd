@@ -6,10 +6,25 @@ package thedd.utils.randomcollections;
  */
 public enum RandomPrority {
 
+    /**
+     * Very high priority.
+     */
     VERY_HIGH(95),
+    /**
+     * High priority.
+     */
     HIGH(75),
+    /**
+     * Default priority.
+     */
     DEFAULT(50),
+    /**
+     * Low priority.
+     */
     LOW(25),
+    /**
+     * Very low priority.
+     */
     VERY_LOW(5);
 
     private final double weight;

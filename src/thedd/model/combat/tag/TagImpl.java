@@ -6,13 +6,16 @@ package thedd.model.combat.tag;
 public class TagImpl implements Tag {
 
     private final String tag;
+    private final boolean hidden;
 
     /**
      * Public constructors.
      * @param tag the string associated with this tag
+     * @param hidden true if the Tag has to be shown to the player
      */
-    public TagImpl(final String tag) {
+    public TagImpl(final String tag, final boolean hidden) {
         this.tag = tag;
+        this.hidden = hidden;
     }
 
     /**
@@ -52,5 +55,13 @@ public class TagImpl implements Tag {
     @Override
     public String toString() {
         return tag;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isHidden() {
+        return hidden;
     }
 }

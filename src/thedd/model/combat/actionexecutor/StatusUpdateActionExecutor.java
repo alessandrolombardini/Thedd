@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
+import thedd.model.character.BasicCharacter;
 import thedd.model.combat.action.Action;
 import thedd.model.combat.action.result.ActionResult;
 import thedd.model.combat.action.result.ActionResultImpl;
@@ -24,7 +25,7 @@ import thedd.model.combat.status.Status;
 public class StatusUpdateActionExecutor implements ActionExecutor {
 
     private ActionExecutionInstance instance = new ExecutionInstanceImpl();
-    private boolean done = false;
+    private boolean done;
     private final List<Status> queue = new ArrayList<>();
     private Optional<Status> currentStatus = Optional.empty();
     private Optional<Action> currentAction = Optional.empty();
@@ -71,7 +72,10 @@ public class StatusUpdateActionExecutor implements ActionExecutor {
                                                   .forEach(p -> {
                                                       final ActionActor target = p.getKey();
                                                       action.applyEffects(target);
-                                                      //TODO: check if the target is k.o.
+                                                      if (target instanceof BasicCharacter
+                                                              && !((BasicCharacter) target).isAlive()) {
+                                                          queue.removeAll(target.getStatuses());
+                                                      }
                                                   });
         }
     }
@@ -120,8 +124,12 @@ public class StatusUpdateActionExecutor implements ActionExecutor {
      */
     @Override
     public void updateExecutionStatus() {
+        if (instance.getNumberOfAliveCharacters(instance.getPlayerParty()) <= 0) {
+                instance.setCombatStatus(CombatStatus.PLAYER_LOST);
+                return;
+        }
+
         currentAction = Optional.empty();
-        //FIRST CHECK IF THE PARTY IS ALIVE
         currentStatus.ifPresent(status -> {
             if (status.getCurrentDuration() <= 0) {
                 status.update(instance);

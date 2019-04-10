@@ -260,7 +260,7 @@ public class StatusImpl implements Status {
      * @param action the action to be prepared
      */
     protected void prepareAction(final ActionExecutionInstance instance, final Action action) {
-        //Can be overridden to personalize stats behaviour (ex: set afflictedActor as source but target the enemy
+        //Can be overridden to personalize status behaviour (ex: set afflictedActor as source but target the enemy
         //party with an AOE life leech action. (Or maybe your own party)
         final List<ActionActor> availableTargets = action.getValidTargets(instance);
         action.setTargets(afflictedActor.get(), availableTargets);

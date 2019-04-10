@@ -85,4 +85,13 @@ public interface ActionExecutionInstance {
      */
     ActionExecutionInstance getCopy();
 
+    /**
+     * Gets the number of Actors that are also instance of
+     * {@link BasicCharacter} and whose method {@link BasicCharacter#isAlive}
+     * returns true. 
+     * @param actors the actors to be tested
+     * @return the number of actors who are characters and alive
+     */
+    long getNumberOfAliveCharacters(List<ActionActor> actors);
+
 }

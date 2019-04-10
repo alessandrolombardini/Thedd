@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
+import thedd.model.character.BasicCharacter;
 import thedd.model.combat.action.Action;
 import thedd.model.combat.action.result.ActionResult;
 import thedd.model.combat.action.result.ActionResultImpl;
@@ -19,7 +20,7 @@ import thedd.model.combat.status.Status;
  *  may have been applied by the main action.<p>
  *  Only executes one round.
  */
-public class OutOfCombatActionExecutor implements ActionExecutor { //SingleActionExcutor?
+public class OutOfCombatActionExecutor implements ActionExecutor {
 
     private Optional<Action> action = Optional.empty();
     private ActionExecutionInstance combatInstance;
@@ -70,8 +71,12 @@ public class OutOfCombatActionExecutor implements ActionExecutor { //SingleActio
                                                   .forEach(p -> {
                                                       final ActionActor target = p.getKey();
                                                       action.get().applyEffects(target);
-                                                      //TODO: check if the target is k.o.
-                                                      addNewlyAppliedStatuses(target);
+                                                      if(target instanceof BasicCharacter
+                                                              && !((BasicCharacter)target).isAlive()) {
+                                                          statusQueue.removeAll(target.getStatuses());
+                                                      } else {
+                                                          addNewlyAppliedStatuses(target);
+                                                      }
                                                   });
             if (iterator == null) {
                 iterator = statusQueue.iterator();
@@ -122,6 +127,11 @@ public class OutOfCombatActionExecutor implements ActionExecutor { //SingleActio
      */
     @Override
     public void updateExecutionStatus() {
+        if (combatInstance.getNumberOfAliveCharacters(combatInstance.getPlayerParty()) <= 0) {
+            combatInstance.setCombatStatus(CombatStatus.PLAYER_LOST);
+            return;
+        } 
+
         action = Optional.empty();
         if (currentStatus.isPresent() && currentStatus.get().getCurrentDuration() <= 0) {
             currentStatus.get().update(combatInstance);
@@ -129,7 +139,6 @@ public class OutOfCombatActionExecutor implements ActionExecutor { //SingleActio
             currentStatus.get().getAfflictedActor().get().removeStatus(currentStatus.get());
         }
         if (!iterator.hasNext() && !action.isPresent()) {
-            //check if player party is defeated
             combatInstance.getAllParties().forEach(a -> a.getStatuses().forEach(s -> s.setIsUpdated(false)));
             combatInstance.setCombatStatus(CombatStatus.COMBAT_ENDED);
         }

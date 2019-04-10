@@ -2,8 +2,12 @@ package thedd.model.combat.modifier;
 
 import thedd.model.combat.common.Modifiable;
 
+/**
+ * Abstract implementation of the {@link ValueModifier} interface. 
+ * @param <T> the type of the modifier
+ */
 public abstract class AbstractValueModifier<T extends Modifiable> extends AbstractModifier<T> implements ValueModifier<T> {
-    
+
     private boolean percentage;
     private double value;
 
@@ -49,5 +53,8 @@ public abstract class AbstractValueModifier<T extends Modifiable> extends Abstra
     public boolean isPercentage() {
         return percentage;
     }
+
+    @Override
+    public abstract void modify(T modifiable);
 
 }
