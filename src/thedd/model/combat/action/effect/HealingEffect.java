@@ -1,5 +1,7 @@
 package thedd.model.combat.action.effect;
 
+import java.util.Objects;
+
 import thedd.model.character.BasicCharacter;
 import thedd.model.character.statistics.Statistic;
 import thedd.model.combat.actor.ActionActor;
@@ -27,7 +29,7 @@ public final class HealingEffect extends AbstractActionEffect implements ActionE
 
     @Override
     public void apply(final ActionActor target) {
-        if (target instanceof BasicCharacter) {
+        if (Objects.requireNonNull(target) instanceof BasicCharacter) {
             final BasicCharacter t = ((BasicCharacter) target);
             final int roundedFlatHealing = (int) Math.round(t.getStat(Statistic.HEALTH_POINT).getMax() * baseHealing);
             t.getStat(Statistic.HEALTH_POINT).updateActual(roundedFlatHealing);

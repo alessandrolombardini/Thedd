@@ -1,5 +1,6 @@
 package thedd.model.roomevent.floorchanger;
 
+import java.util.Objects;
 import java.util.function.BooleanSupplier;
 
 import thedd.model.roomevent.AbstractRoomEvent;
@@ -23,7 +24,7 @@ public abstract class AbstractFloorChangerEvent extends AbstractRoomEvent implem
      */
     public AbstractFloorChangerEvent(final String name, final BooleanSupplier condition) {
         super(name);
-        this.condition = condition; 
+        this.condition = Objects.requireNonNull(condition); 
     }
 
     @Override

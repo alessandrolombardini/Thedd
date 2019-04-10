@@ -1,5 +1,7 @@
 package thedd.model.combat.action.effect;
 
+import java.util.Objects;
+
 import thedd.model.character.BasicCharacter;
 import thedd.model.combat.actor.ActionActor;
 import thedd.model.item.Item;
@@ -20,12 +22,12 @@ public final class ItemGiverEffect extends AbstractActionEffect {
      */
     public ItemGiverEffect() {
         super();
-        itemGiven = ItemFactory.getRandomItem();
+        itemGiven = Objects.requireNonNull(ItemFactory.getRandomItem());
     }
 
     private ItemGiverEffect(final Item itemGiven) {
         super();
-        this.itemGiven = itemGiven;
+        this.itemGiven = Objects.requireNonNull(itemGiven);
     }
 
 

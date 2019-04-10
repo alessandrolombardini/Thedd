@@ -44,7 +44,7 @@ public final class DamageResistanceAdderEffect extends AbstractActionEffect impl
         this.value = value;
         this.isPercentage = isPercentage;
         this.isPermanent = isPermanent;
-        this.resistanceTag = tagResisted;
+        this.resistanceTag = Objects.requireNonNull(tagResisted);
         this.modifier = new DamageModifier(this.value, this.isPercentage, ModifierActivation.ACTIVE_ON_DEFENCE);
         this.modifier.addRequirement(new TagRequirement<>(false, TagRequirementType.REQUIRED, Arrays.asList(tagResisted)));
     }

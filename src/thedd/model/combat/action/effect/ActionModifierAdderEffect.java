@@ -29,7 +29,7 @@ public final class ActionModifierAdderEffect extends AbstractActionEffect implem
      */
     public ActionModifierAdderEffect(final Modifier<Action> modifier, final boolean isPermanent) {
         super();
-        this.modifier = modifier;
+        this.modifier = Objects.requireNonNull(modifier);
         this.isPermanent = isPermanent;
         target = Optional.empty();
     }

@@ -36,7 +36,7 @@ public final class EquipmentStatisticChangerEffect extends AbstractActionEffect 
 
     @Override
     public void apply(final ActionActor target) {
-        if (target instanceof BasicCharacter) {
+        if (Objects.requireNonNull(target) instanceof BasicCharacter) {
             if (!this.target.isPresent()) {
                 this.target = Optional.of((BasicCharacter) target);
                 if (targetStat == Statistic.HEALTH_POINT) {
