@@ -28,4 +28,8 @@ public class HitChanceModifier extends AbstractValueModifier<Action> {
         action.addToCurrentHitChance(modifier);
     }
 
+    @Override
+    public final String toString() {
+        return "Hit chance is modified by " + this.getValue() + " when" + (this.getModifierActivation() == ModifierActivation.ACTIVE_ON_ATTACK ? "attacking" : " defending");
+    }
 }
