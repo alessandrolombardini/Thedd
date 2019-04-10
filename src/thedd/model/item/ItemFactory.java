@@ -24,7 +24,7 @@ import thedd.model.combat.modifier.DamageAdderModifier;
 import thedd.model.combat.status.poison.PoisonStatus;
 import thedd.model.combat.tag.EffectTag;
 import thedd.model.item.equipableitem.EquipableItem;
-import thedd.model.item.equipableitem.EquipableItemSword;
+import thedd.model.item.equipableitem.implementations.EquipableItemSword;
 import thedd.model.item.usableitem.UsableItemBomb;
 import thedd.model.item.usableitem.UsableItemPotion;
 import thedd.utils.randomcollections.list.RandomList;

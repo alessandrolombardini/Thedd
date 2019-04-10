@@ -1,4 +1,4 @@
-package thedd.model.item.equipableitem;
+package thedd.model.item.equipableitem.implementations;
 
 
 import java.util.Arrays;
@@ -10,6 +10,8 @@ import thedd.model.combat.requirements.tags.TagRequirementType;
 import thedd.model.combat.tag.EffectTag;
 import thedd.model.item.Item;
 import thedd.model.item.ItemRarity;
+import thedd.model.item.equipableitem.EquipableItemImpl;
+import thedd.model.item.equipableitem.EquipableItemType;
 
 /**
  * One handed weapon.
@@ -41,7 +43,7 @@ public class EquipableItemSword extends EquipableItemImpl {
     }
 
     /**
-     * Creates a new instance of {@link thedd.model.item.equipableitem.EquipableItemSword}.
+     * Creates a new instance of {@link thedd.model.item.equipableitem.implementations.EquipableItemSword}.
      * @param rarity
      *          the rarity of the new instance
      * @return a new instance of EquipableItemSword
