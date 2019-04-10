@@ -1,8 +1,10 @@
 package thedd.model.item;
 
+import java.util.Objects;
+
 /**
- * 
- *
+ * Implementation of {@link thedd.model.item.ItemRarity}.
+ * It provides a basic rarity system with 3 tier of rarity.
  */
 public enum ItemRarityImpl implements ItemRarity {
     /**
@@ -23,7 +25,7 @@ public enum ItemRarityImpl implements ItemRarity {
 
     ItemRarityImpl(final String literal, final int baseWeight) {
         this.baseWeight = baseWeight;
-        this.literal = literal;
+        this.literal = Objects.requireNonNull(literal);
     }
 
     @Override

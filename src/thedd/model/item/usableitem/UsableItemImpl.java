@@ -34,7 +34,10 @@ public class UsableItemImpl extends AbstractItem implements UsableItem {
     }
 
     /**
-     * 
+     * Create a new {@link thedd.model.item.usable.item.UsableItem}
+     * with the given {@link thedd.model.item.ItemRarity}.
+     * On creation the action is empty, effects must be added after
+     * the construction and with multipliers already applied.
      * @param id
      *  id of the object
      * @param name
@@ -64,7 +67,7 @@ public class UsableItemImpl extends AbstractItem implements UsableItem {
 
     @Override
     public final void addActionEffect(final ActionEffect effect) {
-        action.addEffect(effect);
+        action.addEffect(Objects.requireNonNull(effect));
     }
 
     @Override
