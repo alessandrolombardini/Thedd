@@ -18,8 +18,10 @@ import thedd.model.combat.action.effect.ActionModifierAdderEffect;
 import thedd.model.combat.action.effect.DamageEffect;
 import thedd.model.combat.action.effect.DamageResistanceAdderEffect;
 import thedd.model.combat.action.effect.EquipmentStatisticChangerEffect;
+import thedd.model.combat.action.effect.StatusGiverEffect;
 import thedd.model.combat.action.targeting.DefaultTargeting;
 import thedd.model.combat.modifier.DamageAdderModifier;
+import thedd.model.combat.status.poison.PoisonStatus;
 import thedd.model.combat.tag.EffectTag;
 import thedd.model.item.equipableitem.EquipableItem;
 import thedd.model.item.equipableitem.EquipableItemSword;
@@ -77,7 +79,6 @@ public final class ItemFactory {
             final int maxNumOfAdditionalModifiers = eItem.getRarityModifiers().get(eItem.getRarity()).getLeft();
             final int maxNumOfActions = eItem.getRarityModifiers().get(eItem.getRarity()).getRight();
             for (int i = 0; i < maxNumOfAdditionalModifiers; i++) {
-                //add effects
                 final ModifierType modType = ModifierType.values()[RNGENERATOR.nextInt(ModifierType.values().length)];
                 eItem.addActionEffect(Objects.requireNonNull(getRandomActionEffect(modType)));
             }
@@ -142,13 +143,17 @@ public final class ItemFactory {
         private static final List<Action> ACTIONS = new ArrayList<>();
 
         static {
-            final String nastyStrikeDescription = "";
+            final String nastyStrikeDescription = "A malicious blow dealt with monstrous agility. It injects a powerful toxin in the body of the target.";
             final double nastyStrikeBaseDamage = 1.0;
+            final int nastyStrikeDuration = 3;
             final Action nastyStrike = new ActionImpl("Nasty strike", ActionCategory.SPECIAL, new DefaultTargeting(), 1.0, TargetType.EVERYONE, nastyStrikeDescription, LogMessageType.STANDARD_ACTION);
-            nastyStrike.addEffect(new DamageEffect(nastyStrikeBaseDamage));
+            final DamageEffect nastyStrikeDamageEffect = new DamageEffect(nastyStrikeBaseDamage);
+            nastyStrike.addEffect(nastyStrikeDamageEffect);
+            final StatusGiverEffect nastyStrikePoisonStatusGiver = new StatusGiverEffect(new PoisonStatus(nastyStrikeDuration)); 
+            nastyStrike.addEffect(nastyStrikePoisonStatusGiver);
             ACTIONS.add(nastyStrike);
 
-            final String divineInterventionDescription = "";
+            final String divineInterventionDescription = "A punitive beam of sacred light which scorches the target.";
             final double divineInterventionBaseFireDamage = 3.0;
             final double divineInterventionBaseHolyDamage = 3.0;
             final Action divineIntervention = new ActionImpl("Divine Intervention", ActionCategory.SPECIAL, new DefaultTargeting(), 1.0, TargetType.EVERYONE, divineInterventionDescription, LogMessageType.STANDARD_ACTION);
