@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import thedd.model.character.BasicCharacter;
 import thedd.model.combat.actor.ActionActor;
 
 /**
@@ -119,5 +120,14 @@ public class ExecutionInstanceImpl implements ActionExecutionInstance {
             copy.increaseRoundNumber();
         }
         return copy;
+    }
+
+    @Override
+    public long getNumberOfAliveCharacters(List<ActionActor> actors) {
+        return  actors.stream()
+                      .filter(a -> a instanceof BasicCharacter)
+                      .map(a -> ((BasicCharacter) a))
+                      .filter(BasicCharacter::isAlive)
+                      .count();
     }
 }
