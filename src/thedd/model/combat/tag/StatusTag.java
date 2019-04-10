@@ -6,12 +6,17 @@ package thedd.model.combat.tag;
  */
 public enum StatusTag implements Tag {
 
-    POISONED("Poisoned");
+    /**
+     * To be applied to statues that imbue a poisoning condition.
+     */
+    POISONED("Poisoned", false);
 
-    private String literal;
+    private final String literal;
+    private final boolean hidden;
 
-    StatusTag(final String literal) {
+    StatusTag(final String literal, final boolean hidden) {
         this.literal = literal;
+        this.hidden = hidden;
     }
 
     /**
@@ -20,6 +25,11 @@ public enum StatusTag implements Tag {
     @Override
     public String getLiteral() {
         return literal;
+    }
+
+    @Override
+    public boolean isHidden() {
+        return hidden;
     }
 
 }
