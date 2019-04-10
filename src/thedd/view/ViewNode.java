@@ -10,12 +10,12 @@ public enum ViewNode {
     /**
      * Menu scene.
      */
-    MENU("mainMenu_form.fxml"),
+    MENU("menu_form.fxml"),
 
     /**
      * New game scene.
      */
-    NEW_GAME("playMenu_form.fxml"),
+    NEW_GAME("newGame_form.fxml"),
 
     /**
      * Game over scene.
@@ -31,7 +31,7 @@ public enum ViewNode {
      * Use of the char '/' becouse it's used by istructions that required that type of char, doesn't 
      * matter if the application is used on linux, windows or os. 
      */
-    private static final String FXML_PATH = "scenes/";
+    private static final String FXML_PATH = "scene/";
 
     private final String nameOfFxml;
 

@@ -7,7 +7,7 @@ import thedd.view.ApplicationViewState;
 /**
  * View controller of the new game scene.
  */
-public class PlayMenuController extends SubViewControllerImpl {
+public class NewGameController extends SubViewControllerImpl {
 
     private static final String ERROR_TITLE_INPUTERROR = "Input error";
     private static final String ERROR_TEXT_NULL = "Nope, you have to insert number of rooms and floors";
