@@ -21,12 +21,12 @@ import thedd.model.item.ItemRarityImpl;
 
 /**
  * Implementation of {@link thedd.model.item.equipableitem.EquipableItem}.
- *
+ * This implementation has 1 innate {@link thedd.model.combat.modifier.Modifier}.
  */
 public class EquipableItemImpl extends AbstractItem implements EquipableItem {
 
     private static final Map<ItemRarity, Pair<Integer, Integer>> RARITY_MODIFIERS;
-    private static final int NUM_OF_BASE_MODIFIERS = 1;
+    private static final int NUM_OF_INNATE_MODIFIERS = 1;
 
     static {
         RARITY_MODIFIERS = new HashMap<>();
@@ -38,11 +38,11 @@ public class EquipableItemImpl extends AbstractItem implements EquipableItem {
     private final List<ActionEffect> providedEffects;
     private final List<Action> additionalActions;
 
-
     private final EquipableItemType type;
 
     /**
-     * 
+     * Create a new {@link thedd.model.item.equipableitem.EquipableItem} with the given rarity.
+     * Any innate modifier is added after the construction.
      * @param id
      *          id of the item
      * @param name
@@ -78,12 +78,14 @@ public class EquipableItemImpl extends AbstractItem implements EquipableItem {
 
     @Override
     public final void onEquip(final ActionActor equipper) {
+        Objects.requireNonNull(equipper);
         additionalActions.forEach(equipper::addActionToAvailable);
         providedEffects.forEach(e -> e.apply(equipper));
     }
 
     @Override
     public final void onUnequip(final ActionActor equipper) {
+        Objects.requireNonNull(equipper);
         additionalActions.forEach(equipper::removeActionFromAvailable);
         providedEffects.stream().filter(e -> e instanceof RemovableEffect).forEach(e -> ((RemovableEffect) e).remove());
     }
@@ -100,9 +102,9 @@ public class EquipableItemImpl extends AbstractItem implements EquipableItem {
 
     @Override
     public final void addActionEffect(final ActionEffect newEffect) {
-        final int maxNumOfEffects = this.getRarityModifiers().get(this.getRarity()).getLeft() + NUM_OF_BASE_MODIFIERS;
+        final int maxNumOfEffects = this.getRarityModifiers().get(this.getRarity()).getLeft() + NUM_OF_INNATE_MODIFIERS;
         if (providedEffects.size() < maxNumOfEffects) {
-            providedEffects.add(newEffect);
+            providedEffects.add(Objects.requireNonNull(newEffect));
         } else {
             throw new IllegalStateException("There is no more room for additional effects");
         }
@@ -111,7 +113,7 @@ public class EquipableItemImpl extends AbstractItem implements EquipableItem {
     @Override
     public final void addAdditionalAction(final Action newAction) {
         if (additionalActions.size() < this.getRarityModifiers().get(this.getRarity()).getRight()) {
-            additionalActions.add(newAction);
+            additionalActions.add(Objects.requireNonNull(newAction));
         } else {
             throw new IllegalStateException("There is no more room for additional actions");
         }
@@ -146,8 +148,8 @@ public class EquipableItemImpl extends AbstractItem implements EquipableItem {
     }
 
     @Override
-    public final int getNumOfBaseModifiers() {
-        return NUM_OF_BASE_MODIFIERS;
+    public final int getNumOfInnateModifiers() {
+        return NUM_OF_INNATE_MODIFIERS;
     }
 
 }
