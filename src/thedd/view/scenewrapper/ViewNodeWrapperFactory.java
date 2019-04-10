@@ -15,5 +15,5 @@ public interface ViewNodeWrapperFactory {
      * @return
      *          the node and its view controller
      */
-    ViewNodeWrapper getNode(ViewNode viewNode);
+    ViewNodeWrapper createViewNodeWrapper(ViewNode viewNode);
 }

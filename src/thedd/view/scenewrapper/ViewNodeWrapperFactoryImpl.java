@@ -39,7 +39,7 @@ public class ViewNodeWrapperFactoryImpl implements ViewNodeWrapperFactory {
      * {@inheritDoc}
      */
     @Override
-    public final ViewNodeWrapper getNode(final ViewNode viewNode) {
+    public final ViewNodeWrapper createViewNodeWrapper(final ViewNode viewNode) {
         return this.loadNode(viewNode);
     }
 

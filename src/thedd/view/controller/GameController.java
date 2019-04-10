@@ -49,13 +49,13 @@ public class GameController extends ViewNodeControllerImpl {
     @Override
     protected final void initView() {
         this.factory = Optional.of(new ViewNodeWrapperFactoryImpl(this.getView(), this.getController()));
-        ViewNodeWrapper node = factory.get().getNode(NODE_UP);
+        ViewNodeWrapper node = factory.get().createViewNodeWrapper(NODE_UP);
         this.gameContent.getChildren().add(node.getNode());
         this.viewControllers.add(node.getController());
-        node = factory.get().getNode(NODE_DOWN_SX);
+        node = factory.get().createViewNodeWrapper(NODE_DOWN_SX);
         this.inventoryContent.getChildren().add(node.getNode());
         this.viewControllers.add(node.getController());
-        node = factory.get().getNode(NODE_DOWN_DX);
+        node = factory.get().createViewNodeWrapper(NODE_DOWN_DX);
         this.statisticsContent.getChildren().add(node.getNode());
         this.viewControllers.add(node.getController());
     }
