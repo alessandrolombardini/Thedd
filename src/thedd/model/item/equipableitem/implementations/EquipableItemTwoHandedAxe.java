@@ -15,14 +15,14 @@ import thedd.model.item.equipableitem.EquipableItemType;
 
 /**
  * Two-handed weapon. 
- * His innate effect is more normal damage to action with normal damage.
+ * His innate effect is more normal damage to action with {@link EffectTag#NORMAL_DAMAGE}.
  */
 public class EquipableItemTwoHandedAxe extends EquipableItemImpl {
 
     private static final int ID = -3;
     private static final String NAME = "Two-handed Axe";
     private static final EquipableItemType TYPE = EquipableItemType.TWO_HANDED;
-    private static final String DESCRIPTION = "";
+    private static final String DESCRIPTION = "This axe should be used to chop trees, but chopping heads should not be hard for this either.";
     private static final int BASE_DAMAGE = 8;
 
     /**
