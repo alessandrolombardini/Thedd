@@ -128,7 +128,7 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
     @Override
     public int hashCode() {
         if (hash == 0) {
-            hash = equipment.hashCode() ^ inventory.hashCode() ^ stat.hashCode();
+            hash = equipment.hashCode() ^ inventory.hashCode() ^ stat.hashCode() ^ super.hash();
         }
         return hash;
     }
@@ -138,7 +138,7 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
      */
     @Override
     public boolean equals(final Object obj) {
-        if (obj instanceof BasicCharacterImpl) {
+        if (super.equals(obj) && obj instanceof BasicCharacterImpl) {
             final BasicCharacterImpl other = (BasicCharacterImpl) obj;
             return inventory.equals(other.getInventory()) && stat.equals(other.getAllStat())
                     && equipment.equals(other.getEquippedItems());
