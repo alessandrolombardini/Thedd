@@ -3,6 +3,8 @@ package thedd.model.combat.action.effect;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import thedd.model.character.BasicCharacter;
+import thedd.model.character.statistics.Statistic;
 import thedd.model.combat.actor.ActionActor;
 
 
@@ -11,17 +13,17 @@ import thedd.model.combat.actor.ActionActor;
  */
 public class DamageEffect extends AbstractActionEffect {
 
-    private final double baseDamage;
-    private double damage;
-    private double dealtDamage;
+    private final int baseDamage;
+    private int damage;
+    private int dealtDamage;
 
     /**
      * @param baseAmount the base amount of damage dealt
      */
     public DamageEffect(final double baseAmount) {
         super();
-        baseDamage = baseAmount;
-        damage = baseAmount;
+        baseDamage = Double.valueOf(baseAmount).intValue();
+        damage = baseDamage;
     }
 
     /**
@@ -30,6 +32,9 @@ public class DamageEffect extends AbstractActionEffect {
     @Override
     public final void apply(final ActionActor target) {
         dealtDamage = damage;
+        if(target instanceof BasicCharacter) {
+            ((BasicCharacter) target).getStat(Statistic.HEALTH_POINT).updateActual(-damage);
+        }
         //if target is Character -> target.modifyHealth(amount)
         //Do stuff
         damage = baseDamage;
@@ -47,16 +52,6 @@ public class DamageEffect extends AbstractActionEffect {
         final String result =  "Deals " + damage + " HP damage ";
         damage = baseDamage;
         return appendTags(result);
-    }
-
-    private String appendTags(final String original) {
-        if (getTags().isEmpty()) {
-            return original;
-        } else {
-            return original.concat(getTags().stream()
-                                            .map(t -> t.getLiteral())
-                                            .collect(Collectors.joining("/", "[", "]")));
-        }
     }
 
     /**
@@ -89,8 +84,6 @@ public class DamageEffect extends AbstractActionEffect {
      */
     @Override
     public String getDescription() {
-        //This appends all the effect tags at the end of the description, maybe it would be better to
-        //put the tags only on the action description.
         return appendTags("Deals " + damage + " HP damage ");
     }
 
@@ -126,5 +119,16 @@ public class DamageEffect extends AbstractActionEffect {
             ((DamageEffect) copy).addToDamage(damage - baseDamage);
         }
         return copy;
+    }
+
+    private String appendTags(final String original) {
+        if (getTags().stream().filter(t -> !t.isHidden()).count() <= 0) {
+            return original;
+        } else {
+            return original.concat(getTags().stream()
+                                            .filter(t -> !t.isHidden())
+                                            .map(t -> t.getLiteral())
+                                            .collect(Collectors.joining("/", "[", "]")));
+        }
     }
 }
