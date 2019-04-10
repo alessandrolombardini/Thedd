@@ -4,7 +4,8 @@ import java.util.Objects;
 
 /**
  * Abstract implementation of {@link.room_event.RoomEvent}.
- * Each specialization has to specify what type it is, whether it can be completed and whether it is mandatory.
+ * Each specialization has to specify what type it is, 
+ * whether it can be completed and whether it is mandatory.
  *
  */
 public abstract class AbstractRoomEvent implements RoomEvent {

@@ -10,7 +10,7 @@ import thedd.model.combat.action.targeting.DefaultTargeting;
 
 /**
  * Specialization of {@link thedd.model.roomevent.interactableactionperformer.InteractableActionPerformer}.
- * It gives to the interactor a random item.
+ * It gives to the user a random item.
  */
 public class TreasureChest extends AbstractInteractableActionPerformer implements InteractableActionPerformer {
 
