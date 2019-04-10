@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import thedd.model.character.BasicCharacter;
 import thedd.model.combat.action.Action;
 import thedd.model.combat.action.ActionCategory;
 import thedd.model.combat.action.TargetType;
@@ -19,7 +20,7 @@ import thedd.model.combat.instance.ActionExecutionInstance;
 import thedd.model.combat.instance.CombatStatus;
 import thedd.model.combat.instance.ExecutionInstanceImpl;
 import thedd.model.combat.status.Status;
-import thedd.model.combat.tag.TagImpl;
+import thedd.model.combat.tag.ActionTag;
 
 /**
  *  Logic of a default combat<p>
@@ -115,8 +116,10 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
                                .forEach(p -> {
                                    final ActionActor target = p.getKey();
                                    action.applyEffects(target);
-                                   //TODO: check if the target is k.o.
-                                   if (canTargetParry(target)) {
+                                   if(target instanceof BasicCharacter
+                                           && !((BasicCharacter)target).isAlive()) {
+                                       actorsQueue.remove(target);
+                                   } else if (canTargetParry(target)) {
                                        target.resetSelectedAction();
                                    }
                                    updateNewlyAppliedStatuses(target);
@@ -154,6 +157,7 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
                     result.addResult(target, ActionResultType.HIT);
                 } else if (canTargetParry(target)) {
                     result.addResult(target, ActionResultType.PARRIED);
+                    interrupted = true;
                 } else {
                     result.addResult(target, ActionResultType.MISSED);
                 }
@@ -170,6 +174,15 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
      */
     @Override
     public void updateExecutionStatus() {
+        if(combatInstance.getNumberOfAliveCharacters(combatInstance.getPlayerParty()) <= 0) {
+            combatInstance.setCombatStatus(CombatStatus.PLAYER_LOST);
+            return;
+        } else if(combatInstance.getNumberOfAliveCharacters(combatInstance.getNPCsParty()) <= 0) {
+            combatInstance.setCombatStatus(CombatStatus.PLAYER_WON);
+            combatInstance.getPlayerParty().forEach(a -> a.setIsInCombat(false));
+            return;
+        }
+
         if (currentActor.isPresent() && currentActor.get().getActionQueue().isEmpty()) {
             final ActionActor actor = currentActor.get();
             updateExpiredStatuses(actor);
@@ -189,16 +202,6 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
             combatInstance.getAllParties().forEach(ActionActor::resetSelectedAction);
             combatInstance.getAllParties().forEach(a -> a.getStatuses().forEach(s -> s.setIsUpdated(false)));
         }
-
-        /*if(combatInstance.getAllies().stream().allMatch(c -> c.getCharacter().getHealth == 0)) {
-            combatInstance.setCombatStatus(CombatStatus.PLAYER_LOST);
-            //reset characters turnOrder variable and isInCombat value
-        }
-
-        if(combatInstance.getHostiles().stream().allMatch(c -> c.getCharacter().getHealth == 0)) {
-            combatInstance.setCombatStatus(CombatStatus.PLAYER_WON);
-            //reset characters turnOrder variable and isInCombat value
-        }*/
     }
 
     /**
@@ -307,9 +310,10 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
      */
     protected boolean canTargetParry(final ActionActor target) {
         return target.getSelectedAction().isPresent()
+                && !currentAction.get().getTags().contains(ActionTag.UNBLOCKABLE)
                 && currentAction.get().getTargetType() != TargetType.SELF
                 && currentAction.get().getCategory() != ActionCategory.STATUS
-                && target.getSelectedAction().get().getTags().contains(new TagImpl("PARRY")) //&& (parryAction).canparry(sourceAction)
+                && target.getSelectedAction().get().getTags().contains(ActionTag.PARRY)
                 && !actorsQueue.contains(target);
     }
 
