@@ -52,6 +52,7 @@ public interface EquipableItem extends Item {
 
     /**
      * Add a new {@link model.combat.action.effect.ActionEffect} to the item.
+     * If an item has an innate ActionEffect, it should add it in his constructor.
      * @throws IllegalStateException whether the number of modifiers would exceed 
      *          the maximum value defined by the map got from {@link #getRarityModifiers()} for the rarity of the object 
      * 
@@ -79,4 +80,11 @@ public interface EquipableItem extends Item {
      * @return the list of additional {@link model.combat.action.Action}s
      */
     List<Action> getAdditionalActions();
+
+    /**
+     * Return the number of innate modifiers.
+     * @return
+     *  the number of basic modifiers
+     */
+    int getNumOfBaseModifiers();
 }
