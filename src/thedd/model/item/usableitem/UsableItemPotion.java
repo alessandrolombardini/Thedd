@@ -15,9 +15,10 @@ public class UsableItemPotion extends UsableItemImpl {
     private static final double HEALING_VALUE = 0.25;
     /**
      * Create an instance of a Potion item of a certain rarity.
-     * 
+     * The higher the {@link thedd.model.item.ItemRarity} is,
+     * the better the {@link thedd.model.combat.action.effect.HealingEffect} is.
      * @param rarity
-     *  the rarity of the potion. The higher the rarity is, the better the healing effect is.
+     *  the rarity of the potion
      */
     public UsableItemPotion(final ItemRarity rarity) {
         super(ID, NAME, rarity, DESCRIPTION);
@@ -25,7 +26,7 @@ public class UsableItemPotion extends UsableItemImpl {
     }
 
     /**
-     * 
+     * Create a new instance of {@link thedd.model.item.usableitem.UsableItemPotion}.
      * @param rarity
      *  the rarity of the new potion
      * @return

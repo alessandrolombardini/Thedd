@@ -13,27 +13,28 @@ import thedd.model.item.ItemRarity;
 
 /**
  * Specialization of Item which can be equipped but cannot be used.
- *
+ * It can have innate modifiers which doesn't depend from the rarity of the item.
  */
 public interface EquipableItem extends Item {
 
     /**
-     * 
+     * Return the {@link thedd.model.item.equipableitem.EquipableItemType}.
      * @return
      *  the type of the item
      */
     EquipableItemType getType();
 
     /**
-     *  This method has to be called every time one equip an item, as the item will update the character statistics.
+     *  This method has to be called every time one equips this item, 
+     *  as the item will apply all effects it has to the target.
      * @param equipper
      *  the character who has equipped the item.
      */
     void onEquip(ActionActor equipper);
 
     /**
-     * This method has to be called every time one unequip an item,
-     * as the item will update the character statistics.
+     * This method has to be called every time one unequips this item,
+     * as the item will remove all effects it had applied to the target.
      * @param equipper
      *  the character who has unequipped the item.
      */
@@ -52,9 +53,10 @@ public interface EquipableItem extends Item {
 
     /**
      * Add a new {@link model.combat.action.effect.ActionEffect} to the item.
-     * If an item has an innate ActionEffect, it should add it in his constructor.
+     * If an item has an innate ActionEffect, it should add it after his construction.
      * @throws IllegalStateException whether the number of modifiers would exceed 
      *          the maximum value defined by the map got from {@link #getRarityModifiers()} for the rarity of the object 
+     *          plus the number of innate modifiers
      * 
      * @param newEffect
      *          the new effect to add to the item provided effects.
@@ -82,9 +84,9 @@ public interface EquipableItem extends Item {
     List<Action> getAdditionalActions();
 
     /**
-     * Return the number of innate modifiers.
+     * Return the number of innate {@link thedd.model.combat.modifier.Modifier}s.
      * @return
-     *  the number of basic modifiers
+     *  the number of innate modifiers
      */
-    int getNumOfBaseModifiers();
+    int getNumOfInnateModifiers();
 }

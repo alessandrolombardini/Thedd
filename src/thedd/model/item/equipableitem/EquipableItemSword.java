@@ -23,7 +23,8 @@ public class EquipableItemSword extends EquipableItemImpl {
     private static final String DESCRIPTION = "A sword";
     private static final int BASE_DAMAGE = 3;
     /**
-     * Create a Sword instance and add effects.
+     * Create a Sword item and add his innate effect,
+     * which is a {@link thedd.model.combat.modifier.DamageAdderModifier}.
      * @param rarity
      *          the rarity of the new item
      */
@@ -40,6 +41,7 @@ public class EquipableItemSword extends EquipableItemImpl {
     }
 
     /**
+     * Creates a new instance of {@link thedd.model.item.equipableitem.EquipableItemSword}.
      * @param rarity
      *          the rarity of the new instance
      * @return a new instance of EquipableItemSword

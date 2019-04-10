@@ -25,7 +25,7 @@ public class UsableItemBomb extends UsableItemImpl {
     }
 
     /**
-     * 
+     * Create a new instance of {@link thedd.model.item.usableitem.UsableItemBomb}.
      * @param rarity
      *          the rarity of the bomb
      * @return
