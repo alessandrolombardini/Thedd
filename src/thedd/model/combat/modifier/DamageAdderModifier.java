@@ -1,6 +1,7 @@
 package thedd.model.combat.modifier;
 
 import java.util.List;
+import java.util.Objects;
 
 import thedd.model.combat.action.Action;
 import thedd.model.combat.action.effect.DamageEffect;
@@ -8,7 +9,10 @@ import thedd.model.combat.requirements.Requirement;
 import thedd.model.combat.tag.Tag;
 
 /**
- * Modifier which adds an additional DamageEffect to an action.
+ * Modifier which adds additional damage to an {@link thedd.model.combat.action.Action}. 
+ * If the {@link thedd.model.combat.tag.EffectTag} of damage is already present inside the action,
+ * the damage is added to the corresponding {@link thedd.model.combat.action.effect.DamageEffect},
+ * otherwise a new {@link thedd.model.combat.action.effect.DamageEffect} is added.
  */
 public final class DamageAdderModifier extends AbstractModifier<Action> implements Modifier<Action> {
 
@@ -16,7 +20,7 @@ public final class DamageAdderModifier extends AbstractModifier<Action> implemen
     private final double value;
 
     /**
-     * 
+     * Creates a new damage modifier which targets a {@link thedd.model.combat.tag.Tag}. 
      * @param value
      *          the damage added to the action
      * @param requirements
@@ -27,16 +31,17 @@ public final class DamageAdderModifier extends AbstractModifier<Action> implemen
     public DamageAdderModifier(final double value, final List<Requirement<Action>> requirements, final Tag addedTag) {
         super(ModifierActivation.RETRIEVING_ACTION);
         this.value = value;
-        this.addedTag = addedTag;
-        requirements.forEach(this::addRequirement);
+        this.addedTag = Objects.requireNonNull(addedTag);
+        Objects.requireNonNull(requirements).forEach(this::addRequirement);
     }
 
     @Override
     public void modify(final Action modifiable) {
-        if (modifiable.getEffects().stream().filter(ae -> ae instanceof DamageEffect)
-                                            .filter(e -> e.getTags().contains(addedTag))
-                                            .peek(e -> ((DamageEffect) e).addToDamage(value))
-                                            .count() <= 0) {
+        if (Objects.requireNonNull(modifiable).getEffects().stream()
+                                                           .filter(ae -> ae instanceof DamageEffect)
+                                                           .filter(e -> e.getTags().contains(addedTag))
+                                                           .peek(e -> ((DamageEffect) e).addToDamage(value))
+                                                           .count() <= 0) {
             final DamageEffect dm = new DamageEffect(value);
             dm.addTag(addedTag, false);
             modifiable.addEffect(dm);
