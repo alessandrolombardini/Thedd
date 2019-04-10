@@ -38,7 +38,7 @@ public final class HealingEffect extends AbstractActionEffect implements ActionE
 
     @Override
     public String getLogMessage() {
-        return " is healed for " + baseHealing * 100 + "% max HP.";
+        return "Healed for " + baseHealing * 100 + "% max HP.";
     }
 
     @Override
@@ -48,7 +48,7 @@ public final class HealingEffect extends AbstractActionEffect implements ActionE
 
     @Override
     public String getPreviewMessage() {
-        return getLogMessage();
+        return getDescription();
     }
 
     @Override

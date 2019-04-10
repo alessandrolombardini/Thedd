@@ -40,7 +40,7 @@ public final class ItemGiverEffect extends AbstractActionEffect {
 
     @Override
     public String getLogMessage() {
-        return " found " + itemGiven.getName() + ".";
+        return "Found " + itemGiven.getName() + ".";
     }
 
     @Override
@@ -50,7 +50,7 @@ public final class ItemGiverEffect extends AbstractActionEffect {
 
     @Override
     public String getPreviewMessage() {
-        return getLogMessage();
+        return getDescription();
     }
 
     @Override
