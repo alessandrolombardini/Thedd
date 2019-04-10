@@ -8,7 +8,7 @@ import thedd.model.roomevent.RoomEventType;
 
 /**
  * Implementation of {@link thedd.model.roomevent.combatevent.CombatEvent}.
- *
+ * This is not skippable.
  */
 public final class CombatEventImpl extends AbstractRoomEvent implements CombatEvent {
 
@@ -16,7 +16,8 @@ public final class CombatEventImpl extends AbstractRoomEvent implements CombatEv
     private final HostileEncounter hostileEncounter;
 
     /**
-     * Create a combat event.
+     * Create a combat event with an empty {@link thedd.model.combat.encounter.HostileEncounter}
+     * Enemies shall be added with {@link thedd.model.combat.encounter.HostileEncounter#addNPC(thedd.model.combat.actor.ActionActor)}.
      */
     public CombatEventImpl() {
         super(NAME);

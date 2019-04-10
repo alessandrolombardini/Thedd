@@ -15,8 +15,7 @@ import thedd.model.roomevent.interactableactionperformer.ContraptionTrap;
 import thedd.model.roomevent.interactableactionperformer.TreasureChest;
 
 /**
- * Class to create RoomEvents on demand.
- *
+ * Factory to create RoomEvents on demand.
  */
 public final class RoomEventHelper {
 
@@ -32,7 +31,7 @@ public final class RoomEventHelper {
     }
 
     /**
-     * 
+     * Returns a {@link thedd.model.roomevent.floorchanger.FloorChangerEvent}.
      * @return
      *  an instance of {@link thedd.model.roomevent.floorchanger.Stairs}.
      */
@@ -40,7 +39,7 @@ public final class RoomEventHelper {
         return new Stairs();
     }
     /**
-     * 
+     * Returns a {@link thedd.model.roomevent.combatevent.CombatEvent}.
      * @return
      *  an instance of {@link thedd.model.roomevent.combatevent.CombatEvent}.
      */
@@ -48,7 +47,7 @@ public final class RoomEventHelper {
         return new CombatEventImpl();
     }
     /**
-     * 
+     * Returns a {@link thedd.model.roomevent.interactableactionperformer.TreasureChest}.
      * @return
      *  an instance of {@link thedd.model.roomevent.interactableactionperformer.TreasureChest}.
      */
@@ -56,7 +55,7 @@ public final class RoomEventHelper {
         return TreasureChest.newInstance();
     }
     /**
-     * 
+     * Returns a {@link thedd.model.roomevent.interactableactionperformer.InteractableActionPerformer}.
      * @return
      *  an instance of {@link thedd.model.roomevent.interactableactionperformer.InteractableActionPerformer}.
      */

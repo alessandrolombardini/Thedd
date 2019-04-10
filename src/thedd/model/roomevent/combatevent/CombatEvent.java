@@ -10,7 +10,7 @@ import thedd.model.roomevent.RoomEvent;
 public interface CombatEvent extends RoomEvent {
 
     /**
-     * 
+     * Returns the {@link thedd.model.combat.encounter.HostileEncounter} inside this event.
      * @return
      *  the hostile encounter instance
      */
