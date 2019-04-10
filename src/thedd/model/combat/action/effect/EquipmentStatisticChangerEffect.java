@@ -53,7 +53,7 @@ public final class EquipmentStatisticChangerEffect extends AbstractActionEffect 
     }
 
     @Override
-    public void removeBonus() {
+    public void remove() {
         if (this.target.isPresent()) {
             if (targetStat == Statistic.HEALTH_POINT) {
                 this.target.get().getStat(targetStat).updateMax(-effectValue);
@@ -68,7 +68,8 @@ public final class EquipmentStatisticChangerEffect extends AbstractActionEffect 
 
     @Override
     public String getLogMessage() {
-        return targetStat.name() + ": " + effectValue;
+        return (effectValue > 0 ? "Added " : "Subtracted") + effectValue 
+                + (effectValue > 0 ? " to " : " from ") + targetStat.name();
     }
 
     @Override

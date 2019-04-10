@@ -13,9 +13,10 @@ import thedd.model.combat.requirements.tags.TagRequirementType;
 import thedd.model.combat.tag.EffectTag;
 
 /**
- * {@link model.combat.action.effect.ActionEffect} which adds one {@link model.combat.modifier.Modifier}
+ * {@link model.combat.action.effect.ActionEffect} which adds one {@link model.combat.modifier.DamageModifier}
  * to every {@link thedd.model.combat.action.effect.ActionEffect}s of every {@link thedd.model.combat.action.Action} 
  * of an {@link model.combat.actor.ActionActor} with the {@link model.combat.tag.Tag} specified in the modifier.
+ * This represent a resistance to a type of damage. It can be a percentage or a flat value.
  *
  */
 public final class DamageResistanceAdderEffect extends AbstractActionEffect implements RemovableEffect {
@@ -49,7 +50,7 @@ public final class DamageResistanceAdderEffect extends AbstractActionEffect impl
     }
 
     @Override
-    public void removeBonus() {
+    public void remove() {
         if (!target.isPresent()) {
             throw new IllegalStateException("This effect is not applied to any target;");
         } else {
@@ -67,12 +68,12 @@ public final class DamageResistanceAdderEffect extends AbstractActionEffect impl
 
     @Override
     public String getLogMessage() {
-        return getDescription();
+        return "Added additional resistance up to " + value + (isPercentage ? "% to " : " to ") + resistanceTag.getLiteral();
     }
 
     @Override
     public String getDescription() {
-        return "Resists additional " + resistanceTag.getLiteral() + " up to " + value + (isPercentage ? "%" : "") + " damage";
+        return "Adds additional resistance up to " + value + (isPercentage ? "% to " : " to ") + resistanceTag.getLiteral();
     }
 
     @Override

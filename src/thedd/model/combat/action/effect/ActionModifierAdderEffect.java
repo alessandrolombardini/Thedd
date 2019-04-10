@@ -46,7 +46,7 @@ public final class ActionModifierAdderEffect extends AbstractActionEffect implem
     }
 
     @Override
-    public void removeBonus() {
+    public void remove() {
         if (!target.isPresent()) {
             throw new IllegalStateException("This effect is not applied to any target;");
         } else {
@@ -58,7 +58,7 @@ public final class ActionModifierAdderEffect extends AbstractActionEffect implem
 
     @Override
     public String getLogMessage() {
-        return getDescription();
+        return getDescription().replace("Adds", "Added");
     }
 
     @Override
