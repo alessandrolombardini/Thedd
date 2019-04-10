@@ -47,7 +47,7 @@ public class GameController extends SubViewControllerImpl {
     }
 
     @Override
-    protected final void startController() {
+    protected final void initView() {
         this.factory = Optional.of(new ViewNodeWrapperFactoryImpl(this.getView(), this.getController()));
         ViewNodeWrapper node = factory.get().getNode(NODE_UP);
         this.gameContent.getChildren().add(node.getNode());

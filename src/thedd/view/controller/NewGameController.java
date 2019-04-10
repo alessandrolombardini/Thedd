@@ -34,7 +34,23 @@ public class NewGameController extends SubViewControllerImpl {
                                                  this.numberOfFloorsField.getText())) {
             this.getDialogFactory().createErrorDialog(ERROR_TITLE_INPUTERROR, ERROR_TEXT_NONVALIDVALUE).show();
         } else {
-            this.getView().setScene(ApplicationViewState.GAME_OVER);
+            this.getView().setScene(ApplicationViewState.GAME);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void update() {
+        /* This class has nothing to update */
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void initView() {
+        /* This class has nothing to do when it's initialized */
     }
 }

@@ -24,4 +24,20 @@ public class GameOverController extends SubViewControllerImpl {
         this.getController().closeApplication();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void update() {
+        /* This class has nothing to update */
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void initView() {
+        /* This class has nothing to do when it's initialized */
+    }
+
 }
