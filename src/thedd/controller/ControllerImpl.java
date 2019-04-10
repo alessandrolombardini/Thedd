@@ -1,12 +1,14 @@
 package thedd.controller;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javafx.application.Platform;
 import thedd.model.Model;
 import thedd.model.ModelImpl;
 import thedd.model.world.environment.EnvironmentImpl;
-import thedd.model.world.environment.SessionImpl.SessionBuilder;
+import thedd.model.world.environment.Session;
+import thedd.model.world.environment.SessionImpl;
 import thedd.view.View;
 
 /**
@@ -34,16 +36,13 @@ public class ControllerImpl implements Controller {
      */
     @Override
     public final boolean newGame(final String playerName, final String numberOfRooms, final String numberOfFloors) {
-        final SessionBuilder sessionBuilder = model.getSessionBuilder();
-        sessionBuilder.playerCharacterName(playerName);
         if (this.checkNumber(numberOfRooms) && this.checkNumber(numberOfFloors)) {
             final int numOfRooms = Integer.parseInt(numberOfRooms);
             final int numOfFloors = Integer.parseInt(numberOfFloors);
             if (numOfFloors >= EnvironmentImpl.MIN_NUMBER_OF_FLOORS
                     || numOfRooms >= EnvironmentImpl.MIN_NUMBER_OF_ROOMS) {
-                sessionBuilder.numberOfFloors(numOfFloors);
-                sessionBuilder.numberOfRooms(numOfRooms);
-                this.model.setSession(sessionBuilder.build());
+                final Session session = new SessionImpl(Optional.ofNullable(playerName), numOfFloors, numOfRooms);
+                this.model.setSession(session);
                 return true;
             }
         }
