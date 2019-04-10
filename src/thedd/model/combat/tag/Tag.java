@@ -11,4 +11,13 @@ public interface Tag {
      */
     String getLiteral();
 
+    /**
+     * Gets whether the tag should be displayed
+     * to the player.<br>
+     * Hidden tags may still be displayed, but non hidden
+     * tags are always shown to the player.
+     * @return true if the tag has to be shown to the player
+     */
+    boolean isHidden();
+
 }
