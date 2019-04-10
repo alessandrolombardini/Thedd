@@ -24,7 +24,9 @@ import thedd.model.combat.modifier.DamageAdderModifier;
 import thedd.model.combat.status.poison.PoisonStatus;
 import thedd.model.combat.tag.EffectTag;
 import thedd.model.item.equipableitem.EquipableItem;
+import thedd.model.item.equipableitem.implementations.EquipableItemShield;
 import thedd.model.item.equipableitem.implementations.EquipableItemSword;
+import thedd.model.item.equipableitem.implementations.EquipableItemTwoHandedAxe;
 import thedd.model.item.usableitem.UsableItemBomb;
 import thedd.model.item.usableitem.UsableItemPotion;
 import thedd.utils.randomcollections.list.RandomList;
@@ -62,6 +64,8 @@ public final class ItemFactory {
         DATABASE.add(UsableItemBomb::getNewInstance);
         DATABASE.add(UsableItemPotion::getNewInstance);
         DATABASE.add(EquipableItemSword::getNewInstance);
+        DATABASE.add(EquipableItemShield::getNewInstance);
+        DATABASE.add(EquipableItemTwoHandedAxe::getNewInstance);
     }
 
     /**
@@ -104,7 +108,7 @@ public final class ItemFactory {
         switch (Objects.requireNonNull(modType)) {
         case MORE_DAMAGE:
             EffectTag dmgType = EffectTag.values()[RNGENERATOR.nextInt(EffectTag.values().length)];
-            while (DMG_MOD.contains(dmgType)) {
+            while (DMG_MOD.contains(dmgType) || dmgType.isHidden()) {
                 dmgType = EffectTag.values()[RNGENERATOR.nextInt(EffectTag.values().length)];
             }
             DMG_MOD.add(dmgType);
@@ -114,7 +118,7 @@ public final class ItemFactory {
                                                 false);
         case DAMAGE_RESISTANCE:
             EffectTag resType = EffectTag.values()[RNGENERATOR.nextInt(EffectTag.values().length)];
-            while (RES_MOD.contains(resType)) {
+            while (RES_MOD.contains(resType) || resType.isHidden()) {
                 resType = EffectTag.values()[RNGENERATOR.nextInt(EffectTag.values().length)];
             }
             RES_MOD.add(resType);
@@ -148,8 +152,11 @@ public final class ItemFactory {
             final int nastyStrikeDuration = 3;
             final Action nastyStrike = new ActionImpl("Nasty strike", ActionCategory.SPECIAL, new DefaultTargeting(), 1.0, TargetType.EVERYONE, nastyStrikeDescription, LogMessageType.STANDARD_ACTION);
             final DamageEffect nastyStrikeDamageEffect = new DamageEffect(nastyStrikeBaseDamage);
+            nastyStrikeDamageEffect.addTag(EffectTag.POISON_DAMAGE, true);
+            nastyStrikeDamageEffect.addTag(EffectTag.IGNORES_MODIFIERS, true);
             nastyStrike.addEffect(nastyStrikeDamageEffect);
-            final StatusGiverEffect nastyStrikePoisonStatusGiver = new StatusGiverEffect(new PoisonStatus(nastyStrikeDuration)); 
+            final StatusGiverEffect nastyStrikePoisonStatusGiver = new StatusGiverEffect(new PoisonStatus(nastyStrikeDuration));
+            nastyStrikePoisonStatusGiver.addTag(EffectTag.IGNORES_MODIFIERS, true);
             nastyStrike.addEffect(nastyStrikePoisonStatusGiver);
             ACTIONS.add(nastyStrike);
 
