@@ -8,10 +8,10 @@ import java.util.stream.Collectors;
 import model.item.Item;
 
 /**
- * Implementation of Inventory interface.
+ * Implementation of {@link thedd.model.character.inventory.Inventory}.
  *
  */
-public class InventoryImpl implements Inventory {
+public final class InventoryImpl implements Inventory {
 
     private final Map<Item, Integer> items;
     private int hash;
@@ -24,7 +24,7 @@ public class InventoryImpl implements Inventory {
     }
 
     @Override
-    public final boolean addItem(final Item item) {
+    public boolean addItem(final Item item) {
         if (item == null) {
             return false;
         }
@@ -37,7 +37,7 @@ public class InventoryImpl implements Inventory {
     }
 
     @Override
-    public final boolean removeItem(final Item item) {
+    public boolean removeItem(final Item item) {
         if (item == null) {
             return false;
         }
@@ -52,7 +52,7 @@ public class InventoryImpl implements Inventory {
     }
 
     @Override
-    public final String toString() {
+    public String toString() {
         String ret = "";
         for (Map.Entry<Item, Integer> pair : this.items.entrySet()) {
             ret = ret + "[ Item: " + pair.getKey().toString() + " - Number: " + pair.getValue() + "]\n";
@@ -64,12 +64,12 @@ public class InventoryImpl implements Inventory {
     }
 
     @Override
-    public final List<Item> getAll() {
+    public List<Item> getAll() {
         return Collections.unmodifiableList(this.items.keySet().stream().collect(Collectors.toList()));
     }
 
     @Override
-    public final int getQuantity(final Item item) {
+    public int getQuantity(final Item item) {
         if (item == null) {
             throw new IllegalArgumentException();
         }
@@ -81,7 +81,7 @@ public class InventoryImpl implements Inventory {
     }
 
     @Override
-    public final int hashCode() {
+    public int hashCode() {
         if (hash == 0) {
             hash = items.hashCode();
         }
@@ -89,7 +89,7 @@ public class InventoryImpl implements Inventory {
     }
 
     @Override
-    public final boolean equals(final Object obj) {
+    public boolean equals(final Object obj) {
         if (obj instanceof InventoryImpl) {
             final InventoryImpl other = (InventoryImpl) obj;
             return this.getAll().equals(other.getAll());

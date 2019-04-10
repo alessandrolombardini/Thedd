@@ -5,7 +5,7 @@ import java.util.List;
 import model.item.Item;
 
 /**
- * Interface that manage a collection of items.
+ * Interface that manage an inventory of items.
  */
 public interface Inventory {
 

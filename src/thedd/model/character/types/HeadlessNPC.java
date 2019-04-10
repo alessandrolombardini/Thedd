@@ -3,7 +3,7 @@ package thedd.model.character.types;
 import thedd.model.character.BasicCharacterImpl;
 
 /**
- * Class that implements a Headless Non-Player Character.
+ * Headless extension of {@link thedd.model.character.BasicCharacterImpl}.
  */
 public class HeadlessNPC extends BasicCharacterImpl {
 

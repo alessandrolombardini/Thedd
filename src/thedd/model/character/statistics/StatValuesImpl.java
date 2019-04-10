@@ -1,9 +1,9 @@
 package thedd.model.character.statistics;
 
 /**
- * This class represents statistics' pair of current and max value.
+ * Implementation of {@link thedd.model.character.statistics.StatValues}.
  */
-public class StatValuesImpl implements StatValues {
+public final class StatValuesImpl implements StatValues {
 
     private int actual;
     private int max;
@@ -20,7 +20,7 @@ public class StatValuesImpl implements StatValues {
     }
 
     @Override
-    public final void updateActual(final int value) {
+    public void updateActual(final int value) {
         if (this.actual + value > this.max) {
             this.actual = this.max;
         } else {
@@ -29,24 +29,24 @@ public class StatValuesImpl implements StatValues {
     }
 
     @Override
-    public final void updateMax(final int value) {
+    public void updateMax(final int value) {
         final int oldMax = this.max;
         this.max = this.max + value;
         updateActual((int) (this.actual * this.max) / oldMax);
     }
 
     @Override
-    public final int getActual() {
+    public int getActual() {
         return this.actual;
     }
 
     @Override
-    public final int getMax() {
+    public int getMax() {
         return this.max;
     }
 
     @Override
-    public final String toString() {
+    public String toString() {
         return this.actual + "/" + this.max;
     }
 }

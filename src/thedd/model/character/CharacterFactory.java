@@ -9,7 +9,7 @@ import thedd.model.character.types.PlayerCharacter;
 import thedd.model.world.Difficulty;
 
 /**
- * Implementation of a character factory.
+ * Implementation of character's factory.
  */
 public final class CharacterFactory {
     // Upper and lower values for random generations

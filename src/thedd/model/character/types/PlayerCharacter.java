@@ -3,7 +3,7 @@ package thedd.model.character.types;
 import thedd.model.character.BasicCharacterImpl;
 
 /**
- * Class that Implements a Player Character.
+ * Player Character extension of {@link thedd.model.character.BasicCharacterImpl}.
  */
 public class PlayerCharacter extends BasicCharacterImpl {
 
