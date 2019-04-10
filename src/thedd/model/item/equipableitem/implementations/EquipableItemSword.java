@@ -15,7 +15,7 @@ import thedd.model.item.equipableitem.EquipableItemType;
 
 /**
  * One handed weapon.
- *
+ * His innate effect provide more damage to actions which already has normal damage.
  */
 public class EquipableItemSword extends EquipableItemImpl {
 
