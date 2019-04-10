@@ -1,6 +1,7 @@
 package thedd.model.combat.actor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -14,7 +15,11 @@ import thedd.model.combat.action.Action;
 import thedd.model.combat.action.effect.ActionEffect;
 import thedd.model.combat.modifier.Modifier;
 import thedd.model.combat.modifier.ModifierActivation;
+import thedd.model.combat.requirements.tags.TagRequirement;
+import thedd.model.combat.requirements.tags.TagRequirementType;
 import thedd.model.combat.status.Status;
+import thedd.model.combat.tag.ActionTag;
+import thedd.model.combat.tag.EffectTag;
 import thedd.model.combat.tag.Tag;
 
 /**
@@ -57,13 +62,7 @@ public abstract class AbstractActionActor implements ActionActor {
      */
     @Override
     public Optional<Action> getSelectedAction() {
-        Optional<Action> result;
-        if (selectedAction.isPresent()) {
-            result = Optional.of(updateAction(selectedAction.get().getCopy()));
-        } else {
-            result = Optional.empty();
-        }
-        return result;
+        return selectedAction;
     }
 
     /**
@@ -196,6 +195,8 @@ public abstract class AbstractActionActor implements ActionActor {
     @Override
     public void addActionModifier(final Modifier<Action> modifier, final boolean isPermanent) {
         actionModifiers.add(new ImmutablePair<>(modifier, isPermanent));
+        modifier.addRequirement(new TagRequirement<Action>(false,
+                TagRequirementType.UNALLOWED,Arrays.asList(ActionTag.IGNORES_MODIFIERS)));
     }
 
     /**
@@ -204,6 +205,8 @@ public abstract class AbstractActionActor implements ActionActor {
     @Override
     public void addEffectModifier(final Modifier<ActionEffect> modifier, final boolean isPermanent) {
         effectModifiers.add(new ImmutablePair<>(modifier, isPermanent));
+        modifier.addRequirement(new TagRequirement<ActionEffect>(false,
+                TagRequirementType.UNALLOWED,Arrays.asList(EffectTag.IGNORES_MODIFIERS)));
     }
 
     /**
