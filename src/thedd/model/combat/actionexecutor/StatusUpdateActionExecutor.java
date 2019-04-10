@@ -72,8 +72,8 @@ public class StatusUpdateActionExecutor implements ActionExecutor {
                                                   .forEach(p -> {
                                                       final ActionActor target = p.getKey();
                                                       action.applyEffects(target);
-                                                      if(target instanceof BasicCharacter
-                                                              && !((BasicCharacter)target).isAlive()) {
+                                                      if (target instanceof BasicCharacter
+                                                              && !((BasicCharacter) target).isAlive()) {
                                                           queue.removeAll(target.getStatuses());
                                                       }
                                                   });
@@ -124,7 +124,7 @@ public class StatusUpdateActionExecutor implements ActionExecutor {
      */
     @Override
     public void updateExecutionStatus() {
-        if(instance.getNumberOfAliveCharacters(instance.getPlayerParty()) <= 0) {
+        if (instance.getNumberOfAliveCharacters(instance.getPlayerParty()) <= 0) {
                 instance.setCombatStatus(CombatStatus.PLAYER_LOST);
                 return;
         }

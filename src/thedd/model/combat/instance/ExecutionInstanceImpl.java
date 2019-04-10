@@ -122,8 +122,11 @@ public class ExecutionInstanceImpl implements ActionExecutionInstance {
         return copy;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public long getNumberOfAliveCharacters(List<ActionActor> actors) {
+    public long getNumberOfAliveCharacters(final List<ActionActor> actors) {
         return  actors.stream()
                       .filter(a -> a instanceof BasicCharacter)
                       .map(a -> ((BasicCharacter) a))

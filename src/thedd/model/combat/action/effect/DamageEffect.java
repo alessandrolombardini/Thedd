@@ -32,11 +32,9 @@ public class DamageEffect extends AbstractActionEffect {
     @Override
     public final void apply(final ActionActor target) {
         dealtDamage = damage;
-        if(target instanceof BasicCharacter) {
+        if (target instanceof BasicCharacter) {
             ((BasicCharacter) target).getStat(Statistic.HEALTH_POINT).updateActual(-damage);
         }
-        //if target is Character -> target.modifyHealth(amount)
-        //Do stuff
         damage = baseDamage;
     }
 

@@ -116,8 +116,8 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
                                .forEach(p -> {
                                    final ActionActor target = p.getKey();
                                    action.applyEffects(target);
-                                   if(target instanceof BasicCharacter
-                                           && !((BasicCharacter)target).isAlive()) {
+                                   if (target instanceof BasicCharacter
+                                           && !((BasicCharacter) target).isAlive()) {
                                        actorsQueue.remove(target);
                                    } else if (canTargetParry(target)) {
                                        target.resetSelectedAction();
@@ -174,10 +174,10 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
      */
     @Override
     public void updateExecutionStatus() {
-        if(combatInstance.getNumberOfAliveCharacters(combatInstance.getPlayerParty()) <= 0) {
+        if (combatInstance.getNumberOfAliveCharacters(combatInstance.getPlayerParty()) <= 0) {
             combatInstance.setCombatStatus(CombatStatus.PLAYER_LOST);
             return;
-        } else if(combatInstance.getNumberOfAliveCharacters(combatInstance.getNPCsParty()) <= 0) {
+        } else if (combatInstance.getNumberOfAliveCharacters(combatInstance.getNPCsParty()) <= 0) {
             combatInstance.setCombatStatus(CombatStatus.PLAYER_WON);
             combatInstance.getPlayerParty().forEach(a -> a.setIsInCombat(false));
             return;

@@ -127,7 +127,7 @@ public class OutOfCombatActionExecutor implements ActionExecutor {
      */
     @Override
     public void updateExecutionStatus() {
-        if(combatInstance.getNumberOfAliveCharacters(combatInstance.getPlayerParty()) <= 0) {
+        if (combatInstance.getNumberOfAliveCharacters(combatInstance.getPlayerParty()) <= 0) {
             combatInstance.setCombatStatus(CombatStatus.PLAYER_LOST);
             return;
         } 

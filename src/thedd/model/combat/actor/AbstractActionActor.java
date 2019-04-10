@@ -196,7 +196,7 @@ public abstract class AbstractActionActor implements ActionActor {
     public void addActionModifier(final Modifier<Action> modifier, final boolean isPermanent) {
         actionModifiers.add(new ImmutablePair<>(modifier, isPermanent));
         modifier.addRequirement(new TagRequirement<Action>(false,
-                TagRequirementType.UNALLOWED,Arrays.asList(ActionTag.IGNORES_MODIFIERS)));
+                TagRequirementType.UNALLOWED, Arrays.asList(ActionTag.IGNORES_MODIFIERS)));
     }
 
     /**
@@ -206,7 +206,7 @@ public abstract class AbstractActionActor implements ActionActor {
     public void addEffectModifier(final Modifier<ActionEffect> modifier, final boolean isPermanent) {
         effectModifiers.add(new ImmutablePair<>(modifier, isPermanent));
         modifier.addRequirement(new TagRequirement<ActionEffect>(false,
-                TagRequirementType.UNALLOWED,Arrays.asList(EffectTag.IGNORES_MODIFIERS)));
+                TagRequirementType.UNALLOWED, Arrays.asList(EffectTag.IGNORES_MODIFIERS)));
     }
 
     /**

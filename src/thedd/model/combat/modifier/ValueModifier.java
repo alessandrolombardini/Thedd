@@ -2,6 +2,10 @@ package thedd.model.combat.modifier;
 
 import thedd.model.combat.common.Modifiable;
 
+/**
+ * A {@link Modifier} which changes a numerical value in the modifiable.
+ * @param <T> the type of the modifiable
+ */
 public interface ValueModifier<T extends Modifiable> extends Modifier<T> {
     /**
      * Sets the value of this modifier.
