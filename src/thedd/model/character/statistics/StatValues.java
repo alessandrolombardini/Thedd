@@ -8,7 +8,7 @@ public interface StatValues {
     /**
      * This method update the actual field.
      * 
-     * @param value is the value added at the actual field.
+     * @param value is the value added to the actual field.
      */
     void updateActual(int value);
 
