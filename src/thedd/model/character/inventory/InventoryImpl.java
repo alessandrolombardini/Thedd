@@ -49,7 +49,7 @@ public final class InventoryImpl implements Inventory {
     @Override
     public String toString() {
         String ret = "";
-        for (Map.Entry<Item, Integer> pair : this.items.entrySet()) {
+        for (final Map.Entry<Item, Integer> pair : this.items.entrySet()) {
             ret = ret + "[ Item: " + pair.getKey().toString() + " - Number: " + pair.getValue() + "]\n";
         }
         if (ret.equals("")) {

@@ -62,7 +62,7 @@ public final class StatValuesImpl implements StatValues {
     @Override
     public String toString() {
         if (this.max == NO_MAX) {
-            return "" + this.actual;
+            return String.valueOf(this.actual);
         }
         return this.actual + "/" + this.max;
     }
