@@ -2,7 +2,8 @@ package thedd.model.character.inventory;
 
 import java.util.List;
 
-import model.item.Item;
+import thedd.model.item.Item;
+
 
 /**
  * Interface that manage an inventory of items.

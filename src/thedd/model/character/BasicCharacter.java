@@ -3,11 +3,11 @@ package thedd.model.character;
 import java.util.EnumMap;
 import java.util.List;
 
-import model.combat.actor.AutomaticActionActor;
-import model.item.Item;
 import thedd.model.character.inventory.Inventory;
 import thedd.model.character.statistics.StatValues;
 import thedd.model.character.statistics.Statistic;
+import thedd.model.combat.actor.automatic.AutomaticActionActor;
+import thedd.model.item.Item;
 
 /**
  * Interface that define the characters.

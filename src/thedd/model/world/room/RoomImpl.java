@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import model.room_event.RoomEvent;
+import thedd.model.roomevent.RoomEvent;
 
 /**
  * Implementation of {@link thedd.model.world.room.Room}.

@@ -5,15 +5,15 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 
-import model.combat.actor.AbstractAutomaticActor;
-import model.item.Item;
-import model.item.equipableitem.EquipableItem;
-import model.item.equipableitem.EquipableItemType;
 import thedd.model.character.inventory.Inventory;
 import thedd.model.character.inventory.InventoryImpl;
 import thedd.model.character.statistics.StatValues;
 import thedd.model.character.statistics.StatValuesImpl;
 import thedd.model.character.statistics.Statistic;
+import thedd.model.combat.actor.automatic.AbstractAutomaticActor;
+import thedd.model.item.Item;
+import thedd.model.item.equipableitem.EquipableItem;
+import thedd.model.item.equipableitem.EquipableItemType;
 
 /**
  * Implementation of {@link thedd.model.character.BasicCharacter}.
