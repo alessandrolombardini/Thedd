@@ -1,8 +1,7 @@
 package thedd.model.world;
 
 import java.util.Objects;
-
-import thedd.utils.RandomUtils;
+import org.apache.commons.lang3.RandomUtils;
 
 /**
  * Representation of difficulty levels of this game.
@@ -77,7 +76,7 @@ public enum Difficulty {
      * @return a random Difficulty
      */
     public static Difficulty getRandom() {
-        final int randomValue = RandomUtils.getRandomInteger(Difficulty.values().length - 1);
+        final int randomValue = RandomUtils.nextInt(0, Difficulty.values().length);
         return Difficulty.values()[randomValue];
     }
 }

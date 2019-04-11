@@ -9,6 +9,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import org.apache.commons.lang3.RandomUtils;
+
 import thedd.model.character.BasicCharacter;
 import thedd.model.character.CharacterFactory;
 import thedd.model.character.types.EnemyCharacterType;
@@ -19,7 +21,7 @@ import thedd.model.roomevent.RoomEventHelper;
 import thedd.model.roomevent.combatevent.CombatEvent;
 import thedd.model.world.floor.FloorDetails;
 import thedd.model.world.floor.FloorImpl;
-import thedd.utils.RandomUtils;
+import thedd.utils.RandomUtil;
 
 /**
  * Implementation of {@link thedd.model.world.RoomFactory}.
@@ -129,7 +131,7 @@ public class RoomFactoryImpl implements RoomFactory {
 
     private int getQuantityOfEnemies() {
         if (this.remainingContent.get(RoomContent.ENEMY) >= this.getRemainingBaseRoomsToSet()
-                || RandomUtils.getRandomBoolean()) {
+                || RandomUtils.nextBoolean()) {
             return MAX_ENEMIES_PER_ROOM;
         }
         return MIN_ENEMIES_PER_ROOM;
@@ -141,13 +143,13 @@ public class RoomFactoryImpl implements RoomFactory {
         content.put(RoomContent.TREASURE, 0);
         final int maxInteractableSettableAfterNextRoom = MAX_INTERACTABLE_ACTIONS_PER_ROOM * (this.getRemainingBaseRoomsToSet() - 1);
         /* If the number of remaining interactable is high maybe it has to set in this room many of them to be sure to set all*/
-        if (this.getRamainingInteractableToSet() > maxInteractableSettableAfterNextRoom || RandomUtils.getRandomBoolean()) {
+        if (this.getRamainingInteractableToSet() > maxInteractableSettableAfterNextRoom || RandomUtils.nextBoolean()) {
             int minInteractable = 0;
             if (this.getRamainingInteractableToSet() > maxInteractableSettableAfterNextRoom) {
                 minInteractable = this.getRamainingInteractableToSet() - maxInteractableSettableAfterNextRoom;
             }
             final int maxInteractable = Integer.min(MAX_INTERACTABLE_ACTIONS_PER_ROOM, this.getRamainingInteractableToSet());
-            final int numberOfInteractable =  RandomUtils.getRandomIntegerBetweenIntegers(minInteractable, maxInteractable);
+            final int numberOfInteractable =  RandomUtils.nextInt(minInteractable, maxInteractable + 1);
             IntStream.range(0, numberOfInteractable)
                      .boxed()
                      .map(i -> getAvailableRandomInteractableAction().get())
@@ -160,7 +162,7 @@ public class RoomFactoryImpl implements RoomFactory {
 
     private Optional<RoomContent> getAvailableRandomInteractableAction() {
         Optional<RoomContent> contentType = Optional.empty();
-        if (this.remainingContent.get(RoomContent.CONTRAPTION) > 0 && RandomUtils.getRandomBoolean()) {
+        if (this.remainingContent.get(RoomContent.CONTRAPTION) > 0 && RandomUtils.nextBoolean()) {
             contentType = Optional.of(RoomContent.CONTRAPTION);
         } else if (this.remainingContent.get(RoomContent.TREASURE) > 0 && !contentType.isPresent()) {
             contentType = Optional.of(RoomContent.TREASURE);

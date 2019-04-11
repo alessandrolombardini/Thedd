@@ -1,10 +1,13 @@
 package thedd.model.world.floor;
 
 import java.util.Objects;
+
+import org.apache.commons.lang3.RandomUtils;
+
+import edu.princeton.cs.algs4.StdRandom;
 import thedd.model.world.Difficulty;
 import thedd.model.world.environment.EnvironmentImpl;
 import thedd.model.world.room.RoomFactoryImpl;
-import thedd.utils.RandomUtils;
 
 /**
  * Implementation of {@link thedd.model.world.floor.FloorDetailsFactory}.
@@ -41,7 +44,7 @@ public final class FloorDetailsFactoryImpl implements FloorDetailsFactory {
     private int getRandomNumberOfEnemies(final int effectiveNumberOfRooms, final Difficulty difficulty) {
         final int baseNumber = (int) Math.round(effectiveNumberOfRooms * difficulty.getMultiplier());
         final int maxRandRoundIntNum = (int) Math.round(effectiveNumberOfRooms * Difficulty.EASY.getMultiplier());
-        final int roundNumber = RandomUtils.getRandomInteger(maxRandRoundIntNum);
+        final int roundNumber = RandomUtils.nextInt(0, maxRandRoundIntNum + 1);
         int result = baseNumber + roundNumber;
         result = result < RoomFactoryImpl.MIN_ENEMIES_PER_ROOM 
                         ? RoomFactoryImpl.MIN_ENEMIES_PER_ROOM 
@@ -55,7 +58,7 @@ public final class FloorDetailsFactoryImpl implements FloorDetailsFactory {
     private int getRandomNumberOfTreasure(final int effectiveNumOfRooms, final Difficulty difficulty,
                                           final int interagibleSetted) {
         final int baseValue = (int) Math.round(effectiveNumOfRooms * Difficulty.NORMAL.getMultiplier());
-        final int baseNumber = RandomUtils.getRandomIntegerGaussianNumber(baseValue, baseValue);
+        final int baseNumber = getRandomIntegerGaussianNumber(baseValue, baseValue);
         int result = (int) Math.round(baseNumber * difficulty.getMultiplier());
         result = result < RoomFactoryImpl.MIN_INTERACTABLE_ACTION_PER_ROOM
                         ? RoomFactoryImpl.MIN_INTERACTABLE_ACTION_PER_ROOM
@@ -69,6 +72,10 @@ public final class FloorDetailsFactoryImpl implements FloorDetailsFactory {
     private int getRandomNumberOfContraptions(final int effectiveNumberOfRooms, final Difficulty difficulty,
                                               final int interagibleSetted) {
         return this.getRandomNumberOfTreasure(effectiveNumberOfRooms, difficulty, interagibleSetted);
+    }
+
+    private static int getRandomIntegerGaussianNumber(final int mediumVal, final int var) {
+        return (int) Math.round(StdRandom.gaussian() * Math.sqrt(mediumVal) + var);
     }
 
 }
