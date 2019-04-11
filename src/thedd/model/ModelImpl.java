@@ -14,6 +14,13 @@ public final class ModelImpl implements Model {
     private Optional<Session> session;
 
     /**
+     * ModelImpl constructor.
+     */
+    public ModelImpl() {
+        session = Optional.empty();
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
