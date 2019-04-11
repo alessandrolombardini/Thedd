@@ -25,9 +25,9 @@ public interface BasicCharacter extends AutomaticActionActor {
      * This method returns the character's status of a specified statistic.
      * 
      * @param stat specifies the statistic.
-     * 
-     * @return a StatValues that contains the actual/max values of the specified
+     * @return a StatValues that contains the actual/max values of the specified.
      *         statistic.
+     * @throws NullPointerException if stat parameter is null.
      */
     StatValues getStat(Statistic stat);
 
@@ -50,6 +50,7 @@ public interface BasicCharacter extends AutomaticActionActor {
      * 
      * @param item the item to be equipped.
      * @return true if the item is successfully equipped, otherwise false.
+     * @throws NullPointerException if item parameter is null.
      */
     boolean equipItem(Item item);
 
@@ -58,6 +59,7 @@ public interface BasicCharacter extends AutomaticActionActor {
      * 
      * @param item the item to be removed.
      * @return true if the item is successfully unequipped, otherwise false.
+     * @throws NullPointerException if item parameter is null.
      */
     boolean unequipItem(Item item);
 

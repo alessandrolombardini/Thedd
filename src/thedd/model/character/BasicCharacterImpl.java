@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
+import java.util.Objects;
 
 import thedd.model.character.inventory.Inventory;
 import thedd.model.character.inventory.InventoryImpl;
@@ -49,9 +50,7 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
 
     @Override
     public final StatValues getStat(final Statistic stat) {
-        if (stat == null) {
-            throw new IllegalArgumentException();
-        }
+        Objects.requireNonNull(stat);
         return this.stat.get(stat);
     }
 
@@ -60,15 +59,13 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
         final EnumMap<Statistic, StatValues> ret = new EnumMap<>(Statistic.class);
         this.stat.entrySet().forEach(el -> {
             ret.put(el.getKey(), el.getValue());
-        }); // done a defence copy
+        }); // done a defense copy
         return ret;
     }
 
     @Override
     public final boolean equipItem(final Item item) {
-        if (item == null) {
-            throw new IllegalArgumentException();
-        }
+        Objects.requireNonNull(item);
         if (item.isEquipable()) {
             final EquipableItem equipItem = (EquipableItem) item;
             if (checkEquipment(equipItem)) {
@@ -83,9 +80,7 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
 
     @Override
     public final boolean unequipItem(final Item item) {
-        if (item == null) {
-            throw new IllegalArgumentException();
-        }
+        Objects.requireNonNull(item);
         final int index = equipment.indexOf(item);
         if (index == -1) {
             return false;
@@ -128,7 +123,7 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
     @Override
     public int hashCode() {
         if (hash == 0) {
-            hash = equipment.hashCode() ^ inventory.hashCode() ^ stat.hashCode() ^ super.hash();
+            hash = equipment.hashCode() ^ inventory.hashCode() ^ stat.hashCode() ^ super.hashCode();
         }
         return hash;
     }
@@ -165,11 +160,13 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
 
     // This method sets basic statistics of the character.
     private void setBasicStat(final double multiplier) {
-        this.stat.put(Statistic.HEALTH_POINT,
-                new StatValuesImpl((int) (Statistic.HEALTH_POINT.getBasicValue() * multiplier)));
-        this.stat.put(Statistic.AGILITY, new StatValuesImpl((int) (Statistic.AGILITY.getBasicValue() * multiplier)));
-        this.stat.put(Statistic.CONSTITUTION,
-                new StatValuesImpl((int) (Statistic.CONSTITUTION.getBasicValue() * multiplier)));
-        this.stat.put(Statistic.STRENGTH, new StatValuesImpl((int) (Statistic.STRENGTH.getBasicValue() * multiplier)));
+        double value = Statistic.HEALTH_POINT.getBasicValue() * multiplier;
+        this.stat.put(Statistic.HEALTH_POINT, new StatValuesImpl((int) value, (int) value));
+        value = Statistic.AGILITY.getBasicValue() * multiplier;
+        this.stat.put(Statistic.AGILITY, new StatValuesImpl((int) value, StatValuesImpl.NO_MAX));
+        value = Statistic.CONSTITUTION.getBasicValue() * multiplier;
+        this.stat.put(Statistic.CONSTITUTION, new StatValuesImpl((int) value, StatValuesImpl.NO_MAX));
+        value = Statistic.STRENGTH.getBasicValue() * multiplier;
+        this.stat.put(Statistic.STRENGTH, new StatValuesImpl((int) value, StatValuesImpl.NO_MAX));
     }
 }

@@ -1,5 +1,6 @@
 package thedd.model.character;
 
+import java.util.Objects;
 import java.util.Optional;
 import thedd.model.character.types.DarkDestructorNPC;
 import thedd.model.character.types.EnemyCharacterType;
@@ -31,11 +32,11 @@ public final class CharacterFactory {
      * @param name       chosen by the player.
      * @param difficulty a rate multiplied to basic statistics.
      * @return a Player Character.
+     * @throws NullPointerException if name or difficulty parameters are null.
      */
     public static BasicCharacter createPlayerCharacter(final Optional<String> name, final Difficulty difficulty) {
-        if (difficulty == null || name == null) {
-            throw new IllegalArgumentException();
-        }
+        Objects.requireNonNull(name);
+        Objects.requireNonNull(difficulty);
         return new PlayerCharacter(name.isPresent() ? name.get() : DEFAULT_PC_NAME,
                 difficulty.getLevelOfDifficulty() * generateRandomRate() * PC_RATE);
     }
@@ -46,16 +47,15 @@ public final class CharacterFactory {
      * @param type       the type of the enemy.
      * @param difficulty rate multiplied to basic statistics.
      * @return a Non-Player Character.
+     * @throws NullPointerException if type of difficulty parameters are null.
      */
     public static BasicCharacter createEnemy(final EnemyCharacterType type, final Difficulty difficulty) {
-        if (type == null || difficulty == null) {
-            throw new IllegalArgumentException();
-        }
+        Objects.requireNonNull(type);
+        Objects.requireNonNull(difficulty);
         if (type == EnemyCharacterType.GOBLIN) {
             return new GoblinNPC(type.toString(), generateRandomRate() * difficulty.getLevelOfDifficulty());
-        } else {
-            return new HeadlessNPC(type.toString(), difficulty.getLevelOfDifficulty() * generateRandomRate());
         }
+        return new HeadlessNPC(type.toString(), difficulty.getLevelOfDifficulty() * generateRandomRate());
     }
 
     /**
@@ -63,16 +63,15 @@ public final class CharacterFactory {
      * 
      * @param difficulty a rate multiplied to basic statistics.
      * @return a Boss Non-PlayerCharacter.
+     * @throws NullPointerException if difficulty parameter is null.
      */
     public static BasicCharacter createFinalBoss(final Difficulty difficulty) {
-        if (difficulty == null) {
-            throw new IllegalArgumentException();
-        }
+        Objects.requireNonNull(difficulty);
         return new DarkDestructorNPC(BOSS_NAME, difficulty.getLevelOfDifficulty() * BOSS_RATE * generateRandomRate());
     }
 
     // Generate Random value between 1 and 2.
     private static double generateRandomRate() {
-        return ((Math.random() * (UPPER - LOWER)) + LOWER) / LOWER;
+        return (Math.random() * (UPPER - LOWER) + LOWER) / LOWER;
     }
 }

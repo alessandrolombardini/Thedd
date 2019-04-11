@@ -4,10 +4,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
-
 import thedd.model.item.Item;
-
 
 /**
  * Implementation of {@link thedd.model.character.inventory.Inventory}.
@@ -26,37 +25,31 @@ public final class InventoryImpl implements Inventory {
     }
 
     @Override
-    public boolean addItem(final Item item) {
-        if (item == null) {
-            return false;
-        }
+    public void addItem(final Item item) {
+        Objects.requireNonNull(item);
         if (this.items.containsKey(item)) {
             this.items.put(item, this.items.get(item) + 1);
         } else {
             this.items.put(item, 1);
         }
-        return true;
     }
 
     @Override
-    public boolean removeItem(final Item item) {
-        if (item == null) {
-            return false;
-        }
+    public void removeItem(final Item item) {
+        Objects.requireNonNull(item);
         if (!this.items.containsKey(item)) {
-            return false;
+            throw new IllegalArgumentException();
         }
         this.items.put(item, this.items.get(item) - 1);
         if (this.items.get(item) <= 0) {
             this.items.remove(item);
         }
-        return true;
     }
 
     @Override
     public String toString() {
         String ret = "";
-        for (final Map.Entry<Item, Integer> pair : this.items.entrySet()) {
+        for (Map.Entry<Item, Integer> pair : this.items.entrySet()) {
             ret = ret + "[ Item: " + pair.getKey().toString() + " - Number: " + pair.getValue() + "]\n";
         }
         if (ret.equals("")) {
@@ -72,9 +65,7 @@ public final class InventoryImpl implements Inventory {
 
     @Override
     public int getQuantity(final Item item) {
-        if (item == null) {
-            throw new IllegalArgumentException();
-        }
+        Objects.requireNonNull(item);
         if (!this.items.containsKey(item)) {
             return 0;
         } else {

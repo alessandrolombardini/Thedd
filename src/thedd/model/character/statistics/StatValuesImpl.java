@@ -17,8 +17,7 @@ public final class StatValuesImpl implements StatValues {
      * 
      * @param actualValue specifies the actual value of this Statistic.
      * @param maxValue    specifies the max value of this statistic.
-     * 
-     * @throws an IllegalArgumentException if values are negative.
+     * @throws IllegalArgumentException if values are negative.
      */
     public StatValuesImpl(final int actualValue, final int maxValue) {
         if (maxValue != NO_MAX && (maxValue < 1 || actualValue < 1)) {

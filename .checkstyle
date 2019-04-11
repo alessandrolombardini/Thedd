@@ -4,7 +4,10 @@
   <local-check-config name="Danilo Pianini's style" location="/run/media/alex/DATA/Eclipse/Projects/thedd/style.xml" type="external" description="">
     <additional-data name="protect-config-file" value="false"/>
   </local-check-config>
-  <fileset name="all" enabled="true" check-config-name="Danilo Pianini's style" local="true">
+  <local-check-config name="Style" location="/thedd/style.xml" type="project" description="">
+    <additional-data name="protect-config-file" value="false"/>
+  </local-check-config>
+  <fileset name="all" enabled="true" check-config-name="Style" local="true">
     <file-match-pattern match-pattern="." include-pattern="true"/>
   </fileset>
 </fileset-config>
