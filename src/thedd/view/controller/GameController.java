@@ -14,7 +14,7 @@ import thedd.view.scenewrapper.ViewNodeWrapperFactoryImpl;
 /**
  * View controller of game scene.
  */
-public class GameController extends SubViewControllerImpl {
+public class GameController extends ViewNodeControllerImpl {
 
     @FXML
     private AnchorPane inventoryContent;
@@ -29,7 +29,7 @@ public class GameController extends SubViewControllerImpl {
     private static final ViewNode NODE_DOWN_SX = ViewNode.MENU;
     private static final ViewNode NODE_DOWN_DX = ViewNode.MENU;
 
-    private final List<SubViewController> viewControllers;
+    private final List<ViewNodeController> viewControllers;
     private Optional<ViewNodeWrapperFactory> factory;
 
     /**
@@ -47,15 +47,15 @@ public class GameController extends SubViewControllerImpl {
     }
 
     @Override
-    protected final void startController() {
+    protected final void initView() {
         this.factory = Optional.of(new ViewNodeWrapperFactoryImpl(this.getView(), this.getController()));
-        ViewNodeWrapper node = factory.get().getNode(NODE_UP);
+        ViewNodeWrapper node = factory.get().createViewNodeWrapper(NODE_UP);
         this.gameContent.getChildren().add(node.getNode());
         this.viewControllers.add(node.getController());
-        node = factory.get().getNode(NODE_DOWN_SX);
+        node = factory.get().createViewNodeWrapper(NODE_DOWN_SX);
         this.inventoryContent.getChildren().add(node.getNode());
         this.viewControllers.add(node.getController());
-        node = factory.get().getNode(NODE_DOWN_DX);
+        node = factory.get().createViewNodeWrapper(NODE_DOWN_DX);
         this.statisticsContent.getChildren().add(node.getNode());
         this.viewControllers.add(node.getController());
     }

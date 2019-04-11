@@ -3,14 +3,14 @@ package thedd.view.scenewrapper;
 import java.util.Objects;
 
 import javafx.scene.Node;
-import thedd.view.controller.SubViewController;
+import thedd.view.controller.ViewNodeController;
 
 /**
  * Implementations of {@link ViewNodeWrapper}.
  */
 public class ViewNodeWrapperImpl implements ViewNodeWrapper {
 
-    private final SubViewController subViewController;
+    private final ViewNodeController subViewController;
     private final Node node;
 
     /**
@@ -20,7 +20,7 @@ public class ViewNodeWrapperImpl implements ViewNodeWrapper {
      * @param viewController
      *          controller
      */
-    public ViewNodeWrapperImpl(final Node node, final SubViewController viewController) {
+    public ViewNodeWrapperImpl(final Node node, final ViewNodeController viewController) {
         Objects.requireNonNull(node);
         Objects.requireNonNull(viewController);
         this.node = node;
@@ -31,7 +31,7 @@ public class ViewNodeWrapperImpl implements ViewNodeWrapper {
      * {@inheritDoc}
      */
     @Override
-    public SubViewController getController() {
+    public ViewNodeController getController() {
         return this.subViewController;
     }
 

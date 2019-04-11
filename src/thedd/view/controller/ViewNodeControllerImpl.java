@@ -8,9 +8,9 @@ import thedd.view.View;
 import thedd.view.dialog.DialogFactory;
 
 /**
- * Implementation of the {@link SubViewController}.
+ * Implementation of the {@link ViewNodeController}.
  */
-public class SubViewControllerImpl implements SubViewController {
+public abstract class ViewNodeControllerImpl implements ViewNodeController {
 
     private static final String ERROR_ALREDYEXIST = "Has been alredy setted";
     private static final String ERROR_NOSETTED = "Component not yet setted";
@@ -22,7 +22,7 @@ public class SubViewControllerImpl implements SubViewController {
     /**
      * Constructor of SubViewControllerImpl.
      */
-    protected SubViewControllerImpl() { 
+    protected ViewNodeControllerImpl() { 
         this.view = Optional.empty();
         this.controller = Optional.empty();
         this.dialogFactory = Optional.empty();
@@ -40,7 +40,7 @@ public class SubViewControllerImpl implements SubViewController {
         }
         this.view = Optional.of(view);
         this.controller = Optional.of(controller);
-        this.startController();
+        this.initView();
     }
 
     /**
@@ -56,13 +56,13 @@ public class SubViewControllerImpl implements SubViewController {
      * {@inheritDoc}
      */
     @Override
-    public void update() { }
+    public abstract void update();
 
     /**
      * This method is called when the controller is initialized.
-     * Should be overrided if the view controller need to do something when it's initialized.
+     * Should be used to do everything necessary to set correctly the view.
      */
-    protected void startController() { }
+    protected abstract void initView();
 
     /**
      * Getter of the Controller.

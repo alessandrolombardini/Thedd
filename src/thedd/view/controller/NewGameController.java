@@ -7,7 +7,7 @@ import thedd.view.ApplicationViewState;
 /**
  * View controller of the new game scene.
  */
-public class NewGameController extends SubViewControllerImpl {
+public class NewGameController extends ViewNodeControllerImpl {
 
     private static final String ERROR_TITLE_INPUTERROR = "Input error";
     private static final String ERROR_TEXT_NULL = "Nope, you have to insert number of rooms and floors";
@@ -34,7 +34,23 @@ public class NewGameController extends SubViewControllerImpl {
                                                  this.numberOfFloorsField.getText())) {
             this.getDialogFactory().createErrorDialog(ERROR_TITLE_INPUTERROR, ERROR_TEXT_NONVALIDVALUE).show();
         } else {
-            this.getView().setScene(ApplicationViewState.GAME_OVER);
+            this.getView().setScene(ApplicationViewState.GAME);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void update() {
+        /* This class has nothing to update */
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void initView() {
+        /* This class has nothing to do when it's initialized */
     }
 }

@@ -6,7 +6,7 @@ import thedd.view.ApplicationViewState;
 /**
  * View controller of scene menu.
  */
-public class MenuController extends SubViewControllerImpl {
+public class MenuController extends ViewNodeControllerImpl {
 
     /**
      * Go to new game scene.
@@ -22,6 +22,22 @@ public class MenuController extends SubViewControllerImpl {
     @FXML
     protected void handleExitButtonAction() {
         this.getController().closeApplication();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void update() {
+        /* This class has nothing to update */
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void initView() {
+        /* This class has nothing to do when it's initialized */
     }
 
 }

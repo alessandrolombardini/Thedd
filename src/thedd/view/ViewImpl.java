@@ -71,7 +71,7 @@ public class ViewImpl extends Application implements View {
         if (!this.stage.isPresent()) {
             throw new IllegalStateException(ERROR_STAGEUNSETTED);
         }
-        this.actualScene = Optional.of(this.viewNodeWrapperFactory.getNode(state.getViewNode()));
+        this.actualScene = Optional.of(this.viewNodeWrapperFactory.createViewNodeWrapper(state.getViewNode()));
         this.actualScene.get().getController().setDialogFactory(this.dialogFactory);
         this.actualScene.get().getController().update();
         final Scene newScene = new Scene((Parent) this.actualScene.get().getNode());
