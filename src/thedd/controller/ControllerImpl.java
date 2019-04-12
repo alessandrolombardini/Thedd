@@ -4,8 +4,13 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javafx.application.Platform;
+import thedd.controller.informations.InventoryInformations;
+import thedd.controller.informations.InventoryInformationsImpl;
+import thedd.controller.informations.StatisticsInformations;
+import thedd.controller.informations.StatisticsInformationsImpl;
 import thedd.model.Model;
 import thedd.model.ModelImpl;
+import thedd.model.item.Item;
 import thedd.model.world.environment.EnvironmentImpl;
 import thedd.model.world.environment.Session;
 import thedd.model.world.environment.SessionImpl;
@@ -18,12 +23,13 @@ public class ControllerImpl implements Controller {
 
     private final View view;
     private final Model model;
+    private InventoryInformations inventoryInfo;
+    private StatisticsInformations statisticsInfo;
 
     /**
      * Create a new Controller instance.
      * 
-     * @param view
-     *          view reference
+     * @param view view reference
      */
     public ControllerImpl(final View view) {
         Objects.requireNonNull(view);
@@ -43,6 +49,8 @@ public class ControllerImpl implements Controller {
                     || numOfRooms >= EnvironmentImpl.MIN_NUMBER_OF_ROOMS) {
                 final Session session = new SessionImpl(Optional.ofNullable(playerName), numOfFloors, numOfRooms);
                 this.model.setSession(session);
+                this.inventoryInfo = new InventoryInformationsImpl(this.model.getSession().getPlayerCharacter());
+                this.statisticsInfo = new StatisticsInformationsImpl(this.model.getSession().getPlayerCharacter());
                 return true;
             }
         }
@@ -61,4 +69,56 @@ public class ControllerImpl implements Controller {
         return !number.isEmpty() && number.chars().allMatch(Character::isDigit);
     }
 
+    // Martina's Feature
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteItem(final Item item) {
+        this.model.getSession().getPlayerCharacter().getInventory().removeItem(item);
+        this.view.update();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void useItem(final Item item) {
+        // TO-DO.
+        this.view.update();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void equipItem(final Item item) {
+        this.model.getSession().getPlayerCharacter().equipItem(item);
+        this.view.update();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void unequipItem(final Item item) {
+        this.model.getSession().getPlayerCharacter().unequipItem(item);
+        this.view.update();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public InventoryInformations getInventoryInformations() {
+        return this.inventoryInfo;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public StatisticsInformations getStatisticsInformations() {
+        return this.statisticsInfo;
+    }
 }

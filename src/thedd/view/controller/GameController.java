@@ -25,9 +25,9 @@ public class GameController extends ViewNodeControllerImpl {
     @FXML
     private AnchorPane gameContent;
 
-    private static final ViewNode NODE_UP = ViewNode.GAME_OVER;
-    private static final ViewNode NODE_DOWN_SX = ViewNode.MENU;
-    private static final ViewNode NODE_DOWN_DX = ViewNode.MENU;
+    private static final ViewNode NODE_UP = ViewNode.INVENTORY;
+    private static final ViewNode NODE_DOWN_SX = ViewNode.INVENTORY;
+    private static final ViewNode NODE_DOWN_DX = ViewNode.STATISTICS;
 
     private final List<ViewNodeController> viewControllers;
     private Optional<ViewNodeWrapperFactory> factory;
