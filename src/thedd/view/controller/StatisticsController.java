@@ -1,7 +1,6 @@
 package thedd.view.controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
@@ -9,7 +8,6 @@ import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
-import thedd.view.extensions.AdaptiveLabel;
 
 /**
  * Class that handle the Statistics View.
@@ -18,11 +16,11 @@ public class StatisticsController extends ViewNodeControllerImpl {
     @FXML
     private AdaptiveLabel healthValue;
     @FXML
-    private Label constitutionValue;
+    private AdaptiveLabel constitutionValue;
     @FXML
-    private Label strengthValue;
+    private AdaptiveLabel strengthValue;
     @FXML
-    private Label agilityValue;
+    private AdaptiveLabel agilityValue;
     @FXML
     private AnchorPane imageContent;
     @FXML
@@ -40,11 +38,11 @@ public class StatisticsController extends ViewNodeControllerImpl {
     @Override
     public void update() {
         // Set the Statistics
-        this.healthValue.setText(this.getController().getCharacterInformations().getHealthPointValue() + " / "
-                + this.getController().getCharacterInformations().getHealthPointMaxValue());
-        this.agilityValue.setText(this.getController().getCharacterInformations().getAgilityValue());
-        this.constitutionValue.setText(this.getController().getCharacterInformations().getConstitutionValue());
-        this.strengthValue.setText(this.getController().getCharacterInformations().getStrengthValue());
+        this.healthValue.setText(this.getController().getStatisticsInformations().getHealthPointValue() + " / "
+                + this.getController().getStatisticsInformations().getHealthPointMaxValue());
+        this.agilityValue.setText(this.getController().getStatisticsInformations().getAgilityValue());
+        this.constitutionValue.setText(this.getController().getStatisticsInformations().getConstitutionValue());
+        this.strengthValue.setText(this.getController().getStatisticsInformations().getStrengthValue());
         // Set the Character's image.
         Image img = new Image("images/character_image.png");
         BackgroundImage bg = new BackgroundImage(img, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,

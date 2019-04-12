@@ -6,7 +6,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import thedd.model.item.Item;
-import thedd.view.extensions.AdaptiveLabel;
 
 /**
  * Class that handle the Inventory View.
@@ -51,7 +50,14 @@ public class InventoryController extends ViewNodeControllerImpl {
      */
     @FXML
     public final void handleUseButton() {
-
+        final Item selection = table.getSelectionModel().getSelectedItem();
+        if (this.useButton.getText().equals(USE_BUTTON_LABEL)) {
+            this.getController().useItem(selection);
+        } else if (this.useButton.getText().equals(EQUIP_BUTTON_LABEL)) {
+            this.getController().equipItem(selection);
+        } else {
+            this.getController().unequipItem(selection);
+        }
     }
 
     /**
@@ -59,7 +65,7 @@ public class InventoryController extends ViewNodeControllerImpl {
      */
     @Override
     public void update() {
-        this.table.getItems().setAll(this.getController().getCharacterInformations().getAllItemsList());
+        //this.table.getItems().setAll(this.getController().getInventoryInformations().getAllItemsList());
     }
 
     /**
@@ -67,7 +73,7 @@ public class InventoryController extends ViewNodeControllerImpl {
      */
     @Override
     protected void initView() {
-        update();
+        //update();
     }
 
     /**
@@ -78,13 +84,13 @@ public class InventoryController extends ViewNodeControllerImpl {
      */
     public void showItemDetails(final Item item) {
         if (item != null) {
-            if (this.getController().getCharacterInformations().isEquipped(item)) {
+            if (this.getController().getInventoryInformations().isEquipped(item)) {
                 content.setText(item.getName() + " is in your equipments.\n\nDescription: " + item.getDescription());
                 this.useButton.setText(UNEQUIP_BUTTON_LABEL);
             } else {
                 content.setText(
                         item.getName() + ": a " + (item.isUsable() ? "Usable" : "Equipable") + " item. You have "
-                                + this.getController().getCharacterInformations().getInventoryItemQuantity(item)
+                                + this.getController().getInventoryInformations().getInventoryItemQuantity(item)
                                 + " of them.\n\nDescription: \n" + item.getDescription());
                 if (item.isUsable()) {
                     this.useButton.setText(USE_BUTTON_LABEL);
@@ -100,7 +106,7 @@ public class InventoryController extends ViewNodeControllerImpl {
     }
 
     private String addTag(final Item item) {
-        if (this.getController().getCharacterInformations().isEquipped(item)) {
+        if (this.getController().getInventoryInformations().isEquipped(item)) {
             return "(E)";
         } else {
             return "";

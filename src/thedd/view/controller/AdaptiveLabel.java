@@ -1,4 +1,4 @@
-package thedd.view.extensions;
+package thedd.view.controller;
 
 import javafx.beans.NamedArg;
 import javafx.beans.binding.Bindings;
