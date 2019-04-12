@@ -25,7 +25,8 @@ public interface ActionActor extends Taggable {
     String getName();
 
     /**
-     * Sets the {@link Action} that the actor is going to actively execute.
+     * Sets the {@link Action} that the actor is going to actively execute.<br>
+     * Only one action marked by selectedByActor = true may be inserted each round.
      * @param action the next action of the actor
      * @param selectedByActor set to true if the action was actively selected by the actor
      */
@@ -34,6 +35,7 @@ public interface ActionActor extends Taggable {
     /**
      * Inserts an {@link Action} in the specified position of the
      * actor's action queue.
+     * Only one action marked by selectedByActor = true may be inserted each round.
      * @param pos the position of the newly inserted action
      * @param action the action to be inserted
      * @param selectedByActor set to true if the action was 
@@ -152,6 +154,11 @@ public interface ActionActor extends Taggable {
      * Resets the selected action of the actor.
      */
     void resetSelectedAction();
+
+    /**
+     * Resets both the action queue and the current action of the actor.
+     */
+    void resetActionsQueue();
 
     /**
      * Adds a {@link Modifier} affecting {@link ActionEffect} entities to the actor.

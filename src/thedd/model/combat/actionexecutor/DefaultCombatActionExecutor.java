@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
+import java.util.stream.Stream;
 import thedd.model.character.BasicCharacter;
 import thedd.model.combat.action.Action;
 import thedd.model.combat.action.ActionCategory;
@@ -179,7 +179,10 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
             return;
         } else if (combatInstance.getNumberOfAliveCharacters(combatInstance.getNPCsParty()) <= 0) {
             combatInstance.setCombatStatus(CombatStatus.PLAYER_WON);
-            combatInstance.getPlayerParty().forEach(a -> a.setIsInCombat(false));
+            combatInstance.getPlayerParty().forEach(a -> {
+                a.setIsInCombat(false);
+                a.resetActionsQueue();
+            });
             return;
         }
 
@@ -257,8 +260,13 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
      */
     @Override
     public boolean isRoundReady() {
-        return actorsQueue.size() >= combatInstance.getPlayerParty().size() + combatInstance.getNPCsParty().size() 
-                || combatInstance.getCombatStatus() == CombatStatus.ROUND_PAUSED;
+        final List<ActionActor> availableActors = Stream.concat(combatInstance.getPlayerParty().stream(),
+                                                                combatInstance.getNPCsParty().stream())
+                                                                .filter(a -> canActorAct(a))
+                                                                .collect(Collectors.toList());
+
+        return combatInstance.getCombatStatus() == CombatStatus.ROUND_PAUSED
+                || actorsQueue.equals(availableActors);
     }
 
     /**
@@ -280,11 +288,26 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean canActorAct(final ActionActor actor) {
+        if (actor instanceof BasicCharacter) {
+            return ((BasicCharacter) actor).isAlive(); //Could also check for tags like stunned and whatnot
+        } else {
+            return true;
+        }
+    }
+
+    /**
      * Tells all the actors in the hostile party to set their next
      * actions and targets.
      */
     protected void setNextAIMoves() {
-        for (final ActionActor npc : combatInstance.getNPCsParty()) { //filter out those who cannot act (stunned and whatnot)
+        final List<ActionActor> availableNPCs = combatInstance.getNPCsParty().stream()
+                                                                             .filter(this::canActorAct)
+                                                                             .collect(Collectors.toList());
+        for (final ActionActor npc : availableNPCs) {
             if (npc instanceof AutomaticActionActor) {
                 setNextAIMove((AutomaticActionActor) npc);
             } else {

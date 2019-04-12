@@ -28,6 +28,7 @@ public class OutOfCombatActionExecutor implements ActionExecutor {
     private Optional<Status> currentStatus = Optional.empty();
     private final List<Status> statusQueue = new ArrayList<>();
     private Iterator<Status> iterator;
+    private boolean roundStarted = false;
 
     /**
      * @param action the action to be executed
@@ -71,8 +72,8 @@ public class OutOfCombatActionExecutor implements ActionExecutor {
                                                   .forEach(p -> {
                                                       final ActionActor target = p.getKey();
                                                       action.get().applyEffects(target);
-                                                      if(target instanceof BasicCharacter
-                                                              && !((BasicCharacter)target).isAlive()) {
+                                                      if (target instanceof BasicCharacter
+                                                              && !((BasicCharacter) target).isAlive()) {
                                                           statusQueue.removeAll(target.getStatuses());
                                                       } else {
                                                           addNewlyAppliedStatuses(target);
@@ -104,7 +105,7 @@ public class OutOfCombatActionExecutor implements ActionExecutor {
     @Override
     public Optional<ActionResult> evaluateCurrentAction() {
         combatInstance.setCombatStatus(CombatStatus.ROUND_IN_PROGRESS);
-
+        roundStarted = true;
         if (action.isPresent()) {
             final Action a = action.get();
             final ActionResult result = new ActionResultImpl(a);
@@ -165,7 +166,7 @@ public class OutOfCombatActionExecutor implements ActionExecutor {
      */
     @Override
     public boolean isRoundReady() {
-        return true;
+        return !roundStarted;
     }
 
     /**
@@ -182,6 +183,14 @@ public class OutOfCombatActionExecutor implements ActionExecutor {
     @Override
     public ActionExecutionInstance getExecutionInstance() {
         return combatInstance.getCopy();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean canActorAct(final ActionActor actor) {
+        return !roundStarted;
     }
 
     private void addNewlyAppliedStatuses(final ActionActor target) {

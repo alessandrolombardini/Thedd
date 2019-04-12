@@ -21,7 +21,6 @@ import thedd.model.roomevent.RoomEventHelper;
 import thedd.model.roomevent.combatevent.CombatEvent;
 import thedd.model.world.floor.FloorDetails;
 import thedd.model.world.floor.FloorImpl;
-import thedd.utils.RandomUtil;
 
 /**
  * Implementation of {@link thedd.model.world.RoomFactory}.

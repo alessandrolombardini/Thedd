@@ -70,7 +70,10 @@ public abstract class AbstractActionActor implements ActionActor {
      */
     @Override
     public void resetSelectedAction() {
-        selectedAction = Optional.empty();
+        selectedAction.ifPresent(a -> {
+            queuedActions.remove(a);
+            selectedAction = Optional.empty();
+        });
     }
 
     /**
@@ -301,6 +304,9 @@ public abstract class AbstractActionActor implements ActionActor {
     @Override
     public void insertActionIntoQueue(final int pos, final Action action, final boolean selectedByActor) {
         if (selectedByActor) {
+            if (selectedAction.isPresent()) {
+                throw new IllegalStateException("The actor has already a selected action");
+            }
             selectedAction = Optional.of(action);
         }
         queuedActions.add(pos, action);
@@ -365,6 +371,15 @@ public abstract class AbstractActionActor implements ActionActor {
                                 .forEach(m -> m.modify(e));
         });
         return action;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void resetActionsQueue() {
+        resetSelectedAction();
+        queuedActions.clear();
     }
 
 }

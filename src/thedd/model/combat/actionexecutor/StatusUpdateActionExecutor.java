@@ -100,6 +100,7 @@ public class StatusUpdateActionExecutor implements ActionExecutor {
     @Override
     public Optional<ActionResult> evaluateCurrentAction() {
         instance.setCombatStatus(CombatStatus.ROUND_IN_PROGRESS);
+        done = true;
         if (!currentAction.isPresent()) {
             currentActionResult = Optional.empty();
         } else {
@@ -140,7 +141,6 @@ public class StatusUpdateActionExecutor implements ActionExecutor {
         });
 
         if (!iterator.hasNext() && !currentAction.isPresent()) {
-            done = true;
             queue.forEach(s -> s.setIsUpdated(false));
             instance.setCombatStatus(CombatStatus.COMBAT_ENDED);
         }
@@ -166,7 +166,7 @@ public class StatusUpdateActionExecutor implements ActionExecutor {
      */
     @Override
     public boolean isRoundReady() {
-        return !done;
+        return false;
     }
 
     /**
@@ -183,6 +183,14 @@ public class StatusUpdateActionExecutor implements ActionExecutor {
     @Override
     public ActionExecutionInstance getExecutionInstance() {
         return instance;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean canActorAct(final ActionActor actor) {
+        return false;
     }
 
 }

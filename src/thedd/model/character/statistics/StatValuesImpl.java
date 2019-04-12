@@ -29,7 +29,9 @@ public final class StatValuesImpl implements StatValues {
 
     @Override
     public void updateActual(final int value) {
-        if (this.actual + value > 0) {
+        if (this.actual + value <= 0) {
+            this.actual = 0;
+        } else {
             if (this.max != NO_MAX) {
                 if (this.actual + value > this.max) {
                     this.actual = this.max;

@@ -85,4 +85,12 @@ public interface ActionExecutor {
      */
     ActionExecutionInstance getExecutionInstance();
 
+    /**
+     * Gets whether an actor can currently act (and therefore if it
+     * should select an action).
+     * @param actor the actor to be tested
+     * @return true if the actor can execute its action
+     */
+    boolean canActorAct(ActionActor actor);
+
 }
