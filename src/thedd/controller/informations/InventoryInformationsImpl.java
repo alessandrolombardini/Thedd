@@ -33,7 +33,6 @@ public final class InventoryInformationsImpl implements InventoryInformations {
     public List<Item> getAllItemsList() {
         allItemsList.addAll(this.character.getInventory().getAll());
         allItemsList.addAll(this.character.getEquippedItems());
-        System.out.println(allItemsList);
         return this.allItemsList;
     }
 

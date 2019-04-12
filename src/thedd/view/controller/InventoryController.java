@@ -65,7 +65,7 @@ public class InventoryController extends ViewNodeControllerImpl {
      */
     @Override
     public void update() {
-        //this.table.getItems().setAll(this.getController().getInventoryInformations().getAllItemsList());
+        this.table.getItems().setAll(this.getController().getInventoryInformations().getAllItemsList());
     }
 
     /**
@@ -73,7 +73,7 @@ public class InventoryController extends ViewNodeControllerImpl {
      */
     @Override
     protected void initView() {
-        //update();
+        update();
     }
 
     /**
