@@ -1,17 +1,17 @@
-package thedd.controller;
+package thedd.controller.informations;
 
 import java.util.List;
 import thedd.model.item.Item;
 
 /**
- * This class represent an informations wrapper for characters. This class
- * contains informations about the specified character from the constructor and
- * view will ask from this class all the required informations.
+ * This class represent an informations wrapper for the player character. This
+ * class contains informations about the player character and inventory
+ * view-controller will ask from this class all the required informations.
  */
-public interface CharacterInformations {
+public interface InventoryInformations {
 
     /**
-     * Returns the quantity of the specified item on the character's inventory.
+     * Returns the quantity of the specified item on the player's inventory.
      * 
      * @param item the specified item
      * @return the quantity
@@ -19,7 +19,7 @@ public interface CharacterInformations {
     String getInventoryItemQuantity(Item item);
 
     /**
-     * Returns a list of all the Items in character's inventory.
+     * Returns a list of all the Items in player's inventory.
      * 
      * @return a list of Item
      */
@@ -32,60 +32,4 @@ public interface CharacterInformations {
      * @return a boolean value.
      */
     boolean isEquipped(Item item);
-
-    /**
-     * Return the actual value of character's health points.
-     * 
-     * @return a String
-     */
-    String getHealthPointValue();
-
-    /**
-     * Return the actual value of character's constitution status.
-     * 
-     * @return a String
-     */
-    String getConstitutionValue();
-
-    /**
-     * Return the actual value of character's strength status.
-     * 
-     * @return a String
-     */
-    String getStrengthValue();
-
-    /**
-     * Return the actual value of character's agility status.
-     * 
-     * @return a String
-     */
-    String getAgilityValue();
-
-    /**
-     * Return the max value of character's health points.
-     * 
-     * @return a String
-     */
-    String getHealthPointMaxValue();
-
-    /**
-     * Return the max value of character's constitution status.
-     * 
-     * @return a String
-     */
-    String getConstitutionMaxValue();
-
-    /**
-     * Return the max value of character's strength status.
-     * 
-     * @return a String
-     */
-    String getStrengthMaxValue();
-
-    /**
-     * Return the max value of character's agility status.
-     * 
-     * @return a String
-     */
-    String getAgilityMaxValue();
 }

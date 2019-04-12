@@ -1,15 +1,14 @@
-package thedd.controller;
+package thedd.controller.informations;
 
 import java.util.ArrayList;
 import java.util.List;
 import thedd.model.item.Item;
 import thedd.model.character.BasicCharacter;
-import thedd.model.character.statistics.Statistic;
 
 /**
- * Implementations of {@link thedd.controller.CharacterInformations}.
+ * Implementations of {@link thedd.controller.informations.InventoryInformations}.
  */
-public final class CharacterInformationsImpl implements CharacterInformations {
+public final class InventoryInformationsImpl implements InventoryInformations {
 
     private final BasicCharacter character;
     private final List<Item> allItemsList;
@@ -17,10 +16,11 @@ public final class CharacterInformationsImpl implements CharacterInformations {
     /**
      * ControllerImpl's constructor.
      * 
-     * @param character the character of which the view load informations.
+     * @param playerCharacter the player character of which the view load
+     *                        informations.
      */
-    public CharacterInformationsImpl(final BasicCharacter character) {
-        this.character = character;
+    public InventoryInformationsImpl(final BasicCharacter playerCharacter) {
+        this.character = playerCharacter;
         allItemsList = new ArrayList<>();
     }
 
@@ -41,45 +41,4 @@ public final class CharacterInformationsImpl implements CharacterInformations {
     public boolean isEquipped(final Item item) {
         return this.character.getEquippedItems().contains(item);
     }
-
-    @Override
-    public String getHealthPointValue() {
-        return String.valueOf(this.character.getStat(Statistic.HEALTH_POINT).getActual());
-    }
-
-    @Override
-    public String getConstitutionValue() {
-        return String.valueOf(this.character.getStat(Statistic.CONSTITUTION).getActual());
-    }
-
-    @Override
-    public String getStrengthValue() {
-        return String.valueOf(this.character.getStat(Statistic.STRENGTH).getActual());
-    }
-
-    @Override
-    public String getAgilityValue() {
-        return String.valueOf(this.character.getStat(Statistic.AGILITY).getActual());
-    }
-
-    @Override
-    public String getHealthPointMaxValue() {
-        return String.valueOf(this.character.getStat(Statistic.HEALTH_POINT).getMax());
-    }
-
-    @Override
-    public String getConstitutionMaxValue() {
-        return String.valueOf(this.character.getStat(Statistic.CONSTITUTION).getMax());
-    }
-
-    @Override
-    public String getStrengthMaxValue() {
-        return String.valueOf(this.character.getStat(Statistic.STRENGTH).getMax());
-    }
-
-    @Override
-    public String getAgilityMaxValue() {
-        return String.valueOf(this.character.getStat(Statistic.AGILITY).getMax());
-    }
-
 }
