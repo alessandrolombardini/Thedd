@@ -25,11 +25,21 @@ public enum ViewNode {
     /**
      * Game over scene.
      */
-    GAME("game_form.fxml");
+    GAME("game_form.fxml"),
 
     /**
-     * Use of the char '/' becouse it's used by istructions that required that type of char, doesn't 
-     * matter if the application is used on linux, windows or os. 
+     * Inventory overview scene.
+     */
+    INVENTORY("inventory.fxml"),
+
+    /**
+     * Statistics overview scene.
+     */
+    STATISTICS("statistics.fxml");
+
+    /**
+     * Use of the char '/' because it's used by istructions that required that type
+     * of char, doesn't matter if the application is used on linux, windows or os.
      */
     private static final String FXML_PATH = "scene/";
 
@@ -38,8 +48,7 @@ public enum ViewNode {
     /**
      * Enum constructor.
      * 
-     * @param nameOfFxml
-     *          of fxml scene
+     * @param nameOfFxml of fxml scene
      */
     ViewNode(final String nameOfFxml) {
         Objects.requireNonNull(nameOfFxml);
@@ -49,8 +58,7 @@ public enum ViewNode {
     /**
      * Getter of fxml nameOfFxml with unix separator.
      * 
-     * @return
-     *          fxml nameOfFxml
+     * @return fxml nameOfFxml
      */
     public String getFXMLPath() {
         return FXML_PATH + this.nameOfFxml;
