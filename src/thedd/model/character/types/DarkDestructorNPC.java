@@ -3,7 +3,7 @@ package thedd.model.character.types;
 import thedd.model.character.BasicCharacterImpl;
 
 /**
- * Class that implements a DarkDestructor Non-Player Character.
+ * Dark Destructor extension of {@link thedd.model.character.BasicCharacterImpl}.
  */
 public class DarkDestructorNPC extends BasicCharacterImpl {
 

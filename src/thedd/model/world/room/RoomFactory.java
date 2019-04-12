@@ -2,7 +2,6 @@ package thedd.model.world.room;
 
 /**
  * Interface that define a factory of rooms.
- * 
  */
 public interface RoomFactory {
 

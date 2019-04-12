@@ -3,27 +3,21 @@ package thedd.model;
 import java.util.Optional;
 
 import thedd.model.world.environment.Session;
-import thedd.model.world.environment.SessionImpl;
-import thedd.model.world.environment.SessionImpl.SessionBuilder;
 
 /**
  * Implementation of {@link thedd.model.Model}.
  */
 public final class ModelImpl implements Model {
 
+    private static final String ERROR_UNSETTEDSESSION = "Session is unsetted";
+
     private Optional<Session> session;
 
     /**
-     * Model' constructor.
+     * ModelImpl constructor.
      */
-    public ModelImpl() { }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public SessionBuilder getSessionBuilder() {
-        return new SessionImpl.SessionBuilder();
+    public ModelImpl() {
+        session = Optional.empty();
     }
 
     /**
@@ -44,7 +38,7 @@ public final class ModelImpl implements Model {
     @Override
     public Session getSession() {
         if (!this.session.isPresent()) {
-            throw new IllegalStateException();
+            throw new IllegalStateException(ERROR_UNSETTEDSESSION);
         }
         return this.session.get();
     }

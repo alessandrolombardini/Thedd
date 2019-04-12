@@ -1,4 +1,3 @@
-
 package thedd.model.world.floor;
 
 import java.util.ArrayList;
@@ -10,8 +9,7 @@ import thedd.model.world.room.RoomFactory;
 import thedd.model.world.room.RoomFactoryImpl;
 
 /**
- * Implementation of {@link thedd.model.world.Floor}.
- *
+ * Implementation of {@link thedd.model.world.floor.Floor}.
  */
 public class FloorImpl implements Floor {
 
@@ -31,8 +29,8 @@ public class FloorImpl implements Floor {
     /**
      * Floor constructor.
      * 
-     * @param floorDetails  contains the details of this floor
-     * @throws NullPointerExecption    if roomFactory is null
+     * @param floorDetails contains the details of this floor
+     * @throws NullPointerExecption if roomFactory is null
      */
     public FloorImpl(final FloorDetails floorDetails) {
         Objects.requireNonNull(floorDetails);
@@ -47,7 +45,7 @@ public class FloorImpl implements Floor {
      */
     @Override
     public final boolean hasNextRoom() {
-        return this.currentRoomIndex < (this.numberOfRooms - 1);
+        return this.getCurrentRoomIndex() < (this.numberOfRooms - 1);
     }
 
     /**
@@ -72,7 +70,7 @@ public class FloorImpl implements Floor {
         if (this.currentRoomIndex == NONE_ROOMS) {
             throw new IllegalStateException(ERROR_UNSETTEDROOM);
         }
-        return this.rooms.get(this.currentRoomIndex);
+        return this.rooms.get(this.getCurrentRoomIndex());
     }
 
     /**
@@ -88,18 +86,18 @@ public class FloorImpl implements Floor {
      */
     @Override
     public final boolean checkToChangeFloor() {
-        return !this.hasNextRoom() && this.rooms.get(this.currentRoomIndex).checkToMoveOn();
+        return !this.hasNextRoom() && this.rooms.get(this.getCurrentRoomIndex()).checkToMoveOn();
     }
 
     private void setNextRoom() {
         this.currentRoomIndex++;
-        this.rooms.add(this.currentRoomIndex, this.factory.createRoom());
+        this.rooms.add(this.getCurrentRoomIndex(), this.factory.createRoom());
     }
 
     @Override
     public final String toString() {
-        return "FloorImpl [rooms=" + rooms + ", numberOfRooms=" + numberOfRooms + ", currentRoomIndex="
-                + currentRoomIndex + "]";
+        return "FloorImpl [rooms=" + this.rooms + ", numberOfRooms=" + this.numberOfRooms + ", currentRoomIndex="
+                + this.currentRoomIndex + "]";
     }
 
     @Override

@@ -19,4 +19,9 @@ public interface Controller {
      */
     boolean newGame(String playerName, String numberOfRooms, String numberOfFloors);
 
+    /**
+     * Close application.
+     */
+    void closeApplication();
+
 }

@@ -5,10 +5,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import model.room_event.RoomEvent;
+import thedd.model.roomevent.RoomEvent;
 
 /**
- * Implementation of {@link thedd.model.world.Room}.
+ * Implementation of {@link thedd.model.world.room.Room}.
  * 
  */
 public class RoomImpl implements Room {
@@ -100,7 +100,7 @@ public class RoomImpl implements Room {
 
     @Override
     public final String toString() {
-        return "RoomImpl [events=" + events + "]";
+        return "RoomImpl [events=" + this.events + "]";
     }
 
 }

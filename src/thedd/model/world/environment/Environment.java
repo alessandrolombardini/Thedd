@@ -7,7 +7,6 @@ import thedd.model.world.floor.FloorDetails;
 
 /**
  * Interface that define the environment.
- *
  */
 public interface Environment {
 
@@ -15,8 +14,11 @@ public interface Environment {
      * This method allows to set the next floor.
      * 
      * @param floorDetails is the details of the floor that has to be setted
-     * @throws NullPointerExeption   if floorDetails is null
-     * @throws IllegalStateException if the current floor isn't completed
+     * @throws NullPointerExeption     if floorDetails is null
+     * @throws IllegalStateException   if the current floor isn't completed
+     * @throws IllegalArgumentExeption if floorDetails doesn't own to the list of
+     *                                 FloorDetails given by the method
+     *                                 getFloorOptions().
      */
     void setNextFloor(FloorDetails floorDetails);
 
@@ -29,8 +31,8 @@ public interface Environment {
     Floor getCurrentFloor();
 
     /**
-     * This method allows to get the current floor index.
-     * The index is -1 if there aren't floor yet.
+     * This method allows to get the current floor index. If the index value is
+     * NONE_FLOORS constant (-1) it means there aren't floor yet.
      * 
      * @return the current floor index
      */
@@ -46,8 +48,9 @@ public interface Environment {
     /**
      * This method allows to get a list of possible next floors.
      * 
-     * @return the list of possible next floors
-     * @throws IllegalStateException if this is the last floor, it means that floors are ended
+     * @return the list of possible FloorDetails
+     * @throws IllegalStateException if this is the last floor, it means that floors
+     *                               are ended
      */
     List<FloorDetails> getFloorOptions();
 }

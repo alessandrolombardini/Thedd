@@ -3,7 +3,7 @@ package thedd.model.character.types;
 import thedd.model.character.BasicCharacterImpl;
 
 /**
- * Class that implements a Goblin Non-Player Character.
+ * Goblin extension of {@link thedd.model.character.BasicCharacterImpl}.
  */
 public class GoblinNPC extends BasicCharacterImpl {
 

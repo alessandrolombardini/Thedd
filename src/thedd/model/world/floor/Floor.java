@@ -33,8 +33,8 @@ public interface Floor {
     Room getCurrentRoom();
 
     /**
-     * This method allows to get the index of the current room.
-     * If is -1 that means that there aren't rooms yet.
+     * This method allows to get the index of the current room. If the result is
+     * NONE_ROOMS constant (-1) that means that there aren't rooms yet.
      * 
      * @return the current room index
      */

@@ -4,25 +4,26 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
-import model.combat.implementations.AbstractAutomaticActor;
-import model.item.EquipableItem;
-import model.item.EquipableItemType;
-import model.item.Item;
+import java.util.Objects;
+
 import thedd.model.character.inventory.Inventory;
 import thedd.model.character.inventory.InventoryImpl;
 import thedd.model.character.statistics.StatValues;
 import thedd.model.character.statistics.StatValuesImpl;
 import thedd.model.character.statistics.Statistic;
+import thedd.model.combat.actor.automatic.AbstractAutomaticActor;
+import thedd.model.item.Item;
+import thedd.model.item.equipableitem.EquipableItem;
+import thedd.model.item.equipableitem.EquipableItemType;
 
 /**
- * Class that define a Generic Character.
+ * Implementation of {@link thedd.model.character.BasicCharacter}.
  */
 public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicCharacter {
 
     private final EnumMap<Statistic, StatValues> stat;
     private final Inventory inventory;
     private final List<EquipableItem> equipment;
-
     private int hash;
 
     /**
@@ -39,26 +40,17 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
         this.equipment = new ArrayList<>();
     }
 
-    // This method sets the basic statistics of the character.
-    private final void setBasicStat(final double multiplier) {
-        this.stat.put(Statistic.HEALTH_POINT,
-                new StatValuesImpl((int) (Statistic.HEALTH_POINT.getBasicValue() * multiplier)));
-        this.stat.put(Statistic.AGILITY, new StatValuesImpl((int) (Statistic.AGILITY.getBasicValue() * multiplier)));
-        this.stat.put(Statistic.CONSTITUTION,
-                new StatValuesImpl((int) (Statistic.CONSTITUTION.getBasicValue() * multiplier)));
-        this.stat.put(Statistic.STRENGTH, new StatValuesImpl((int) (Statistic.STRENGTH.getBasicValue() * multiplier)));
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public final boolean isAlive() {
+    public boolean isAlive() {
         return this.stat.get(Statistic.HEALTH_POINT).getActual() > 0;
     }
 
     @Override
     public final StatValues getStat(final Statistic stat) {
-        if (stat == null) {
-            throw new IllegalArgumentException();
-        }
+        Objects.requireNonNull(stat);
         return this.stat.get(stat);
     }
 
@@ -67,15 +59,13 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
         final EnumMap<Statistic, StatValues> ret = new EnumMap<>(Statistic.class);
         this.stat.entrySet().forEach(el -> {
             ret.put(el.getKey(), el.getValue());
-        }); // done a defence copy
+        }); // done a defense copy
         return ret;
     }
 
     @Override
     public final boolean equipItem(final Item item) {
-        if (item == null) {
-            throw new IllegalArgumentException();
-        }
+        Objects.requireNonNull(item);
         if (item.isEquipable()) {
             final EquipableItem equipItem = (EquipableItem) item;
             if (checkEquipment(equipItem)) {
@@ -90,9 +80,7 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
 
     @Override
     public final boolean unequipItem(final Item item) {
-        if (item == null) {
-            throw new IllegalArgumentException();
-        }
+        Objects.requireNonNull(item);
         final int index = equipment.indexOf(item);
         if (index == -1) {
             return false;
@@ -112,9 +100,45 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
         return this.inventory;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public final int getPriority() {
+    public int getPriority() {
         return this.stat.get(Statistic.AGILITY).getActual();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return "Name: " + this.getName() + " - Stat: " + this.stat + "\nEquipment: " + this.equipment + " - Inventory: "
+                + this.inventory.toString();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        if (hash == 0) {
+            hash = equipment.hashCode() ^ inventory.hashCode() ^ stat.hashCode() ^ super.hashCode();
+        }
+        return hash;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(final Object obj) {
+        if (super.equals(obj) && obj instanceof BasicCharacterImpl) {
+            final BasicCharacterImpl other = (BasicCharacterImpl) obj;
+            return inventory.equals(other.getInventory()) && stat.equals(other.getAllStat())
+                    && equipment.equals(other.getEquippedItems());
+        }
+        return false;
     }
 
     // Returns true if this Item can be equipped, else false.
@@ -134,27 +158,15 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
         }
     }
 
-    @Override
-    public final String toString() {
-        return "Name: " + this.getName() + " - Stat: " + this.stat + "\nEquipment: " + this.equipment + " - Inventory: "
-                + this.inventory.toString();
-    }
-
-    @Override
-    public final int hashCode() {
-        if (hash == 0) {
-            hash = equipment.hashCode() ^ inventory.hashCode() ^ stat.hashCode();
-        }
-        return hash;
-    }
-
-    @Override
-    public final boolean equals(final Object obj) {
-        if (obj instanceof BasicCharacterImpl) {
-            final BasicCharacterImpl other = (BasicCharacterImpl) obj;
-            return inventory.equals(other.getInventory()) && stat.equals(other.getAllStat())
-                    && equipment.equals(other.getEquippedItems());
-        }
-        return false;
+    // This method sets basic statistics of the character.
+    private void setBasicStat(final double multiplier) {
+        double value = Statistic.HEALTH_POINT.getBasicValue() * multiplier;
+        this.stat.put(Statistic.HEALTH_POINT, new StatValuesImpl((int) value, (int) value));
+        value = Statistic.AGILITY.getBasicValue() * multiplier;
+        this.stat.put(Statistic.AGILITY, new StatValuesImpl((int) value, StatValuesImpl.NO_MAX));
+        value = Statistic.CONSTITUTION.getBasicValue() * multiplier;
+        this.stat.put(Statistic.CONSTITUTION, new StatValuesImpl((int) value, StatValuesImpl.NO_MAX));
+        value = Statistic.STRENGTH.getBasicValue() * multiplier;
+        this.stat.put(Statistic.STRENGTH, new StatValuesImpl((int) value, StatValuesImpl.NO_MAX));
     }
 }

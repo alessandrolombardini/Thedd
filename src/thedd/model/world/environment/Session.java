@@ -1,10 +1,9 @@
 package thedd.model.world.environment;
 
-import model.character.BasicCharacter;
+import thedd.model.character.BasicCharacter;
 
 /**
- * Interface that define a game session.
- *
+ * Interface that represent a game session.
  */
 public interface Session {
 
