@@ -11,6 +11,7 @@ import java.util.stream.IntStream;
 
 import org.apache.commons.lang3.RandomUtils;
 
+import edu.princeton.cs.algs4.StdRandom;
 import thedd.model.character.BasicCharacter;
 import thedd.model.character.CharacterFactory;
 import thedd.model.character.types.EnemyCharacterType;
@@ -49,6 +50,7 @@ public class RoomFactoryImpl implements RoomFactory {
     public static final int MIN_ENEMIES_PER_ROOM = 0;
 
     private static final String ERROR_NOMOREROOMS = "Rooms are over";
+    private static final double PROB_TO_SET_INTERAGIBLE = 0.60;
 
     private final EnumMap<RoomContent, Integer> remainingContent;
     private final FloorDetails floorDetails;
@@ -161,7 +163,7 @@ public class RoomFactoryImpl implements RoomFactory {
 
     private Optional<RoomContent> getAvailableRandomInteractableAction() {
         Optional<RoomContent> contentType = Optional.empty();
-        if (this.remainingContent.get(RoomContent.CONTRAPTION) > 0 && RandomUtils.nextBoolean()) {
+        if (this.remainingContent.get(RoomContent.CONTRAPTION) > 0 && StdRandom.bernoulli(PROB_TO_SET_INTERAGIBLE)) {
             contentType = Optional.of(RoomContent.CONTRAPTION);
         } else if (this.remainingContent.get(RoomContent.TREASURE) > 0 && !contentType.isPresent()) {
             contentType = Optional.of(RoomContent.TREASURE);
