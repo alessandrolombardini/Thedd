@@ -1,4 +1,4 @@
-package thedd.view.scenewrapper;
+package thedd.view.nodewrapper;
 
 import java.awt.geom.IllegalPathStateException;
 import java.io.IOException;
@@ -30,7 +30,7 @@ public final class ViewNodeWrapperFactory {
      * @return the node and its view controller
      */
     public static ViewNodeWrapper createViewNodeWrapper(final ViewNode viewNode,
-                                                              final Controller controller, final View view) {
+                                                        final Controller controller, final View view) {
         Objects.requireNonNull(viewNode);
         try {
             final FXMLLoader loader = new FXMLLoader();

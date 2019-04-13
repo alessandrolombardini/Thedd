@@ -1,4 +1,4 @@
-package thedd.view.scenewrapper;
+package thedd.view.nodewrapper;
 
 import java.util.Objects;
 

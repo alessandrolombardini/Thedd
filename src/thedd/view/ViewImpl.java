@@ -12,8 +12,8 @@ import thedd.controller.Controller;
 import thedd.controller.ControllerImpl;
 import thedd.view.dialog.DialogFactory;
 import thedd.view.dialog.DialogFactoryImpl;
-import thedd.view.scenewrapper.ViewNodeWrapper;
-import thedd.view.scenewrapper.ViewNodeWrapperFactory;
+import thedd.view.nodewrapper.ViewNodeWrapper;
+import thedd.view.nodewrapper.ViewNodeWrapperFactory;
 
 /**
  * Implementation of {@link View}.

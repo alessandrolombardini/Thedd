@@ -5,8 +5,8 @@ import java.util.List;
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
 import thedd.view.ViewNode;
-import thedd.view.scenewrapper.ViewNodeWrapper;
-import thedd.view.scenewrapper.ViewNodeWrapperFactory;
+import thedd.view.nodewrapper.ViewNodeWrapper;
+import thedd.view.nodewrapper.ViewNodeWrapperFactory;
 
 /**
  * View controller of game scene.
