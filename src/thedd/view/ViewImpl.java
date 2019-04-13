@@ -14,7 +14,6 @@ import thedd.view.dialog.DialogFactory;
 import thedd.view.dialog.DialogFactoryImpl;
 import thedd.view.scenewrapper.ViewNodeWrapper;
 import thedd.view.scenewrapper.ViewNodeWrapperFactory;
-import thedd.view.scenewrapper.ViewNodeWrapperFactoryImpl;
 
 /**
  * Implementation of {@link View}.
@@ -30,7 +29,6 @@ public class ViewImpl extends Application implements View {
     private static final double STAGE_MIN_HEIGHT = Screen.getPrimary().getBounds().getHeight() / 4 * 2;
     private static final ApplicationViewState FIRST_APP_STATE = ApplicationViewState.MENU;
 
-    private final ViewNodeWrapperFactory viewNodeWrapperFactory;
     private final DialogFactory dialogFactory;
     private final Controller controller;
     private Optional<Stage> stage;
@@ -41,8 +39,8 @@ public class ViewImpl extends Application implements View {
      * Create a new View instance.
      */
     public ViewImpl() {
+        super();
         this.controller = new ControllerImpl(this);
-        this.viewNodeWrapperFactory = new ViewNodeWrapperFactoryImpl(this, controller);
         this.dialogFactory = new DialogFactoryImpl();
         this.stage = Optional.empty();
         this.actualScene = Optional.empty();
@@ -71,7 +69,9 @@ public class ViewImpl extends Application implements View {
         if (!this.stage.isPresent()) {
             throw new IllegalStateException(ERROR_STAGEUNSETTED);
         }
-        this.actualScene = Optional.of(this.viewNodeWrapperFactory.createViewNodeWrapper(state.getViewNode()));
+        this.actualScene = Optional.of(ViewNodeWrapperFactory.createViewNodeWrapper(state.getViewNode(), 
+                                                                                    this.controller, 
+                                                                                    this));
         this.actualScene.get().getController().setDialogFactory(this.dialogFactory);
         this.actualScene.get().getController().update();
         final Scene newScene = new Scene((Parent) this.actualScene.get().getNode());

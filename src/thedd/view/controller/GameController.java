@@ -2,14 +2,11 @@ package thedd.view.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
 import thedd.view.ViewNode;
 import thedd.view.scenewrapper.ViewNodeWrapper;
 import thedd.view.scenewrapper.ViewNodeWrapperFactory;
-import thedd.view.scenewrapper.ViewNodeWrapperFactoryImpl;
 
 /**
  * View controller of game scene.
@@ -30,7 +27,6 @@ public class GameController extends ViewNodeControllerImpl {
     private static final ViewNode NODE_DOWN_DX = ViewNode.STATISTICS;
 
     private final List<ViewNodeController> viewControllers;
-    private Optional<ViewNodeWrapperFactory> factory;
 
     /**
      * GameController constructor.
@@ -38,7 +34,6 @@ public class GameController extends ViewNodeControllerImpl {
     public GameController() {
         super();
         this.viewControllers = new ArrayList<>();
-        this.factory = Optional.empty();
     }
 
     @Override
@@ -48,14 +43,14 @@ public class GameController extends ViewNodeControllerImpl {
 
     @Override
     protected final void initView() {
-        this.factory = Optional.of(new ViewNodeWrapperFactoryImpl(this.getView(), this.getController()));
-        ViewNodeWrapper node = factory.get().createViewNodeWrapper(NODE_UP);
+        ViewNodeWrapper node = ViewNodeWrapperFactory.createViewNodeWrapper(NODE_UP, this.getController(), 
+                                                                            this.getView());
         this.gameContent.getChildren().add(node.getNode());
         this.viewControllers.add(node.getController());
-        node = factory.get().createViewNodeWrapper(NODE_DOWN_SX);
+        node = ViewNodeWrapperFactory.createViewNodeWrapper(NODE_DOWN_SX, this.getController(), this.getView());
         this.inventoryContent.getChildren().add(node.getNode());
         this.viewControllers.add(node.getController());
-        node = factory.get().createViewNodeWrapper(NODE_DOWN_DX);
+        node = ViewNodeWrapperFactory.createViewNodeWrapper(NODE_DOWN_DX, this.getController(), this.getView());
         this.statisticsContent.getChildren().add(node.getNode());
         this.viewControllers.add(node.getController());
     }
