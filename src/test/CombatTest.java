@@ -29,7 +29,6 @@ public class CombatTest {
     private static final int NUMBER_OF_PLAYER = 1;
 
     private final BasicCharacter player;
-    private final HostileEncounter encounter;
     private final ActionExecutionInstance instance;
     private final ActionExecutor logic;
     private final Action action;
@@ -38,9 +37,9 @@ public class CombatTest {
      * Constructor of CombatTest: initialize a standard combat.
      */
     public CombatTest() {
+        final HostileEncounter encounter = new HostileEncounterImpl();
         player = CharacterFactory.createPlayerCharacter(Optional.of("Giangeffo"), Difficulty.EASY);
         action = player.getAvailableActionsList().stream().findFirst().get();
-        encounter = new HostileEncounterImpl();
         encounter.setCombatLogic(new DefaultCombatActionExecutor());
         encounter.addNPC(CharacterFactory.createEnemy(EnemyCharacterType.GOBLIN, Difficulty.EASY));
         instance = new ExecutionInstanceImpl();
