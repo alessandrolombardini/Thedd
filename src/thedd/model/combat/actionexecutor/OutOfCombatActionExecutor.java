@@ -18,7 +18,9 @@ import thedd.model.combat.status.Status;
 /**
  *  Executes the provided action and the actions of the {@link Status} that
  *  may have been applied by the main action.<p>
- *  Only executes one round.
+ *  Only executes one round.<p>
+ *
+ *  This executor does not support the addActorToQueue method.
  */
 public class OutOfCombatActionExecutor implements ActionExecutor {
 
@@ -174,7 +176,7 @@ public class OutOfCombatActionExecutor implements ActionExecutor {
      */
     @Override
     public List<ActionActor> getOrderedActorsList() {
-        return new ArrayList<>();
+        return combatInstance.getAllParties();
     }
 
     /**
