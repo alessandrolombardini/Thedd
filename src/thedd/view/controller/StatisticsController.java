@@ -23,8 +23,6 @@ public class StatisticsController extends ViewNodeControllerImpl {
     private AdaptiveLabel agilityValue;
     @FXML
     private AnchorPane imageContent;
-    @FXML
-    private AnchorPane container;
 
     /**
      * Statistics controller constructor.
