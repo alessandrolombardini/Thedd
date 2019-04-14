@@ -1,6 +1,7 @@
 package thedd.model.combat.instance;
 
 import java.util.List;
+import java.util.Set;
 
 import thedd.model.combat.actor.ActionActor;
 
@@ -28,13 +29,13 @@ public interface ActionExecutionInstance {
      * Adds Actors to the party opposed to the player's one.
      * @param hostileNPCs the list of hostile Actors
      */
-    void addNPCsPartyMembers(List<ActionActor> hostileNPCs);
+    void addNPCsPartyMembers(Set<ActionActor> hostileNPCs);
 
     /**
      * Adds Actors to the player's party.
      * @param alliedPCs the list of the player's party members
      */
-    void addPlayerPartyMembers(List<ActionActor> alliedPCs);
+    void addPlayerPartyMembers(Set<ActionActor> alliedPCs);
 
     /**
      * Adds an actor to the party opposed to the player's one.
