@@ -1,6 +1,6 @@
 package thedd.model.combat.encounter;
 
-import java.util.List;
+import java.util.Set;
 
 import thedd.model.combat.actionexecutor.ActionExecutor;
 import thedd.model.combat.actor.ActionActor;
@@ -33,7 +33,7 @@ public interface HostileEncounter {
      * participate in the skirmish.
      * @return the list of hostile NPCs
      */
-    List<ActionActor> getNPCs();
+    Set<ActionActor> getNPCs();
 
     /**
      * Adds an actor to the party opposed to the player.
@@ -45,6 +45,6 @@ public interface HostileEncounter {
      * Adds one or more actors to the party oppose to the player.
      * @param npcs the actors to be added
      */
-    void addAll(List<ActionActor> npcs);
+    void addAll(Set<ActionActor> npcs);
 
 }
