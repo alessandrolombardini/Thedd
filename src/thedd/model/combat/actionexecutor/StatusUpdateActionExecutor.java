@@ -20,12 +20,12 @@ import thedd.model.combat.status.Status;
  * Updates the {@link Status} of all the {@link ActionActor} present
  * in the {@link ActionExecutionInstance}, executes their provided
  * actions and, if necessary, removes them.<p>
- * It goes through only one round.
+ * It goes through only one round.<p>
+ * This executor does not support the addActorToQueue method.
  */
 public class StatusUpdateActionExecutor implements ActionExecutor {
 
     private ActionExecutionInstance instance = new ExecutionInstanceImpl();
-    private boolean done;
     private final List<Status> queue = new ArrayList<>();
     private Optional<Status> currentStatus = Optional.empty();
     private Optional<Action> currentAction = Optional.empty();
@@ -100,7 +100,6 @@ public class StatusUpdateActionExecutor implements ActionExecutor {
     @Override
     public Optional<ActionResult> evaluateCurrentAction() {
         instance.setCombatStatus(CombatStatus.ROUND_IN_PROGRESS);
-        done = true;
         if (!currentAction.isPresent()) {
             currentActionResult = Optional.empty();
         } else {
@@ -155,7 +154,7 @@ public class StatusUpdateActionExecutor implements ActionExecutor {
     }
 
     /**
-     * {@inheritDoc}
+     * Not implemented, does nothing.
      */
     @Override
     public void addActorToQueue(final ActionActor actor) {
