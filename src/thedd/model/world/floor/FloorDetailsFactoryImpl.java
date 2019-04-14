@@ -58,7 +58,7 @@ public final class FloorDetailsFactoryImpl implements FloorDetailsFactory {
     private int getRandomNumberOfTreasure(final int effectiveNumOfRooms, final Difficulty difficulty,
                                           final int interagibleSetted) {
         final int baseValue = (int) Math.round(effectiveNumOfRooms * Difficulty.NORMAL.getMultiplier());
-        final int baseNumber = getRandomIntegerGaussianNumber(baseValue, baseValue);
+        final int baseNumber = getGaussian(baseValue, baseValue);
         int result = (int) Math.round(baseNumber * difficulty.getMultiplier());
         result = result < RoomFactoryImpl.MIN_INTERACTABLE_ACTION_PER_ROOM
                         ? RoomFactoryImpl.MIN_INTERACTABLE_ACTION_PER_ROOM
@@ -74,8 +74,12 @@ public final class FloorDetailsFactoryImpl implements FloorDetailsFactory {
         return this.getRandomNumberOfTreasure(effectiveNumberOfRooms, difficulty, interagibleSetted);
     }
 
-    private static int getRandomIntegerGaussianNumber(final int mediumVal, final int var) {
-        return (int) Math.round(StdRandom.gaussian() * Math.sqrt(mediumVal) + var);
+    private static int getGaussian(final int mediumVal, final int var) {
+        //return (int) Math.round(StdRandom.gaussian() * Math.sqrt(mediumVal) + var);
+        int val = (int) Math.round(StdRandom.gaussian(mediumVal, var));
+        val = val < mediumVal - var ? mediumVal - var : var;
+        val = val > mediumVal + var ? mediumVal + var : var;
+        return val;
     }
 
 }
