@@ -74,7 +74,9 @@ public interface ActionExecutor {
     boolean isRoundReady();
 
     /**
-     * Returns an ordered list of the actors involved in the combat.
+     * Returns an ordered list of the actors involved in the combat.<br>
+     * Note that the order is dictated by the executor, so it may vary between
+     * implementations.
      * @return the ordered list of actors
      */
     List<ActionActor> getOrderedActorsList();
@@ -86,8 +88,7 @@ public interface ActionExecutor {
     ActionExecutionInstance getExecutionInstance();
 
     /**
-     * Gets whether an actor can currently act (and therefore if it
-     * should select an action).
+     * Gets whether an actor can select and execute actions.
      * @param actor the actor to be tested
      * @return true if the actor can execute its action
      */
