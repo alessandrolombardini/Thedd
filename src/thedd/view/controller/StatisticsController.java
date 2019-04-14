@@ -8,6 +8,7 @@ import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
+import thedd.view.imageloader.ImageLoader;
 
 /**
  * Class that handle the Statistics View.
@@ -23,6 +24,7 @@ public class StatisticsController extends ViewNodeControllerImpl {
     private AdaptiveLabel agilityValue;
     @FXML
     private AnchorPane imageContent;
+    private static final String IMAGE_TAG = "_PROFILE";
 
     /**
      * Statistics controller constructor.
@@ -42,7 +44,7 @@ public class StatisticsController extends ViewNodeControllerImpl {
         this.constitutionValue.setText(this.getController().getStatisticsInformations().getConstitutionValue());
         this.strengthValue.setText(this.getController().getStatisticsInformations().getStrengthValue());
         // Set the Character's image.
-        Image img = new Image("images/character_image.png");
+        Image img = loadRelatedImage();
         BackgroundImage bg = new BackgroundImage(img, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.CENTER, new BackgroundSize(1.0, 1.0, true, true, true, false));
         // Third boolean, if false ignore image's ratio dell'immagine, otherwise keep
@@ -56,6 +58,11 @@ public class StatisticsController extends ViewNodeControllerImpl {
     @Override
     protected void initView() {
         update();
+    }
+
+    private Image loadRelatedImage() {
+        final String type = this.getController().getStatisticsInformations().getCharacterType();
+        return ImageLoader.valueOf(type.toUpperCase() + IMAGE_TAG).getImage();
     }
 
 }

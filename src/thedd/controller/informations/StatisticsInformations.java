@@ -18,6 +18,13 @@ public interface StatisticsInformations {
     void setCharacter(BasicCharacter character);
 
     /**
+     * This method returns a String representation of the type of the Character.
+     * 
+     * @return a {@link String}.
+     */
+    String getCharacterType();
+
+    /**
      * Return the actual value of character's health points.
      * 
      * @return a String
