@@ -5,9 +5,9 @@ import java.util.List;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javafx.scene.image.Image;
+import thedd.utils.observer.Observer;
 import thedd.view.explorationpane.enums.PartyType;
 import thedd.view.explorationpane.enums.TargetSelectionState;
-import thedd.view.utils.interfaces.Observer;
 
 /**
  * The game sub-scene with ActorViewer to show actors of the game.
@@ -15,7 +15,7 @@ import thedd.view.utils.interfaces.Observer;
 public interface ExplorationPane extends Observer<Pair<PartyType, Integer>> {
 
     /**
-     * Set the new state to respond to triggers from {@link thedd.view.utils.interfaces Observable}s.
+     * Set the new state to respond to triggers from {@link thedd.utils.observer Observable}s.
      * @param newState
      *          the new state of the target selection
      */

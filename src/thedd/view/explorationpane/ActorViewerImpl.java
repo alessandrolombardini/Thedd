@@ -12,12 +12,12 @@ import org.apache.commons.lang3.tuple.Pair;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import thedd.utils.observer.Observable;
+import thedd.utils.observer.Observer;
 import thedd.view.explorationpane.enums.PartyType;
-import thedd.view.utils.interfaces.Observable;
-import thedd.view.utils.interfaces.Observer;
 
 /**
- * {@link thedd.view.utils.interfaces.Observable} {@link thedd.view.explorationpane.ActorViewer}.
+ * {@link thedd.utils.observer.Observable} {@link thedd.view.explorationpane.ActorViewer}.
  * It uses an {@link javafx.scene.image.ImageView} to visualize the actor.
  */
 public class ActorViewerImpl extends ImageView implements Observable<Pair<PartyType, Integer>>, ActorViewer {
