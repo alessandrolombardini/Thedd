@@ -27,14 +27,15 @@ import thedd.view.explorationpane.enums.TargetSelectionState;
 public final class ExplorationPaneImpl extends BorderPane implements ExplorationPane {
 
     private TargetSelectionState viewState;
-    private static final double SPACING_VALUE = 2.5; 
+    private static final double SPACING_VALUE = 2.5;
+    private static final double IMMAGINARY_COLUMNS = 8;
 
     private final HBox enemyParty;
     private final HBox alliedParty;
     private final HBox enemiesAndNext;
     private final ImageView roomAdvancer;
 
-    public ExplorationPaneImpl(final Image backgroundImage) {
+    public ExplorationPaneImpl() {
         super();
 
         viewState = TargetSelectionState.INACTIVE;
@@ -56,30 +57,8 @@ public final class ExplorationPaneImpl extends BorderPane implements Exploration
         this.setRight(enemiesAndNext);
         this.setLeft(alliedParty);
 
-        this.widthProperty().addListener(list -> {
-            alliedParty.getChildren().forEach(c -> {
-                ((ActorViewerImpl) c).setFitWidth(this.getScene().getWidth() / 8);
-                ((ActorViewerImpl) c).setFitHeight(this.getScene().getHeight()); 
-            });
-            enemyParty.getChildren().forEach(c -> {
-                ((ActorViewerImpl) c).setFitWidth(this.getScene().getWidth() / 8);
-                ((ActorViewerImpl) c).setFitHeight(this.getScene().getHeight());
-            });
-            roomAdvancer.setFitWidth((roomAdvancer.isVisible() ? 1.0 : Double.MIN_NORMAL) * this.getScene().getWidth() / 8);
-        });
-
-        this.heightProperty().addListener(list -> {
-            alliedParty.getChildren().forEach(c -> {
-                ((ActorViewerImpl) c).setFitWidth(this.getScene().getWidth() / 8);
-                ((ActorViewerImpl) c).setFitHeight(this.getScene().getHeight()); 
-            });
-            enemyParty.getChildren().forEach(c -> {
-                ((ActorViewerImpl) c).setFitWidth(this.getScene().getWidth() / 8);
-                ((ActorViewerImpl) c).setFitHeight(this.getScene().getHeight()); 
-            });
-            roomAdvancer.setFitWidth((roomAdvancer.isVisible() ? 1.0 : Double.MIN_NORMAL) * this.getScene().getWidth() / 8);
-        });
-        changeBackgroundImage(backgroundImage);
+        this.widthProperty().addListener(list -> resizeAllComponents());
+        this.heightProperty().addListener(list -> resizeAllComponents());
     }
 
     @Override
@@ -153,6 +132,19 @@ public final class ExplorationPaneImpl extends BorderPane implements Exploration
         default:
             return null;
         }
+    }
+
+    private void resizeAllComponents() {
+        final double twoTimes = 2;
+        alliedParty.getChildren().forEach(c -> {
+            ((ActorViewerImpl) c).setFitWidth(this.widthProperty().doubleValue() / IMMAGINARY_COLUMNS);
+            ((ActorViewerImpl) c).setFitHeight(this.heightProperty().doubleValue()); 
+        });
+        enemyParty.getChildren().forEach(c -> {
+            ((ActorViewerImpl) c).setFitWidth(this.widthProperty().doubleValue() / IMMAGINARY_COLUMNS);
+            ((ActorViewerImpl) c).setFitHeight(this.heightProperty().doubleValue());
+        });
+        roomAdvancer.setFitWidth((roomAdvancer.isVisible() ? 1.0 : Double.MIN_NORMAL) * this.widthProperty().doubleValue() / (IMMAGINARY_COLUMNS * twoTimes));
     }
 
 }
