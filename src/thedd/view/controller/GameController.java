@@ -14,6 +14,9 @@ import thedd.view.nodewrapper.ViewNodeWrapperFactory;
 public class GameController extends ViewNodeControllerImpl {
 
     @FXML
+    private AnchorPane mainWindow;
+
+    @FXML
     private AnchorPane inventoryContent;
 
     @FXML
@@ -22,7 +25,7 @@ public class GameController extends ViewNodeControllerImpl {
     @FXML
     private AnchorPane gameContent;
 
-    private static final ViewNode NODE_UP = ViewNode.INVENTORY;
+    private static final ViewNode NODE_UP = ViewNode.TOP_PANE;
     private static final ViewNode NODE_DOWN_SX = ViewNode.INVENTORY;
     private static final ViewNode NODE_DOWN_DX = ViewNode.STATISTICS;
 
