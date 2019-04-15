@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
+import thedd.model.character.BasicCharacter;
 import thedd.model.combat.action.Action;
 import thedd.model.combat.action.TargetType;
 import thedd.model.combat.actor.ActionActor;
@@ -41,20 +43,28 @@ public class DefaultTargeting implements ActionTargeting {
     public List<ActionActor> getValidTargets(final ActionExecutionInstance combatInstance, final Action sourceAction) {
         final ActionActor source = sourceAction.getSource().get();
         final TargetType targetType = sourceAction.getTargetType();
+        List<ActionActor> targets = new ArrayList<>();
         switch (targetType) {
         case ALLY:
-            return combatInstance.getNPCsParty().contains(source) ? combatInstance.getPlayerParty() 
+            targets = combatInstance.getNPCsParty().contains(source) ? combatInstance.getPlayerParty() 
                             : combatInstance.getNPCsParty();
+            break;
         case EVERYONE:
-            return combatInstance.getAllParties();
+            targets = combatInstance.getAllParties();
+            break;
         case FOE:
-            return combatInstance.getPlayerParty().contains(source) ? combatInstance.getNPCsParty()
+            targets =  combatInstance.getPlayerParty().contains(source) ? combatInstance.getNPCsParty()
                             : combatInstance.getPlayerParty();
+            break;
         case SELF:
             return Collections.singletonList((ActionActor) source);
         default:
             throw new IllegalStateException("Target type of the action was not found");
         }
+        return targets.stream()
+                      .filter(a -> !(a instanceof BasicCharacter) 
+                              || (a instanceof BasicCharacter && ((BasicCharacter) a).isAlive()))
+                      .collect(Collectors.toList());
     }
 
 }

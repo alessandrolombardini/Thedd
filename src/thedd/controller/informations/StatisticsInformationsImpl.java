@@ -9,6 +9,9 @@ import thedd.model.character.statistics.Statistic;
 public final class StatisticsInformationsImpl implements StatisticsInformations {
 
     private BasicCharacter character;
+    // This static int represent the number of characters to skip in class path name
+    // in getType() method.
+    private static final int SUBSTRING_STEPS = 28;
 
     /**
      * StatisticsInformationImpl's constructor.
@@ -62,5 +65,10 @@ public final class StatisticsInformationsImpl implements StatisticsInformations 
     @Override
     public String getAgilityMaxValue() {
         return String.valueOf(this.character.getStat(Statistic.AGILITY).getMax());
+    }
+
+    @Override
+    public String getCharacterType() {
+        return this.character.getClass().getName().substring(SUBSTRING_STEPS);
     }
 }

@@ -2,7 +2,9 @@ package thedd.model.combat.instance;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -14,8 +16,8 @@ import thedd.model.combat.actor.ActionActor;
  */
 public class ExecutionInstanceImpl implements ActionExecutionInstance {
 
-    private final List<ActionActor> npcsParty = new ArrayList<>();
-    private final List<ActionActor> playerParty = new ArrayList<>();
+    private final Set<ActionActor> npcsParty = new HashSet<>();
+    private final Set<ActionActor> playerParty = new HashSet<>();
     private int roundCount;
     private CombatStatus combatStatus = CombatStatus.NOT_STARTED;
 
@@ -39,7 +41,7 @@ public class ExecutionInstanceImpl implements ActionExecutionInstance {
      * {@inheritDoc}
      */
     @Override
-    public void addNPCsPartyMembers(final List<ActionActor> hostileNPCs) {
+    public void addNPCsPartyMembers(final Set<ActionActor> hostileNPCs) {
         npcsParty.addAll(hostileNPCs);
     }
 
@@ -47,7 +49,7 @@ public class ExecutionInstanceImpl implements ActionExecutionInstance {
      * {@inheritDoc}
      */
     @Override
-    public void addPlayerPartyMembers(final List<ActionActor> alliedPCs) {
+    public void addPlayerPartyMembers(final Set<ActionActor> alliedPCs) {
         playerParty.addAll(alliedPCs);
     }
 
@@ -72,7 +74,7 @@ public class ExecutionInstanceImpl implements ActionExecutionInstance {
      */
     @Override
     public List<ActionActor> getNPCsParty() {
-        return Collections.unmodifiableList(npcsParty);
+        return Collections.unmodifiableList(new ArrayList<>(npcsParty));
     }
 
     /**
@@ -80,7 +82,7 @@ public class ExecutionInstanceImpl implements ActionExecutionInstance {
      */
     @Override
     public List<ActionActor> getPlayerParty() {
-        return Collections.unmodifiableList(playerParty);
+        return Collections.unmodifiableList(new ArrayList<>(playerParty));
     }
 
     /**
@@ -113,8 +115,8 @@ public class ExecutionInstanceImpl implements ActionExecutionInstance {
     @Override
     public ActionExecutionInstance getCopy() {
         final ActionExecutionInstance copy = new ExecutionInstanceImpl();
-        copy.addPlayerPartyMembers(getPlayerParty());
-        copy.addNPCsPartyMembers(getNPCsParty());
+        copy.addPlayerPartyMembers(playerParty);
+        copy.addNPCsPartyMembers(npcsParty);
         copy.setCombatStatus(getCombatStatus());
         while (getRoundNumber() > copy.getRoundNumber()) {
             copy.increaseRoundNumber();

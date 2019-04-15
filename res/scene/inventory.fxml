@@ -10,12 +10,12 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import thedd.view.controller.AdaptiveLabel?>
 
-<AnchorPane prefWidth="600.0" AnchorPane.bottomAnchor="0.0"
-	AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-	AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8.0.171"
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.171"
 	xmlns:fx="http://javafx.com/fxml/1"
 	fx:controller="thedd.view.controller.InventoryController"
-	stylesheets="styles/inventory_statistics_style.css">
+	stylesheets="styles/inventory_statistics_style.css"
+	AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+	AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 	<children>
 		<GridPane AnchorPane.bottomAnchor="0.0"
 			AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"

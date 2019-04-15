@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import thedd.model.character.BasicCharacter;
@@ -61,15 +62,15 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
      * Public constructor.
      */
     public DefaultCombatActionExecutor() {
-        this(Collections.<ActionActor>emptyList(), Collections.<ActionActor>emptyList());
+        this(Collections.<ActionActor>emptySet(), Collections.<ActionActor>emptySet());
     }
 
     /**
      * Public constructor.
      * @param hostileNPCs the List of Actors to placed in the party opposed to player's
      */
-    public DefaultCombatActionExecutor(final List<ActionActor> hostileNPCs) {
-        this(hostileNPCs, Collections.<ActionActor>emptyList());
+    public DefaultCombatActionExecutor(final Set<ActionActor> hostileNPCs) {
+        this(hostileNPCs, Collections.<ActionActor>emptySet());
     }
 
     /**
@@ -77,7 +78,7 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
      * @param hostileNPCs the List of Actors to placed in the party opposed to player's
      * @param partyMembers the List of Actors to placed in the player's party
      */
-    public DefaultCombatActionExecutor(final List<ActionActor> hostileNPCs, final List<ActionActor> partyMembers) {
+    public DefaultCombatActionExecutor(final Set<ActionActor> hostileNPCs, final Set<ActionActor> partyMembers) {
         combatInstance.addNPCsPartyMembers(hostileNPCs);
         combatInstance.addPlayerPartyMembers(partyMembers);
     }
@@ -112,32 +113,54 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
             currentActionResult.get()
                                .getResults()
                                .stream()
-                               .filter(p -> p.getValue() == ActionResultType.HIT)
                                .forEach(p -> {
                                    final ActionActor target = p.getKey();
-                                   action.applyEffects(target);
-                                   if (target instanceof BasicCharacter
-                                           && !((BasicCharacter) target).isAlive()) {
-                                       actorsQueue.remove(target);
-                                   } else if (canTargetParry(target)) {
-                                       target.resetSelectedAction();
+                                   switch (p.getValue()) {
+                                   case HIT:
+                                       applyEffects(action, target);
+                                       break;
+                                   case MISSED:
+                                       checkStatusResistance(action, target);
+                                       break;
+                                    case PARRIED:
+                                        applyParry(action, target);
+                                        break;
+                                    default:
+                                        break;
                                    }
-                                   updateNewlyAppliedStatuses(target);
                                 });
-            final Optional<ActionActor> parryingActor = currentActionResult.get()
-                                                                           .getResults()
-                                                                           .stream()
-                                                                           .filter(p -> p.getValue() == ActionResultType.PARRIED)
-                                                                           .findFirst()
-                                                                           .map(p -> p.getKey());
-            if (parryingActor.isPresent()) {
-                if (combatInstance.getNPCsParty().contains(parryingActor.get())) { //Maybe check if target is Automatic AND his behavior is active
-                    setNextAIMove((AutomaticActionActor) parryingActor.get());
-                } else {
-                    combatInstance.setCombatStatus(CombatStatus.ROUND_PAUSED);
-                }
-            }
         }
+    }
+
+    private void applyParry(final Action action, final ActionActor target) {
+        if (combatInstance.getNPCsParty().contains(target)) { //Maybe check if target is Automatic AND his behavior is active
+            setNextAIMove((AutomaticActionActor) target);
+        } else {
+            combatInstance.setCombatStatus(CombatStatus.ROUND_PAUSED);
+        }
+    }
+
+    private void checkStatusResistance(final Action action, final ActionActor target) {
+        if (action.getCategory() == ActionCategory.STATUS
+                && target.equals(action.getSource().get())) {
+                final ActionActor afflictedActor = action.getSource().get();
+                afflictedActor.getStatuses().stream()
+                                             .filter(s -> s.getAction().isPresent())
+                                             .filter(s -> s.getAction().get().equals(action))
+                                             .findFirst()
+                                             .ifPresent(this::depleteStatus);
+        }
+    }
+
+    private void applyEffects(final Action action, final ActionActor target) {
+        action.applyEffects(target);
+        if (target instanceof BasicCharacter
+                && !((BasicCharacter) target).isAlive()) {
+            actorsQueue.remove(target);
+        } else if (canTargetParry(target)) {
+            target.resetSelectedAction();
+        }
+        updateNewlyAppliedStatuses(target);
     }
 
     /**
@@ -208,10 +231,16 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritDoc}<p>
+     * 
+     * @throws IllegalArgumentException if the actor was already present in the queue
      */
     @Override
     public void addActorToQueue(final ActionActor actor) {
+        if (actorsQueue.contains(actor)) {
+            throw new IllegalArgumentException("The actor was already present in the queue");
+        }
+
         if (combatInstance.getCombatStatus() == CombatStatus.ROUND_PAUSED) {
             actionsQueue.add(0, actor.getSelectedAction().get());
         } else {
@@ -374,6 +403,12 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
                                 s.update(combatInstance);
                                 s.getAction().ifPresent(actionsQueue::add);
                             });
+    }
+
+    private void depleteStatus(final Status s) {
+        while (s.getCurrentDuration() != 0 && !s.isPermanent()) {
+            s.update(combatInstance);
+        }
     }
 
 }

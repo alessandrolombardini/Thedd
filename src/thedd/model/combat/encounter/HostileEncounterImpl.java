@@ -2,8 +2,10 @@ package thedd.model.combat.encounter;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import thedd.model.combat.actionexecutor.ActionExecutor;
 import thedd.model.combat.actor.ActionActor;
@@ -14,7 +16,7 @@ import thedd.model.combat.actor.ActionActor;
 public final class HostileEncounterImpl implements HostileEncounter {
 
     private ActionExecutor combatLogic;
-    private final List<ActionActor> npcs = new ArrayList<>();
+    private final Set<ActionActor> npcs = new HashSet<>();
     /**
      * Basic constructor. Initializes combatLogic with null and 
      * adds an empty list of enemies to the combat instance. 
@@ -47,7 +49,7 @@ public final class HostileEncounterImpl implements HostileEncounter {
     }
 
     @Override
-    public void addAll(final List<ActionActor> characters) {
+    public void addAll(final Set<ActionActor> characters) {
         npcs.addAll(npcs);
     }
 
@@ -57,8 +59,8 @@ public final class HostileEncounterImpl implements HostileEncounter {
     }
 
     @Override
-    public List<ActionActor> getNPCs() {
-        return Collections.unmodifiableList(npcs);
+    public Set<ActionActor> getNPCs() {
+        return Collections.unmodifiableSet(npcs);
     }
 
 }
