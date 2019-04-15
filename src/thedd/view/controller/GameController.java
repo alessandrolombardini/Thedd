@@ -48,8 +48,7 @@ public class GameController extends ViewNodeControllerImpl {
     protected final void initView() {
         ViewNodeWrapper node = ViewNodeWrapperFactory.createViewNodeWrapper(NODE_UP, this.getController(), 
                                                                             this.getView());
-        //node.getNode()
-        this.gameContent.getChildren().add(new AnchorPane());
+        this.gameContent.getChildren().add(node.getNode());
         this.viewControllers.add(node.getController());
         node = ViewNodeWrapperFactory.createViewNodeWrapper(NODE_DOWN_SX, this.getController(), this.getView());
         this.inventoryContent.getChildren().add(node.getNode());

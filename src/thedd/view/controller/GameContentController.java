@@ -7,14 +7,12 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import thedd.view.explorationpane.ExplorationPaneImpl;
+import thedd.view.explorationpane.TopStackPane;
 
 public class GameContentController extends ViewNodeControllerImpl {
 
     @FXML
-    private StackPane mainPane;
-
-    @FXML
-    private ExplorationPaneImpl pane;
+    private TopStackPane mainPane;
 
     @Override
     public void update() {
@@ -23,7 +21,7 @@ public class GameContentController extends ViewNodeControllerImpl {
 
     @Override
     protected void initView() {
-        pane.changeBackgroundImage(new Image(ClassLoader.getSystemResourceAsStream("bgimg.jpg")));
+        //pane.changeBackgroundImage(new Image(ClassLoader.getSystemResourceAsStream("bgimg.jpg")));
 
     }
 

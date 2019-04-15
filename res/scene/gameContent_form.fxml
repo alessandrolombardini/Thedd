@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.layout.StackPane?>
 <?import thedd.view.explorationpane.ExplorationPaneImpl?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import thedd.view.explorationpane.TopStackPane?>
 
 <AnchorPane fx:controller="thedd.view.controller.GameContentController" AnchorPane.bottomAnchor="0.0"
 	AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
 	AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
-		<StackPane fx:id="mainPane" alignment="CENTER" AnchorPane.bottomAnchor="0.0"
+		<TopStackPane fx:id="mainPane" alignment="CENTER" AnchorPane.bottomAnchor="0.0"
 	AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
 	AnchorPane.topAnchor="0.0">
-			<children>
-				<ExplorationPaneImpl fx:id="pane" >
-				</ExplorationPaneImpl>
-			</children>
-		</StackPane>
+			
+		</TopStackPane>
 	</children>
 </AnchorPane>
