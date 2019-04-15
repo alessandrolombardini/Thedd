@@ -2,7 +2,6 @@ package thedd.view;
 
 import java.util.Objects;
 import java.util.Optional;
-
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -23,10 +22,12 @@ public class ViewImpl extends Application implements View {
     private static final String ERROR_STAGEUNSETTED = "Stage is not setted";
 
     private static final String GAME_NAME = "The dark destruction";
-    private static final double STAGE_WIDTH = Screen.getPrimary().getBounds().getWidth() / 4 * 3;
-    private static final double STAGE_HEIGHT = Screen.getPrimary().getBounds().getHeight() / 4 * 3;
-    private static final double STAGE_MIN_WIDTH = Screen.getPrimary().getBounds().getWidth() / 4 * 2;
-    private static final double STAGE_MIN_HEIGHT = Screen.getPrimary().getBounds().getHeight() / 4 * 2;
+    private static final double WIDTH = 16;
+    private static final double HEIGHT = 9;
+    private static final double STAGE_WIDTH = Screen.getPrimary().getBounds().getWidth() / WIDTH * HEIGHT;
+    private static final double STAGE_HEIGHT = Screen.getPrimary().getBounds().getHeight() / WIDTH * HEIGHT;
+    private static final double STAGE_MIN_WIDTH = Screen.getPrimary().getBounds().getWidth() / WIDTH * HEIGHT;
+    private static final double STAGE_MIN_HEIGHT = Screen.getPrimary().getBounds().getHeight() / WIDTH * HEIGHT;
     private static final ApplicationViewState FIRST_APP_STATE = ApplicationViewState.MENU;
 
     private final DialogFactory dialogFactory;
@@ -34,6 +35,7 @@ public class ViewImpl extends Application implements View {
     private Optional<Stage> stage;
     private Optional<ViewNodeWrapper> actualScene;
     private boolean viewStarted;
+    private boolean isViewChanged;
 
     /**
      * Create a new View instance.
@@ -45,6 +47,7 @@ public class ViewImpl extends Application implements View {
         this.stage = Optional.empty();
         this.actualScene = Optional.empty();
         this.viewStarted = false;
+        this.isViewChanged = false;
     }
 
     /**
@@ -107,8 +110,26 @@ public class ViewImpl extends Application implements View {
         stage.setMinWidth(STAGE_MIN_WIDTH);
         stage.setHeight(STAGE_HEIGHT);
         stage.setWidth(STAGE_WIDTH);
+//      stage.minHeightProperty().bind(stage.widthProperty().multiply(0.6));
+//      stage.maxHeightProperty().bind(stage.widthProperty().multiply(0.6));
         stage.setResizable(true);
+        stage.widthProperty().addListener((obs, oldVal, newVal) -> {
+            if (!this.isViewChanged) {
+                this.isViewChanged = true;
+                stage.setHeight(newVal.doubleValue() * HEIGHT / WIDTH);
+            } else {
+                this.isViewChanged = false;
+            }
+
+        });
+        stage.heightProperty().addListener((obs, oldVal, newVal) -> {
+            if (!this.isViewChanged) {
+                this.isViewChanged = true;
+                stage.setWidth(newVal.doubleValue() * WIDTH / HEIGHT);
+            } else {
+                this.isViewChanged = false;
+            }
+        });
         setScene(FIRST_APP_STATE);
     }
-
 }
