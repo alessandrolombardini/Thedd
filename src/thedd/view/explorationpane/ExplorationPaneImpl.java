@@ -17,10 +17,6 @@ import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import thedd.utils.observer.Observer;
-import thedd.view.explorationpane.confirmationdialog.BiOptionDialog;
-import thedd.view.explorationpane.confirmationdialog.DialogResponse;
 import thedd.view.explorationpane.enums.PartyType;
 import thedd.view.explorationpane.enums.TargetSelectionState;
 
@@ -38,11 +34,16 @@ public final class ExplorationPaneImpl extends BorderPane implements Exploration
     private final HBox alliedParty;
     private final HBox enemiesAndNext;
     private final ImageView roomAdvancer;
-    private Optional<BiOptionDialog> dialog = Optional.empty();
+    private final TopStackPane parent;
 
-    public ExplorationPaneImpl() {
+    /**
+     * Create a new Pane which knows who is his parent TopStackPane.
+     * @param parent
+     *          the parent of this pane
+     */
+    public ExplorationPaneImpl(final TopStackPane parent) {
         super();
-
+        this.parent = parent;
         viewState = TargetSelectionState.INACTIVE;
         enemyParty = new HBox(SPACING_VALUE);
         alliedParty = new HBox(SPACING_VALUE);
@@ -55,7 +56,7 @@ public final class ExplorationPaneImpl extends BorderPane implements Exploration
         roomAdvancer.setImage(new Image(ClassLoader.getSystemResourceAsStream("bianco.png")));
         roomAdvancer.setPreserveRatio(true);
         roomAdvancer.setOnMouseClicked(e -> {
-            
+            parent.showDialog("Do you want to go to the next room?");
         });
 
         enemiesAndNext.setAlignment(Pos.CENTER_RIGHT);
