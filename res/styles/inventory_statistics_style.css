@@ -1,6 +1,6 @@
 .label {
 	-fx-text-fill: #fff;
-	-fx-font-family: "Segoe UI Light"; 
+	-fx-font-family: "Century Gothic"; 
 	-fx-label-padding: 0.5em;
 	-fx-alignment:center;
 	-fx-font-size: 1.0em;
@@ -17,31 +17,51 @@
 	-fx-background-color: #111;
 	-fx-base: #444;
     /*-fx-padding: 0.1em;*/
-	-fx-font-family: "Segoe UI Light";
+	-fx-font-family: "Century Gothic";
 }
 
 .column-header {
 	-fx-size: 0.1em;
 	-fx-font-size: 1.0em;
+	-fx-background-color: 
+        linear-gradient(from 0.0% 93.0% to 0.0% 100.0%, #1f2429 0.0%, #191d22 100.0%),
+        #20262b,
+        #191d22,
+        radial-gradient(center 50.0% 50.0%, radius 100.0%, rgba(101.0,108.0,119.0,0.9), #111);
 }
 
-.button {
-	-fx-alignment: center;
-    -fx-border-color: #fff;
-    -fx-border-width: 0.05em;
-    -fx-background-color: #444;
-    -fx-font-family: "Segoe UI Light"; 
+AdaptiveFontButton {
+    -fx-padding: 8.0 15.0 15.0 15.0;
+    -fx-background-insets: 0.0,0.0 0.0 5.0 0.0, 0.0 0.0 6.0 0.0, 0.0 0.0 7.0 0.0;
+    -fx-background-radius: 8.0;        
+    -fx-background-color: 
+        linear-gradient(from 0.0% 93.0% to 0.0% 100.0%, #1f2429 0.0%, #191d22 100.0%),
+        #20262b,
+        #191d22,
+        radial-gradient(center 50.0% 50.0%, radius 100.0%, rgba(101.0,108.0,119.0,0.9), #111);
+    -fx-effect: dropshadow( gaussian , rgba(0.0,0.0,0.0,0.75) , 4.0,0.0,0.0,1.0 );
+    -fx-font-weight: bold;
+    -fx-font-size: 1.1em;
     -fx-text-fill: #fff;
 }
 
-.button:hover {
-    -fx-background-color: #333;
+AdaptiveFontButton:hover {
+    -fx-background-color:
+        linear-gradient(from 0.0% 93.0% to 0.0% 100.0%, #1f2429 0.0%, #191d22 100.0%),
+        #20262b,
+        #191d22,
+        radial-gradient(center 50.0% 50.0%, radius 100.0%, rgba(114.0,131.0,148.0,0.9), rgba(255.0,255.0,255.0,0.5));
 }
 
-.button:disabled {
-    -fx-opacity: 0.5;
-    -fx-background-color: #333;
-    -fx-text-fill: white;
+.scroll-pane{
+	-fx-text-fill: #fff;
+	-fx-font-family: "Century Gothic";
+	-fx-background-color: #111;
+	-fx-border-color: #222;
+}
+
+.scroll-pane .scroll-bar{
+	-fx-background-color: #222;
 }
 
 /* classes */

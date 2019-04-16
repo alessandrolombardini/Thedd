@@ -2,10 +2,11 @@ package thedd.view.controller;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import thedd.model.item.Item;
+import thedd.view.extensions.AdaptiveFontButton;
+import thedd.view.extensions.ScrollableText;
 
 /**
  * Class that handle the Inventory View.
@@ -16,11 +17,13 @@ public class InventoryController extends ViewNodeControllerImpl {
     @FXML
     private TableColumn<Item, String> column;
     @FXML
-    private AdaptiveLabel content;
+    private ScrollableText content;
     @FXML
-    private Button useButton;
+    private AdaptiveFontButton useButton;
     @FXML
-    private Button deleteButton;
+    private AdaptiveFontButton deleteButton;
+    @FXML
+    private AdaptiveFontButton backButton;
     private static final String EQUIP_BUTTON_LABEL = "Equip";
     private static final String UNEQUIP_BUTTON_LABEL = "Unequip";
     private static final String USE_BUTTON_LABEL = "Use";
@@ -37,7 +40,6 @@ public class InventoryController extends ViewNodeControllerImpl {
      */
     @FXML
     private void initialize() {
-        content.setStyle("-fx-background-color: #444;");
         column.setCellValueFactory(
                 cellData -> new SimpleStringProperty(cellData.getValue().getName() + addTag(cellData.getValue())));
         showItemDetails(null);
@@ -58,6 +60,22 @@ public class InventoryController extends ViewNodeControllerImpl {
         } else {
             this.getController().unequipItem(selection);
         }
+    }
+
+    /**
+     * Method that handle the Delete button.
+     */
+    @FXML
+    public final void handleDeleteButton() {
+        this.getController().deleteItem(table.getSelectionModel().getSelectedItem());
+    }
+
+    /**
+     * Method that handle the Back button.
+     */
+    @FXML
+    public final void handleBackButton() {
+        // TO-DO
     }
 
     /**
@@ -85,13 +103,16 @@ public class InventoryController extends ViewNodeControllerImpl {
     public void showItemDetails(final Item item) {
         if (item != null) {
             if (this.getController().getInventoryInformations().isEquipped(item)) {
-                content.setText(item.getName() + " is in your equipments.\n\nDescription: " + item.getDescription());
+                this.content.setText(item.getName() + " is in your equipments.\n\nDescription: \n" + item.getDescription()
+                        + "\n\nEffects: \n" + item.getEffectDescription());
                 this.useButton.setText(UNEQUIP_BUTTON_LABEL);
+                this.useButton.setVisible(true);
+                this.deleteButton.setVisible(true);
+                this.deleteButton.setDisable(true);
             } else {
-                content.setText(
-                        item.getName() + ": a " + (item.isUsable() ? "Usable" : "Equipable") + " item. You have "
+                this.content.setText(item.getName() + ": a " + (item.isUsable() ? "Usable" : "Equipable") + " item. You have "
                                 + this.getController().getInventoryInformations().getInventoryItemQuantity(item)
-                                + " of them.\n\nDescription: \n" + item.getDescription());
+                                + " of them.\n\nDescription: \n" + item.getDescription() + "\n\nEffects: \n" + item.getEffectDescription());
                 if (item.isUsable()) {
                     this.useButton.setText(USE_BUTTON_LABEL);
                 } else {
@@ -99,8 +120,10 @@ public class InventoryController extends ViewNodeControllerImpl {
                 }
             }
             this.useButton.setVisible(true);
+            this.deleteButton.setVisible(true);
         } else {
-            content.setText("Select an Item first.");
+            this.content.setText("Select an Item first.");
+            this.deleteButton.setVisible(false);
             this.useButton.setVisible(false);
         }
     }
