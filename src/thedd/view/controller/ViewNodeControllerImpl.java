@@ -2,9 +2,6 @@ package thedd.view.controller;
 
 import java.util.Objects;
 import java.util.Optional;
-
-import javafx.scene.control.Control;
-import javafx.scene.layout.Region;
 import thedd.controller.Controller;
 import thedd.view.View;
 import thedd.view.dialog.DialogFactory;
@@ -113,19 +110,4 @@ public abstract class ViewNodeControllerImpl implements ViewNodeController {
         }
         return this.dialogFactory.get();
     }
-
-    /**
-     * This method allows to bind a Control element to a Region element.
-     * 
-     * @param element component that has to be binded
-     * @param node component Region
-     * @param heightRate rate value of height
-     * @param widthRate rate value of width
-     */
-    protected void setBind(final Control element, final Region node, final double heightRate, final double widthRate) {
-        element.prefHeightProperty().bind(node.heightProperty().multiply(heightRate));
-        element.prefWidthProperty().bind(node.widthProperty().multiply(widthRate));
-    }
-
-
 }

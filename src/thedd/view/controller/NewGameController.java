@@ -1,16 +1,9 @@
 package thedd.view.controller;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
 import thedd.view.ApplicationViewState;
 
 /**
@@ -43,15 +36,9 @@ public class NewGameController extends ViewNodeControllerImpl {
     @FXML
     private Button playButton;
 
-    @FXML
-    private BorderPane newGame;
+    //@FXML
+    //private BorderPane newGame;
 
-    private static final double LABEL_HEIGHT_RATE = 0.10;
-    private static final double LABEL_WIDTH_RATE = 0.20;
-    private static final double TEXT_HEIGHT_RATE = 0.10;
-    private static final double TEXT_WIDTH_RATE = 0.20;
-    private static final double BUTTON_HEIGHT_RATE = 0.08;
-    private static final double BUTTON_WIDTH_RATE = 0.12;
 
     /**
      *Start new game.
@@ -82,15 +69,6 @@ public class NewGameController extends ViewNodeControllerImpl {
      */
     @Override
     protected void initView() {
-        final List<Control> labels = new ArrayList<>();
-        final List<Control> texts = new ArrayList<>();
-        labels.addAll(Arrays.asList(numberOfFloorsLabel, numberOfRoomsLabel, playerNameLabel));
-        texts.addAll(Arrays.asList(numberOfFloorsTextField, numberOfRoomsTextField, playerNameTextField));
-        labels.forEach(c -> this.setBind(c, this.newGame, LABEL_HEIGHT_RATE, LABEL_WIDTH_RATE));
-        texts.forEach(c -> this.setBind(c, this.newGame, TEXT_HEIGHT_RATE, TEXT_WIDTH_RATE));
-        this.setBind(this.playButton, this.newGame, BUTTON_HEIGHT_RATE, BUTTON_WIDTH_RATE);
-        this.numberOfFloorsTextField.setAlignment(Pos.CENTER);
-        this.numberOfRoomsTextField.setAlignment(Pos.CENTER);
-        this.playerNameTextField.setAlignment(Pos.CENTER);
+        /* This class has nothing to init */
     }
 }
