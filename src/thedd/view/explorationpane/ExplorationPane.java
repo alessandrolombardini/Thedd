@@ -4,22 +4,15 @@ import java.util.List;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import thedd.utils.observer.Observer;
 import thedd.view.explorationpane.enums.PartyType;
-import thedd.view.explorationpane.enums.TargetSelectionState;
 
 /**
  * The game sub-scene with ActorViewer to show actors of the game.
  */
-public interface ExplorationPane extends Observer<Pair<PartyType, Integer>> {
-
-    /**
-     * Set the new state to respond to triggers from {@link thedd.utils.observer Observable}s.
-     * @param newState
-     *          the new state of the target selection
-     */
-    void setTargetSelectionState(TargetSelectionState newState);
+public interface ExplorationPane {
 
     /**
      * Changes the background image of the pane with a new image.
@@ -85,5 +78,26 @@ public interface ExplorationPane extends Observer<Pair<PartyType, Integer>> {
      *          the list of all targets in the view
      */
     void setTargetablePositions(List<Pair<PartyType, Integer>> targetableList, List<Pair<PartyType, Integer>> allActors);
+
+    /**
+     * Return the component which allow to change room.
+     * @return
+     *  the roomAdvancer node
+     */
+    Node getRoomAdvancer();
+
+    /**
+     * Set the observer of the ActorViewer inside the pane.
+     * @param newObserver
+     *          the new observer
+     */
+    void setActorViewerObserver(Observer<Pair<PartyType, Integer>> newObserver);
+
+    /**
+     * Set whether the roomAdvancer component is visible.
+     * @param isVisible
+     *          whether the roomAdvancer is visible
+     */
+    void setRoomAdvancerVisible(boolean isVisible);
 
 }
