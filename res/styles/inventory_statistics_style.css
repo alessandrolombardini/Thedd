@@ -53,18 +53,6 @@ AdaptiveFontButton:hover {
         radial-gradient(center 50.0% 50.0%, radius 100.0%, rgba(114.0,131.0,148.0,0.9), rgba(255.0,255.0,255.0,0.5));
 }
 
-.scroll-pane{
-	-fx-text-fill: #fff;
-	-fx-font-family: "Century Gothic";
-	-fx-background-color: #111;
-	-fx-border-color: #222;
-}
-
-.scroll-pane .scroll-bar{
-	-fx-background-color: #222;
-}
-
-/* classes */
 .background {
 	-fx-background-color: #111;
 }

@@ -1,0 +1,16 @@
+.scroll-pane{
+	-fx-text-fill: #fff;
+	-fx-font-family: "Century Gothic";
+	-fx-background: #111;
+	-fx-border-color: #222;
+}
+
+.scroll-bar{
+ -fx-background-color: #222;
+ -fx-background-radius: 2em;
+}
+
+.scroll-bar:vertical:focused,
+.scroll-bar:horizontal:focused {
+ -fx-background-color: transparent,rgb(96,96,96),rgb(96,96,96);
+}

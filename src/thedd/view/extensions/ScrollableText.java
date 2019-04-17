@@ -11,8 +11,9 @@ import javafx.scene.input.MouseEvent;
  */
 public class ScrollableText extends ScrollPane {
     private static final Label TEXT = new Label();
-    private static final String CUSTOM_CSS = "-fx-background-color:#111; -fx-text-fill: #fff";
     private static final int SCROLLBAR_WIDTH = 10;
+    private static final String STYLESHEET = "styles/scrollable_text.css";
+
     /**
      * ScrollableText constructor.
      * 
@@ -35,17 +36,13 @@ public class ScrollableText extends ScrollPane {
         this.setFocusTraversable(false);
         TEXT.minWidthProperty().bind(this.widthProperty().subtract(SCROLLBAR_WIDTH));
         TEXT.minHeightProperty().bind(this.heightProperty());
-//        widthProperty().addListener(l -> System.out.println(widthProperty().get()));
-//        TEXT.wrappingWidthProperty().bind(this.widthProperty());
-//        TEXT.prefWidthProperty().bind(this.widthProperty());
-//        TEXT.prefHeightProperty().bind(this.heightProperty());
         if (value == null) {
             TEXT.setText("");
         } else {
             TEXT.setText(value);
         }
         this.setFitToWidth(true);
-        TEXT.setStyle(CUSTOM_CSS);
+        this.getStylesheets().add(ClassLoader.getSystemClassLoader().getResource(STYLESHEET).toExternalForm());
     }
 
     /**
