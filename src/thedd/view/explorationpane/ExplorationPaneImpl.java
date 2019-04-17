@@ -2,12 +2,12 @@ package thedd.view.explorationpane;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.IntStream;
 
 import org.apache.commons.lang3.tuple.Pair;
 
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
@@ -17,8 +17,8 @@ import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import thedd.utils.observer.Observer;
 import thedd.view.explorationpane.enums.PartyType;
-import thedd.view.explorationpane.enums.TargetSelectionState;
 
 /**
  * 
@@ -26,58 +26,37 @@ import thedd.view.explorationpane.enums.TargetSelectionState;
  */
 public final class ExplorationPaneImpl extends BorderPane implements ExplorationPane {
 
-    private TargetSelectionState viewState;
     private static final double SPACING_VALUE = 2.5;
     private static final double IMMAGINARY_COLUMNS = 8;
 
     private final HBox enemyParty;
     private final HBox alliedParty;
-    private final HBox enemiesAndNext;
     private final ImageView roomAdvancer;
-    private final TopStackPane parent;
+    private Observer<Pair<PartyType, Integer>> observer;
 
     /**
-     * Create a new Pane which knows who is his parent TopStackPane.
-     * @param parent
-     *          the parent of this pane
+     * Create a new Pane.
      */
-    public ExplorationPaneImpl(final TopStackPane parent) {
+    public ExplorationPaneImpl() {
         super();
-        this.parent = parent;
-        viewState = TargetSelectionState.INACTIVE;
+        final HBox enemiesAndNext = new HBox(SPACING_VALUE);
         enemyParty = new HBox(SPACING_VALUE);
         alliedParty = new HBox(SPACING_VALUE);
-        enemiesAndNext = new HBox(SPACING_VALUE);
         roomAdvancer = new ImageView();
 
         enemiesAndNext.getChildren().add(enemyParty);
         enemiesAndNext.getChildren().add(roomAdvancer);
-
-        roomAdvancer.setImage(new Image(ClassLoader.getSystemResourceAsStream("bianco.png")));
-        roomAdvancer.setPreserveRatio(true);
-        roomAdvancer.setOnMouseClicked(e -> {
-            parent.showDialog("Do you want to go to the next room?");
-        });
-
         enemiesAndNext.setAlignment(Pos.CENTER_RIGHT);
+
+        roomAdvancer.setImage(new Image(ClassLoader.getSystemResourceAsStream("images/icons/NextRoomImg.png")));
+        roomAdvancer.setPreserveRatio(true);
+        roomAdvancer.setPickOnBounds(true);
 
         this.setRight(enemiesAndNext);
         this.setLeft(alliedParty);
 
         this.widthProperty().addListener(list -> resizeAllComponents());
         this.heightProperty().addListener(list -> resizeAllComponents());
-    }
-
-    @Override
-    public void trigger(final Optional<Pair<PartyType, Integer>> message) {
-        System.out.println("Position " + message.get().getRight() + " at " + message.get().getLeft() + " activated");
-        
-    }
-
-    @Override
-    public void setTargetSelectionState(final TargetSelectionState newState) {
-        this.viewState = Objects.requireNonNull(newState);
-        roomAdvancer.setVisible(this.viewState == TargetSelectionState.EXPLORATION);
     }
 
     @Override
@@ -104,14 +83,14 @@ public final class ExplorationPaneImpl extends BorderPane implements Exploration
     public void setEnemyImages(final List<Image> images) {
         enemyParty.getChildren().clear();
         IntStream.range(0, Objects.requireNonNull(images).size()).forEach(i -> enemyParty.getChildren().add(new ActorViewerImpl(PartyType.ENEMY, i, Objects.requireNonNull(images.get(i)))));
-        enemyParty.getChildren().forEach(c -> ((ActorViewerImpl) c).bindObserver(this));
+        enemyParty.getChildren().forEach(c -> ((ActorViewerImpl) c).bindObserver(observer));
     }
 
     @Override
     public void setAllyImages(final List<Image> images) {
         alliedParty.getChildren().clear();
         IntStream.range(0, Objects.requireNonNull(images).size()).forEach(i -> alliedParty.getChildren().add(new ActorViewerImpl(PartyType.ALLIED, i, Objects.requireNonNull(images.get(i)))));
-        alliedParty.getChildren().forEach(c -> ((ActorViewerImpl) c).bindObserver(this));
+        alliedParty.getChildren().forEach(c -> ((ActorViewerImpl) c).bindObserver(observer));
     }
 
     @Override
@@ -142,7 +121,6 @@ public final class ExplorationPaneImpl extends BorderPane implements Exploration
     }
 
     private void resizeAllComponents() {
-        final double twoTimes = 2;
         alliedParty.getChildren().forEach(c -> {
             ((ActorViewerImpl) c).setFitWidth(this.widthProperty().doubleValue() / IMMAGINARY_COLUMNS);
             ((ActorViewerImpl) c).setFitHeight(this.heightProperty().doubleValue()); 
@@ -151,7 +129,22 @@ public final class ExplorationPaneImpl extends BorderPane implements Exploration
             ((ActorViewerImpl) c).setFitWidth(this.widthProperty().doubleValue() / IMMAGINARY_COLUMNS);
             ((ActorViewerImpl) c).setFitHeight(this.heightProperty().doubleValue());
         });
-        roomAdvancer.setFitWidth((roomAdvancer.isVisible() ? 1.0 : Double.MIN_NORMAL) * this.widthProperty().doubleValue() / (IMMAGINARY_COLUMNS * twoTimes));
+        roomAdvancer.setFitWidth((roomAdvancer.isVisible() ? 1.0 : Double.MIN_NORMAL) * this.widthProperty().doubleValue() / IMMAGINARY_COLUMNS);
+    }
+
+    @Override
+    public Node getRoomAdvancer() {
+        return roomAdvancer;
+    }
+
+    @Override
+    public void setActorViewerObserver(final Observer<Pair<PartyType, Integer>> newObserver) {
+        this.observer = newObserver;
+    }
+
+    @Override
+    public void setRoomAdvancerVisible(final boolean isVisible) {
+        roomAdvancer.setVisible(isVisible);
     }
 
 }
