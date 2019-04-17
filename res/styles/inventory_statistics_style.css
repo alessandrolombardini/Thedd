@@ -31,6 +31,7 @@
 }
 
 AdaptiveFontButton {
+	-fx-font-family: "Century Gothic";
     -fx-padding: 8.0 15.0 15.0 15.0;
     -fx-background-insets: 0.0,0.0 0.0 5.0 0.0, 0.0 0.0 6.0 0.0, 0.0 0.0 7.0 0.0;
     -fx-background-radius: 8.0;        

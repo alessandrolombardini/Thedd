@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import thedd.model.item.Item;
+import thedd.model.item.usableitem.UsableItem;
 import thedd.view.extensions.AdaptiveFontButton;
 import thedd.view.extensions.ScrollableText;
 
@@ -102,25 +103,43 @@ public class InventoryController extends ViewNodeControllerImpl {
      */
     public void showItemDetails(final Item item) {
         if (item != null) {
+            this.useButton.setVisible(true);
+            this.deleteButton.setVisible(true);
             if (this.getController().getInventoryInformations().isEquipped(item)) {
-                this.content.setText(item.getName() + " is in your equipments.\n\nDescription: \n" + item.getDescription()
-                        + "\n\nEffects: \n" + item.getEffectDescription());
+                this.content.setText(item.getName() + " is in your equipments.\n\nDescription: \n"
+                        + item.getDescription() + "\n\nEffects: \n" + item.getEffectDescription());
                 this.useButton.setText(UNEQUIP_BUTTON_LABEL);
-                this.useButton.setVisible(true);
-                this.deleteButton.setVisible(true);
-                this.deleteButton.setDisable(true);
-            } else {
-                this.content.setText(item.getName() + ": a " + (item.isUsable() ? "Usable" : "Equipable") + " item. You have "
-                                + this.getController().getInventoryInformations().getInventoryItemQuantity(item)
-                                + " of them.\n\nDescription: \n" + item.getDescription() + "\n\nEffects: \n" + item.getEffectDescription());
-                if (item.isUsable()) {
-                    this.useButton.setText(USE_BUTTON_LABEL);
+                if (this.getController().isCombatActive()) { // Check in order to unequip only out of a combat
+                    this.useButton.setDisable(true);
                 } else {
+                    this.useButton.setDisable(false);
+                }
+                this.deleteButton.setDisable(true); // You can't delete an item when this is equipped
+            } else {
+                this.content.setText(
+                        item.getName() + ": a " + (item.isUsable() ? "Usable" : "Equipable") + " item. You have "
+                                + this.getController().getInventoryInformations().getInventoryItemQuantity(item)
+                                + " of them.\n\nDescription: \n" + item.getDescription() + "\n\nEffects: \n"
+                                + item.getEffectDescription());
+                if (item.isUsable()) {
+                    UsableItem usable = (UsableItem) item;
+                    this.useButton.setText(USE_BUTTON_LABEL);
+                    if (usable.isUsableInCombat() && this.getController().isCombatActive()) {
+                        this.useButton.setDisable(false);
+                    } else if (usable.isUsableOutOfCombat() && !this.getController().isCombatActive()) {
+                        this.useButton.setDisable(false);
+                    } else {
+                        this.useButton.setDisable(true);
+                    }
+                } else {
+                    if (this.getController().isCombatActive()) { // Check in order to equip only out of a combat
+                        this.useButton.setDisable(true);
+                    } else {
+                        this.useButton.setDisable(false);
+                    }
                     this.useButton.setText(EQUIP_BUTTON_LABEL);
                 }
             }
-            this.useButton.setVisible(true);
-            this.deleteButton.setVisible(true);
         } else {
             this.content.setText("Select an Item first.");
             this.deleteButton.setVisible(false);
