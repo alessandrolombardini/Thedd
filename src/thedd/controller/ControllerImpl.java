@@ -273,6 +273,9 @@ public class ControllerImpl implements Controller {
         evaluateNextAction();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void selectAction(final Action action) {
         model.getSession().getPlayerCharacter().addActionToQueue(action.getCopy(), true);
