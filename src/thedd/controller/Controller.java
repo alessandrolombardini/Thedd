@@ -2,6 +2,8 @@ package thedd.controller;
 
 import thedd.controller.informations.InventoryInformations;
 import thedd.controller.informations.StatisticsInformations;
+import thedd.model.combat.action.Action;
+import thedd.model.combat.actor.ActionActor;
 import thedd.model.item.Item;
 
 /**
@@ -72,4 +74,42 @@ public interface Controller {
      * @return an StatisticsInformation class.
      */
     StatisticsInformations getStatisticsInformations();
+
+    /**
+     * Resets the player's selected action and prompts the view
+     * to let the player choose another action.
+     */
+    void undoActionSelection();
+
+    /**
+     * Sets the provided actor as the target of the player's
+     * current action and, if the round is ready, evaluates
+     * that action.
+     * @param target the target to assign to the current action
+     */
+    void targetSelected(ActionActor target);
+
+    /**
+     * Sets the {@link ActionExecutor} as a {@link OutOfCombatActionExecutor}
+     * and starts it passing the provided action.
+     * @param action the action to execute
+     */
+    void executeSingleAction(Action action);
+
+    /**
+     * Execute the last evaluated action by the {@link ActionExecutor}.
+     */
+    void executeCurrentAction();
+
+    /**
+     * Updates the execution status and the game according to it.
+     */
+    void evaluateExecutionState();
+
+    /**
+     * Sets the provided action as the player's selected action and prompts
+     * the view to let the player choose a target.
+     * @param action the selected action
+     */
+    void selectAction(Action action);
 }
