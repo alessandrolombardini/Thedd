@@ -88,6 +88,7 @@ public class InventoryController extends ViewNodeControllerImpl {
      * @param item the item or null
      */
     public void showItemDetails(final Item item) {
+        this.backButton.setVisible(this.getController().isCombatActive());
         if (item != null) {
             this.useButton.setVisible(true);
             this.deleteButton.setVisible(true);
