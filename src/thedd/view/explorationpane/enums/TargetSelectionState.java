@@ -8,7 +8,7 @@ public enum TargetSelectionState {
     /**
      * A combat target is selected.
      */
-    COMBAT,
+    COMBAT_TARGET,
 
     /**
      * An InteractableActionPerformer is selected.
@@ -18,6 +18,6 @@ public enum TargetSelectionState {
     /**
      * There is no need to select something. Ignore the input.
      */
-    INACTIVE;
+    COMBAT_INFORMATION;
 
 }
