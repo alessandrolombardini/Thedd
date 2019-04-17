@@ -20,7 +20,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import thedd.utils.observer.Observable;
 import thedd.utils.observer.Observer;
-import thedd.view.controller.AdaptiveLabel;
+import thedd.view.extensions.AdaptiveFontLabel;
 
 /**
  * 
@@ -39,7 +39,7 @@ public final class BiOptionDialog extends Pane implements Observable<DialogRespo
     private final List<Observer<DialogResponse>> observers;
     private Optional<DialogResponse> response;
     private final Rectangle r = new Rectangle();
-    private final AdaptiveLabel l = new AdaptiveLabel(TEXT_RATIO);
+    private final AdaptiveFontLabel l = new AdaptiveFontLabel(TEXT_RATIO);
     private final GridPane buttons = new GridPane();
 
     private final DoubleProperty widthProperty = r.widthProperty();
