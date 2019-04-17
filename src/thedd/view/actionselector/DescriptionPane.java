@@ -16,6 +16,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import thedd.utils.observer.Observable;
 import thedd.utils.observer.Observer;
+import thedd.view.extensions.AdaptiveFontButton;
 import thedd.view.extensions.ScrollableText;
 
 /**
@@ -24,7 +25,7 @@ import thedd.view.extensions.ScrollableText;
 public class DescriptionPane extends Pane implements Observable<Command> {
 
     private static final double UPPER_AREA_HEIGHT_PERC = 0.8;
-    private static final double LOWER_AREA_HEIGHT_PERC = 0.2;
+    private static final double PADDING_PERC = 0.02;
     private static final int N_COLS = 6;
     private final List<Observer<Command>> listeners = new ArrayList<>();
     private final ScrollableText textArea;
@@ -45,7 +46,7 @@ public class DescriptionPane extends Pane implements Observable<Command> {
     public DescriptionPane() {
         upperAreaHeight.bind(this.heightProperty().multiply(UPPER_AREA_HEIGHT_PERC));
         lowerAreaHeight.bind(this.heightProperty().subtract(upperAreaHeight));
-        padding.bind(this.widthProperty().multiply(LOWER_AREA_HEIGHT_PERC));
+        padding.bind(this.widthProperty().multiply(PADDING_PERC));
         buttonSizeByWidth.bind(this.widthProperty().subtract(padding.multiply(2)).divide(N_COLS));
 
         textArea = new ScrollableText("[Description is missing]");
@@ -157,9 +158,10 @@ public class DescriptionPane extends Pane implements Observable<Command> {
      *  In can be either set to fire the event one time per mouse click or
      *  as long as the mouse button is held.
      */
-    private class MyButton extends Button {
+    private class MyButton extends AdaptiveFontButton {
 
-        private final double pressIntervalMilliseconds = 250;
+        private static final double PRESS_INTERVAL_MS = 250;
+        private static final int FONT_RATIO = 8;
 
         /**
          * 
@@ -169,6 +171,7 @@ public class DescriptionPane extends Pane implements Observable<Command> {
          * @param hold whether the signal to the observers should be sent as long as the button is pressed
          */
         MyButton(final int column, final String text, final Command onClickCommand, final boolean hold) {
+            super(FONT_RATIO);
             this.setMinSize(0, 0);
             this.setFocusTraversable(false);
             this.setText(text);
@@ -190,7 +193,7 @@ public class DescriptionPane extends Pane implements Observable<Command> {
                     @Override
                     public void handle(final long time) {
                         final long timeStampMs = time / 1000000;
-                        if (Math.abs(timeStampMs - lastUpdate) >= pressIntervalMilliseconds) {
+                        if (Math.abs(timeStampMs - lastUpdate) >= PRESS_INTERVAL_MS) {
                             currentCommand = onClickCommand;
                             emit();
                             this.lastUpdate = timeStampMs;
