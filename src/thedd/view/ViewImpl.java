@@ -26,8 +26,6 @@ public class ViewImpl extends Application implements View {
     private static final double HEIGHT = 9;
     private static final double STAGE_WIDTH = Screen.getPrimary().getBounds().getWidth() / WIDTH * HEIGHT;
     private static final double STAGE_HEIGHT = Screen.getPrimary().getBounds().getHeight() / WIDTH * HEIGHT;
-    private static final double STAGE_MIN_WIDTH = Screen.getPrimary().getBounds().getWidth() / WIDTH * HEIGHT;
-    private static final double STAGE_MIN_HEIGHT = Screen.getPrimary().getBounds().getHeight() / WIDTH * HEIGHT;
     private static final ApplicationViewState FIRST_APP_STATE = ApplicationViewState.MENU;
 
     private final DialogFactory dialogFactory;
@@ -35,7 +33,6 @@ public class ViewImpl extends Application implements View {
     private Optional<Stage> stage;
     private Optional<ViewNodeWrapper> actualScene;
     private boolean viewStarted;
-    private boolean isViewChanged;
 
     /**
      * Create a new View instance.
@@ -47,7 +44,6 @@ public class ViewImpl extends Application implements View {
         this.stage = Optional.empty();
         this.actualScene = Optional.empty();
         this.viewStarted = false;
-        this.isViewChanged = false;
     }
 
     /**
@@ -106,30 +102,11 @@ public class ViewImpl extends Application implements View {
         }
         final Stage stage = this.stage.get();
         stage.setTitle(GAME_NAME);
-        stage.setMinHeight(STAGE_MIN_HEIGHT);
-        stage.setMinWidth(STAGE_MIN_WIDTH);
         stage.setHeight(STAGE_HEIGHT);
         stage.setWidth(STAGE_WIDTH);
 //      stage.minHeightProperty().bind(stage.widthProperty().multiply(0.6));
 //      stage.maxHeightProperty().bind(stage.widthProperty().multiply(0.6));
         stage.setResizable(true);
-        stage.widthProperty().addListener((obs, oldVal, newVal) -> {
-            if (!this.isViewChanged) {
-                this.isViewChanged = true;
-                stage.setHeight(newVal.doubleValue() * HEIGHT / WIDTH);
-            } else {
-                this.isViewChanged = false;
-            }
-
-        });
-        stage.heightProperty().addListener((obs, oldVal, newVal) -> {
-            if (!this.isViewChanged) {
-                this.isViewChanged = true;
-                stage.setWidth(newVal.doubleValue() * WIDTH / HEIGHT);
-            } else {
-                this.isViewChanged = false;
-            }
-        });
         setScene(FIRST_APP_STATE);
     }
 }
