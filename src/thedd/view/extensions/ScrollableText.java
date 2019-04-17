@@ -12,7 +12,7 @@ import javafx.scene.input.MouseEvent;
 public class ScrollableText extends ScrollPane {
     private static final Label TEXT = new Label();
     private static final int SCROLLBAR_WIDTH = 10;
-    private static final String STYLESHEET = "styles/scrollable_text.css";
+    private static final String STYLESHEET = "styles/scrollable_text_style.css";
 
     /**
      * ScrollableText constructor.
