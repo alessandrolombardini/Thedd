@@ -109,12 +109,8 @@ public class InventoryController extends ViewNodeControllerImpl {
                 this.content.setText(item.getName() + " is in your equipments.\n\nDescription: \n"
                         + item.getDescription() + "\n\nEffects: \n" + item.getEffectDescription());
                 this.useButton.setText(UNEQUIP_BUTTON_LABEL);
-                if (this.getController().isCombatActive()) { // Check in order to unequip only out of a combat
-                    this.useButton.setDisable(true);
-                } else {
-                    this.useButton.setDisable(false);
-                }
-                this.deleteButton.setDisable(true); // You can't delete an item when this is equipped
+                this.useButton.setDisable(this.getController().isCombatActive());
+                this.deleteButton.setDisable(true);
             } else {
                 this.content.setText(
                         item.getName() + ": a " + (item.isUsable() ? "Usable" : "Equipable") + " item. You have "
@@ -124,19 +120,12 @@ public class InventoryController extends ViewNodeControllerImpl {
                 if (item.isUsable()) {
                     UsableItem usable = (UsableItem) item;
                     this.useButton.setText(USE_BUTTON_LABEL);
-                    if (usable.isUsableInCombat() && this.getController().isCombatActive()) {
-                        this.useButton.setDisable(false);
-                    } else if (usable.isUsableOutOfCombat() && !this.getController().isCombatActive()) {
-                        this.useButton.setDisable(false);
-                    } else {
-                        this.useButton.setDisable(true);
-                    }
+                    this.useButton.setDisable(!((usable.isUsableInCombat() && this.getController().isCombatActive())
+                            || (usable.isUsableOutOfCombat() && !this.getController().isCombatActive())));
+                    this.deleteButton.setDisable(this.getController().isCombatActive());
+
                 } else {
-                    if (this.getController().isCombatActive()) { // Check in order to equip only out of a combat
-                        this.useButton.setDisable(true);
-                    } else {
-                        this.useButton.setDisable(false);
-                    }
+                    this.useButton.setDisable(this.getController().isCombatActive());
                     this.useButton.setText(EQUIP_BUTTON_LABEL);
                 }
             }
