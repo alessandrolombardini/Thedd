@@ -11,6 +11,7 @@ import thedd.controller.informations.StatisticsInformationsImpl;
 import thedd.model.Model;
 import thedd.model.ModelImpl;
 import thedd.model.item.Item;
+import thedd.model.item.usableitem.UsableItem;
 import thedd.model.world.environment.EnvironmentImpl;
 import thedd.model.world.environment.Session;
 import thedd.model.world.environment.SessionImpl;
@@ -68,7 +69,7 @@ public class ControllerImpl implements Controller {
     private boolean checkNumber(final String number) {
         return !number.isEmpty() && number.chars().allMatch(Character::isDigit);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -92,7 +93,11 @@ public class ControllerImpl implements Controller {
      */
     @Override
     public void useItem(final Item item) {
-        // TO-DO.
+        if (item.isUsable()) {
+            final UsableItem usable = (UsableItem) item;
+            usable.getAction(); // devo passare questo argomento al metodo di ivan che permette di selezionare
+                                // il target
+        }
         this.view.update();
     }
 
