@@ -1,20 +1,30 @@
 package thedd.view.explorationpane;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import thedd.utils.observer.Observer;
 import thedd.view.explorationpane.confirmationdialog.BiOptionDialog;
 import thedd.view.explorationpane.confirmationdialog.DialogResponse;
 
-public class TopStackPane extends StackPane implements Observer<DialogResponse> {
+/**
+ * A {@link StackPane} which observes a {@link DialogResponse} 
+ * and can run any function based on the response of a modal dialog it can create and show.
+ *
+ */
+public class TopStackPane extends StackPane implements Observer<DialogResponse>, DialogResponseManager, ModalDialogViewer {
 
-    private final ExplorationPaneImpl ep;
     private final BiOptionDialog bop = new BiOptionDialog();
+    private Runnable onDialogAccept = (() -> {
+        return;
+    });
+    private Runnable onDialogDecline = (() -> {
+        return;
+    });
 
     private final EventHandler<MouseEvent> filter = new EventHandler<MouseEvent>() {
         @Override
@@ -28,52 +38,55 @@ public class TopStackPane extends StackPane implements Observer<DialogResponse> 
         }
     };
 
+    /**
+     * TopStackPane contructor.
+     * It also creates the dialog.
+     */
     public TopStackPane() {
-        ep = new ExplorationPaneImpl(this);
         this.setAlignment(Pos.CENTER);
-        ep.changeBackgroundImage(new Image(ClassLoader.getSystemResourceAsStream("bgimg.jpg")));
-        this.getChildren().add(ep);
-        
+
         bop.translateXProperty().bind(this.widthProperty().divide(2).subtract(bop.getWidthProperty().divide(2)));
         bop.translateYProperty().bind(this.heightProperty().divide(2).subtract(bop.getHeightProperty().divide(2)));
         bop.getWidthProperty().bind(this.widthProperty().divide(2));
         bop.getHeightProperty().bind(this.heightProperty().divide(2));
-        
         bop.bindObserver(this);
-        
-        //showDialog("Continui?");
     }
 
-    /**
-     * 
-     * @param newText
-     */
-    void showDialog(final String newText) {
+    @Override
+    public final void showDialog(final String newText) {
         bop.setText(newText);
         this.getChildren().add(bop);
         this.addEventFilter(MouseEvent.ANY, filter);
     }
 
-    /**
-     * 
-     */
-    void hideDialog() {
+    @Override
+    public final void hideDialog() {
         this.getChildren().remove(bop);
         this.removeEventFilter(MouseEvent.ANY, filter);
     }
 
     @Override
     public final void trigger(final Optional<DialogResponse> message) {
-        if (!message.isPresent()) {
+        if (!Objects.requireNonNull(message).isPresent()) {
             throw new IllegalArgumentException("Message expected. None arrived.");
         } else {
             hideDialog();
             if (message.get() == DialogResponse.ACCEPTED) {
-                
+                onDialogAccept.run();
+            } else {
+                onDialogDecline.run();
             }
         }
     }
 
+    @Override
+    public final void setDialogAccepted(final Runnable onAccept) {
+        onDialogAccept = Objects.requireNonNull(onAccept);
+    }
 
+    @Override
+    public final void setDialogDeclined(final Runnable onDecline) {
+        onDialogDecline = Objects.requireNonNull(onDecline);
+    }
 
 }
