@@ -30,25 +30,6 @@ public class InventoryController extends ViewNodeControllerImpl {
     private static final String USE_BUTTON_LABEL = "Use";
 
     /**
-     * Inventory Controller Constructor.
-     */
-    public InventoryController() {
-    }
-
-    /**
-     * Initializes the class. This method is automatically called after the fxml
-     * file has been loaded.
-     */
-    @FXML
-    private void initialize() {
-        column.setCellValueFactory(
-                cellData -> new SimpleStringProperty(cellData.getValue().getName() + addTag(cellData.getValue())));
-        showItemDetails(null);
-        table.getSelectionModel().selectedItemProperty()
-                .addListener((observable, oldValue, newValue) -> showItemDetails(newValue));
-    }
-
-    /**
      * Method that handle the Use button.
      */
     @FXML
@@ -92,6 +73,11 @@ public class InventoryController extends ViewNodeControllerImpl {
      */
     @Override
     protected void initView() {
+        column.setCellValueFactory(
+                cellData -> new SimpleStringProperty(cellData.getValue().getName() + addTag(cellData.getValue())));
+        showItemDetails(null);
+        table.getSelectionModel().selectedItemProperty()
+                .addListener((observable, oldValue, newValue) -> showItemDetails(newValue));
         update();
     }
 

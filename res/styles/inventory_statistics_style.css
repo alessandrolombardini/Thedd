@@ -1,7 +1,7 @@
 .label {
 	-fx-text-fill: #fff;
 	-fx-label-padding: 0.5em;
-	-fx-alignment:center;
+	-fx-alignment: TOP_LEFT;
 	-fx-font-size: 1.0em;
 }
 
@@ -17,9 +17,14 @@
 	-fx-base: #444;
 }
 
+.column-header .label {
+	-fx-alignment:center;
+}
+
 .column-header {
 	-fx-size: 0.1em;
 	-fx-font-size: 1.0em;
+	-fx-alignment:center;
 	-fx-background-color: 
         linear-gradient(from 0.0% 93.0% to 0.0% 100.0%, #1f2429 0.0%, #191d22 100.0%),
         #20262b,
