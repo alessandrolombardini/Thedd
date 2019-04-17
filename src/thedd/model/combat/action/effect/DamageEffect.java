@@ -40,7 +40,11 @@ public class DamageEffect extends AbstractActionEffect {
 
     @Override
     public final String getLogMessage() {
-        return appendTags("Dealt " + dealtDamage + " HP damage ");
+        getSource().ifPresent(this::updateEffectBySource);
+        getTarget().ifPresent(this::updateEffectByTarget);
+        final String result =  "Dealt " + damage + " HP damage ";
+        damage = baseDamage;
+        return appendTags(result);
     }
 
     @Override
