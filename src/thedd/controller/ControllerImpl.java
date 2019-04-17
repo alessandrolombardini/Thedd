@@ -68,6 +68,14 @@ public class ControllerImpl implements Controller {
     private boolean checkNumber(final String number) {
         return !number.isEmpty() && number.chars().allMatch(Character::isDigit);
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isCombatActive() {
+        return this.model.getSession().getPlayerCharacter().isInCombat();
+    }
 
     // Martina's Feature
     /**
