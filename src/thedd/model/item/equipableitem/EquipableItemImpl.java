@@ -97,7 +97,8 @@ public class EquipableItemImpl extends AbstractItem implements EquipableItem {
 
     @Override
     public final String getEffectDescription() {
-        return providedEffects.stream().map(e -> e.getDescription()).collect(Collectors.joining("\n"));
+        return providedEffects.stream().map(e -> e.getDescription()).collect(Collectors.joining("\n")) 
+               + additionalActions.stream().map(a -> "Provide action " + a.getName()).collect(Collectors.joining("\n"));
     }
 
     @Override
