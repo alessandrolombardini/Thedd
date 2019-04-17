@@ -1,0 +1,35 @@
+.scroll-pane{
+	-fx-text-fill: #fff;
+	-fx-background: #111;
+	-fx-border-color: #222;
+}
+
+.scroll-bar{
+ -fx-background-color: #222;
+ -fx-background-radius: 2.0em;
+}
+
+.scroll-bar:vertical:focused,
+.scroll-bar:horizontal:focused {
+ -fx-background-color: transparent,rgb(96.0,96.0,96.0),rgb(96.0,96.0,96.0);
+}
+
+.scroll-bar:vertical .increment-arrow {
+ -fx-background-color: transparent;
+ -fx-padding: 0.25em;
+ -fx-rotate: 0.0;
+}
+
+.scroll-bar:vertical .decrement-arrow {
+ -fx-background-color: transparent;
+ -fx-padding: 0.25em;
+ -fx-rotate: -180.0;
+}
+
+.scroll-bar:vertical .decrement-button {
+ -fx-background-color: transparent;
+}
+
+.scroll-bar:vertical .increment-button{
+	-fx-background-color: transparent;
+}

@@ -25,9 +25,9 @@ public class GameController extends ViewNodeControllerImpl {
     @FXML
     private AnchorPane gameContent;
 
-    private static final ViewNode NODE_UP = ViewNode.TOP_PANE;
-    private static final ViewNode NODE_DOWN_SX = ViewNode.INVENTORY;
-    private static final ViewNode NODE_DOWN_DX = ViewNode.STATISTICS;
+    private static final ViewNode INIT_NODE_UP = ViewNode.TOP_PANE;
+    private static final ViewNode INIT_NODE_DOWN_SX = ViewNode.INVENTORY;
+    private static final ViewNode INIT_NODE_DOWN_DX = ViewNode.STATISTICS;
 
     private final List<ViewNodeController> viewControllers;
 
@@ -46,14 +46,14 @@ public class GameController extends ViewNodeControllerImpl {
 
     @Override
     protected final void initView() {
-        ViewNodeWrapper node = ViewNodeWrapperFactory.createViewNodeWrapper(NODE_UP, this.getController(), 
+        ViewNodeWrapper node = ViewNodeWrapperFactory.createViewNodeWrapper(INIT_NODE_UP, this.getController(), 
                                                                             this.getView());
         this.gameContent.getChildren().add(node.getNode());
         this.viewControllers.add(node.getController());
-        node = ViewNodeWrapperFactory.createViewNodeWrapper(NODE_DOWN_SX, this.getController(), this.getView());
+        node = ViewNodeWrapperFactory.createViewNodeWrapper(INIT_NODE_DOWN_SX, this.getController(), this.getView());
         this.inventoryContent.getChildren().add(node.getNode());
         this.viewControllers.add(node.getController());
-        node = ViewNodeWrapperFactory.createViewNodeWrapper(NODE_DOWN_DX, this.getController(), this.getView());
+        node = ViewNodeWrapperFactory.createViewNodeWrapper(INIT_NODE_DOWN_DX, this.getController(), this.getView());
         this.statisticsContent.getChildren().add(node.getNode());
         this.viewControllers.add(node.getController());
     }

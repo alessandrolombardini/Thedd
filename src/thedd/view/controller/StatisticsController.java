@@ -8,6 +8,7 @@ import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
+import thedd.view.extensions.AdaptiveFontLabel;
 import thedd.view.imageloader.ImageLoader;
 
 /**
@@ -15,16 +16,18 @@ import thedd.view.imageloader.ImageLoader;
  */
 public class StatisticsController extends ViewNodeControllerImpl {
     @FXML
-    private AdaptiveLabel healthValue;
+    private AdaptiveFontLabel healthValue;
     @FXML
-    private AdaptiveLabel constitutionValue;
+    private AdaptiveFontLabel constitutionValue;
     @FXML
-    private AdaptiveLabel strengthValue;
+    private AdaptiveFontLabel strengthValue;
     @FXML
-    private AdaptiveLabel agilityValue;
+    private AdaptiveFontLabel agilityValue;
     @FXML
     private AnchorPane imageContent;
     private static final String IMAGE_TAG = "_PROFILE";
+    private static final double BACKGROUND_WIDTH_PERCENTAGE = 1.0;
+    private static final double BACKGROUND_HEIGHT_PERCENTAGE = 1.0;
 
     /**
      * Statistics controller constructor.
@@ -46,9 +49,9 @@ public class StatisticsController extends ViewNodeControllerImpl {
         // Set the Character's image.
         Image img = loadRelatedImage();
         BackgroundImage bg = new BackgroundImage(img, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
-                BackgroundPosition.CENTER, new BackgroundSize(1.0, 1.0, true, true, true, false));
-        // Third boolean, if false ignore image's ratio dell'immagine, otherwise keep
-        // it.
+                BackgroundPosition.CENTER,
+                new BackgroundSize(BACKGROUND_WIDTH_PERCENTAGE, BACKGROUND_HEIGHT_PERCENTAGE, true, true, true, false));
+        // Third boolean, if false ignore image's ratio, otherwise keep it.
         this.imageContent.setBackground(new Background(bg));
     }
 

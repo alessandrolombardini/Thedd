@@ -11,6 +11,10 @@ import thedd.model.combat.actor.ActionActor;
  */
 public interface ControllerShowMethods {
 
+    public void showInventory();
+
+    public void showActionSelector();
+
     /**
      * Enable ActionActors to be targeted. 
      * @param targetables
@@ -45,4 +49,5 @@ public interface ControllerShowMethods {
      *          the result to show
      */
     void visualizeAction(ActionResult result);
+
 }

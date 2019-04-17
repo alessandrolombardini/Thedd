@@ -25,6 +25,13 @@ public interface Controller {
     void closeApplication();
 
     /**
+     * This method returns true if the combat is active, otherwise false.
+     * 
+     * @return a boolean
+     */
+    boolean isCombatActive();
+
+    /**
      * This method delete from player's Inventory the specified item.
      * 
      * @param item the item specified.
