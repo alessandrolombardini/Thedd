@@ -35,7 +35,12 @@ public enum ViewNode {
     /**
      * Statistics overview scene.
      */
-    STATISTICS("statistics.fxml");
+    STATISTICS("statistics.fxml"),
+
+    /**
+     * Statistics overview scene.
+     */
+    ACTION_SELECTOR("actionSelector.fxml");
 
     /**
      * Use of the char '/' because it's used by istructions that required that type
