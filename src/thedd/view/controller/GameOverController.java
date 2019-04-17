@@ -1,12 +1,32 @@
 package thedd.view.controller;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Control;
+import javafx.scene.layout.VBox;
 import thedd.view.ApplicationViewState;
 
 /**
  * View controller of game over scene.
  */
 public class GameOverController extends ViewNodeControllerImpl {
+
+
+    private static final double BUTTON_SPACING = 30;
+    private static final double BUTTON_HEIGHT_RATE = 0.08;
+    private static final double BUTTON_WIDTH_RATE = 0.20;
+
+    @FXML
+    private VBox vbox;
+
+    @FXML
+    private Button menuButton;
+
+    @FXML
+    private Button exitButton;
 
     /**
      * Back to menu scene.
@@ -37,7 +57,9 @@ public class GameOverController extends ViewNodeControllerImpl {
      */
     @Override
     protected void initView() {
-        /* This class has nothing to do when it's initialized */
+        final List<Control> buttons = new ArrayList<>(Arrays.asList(this.menuButton, this.exitButton));
+        vbox.setSpacing(BUTTON_SPACING);
+        buttons.forEach(button -> this.setBind(button, vbox, BUTTON_HEIGHT_RATE, BUTTON_WIDTH_RATE));
     }
 
 }
