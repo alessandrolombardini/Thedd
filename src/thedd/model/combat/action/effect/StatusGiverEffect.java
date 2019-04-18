@@ -52,10 +52,8 @@ public class StatusGiverEffect extends AbstractActionEffect {
      * {@inheritDoc}
      */
     @Override
-    public ActionEffect getCopy() {
+    public ActionEffect getSpecializedCopy() {
         final ActionEffect copy = new StatusGiverEffect(status);
-        copy.addTags(getPermanentTags(), true);
-        copy.addTags(getNonPermanentTags(), false);
         return copy;
     }
 

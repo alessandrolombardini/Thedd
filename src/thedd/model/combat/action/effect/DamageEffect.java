@@ -42,7 +42,13 @@ public class DamageEffect extends AbstractActionEffect {
     public final String getLogMessage() {
         getSource().ifPresent(this::updateEffectBySource);
         getTarget().ifPresent(this::updateEffectByTarget);
-        final String result =  "Dealt " + damage + " HP damage ";
+        String result; 
+        if (damage >= 0) {
+            result =  "Dealt " + damage + " HP damage ";
+        } else {
+            result =  "Healed " + -damage + " HP due to modifiers";
+        }
+
         damage = baseDamage;
         return appendTags(result);
     }
@@ -113,10 +119,8 @@ public class DamageEffect extends AbstractActionEffect {
      * {@inheritDoc}
      */
     @Override
-    public ActionEffect getCopy() {
+    public ActionEffect getSpecializedCopy() {
         final ActionEffect copy = new DamageEffect(baseDamage);
-        copy.addTags(getPermanentTags(), true);
-        copy.addTags(getNonPermanentTags(), false);
         if (Double.compare(damage, baseDamage) != 0) {
             ((DamageEffect) copy).addToDamage(damage - baseDamage);
         }

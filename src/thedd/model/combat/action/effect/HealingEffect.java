@@ -54,7 +54,7 @@ public final class HealingEffect extends AbstractActionEffect implements ActionE
     }
 
     @Override
-    public ActionEffect getCopy() {
+    public ActionEffect getSpecializedCopy() {
         return new HealingEffect(baseHealing);
     }
 

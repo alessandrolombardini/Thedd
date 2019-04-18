@@ -82,7 +82,7 @@ public final class DamageResistanceAdderEffect extends AbstractActionEffect impl
     }
 
     @Override
-    public ActionEffect getCopy() {
+    public ActionEffect getSpecializedCopy() {
         return new DamageResistanceAdderEffect(value, resistanceTag, isPermanent, isPercentage);
     }
 
