@@ -178,4 +178,11 @@ public interface Controller {
      */
     boolean isCurrentRoomCompleted();
 
+    /**
+     * This method allows to know if the player has won the game.
+     * 
+     * @return true if the player has won the game
+     */
+    boolean hasPlayerWon();
+
 }

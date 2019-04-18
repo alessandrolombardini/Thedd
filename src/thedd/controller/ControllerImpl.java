@@ -336,4 +336,9 @@ public class ControllerImpl implements Controller {
     public final boolean isCurrentRoomCompleted() {
         return this.model.getSession().getEnvironment().getCurrentFloor().getCurrentRoom().checkToMoveOn();
     }
+
+    @Override
+    public final boolean hasPlayerWon() {
+        return this.model.getSession().hasPlayerWon();
+    }
 }
