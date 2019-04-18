@@ -23,7 +23,7 @@ public final class FloorDetailsFactoryImpl implements FloorDetailsFactory {
     public FloorDetails createFloorDetails(final Difficulty difficulty, final int numberOfRooms,
                                            final boolean lastFloor) {
         Objects.requireNonNull(difficulty);
-        if (numberOfRooms <= EnvironmentImpl.MIN_NUMBER_OF_ROOMS) {
+        if (numberOfRooms < EnvironmentImpl.MIN_NUMBER_OF_ROOMS) {
             throw new IllegalArgumentException(ERROR_NONVALIDROOMS);
         }
         final int numberOfIteragibleSetted = 0;
