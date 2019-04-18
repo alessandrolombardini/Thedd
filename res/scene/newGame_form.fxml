@@ -12,78 +12,92 @@
 <?import thedd.view.extensions.AdaptiveFontLabel?>
 <?import thedd.view.extensions.AdaptiveFontTextField?>
 
-<AnchorPane fx:id="newGame" stylesheets="styles/menu_style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="thedd.view.controller.NewGameController">
+<AnchorPane fx:id="newGame" stylesheets="styles/menu_style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="thedd.view.controller.NewGameController" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 	<children>
-		<AnchorPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-		<children>
 		<GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                          <columnConstraints>
-			                  <ColumnConstraints  percentWidth="20.0"/>
-			                  <ColumnConstraints  percentWidth="25.0"/>
-			                  <ColumnConstraints  percentWidth="10.0"/>
-			                  <ColumnConstraints  percentWidth="15.0"/>
-			                  <ColumnConstraints  percentWidth="30.0"/>
-                          </columnConstraints>
-                          <rowConstraints>
-			                  <RowConstraints  percentHeight="5.0"/>
-			                  <RowConstraints  percentHeight="5.0"/>
-			                  <RowConstraints  percentHeight="8.0"/>
-			                  <RowConstraints  percentHeight="10.0"/>
-			                  <RowConstraints  percentHeight="8.0"/>
-			                  <RowConstraints  percentHeight="10.0"/>
-			               	  <RowConstraints  percentHeight="8.0"/>
-			                  <RowConstraints  percentHeight="10.0"/>
-			                  <RowConstraints  percentHeight="10.0"/>
-			                  <RowConstraints  percentHeight="20.0"/>
-                          </rowConstraints>
-                           
-                           <children>
-                           
-                              <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="2" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                 <children>
-                                    <AdaptiveFontLabel ratio="20" fx:id="playerNameLabel" text="Player name:" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
-                                 </children>
-                              </AnchorPane>
-                              
-                              <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="4" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                 <children>
-                                    <AdaptiveFontLabel ratio="20" fx:id="numberOfFloorsLabel" text="Number of floors:"  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
-								</children>
-                              </AnchorPane>
-                              
-                              <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="6" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                 <children>
-                                    <AdaptiveFontLabel ratio="20" fx:id="numberOfRoomsLabel" text="Number of rooms per floor:"  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
-                                    </children>
-                              </AnchorPane>
-                              
-                              <AnchorPane GridPane.columnIndex="3" GridPane.rowIndex="2" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                 <children>
-                                    <AdaptiveFontTextField ratio="14" fx:id="playerNameTextField" minHeight="0" minWidth="0" alignment="CENTER_RIGHT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
-				   				 </children>
-                              </AnchorPane>
-                              
-                              <AnchorPane GridPane.columnIndex="3" GridPane.rowIndex="4" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                 <children>
-                                    <AdaptiveFontTextField ratio="14" fx:id="numberOfRoomsTextField" minHeight="0" minWidth="0" alignment="CENTER_RIGHT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
-  				  				</children>
-                              </AnchorPane>
-                              
-                              <AnchorPane GridPane.columnIndex="3" GridPane.rowIndex="6" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                 <children>
-                                    <AdaptiveFontTextField ratio="14" fx:id="numberOfFloorsTextField" minHeight="0" minWidth="0" alignment="CENTER_RIGHT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
-								</children>
-                              </AnchorPane>
-                              
-                              <AnchorPane GridPane.columnIndex="2"  GridPane.rowIndex="8" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                 <children>
-                                    <AdaptiveFontButton ratio="14" fx:id="playButton" onAction="#handlePlayButtonAction" text="PLAY" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
-                          		</children>
-                              </AnchorPane>
-                              
-                           </children>
+            <columnConstraints>
+                    <ColumnConstraints percentWidth="100.0"/>
+            </columnConstraints>
+            <rowConstraints>
+                    <RowConstraints  percentHeight="20"/>
+                    <RowConstraints  percentHeight="70.0"/>
+                    <RowConstraints  percentHeight="10"/>
+            </rowConstraints>
+            <children>
+            	<AnchorPane GridPane.rowIndex="0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+				   	<children>
+						<AnchorPane fx:id="newGameTitleImage" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+                   	</children>
+				</AnchorPane>
+				<AnchorPane GridPane.rowIndex="1" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+					<children>  
+		        		<GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+			                  <columnConstraints>
+				                  <ColumnConstraints  percentWidth="20.0"/>
+				                  <ColumnConstraints  percentWidth="25.0"/>
+				                  <ColumnConstraints  percentWidth="10.0"/>
+				                  <ColumnConstraints  percentWidth="15.0"/>
+				                  <ColumnConstraints  percentWidth="30.0"/>
+			                  </columnConstraints>
+			                  <rowConstraints>
+				                  <RowConstraints  percentHeight="10.0"/>
+				                  <RowConstraints  percentHeight="10.0"/>
+				                  <RowConstraints  percentHeight="10.0"/>
+				                  <RowConstraints  percentHeight="10.0"/>
+				                  <RowConstraints  percentHeight="10.0"/>
+				               	  <RowConstraints  percentHeight="10.0"/>
+				                  <RowConstraints  percentHeight="10.0"/>
+				                  <RowConstraints  percentHeight="14.0"/>
+				                  <RowConstraints  percentHeight="16.0"/>
+			                  </rowConstraints>
+			                  <children> 
+		                          <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="1" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+		                             <children>
+		                                <AdaptiveFontLabel ratio="20" fx:id="playerNameLabel" text="Player name:" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+		                             </children>
+		                          </AnchorPane>
+		                          
+		                          <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="3" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+		                             <children>
+		                                <AdaptiveFontLabel ratio="20" fx:id="numberOfFloorsLabel" text="Number of floors:"  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+									</children>
+		                          </AnchorPane>
+		                          
+		                          <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="5" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+		                             <children>
+		                                <AdaptiveFontLabel ratio="20" fx:id="numberOfRoomsLabel" text="Number of rooms per floor:"  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+		                                </children>
+		                          </AnchorPane>
+		                          
+		                          <AnchorPane GridPane.columnIndex="3" GridPane.rowIndex="1" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+		                             <children>
+		                                <AdaptiveFontTextField ratio="14" fx:id="playerNameTextField" minHeight="0" minWidth="0" alignment="CENTER_RIGHT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+					   				 </children>
+		                          </AnchorPane>
+		                          
+		                          <AnchorPane GridPane.columnIndex="3" GridPane.rowIndex="3" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+		                             <children>
+		                                <AdaptiveFontTextField ratio="14" fx:id="numberOfRoomsTextField" minHeight="0" minWidth="0" alignment="CENTER_RIGHT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+					  				</children>
+		                          </AnchorPane>
+		                          
+		                          <AnchorPane GridPane.columnIndex="3" GridPane.rowIndex="5" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+		                             <children>
+		                                <AdaptiveFontTextField ratio="14" fx:id="numberOfFloorsTextField" minHeight="0" minWidth="0" alignment="CENTER_RIGHT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+									</children>
+		                          </AnchorPane>
+		                          
+		                          <AnchorPane GridPane.columnIndex="2"  GridPane.rowIndex="7" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+		                             <children>
+		                                <AdaptiveFontButton ratio="14" fx:id="playButton" minHeight="0" minWidth="0" onAction="#handlePlayButtonAction" text="PLAY" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+		                      		</children>
+		                          </AnchorPane>  
+		                              
+							</children>
+						</GridPane>
+					</children>
+				</AnchorPane>
+        	</children>
         </GridPane>
-        </children>
-        </AnchorPane>
 	</children>
 </AnchorPane>

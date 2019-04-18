@@ -8,53 +8,57 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import thedd.view.extensions.AdaptiveFontButton?>
 
-<AnchorPane fx:id="menu" stylesheets="styles/menu_style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="thedd.view.controller.MenuController">
+<AnchorPane fx:id="menu" stylesheets="styles/menu_style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="thedd.view.controller.MenuController" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 	<children>
-                  <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <columnConstraints>
-                      <ColumnConstraints percentWidth="100.0"/>
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints  percentHeight="30"/>
-                      <RowConstraints  percentHeight="40.0"/>
-                      <RowConstraints  percentHeight="30"/>
-                    </rowConstraints>
-                     <children>
-                     
-						<AnchorPane GridPane.rowIndex="0">
-				   			<children>
-								<AnchorPane fx:id="titleImage" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
-                   			</children>
-						</AnchorPane>  
-						
-                        <GridPane GridPane.rowIndex="1">
-                          	<columnConstraints>
-                            	<ColumnConstraints  percentWidth="42" />
-                            	<ColumnConstraints  percentWidth="16" />
-                            	<ColumnConstraints  percentWidth="42" />
-                          	</columnConstraints>
-                          	<rowConstraints>
-								<RowConstraints  percentHeight="30.0"/>
-								<RowConstraints  percentHeight="20.0"/>
-								<RowConstraints  percentHeight="20.0"/>
-					            <RowConstraints  percentHeight="10.0"/>
-					            <RowConstraints  percentHeight="20.0"/>
-                          	</rowConstraints>
-                           	<children>
-                              <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="2" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                 <children>
-                                    <AdaptiveFontButton ratio="15" fx:id="play"  onAction="#handleNewGameButtonAction" text="NEW GAME" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                 </children>
-                              </AnchorPane>
-                              <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="4" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                 <children>
-                                    <AdaptiveFontButton ratio="15" fx:id="exit"  onAction="#handleExitButtonAction" text="EXIT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                 </children>
-                              </AnchorPane>
-                           </children>
-                        </GridPane>
-                        
-                     </children>
-                  </GridPane>
+          <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <columnConstraints>
+                  	<ColumnConstraints minWidth="0" percentWidth="100.0"/>
+                </columnConstraints>
+                <rowConstraints>
+                  	<RowConstraints  minHeight="0" percentHeight="30"/>
+                  	<RowConstraints  minHeight="0" percentHeight="50.0"/>
+                    <RowConstraints  minHeight="0" percentHeight="20"/>
+                </rowConstraints>
+                
+                <children>
+					<AnchorPane GridPane.rowIndex="0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+			   			<children>
+							<AnchorPane fx:id="titleImage" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+               			</children>
+					</AnchorPane>
+					  
+					<AnchorPane GridPane.rowIndex="1" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+						<children>	
+		                    <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+		                      	<columnConstraints>
+		                        	<ColumnConstraints  minWidth="0" percentWidth="44" />
+		                        	<ColumnConstraints  minWidth="0" percentWidth="12" />
+		                        	<ColumnConstraints  minWidth="0" percentWidth="44" />
+		                      	</columnConstraints>
+		                      	<rowConstraints>
+									<RowConstraints  minHeight="0" percentHeight="30.0"/>
+									<RowConstraints  minHeight="0" percentHeight="20.0"/>
+									<RowConstraints  minHeight="0" percentHeight="20.0"/>
+						            <RowConstraints  minHeight="0" percentHeight="10.0"/>
+						            <RowConstraints  minHeight="0" percentHeight="20.0"/>
+		                      	</rowConstraints>
+		                       	<children>
+		                          <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="2" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+		                             <children>
+		                                <AdaptiveFontButton ratio="15" minHeight="0" minWidth="0" fx:id="play"  onAction="#handleNewGameButtonAction" text="NEW GAME" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+		                             </children>
+		                          </AnchorPane>
+		                          <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="4" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+		                             <children>
+		                                <AdaptiveFontButton ratio="15" minHeight="0" minWidth="0" fx:id="exit"  onAction="#handleExitButtonAction" text="EXIT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+		                             </children>
+		                          </AnchorPane>
+		                       </children>
+		                    </GridPane>
+		            	</children>
+                  	</AnchorPane>
+         		</children>
+           	
+           	</GridPane>
 	</children>
 </AnchorPane>
