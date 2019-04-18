@@ -43,12 +43,12 @@ public class TopStackPane extends StackPane implements Observer<DialogResponse>,
      * It also creates the dialog.
      */
     public TopStackPane() {
+        final double half = 0.5;
         this.setAlignment(Pos.CENTER);
-
-        bop.translateXProperty().bind(this.widthProperty().divide(2).subtract(bop.getWidthProperty().divide(2)));
-        bop.translateYProperty().bind(this.heightProperty().divide(2).subtract(bop.getHeightProperty().divide(2)));
-        bop.getWidthProperty().bind(this.widthProperty().divide(2));
-        bop.getHeightProperty().bind(this.heightProperty().divide(2));
+        bop.translateXProperty().bind(this.widthProperty().multiply(half).subtract(bop.getWidthProperty().multiply(half)));
+        bop.translateYProperty().bind(this.heightProperty().multiply(half).subtract(bop.getHeightProperty().multiply(half)));
+        bop.getWidthProperty().bind(this.widthProperty().multiply(half));
+        bop.getHeightProperty().bind(this.heightProperty().multiply(half));
         bop.bindObserver(this);
     }
 
