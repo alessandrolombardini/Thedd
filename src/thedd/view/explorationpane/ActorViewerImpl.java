@@ -46,8 +46,16 @@ public class ActorViewerImpl extends ImageView implements Observable<Pair<PartyT
 
         tooltip = new Tooltip();
         Tooltip.install(this, tooltip);
-        this.setOnMouseEntered(e -> tooltip.show(this, 0.0, 0.0));
-        this.setOnMouseExited(e -> tooltip.hide());
+        this.setOnMouseEntered(e -> {
+            if (!this.isDisabled()) {
+                tooltip.show(this, 0.0, 0.0); 
+            }
+        });
+        this.setOnMouseExited(e -> { 
+            if (!this.isDisabled()) {
+                tooltip.hide();
+            }
+        });
     }
 
     @Override
