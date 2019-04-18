@@ -1,5 +1,6 @@
 package thedd.controller;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.IntStream;
@@ -24,9 +25,11 @@ import thedd.model.character.BasicCharacter;
 import thedd.model.item.Item;
 import thedd.model.item.ItemFactory;
 import thedd.model.item.usableitem.UsableItem;
+import thedd.model.roomevent.RoomEvent;
 import thedd.model.world.environment.EnvironmentImpl;
 import thedd.model.world.environment.Session;
 import thedd.model.world.environment.SessionImpl;
+import thedd.model.world.floor.FloorDetails;
 import thedd.view.View;
 
 /**
@@ -298,5 +301,39 @@ public class ControllerImpl implements Controller {
         model.getSession().getPlayerCharacter().addActionToQueue(action.getCopy(), true);
         // call view to tell player to select a target (even if the action target type
         // is SELF?)
+    }
+
+    @Override
+    public final boolean nextRoom() {
+        return this.model.getSession().getEnvironment().getCurrentFloor().nextRoom();
+    }
+
+    @Override
+    public final boolean nextFloor(final FloorDetails floorDetails) {
+        return this.model.getSession().getEnvironment().setNextFloor(floorDetails);
+    }
+    @Override
+    public final List<RoomEvent> getRoomEvents() {
+        return this.model.getSession().getEnvironment().getCurrentFloor().getCurrentRoom().getEvents();
+    }
+
+    @Override
+    public final List<FloorDetails> getStairsOptions() {
+        return this.model.getSession().getEnvironment().getFloorOptions();
+    }
+
+    @Override
+    public final boolean isCurrentLastFloor() {
+        return this.model.getSession().getEnvironment().isCurrentLastFloor();
+    }
+
+    @Override
+    public final boolean isCurrentLastRoom() {
+        return !this.model.getSession().getEnvironment().getCurrentFloor().hasNextRoom();
+    }
+
+    @Override
+    public final boolean isCurrentRoomCompleted() {
+        return this.model.getSession().getEnvironment().getCurrentFloor().getCurrentRoom().checkToMoveOn();
     }
 }

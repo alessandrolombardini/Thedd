@@ -1,11 +1,15 @@
 package thedd.controller;
 
+import java.util.List;
+
 import thedd.controller.informations.InventoryInformations;
 import thedd.controller.informations.StatisticsInformations;
 import thedd.model.combat.action.Action;
 import thedd.model.combat.actor.ActionActor;
 import thedd.model.character.BasicCharacter;
 import thedd.model.item.Item;
+import thedd.model.roomevent.RoomEvent;
+import thedd.model.world.floor.FloorDetails;
 
 /**
  * Interface describing the controller of the pattern MVC of this application.
@@ -123,4 +127,55 @@ public interface Controller {
      * @param character a BasicCharacter.
      */
     void updateStatistics(BasicCharacter character);
+
+    /**
+     * Try to move into next room.
+     * 
+     * @return true only if is possible to change room.
+     */
+    boolean nextRoom();
+
+    /**
+     * Try to move into next floor.
+     * 
+     * @param floorDetails that describe the selected floor
+     * @return true only if is possibile to change floor and the FloorDetails is valid.
+     */
+    boolean nextFloor(FloorDetails floorDetails);
+
+    /**
+     * Get all RoomEvent of current room.
+     * 
+     * @return list of RoomEvent conteined inside the room
+     */
+    List<RoomEvent> getRoomEvents();
+
+    /**
+     * Get stairs options of last room.
+     * 
+     * @return list of FloorDetails that describe possible floors
+     */
+    List<FloorDetails> getStairsOptions();
+
+    /**
+     * Allows to know if the current room is the last of the floor.
+     * 
+     * @return true if is the last
+     */
+    boolean isCurrentLastFloor();
+
+    /**
+     * Allows to know if the current floor is the last.
+     * 
+     * @return true if is the last
+     */
+    boolean isCurrentLastRoom();
+
+    /**
+     * This method allows to know if the current room is completed.
+     * 
+     * @return true if the current room is completed
+     */
+    boolean isCurrentRoomCompleted();
+
 }
