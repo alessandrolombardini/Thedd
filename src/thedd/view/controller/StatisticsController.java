@@ -1,6 +1,8 @@
 package thedd.view.controller;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
+import javafx.scene.control.TableColumn;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
@@ -8,6 +10,7 @@ import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
+import thedd.model.combat.status.Status;
 import thedd.view.extensions.AdaptiveFontLabel;
 import thedd.view.imageloader.ImageLoader;
 
@@ -25,6 +28,8 @@ public class StatisticsController extends ViewNodeControllerImpl {
     private AdaptiveFontLabel agilityValue;
     @FXML
     private AnchorPane imageContent;
+    @FXML
+    private TableColumn<Status, String> column;
     private static final String IMAGE_TAG = "_PROFILE";
     private static final double BACKGROUND_WIDTH_PERCENTAGE = 1.0;
     private static final double BACKGROUND_HEIGHT_PERCENTAGE = 1.0;
@@ -41,11 +46,11 @@ public class StatisticsController extends ViewNodeControllerImpl {
     @Override
     public void update() {
         // Set the Statistics
-        this.healthValue.setText(this.getController().getStatisticsInformations().getHealthPointValue() + " / "
-                + this.getController().getStatisticsInformations().getHealthPointMaxValue());
-        this.agilityValue.setText(this.getController().getStatisticsInformations().getAgilityValue());
-        this.constitutionValue.setText(this.getController().getStatisticsInformations().getConstitutionValue());
-        this.strengthValue.setText(this.getController().getStatisticsInformations().getStrengthValue());
+        this.healthValue.setText(this.getController().getStatisticsInformation().getHealthPointValue() + " / "
+                + this.getController().getStatisticsInformation().getHealthPointMaxValue());
+        this.agilityValue.setText(this.getController().getStatisticsInformation().getAgilityValue());
+        this.constitutionValue.setText(this.getController().getStatisticsInformation().getConstitutionValue());
+        this.strengthValue.setText(this.getController().getStatisticsInformation().getStrengthValue());
         // Set the Character's image.
         Image img = loadRelatedImage();
         BackgroundImage bg = new BackgroundImage(img, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
@@ -61,10 +66,12 @@ public class StatisticsController extends ViewNodeControllerImpl {
     @Override
     protected void initView() {
         update();
+        column.setSortable(false);
+        column.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
     }
 
     private Image loadRelatedImage() {
-        final String type = this.getController().getStatisticsInformations().getCharacterType();
+        final String type = this.getController().getStatisticsInformation().getCharacterType();
         return ImageLoader.valueOf(type.toUpperCase() + IMAGE_TAG).getImage();
     }
 

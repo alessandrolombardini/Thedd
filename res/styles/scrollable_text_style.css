@@ -1,11 +1,11 @@
 .scroll-pane{
 	-fx-text-fill: #fff;
-	-fx-background: #111;
-	-fx-border-color: #222;
+	-fx-background: #222;
+	-fx-border-color: #333;
 }
 
 .scroll-bar{
- -fx-background-color: #222;
+ -fx-background-color: #333;
  -fx-background-radius: 2.0em;
 }
 
