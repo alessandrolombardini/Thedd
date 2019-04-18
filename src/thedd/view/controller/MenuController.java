@@ -28,7 +28,7 @@ public class MenuController extends ViewNodeControllerImpl {
      */
     @FXML
     protected final void handleNewGameButtonAction() {
-        this.getView().setScene(ApplicationViewState.NEW_GAME);
+        this.getView().setState(ApplicationViewState.NEW_GAME);
     }
 
     /**

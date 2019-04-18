@@ -1,10 +1,9 @@
 package thedd.view.controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import thedd.view.ApplicationViewState;
+import thedd.view.extensions.AdaptiveFontLabel;
 
 /**
  * View controller of the new game scene.
@@ -25,19 +24,13 @@ public class NewGameController extends ViewNodeControllerImpl {
     private TextField numberOfFloorsTextField;
 
     @FXML
-    private Label playerNameLabel;
+    private AdaptiveFontLabel playerNameLabel;
 
     @FXML
-    private Label numberOfRoomsLabel;
+    private AdaptiveFontLabel numberOfRoomsLabel;
 
     @FXML
-    private Label numberOfFloorsLabel;
-
-    @FXML
-    private Button playButton;
-
-    //@FXML
-    //private BorderPane newGame;
+    private AdaptiveFontLabel numberOfFloorsLabel;
 
 
     /**
@@ -52,7 +45,7 @@ public class NewGameController extends ViewNodeControllerImpl {
                                                  this.numberOfFloorsTextField.getText())) {
             this.getDialogFactory().createErrorDialog(ERROR_TITLE_INPUTERROR, ERROR_TEXT_NONVALIDVALUE).show();
         } else {
-            this.getView().setScene(ApplicationViewState.GAME);
+            this.getView().setState(ApplicationViewState.GAME);
         }
     }
 
@@ -69,6 +62,6 @@ public class NewGameController extends ViewNodeControllerImpl {
      */
     @Override
     protected void initView() {
-        /* This class has nothing to init */
+        /* Has nothing to init */
     }
 }

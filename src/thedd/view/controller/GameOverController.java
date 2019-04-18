@@ -28,7 +28,7 @@ public class GameOverController extends ViewNodeControllerImpl {
      */
     @FXML
     protected final void handleBackToMenuButtonAction() {
-        this.getView().setScene(ApplicationViewState.MENU);
+        this.getView().setState(ApplicationViewState.MENU);
     }
 
     /**
