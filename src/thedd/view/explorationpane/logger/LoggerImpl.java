@@ -1,17 +1,25 @@
 package thedd.view.explorationpane.logger;
 
+import java.util.Objects;
 import java.util.Optional;
 
+import javafx.animation.FadeTransition;
 import javafx.beans.property.DoubleProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 import thedd.view.extensions.AdaptiveFontLabel;
 
 /**
@@ -20,8 +28,9 @@ import thedd.view.extensions.AdaptiveFontLabel;
 public class LoggerImpl extends GridPane implements Logger {
 
     private static final int FONT_RATIO = 25;
-    private static final double TEXT_WIDTH_PERC = 80;
-    private static final double BTN_WIDTH_PERC = 20;
+    private static final Duration FADE_DURATION = Duration.millis(500);
+    private static final double TEXT_WIDTH_PERC = 90;
+    private static final double BTN_WIDTH_PERC = 10;
     private static final double ROW_HEIGHT_PERC = 50;
     private static final double PADDING = 5;
 
@@ -44,31 +53,51 @@ public class LoggerImpl extends GridPane implements Logger {
         row2.setPercentHeight(ROW_HEIGHT_PERC);
         this.getRowConstraints().addAll(row1, row2);
 
+        this.setPadding(new Insets(PADDING));
         this.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 
         text = new AdaptiveFontLabel(FONT_RATIO);
         text.setTextFill(Color.WHITE);
-        this.setPadding(new Insets(PADDING));
-        text.prefWidthProperty().bind(this.getWidthProperty().multiply(ROW_HEIGHT_PERC / 100));
+        text.prefWidthProperty().bind(this.getWidthProperty().multiply(TEXT_WIDTH_PERC / 100));
         text.prefHeightProperty().bind(this.getHeightProperty());
         text.setAlignment(Pos.TOP_LEFT);
-        this.add(text, 0, 0, 1, 2);
+        this.add(text, 0, 0, 1, 1);
 
         loggerManager = Optional.empty();
 
-        final Button close = new Button("BTN");
+        final Button close = new Button();
+        close.setPickOnBounds(true);
+        close.setTranslateY(PADDING);
+        close.prefWidthProperty().bind(this.getWidthProperty().multiply(BTN_WIDTH_PERC / 100));
+        close.prefHeightProperty().bind(this.getHeightProperty().multiply(ROW_HEIGHT_PERC / 100));
+        close.setBackground(new Background(
+                              new BackgroundImage(
+                                new Image(ClassLoader.getSystemResourceAsStream("btnLogger.png")), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(1.0,  1.0,  true, true, true, false))));
         close.setOnAction(e -> loggerManager.ifPresent(lm -> lm.cancel()));
         this.add(close, 1, 0, 1, 1);
     }
 
     @Override
+    public final void setVisibility(final boolean isVisible) {
+        final FadeTransition fade = new FadeTransition(FADE_DURATION, this);
+        fade.setFromValue(isVisible ? 0.0 : 1.0);
+        fade.setToValue(isVisible ? 1.0 : 0.0);
+        if (!isVisible) {
+            fade.setOnFinished(e -> setVisible(isVisible));
+        } else {
+            setVisible(isVisible);
+        }
+        fade.playFromStart();
+    }
+
+    @Override
     public final void setText(final String text) {
-        this.text.setText(text);
+        this.text.setText(Objects.requireNonNull(text));
     }
 
     @Override
     public final void setLoggerManager(final LoggerManager logMan) {
-        loggerManager = Optional.of(logMan);
+        loggerManager = Optional.of(Objects.requireNonNull(logMan));
     }
 
     @Override
