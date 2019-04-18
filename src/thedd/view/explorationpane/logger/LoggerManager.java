@@ -1,6 +1,11 @@
 package thedd.view.explorationpane.logger;
 
-import javafx.concurrent.Worker;
+import java.util.LinkedList;
+import java.util.Objects;
+import java.util.Queue;
+
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 
@@ -8,27 +13,46 @@ import javafx.event.EventHandler;
  * A manager for {@link Logger}s. It can be run on a secondary thread.
  *
  */
-public interface LoggerManager extends Runnable, Worker<Integer> {
+public class LoggerManager extends Task<Integer> {
+
+    private static final int MILLISECONDS_SLEEP = 1000;
+
+    //This logger is a graphic component. It cannot be static as it can vary between different LoggerManagers.
+    @SuppressWarnings("PMD.LoggerIsNotStaticFinal")
+    private final Logger managedLogger;
+    private final Queue<String> queuedLogStrings;
+    private final EventHandler<WorkerStateEvent> loggerCloser = new EventHandler<WorkerStateEvent>() {
+        @Override
+        public void handle(final WorkerStateEvent event) {
+            Platform.runLater(() -> LoggerManager.this.managedLogger.setVisibility(false));
+        }
+    };
 
     /**
-     * Set how to behave when this Worker is cancelled.
-     * @param value
-     *          the behavior to adopt on cancel calls.
-     */
-    void setOnCancelled(EventHandler<WorkerStateEvent> value);
-
-    /**
-     * Set how to behave when this Worker has successfully finished.
-     * @param value
-     *          the behavior to adopt on successful termination
-     */
-    void setOnSucceded(EventHandler<WorkerStateEvent> value);
-
-    /**
-     * Set the logger to be managed.
+     * Create a LoggerManager bounded to a Logger.
      * @param logger
-     *          the new logger which will be managed by this object
+     *          the logger to be managed
+     * @param queuedLogStrings
+     *          the strings to be displayed in the logger
      */
-    void setManagedLogger(Logger logger);
+    public LoggerManager(final Logger logger, final Queue<String> queuedLogStrings) {
+        this.queuedLogStrings = new LinkedList<>(Objects.requireNonNull(queuedLogStrings));
+        this.managedLogger = Objects.requireNonNull(logger);
+        setOnCancelled(loggerCloser);
+        setOnSucceeded(loggerCloser);
+    }
+
+    @Override
+    protected final Integer call() throws Exception {
+        managedLogger.setVisibility(true);
+        queuedLogStrings.forEach(c -> {
+            Platform.runLater(() -> managedLogger.setText(c));
+            try {
+                Thread.sleep(MILLISECONDS_SLEEP);
+            } catch (InterruptedException e) {
+            }
+        });
+        return 0;
+    }
 
 }
