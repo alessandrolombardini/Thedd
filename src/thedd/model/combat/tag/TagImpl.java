@@ -11,7 +11,7 @@ public class TagImpl implements Tag {
     /**
      * Public constructors.
      * @param tag the string associated with this tag
-     * @param hidden true if the Tag has to be shown to the player
+     * @param hidden false if the Tag has to be shown to the player
      */
     public TagImpl(final String tag, final boolean hidden) {
         this.tag = tag;
