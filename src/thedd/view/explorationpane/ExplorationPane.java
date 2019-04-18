@@ -80,6 +80,11 @@ public interface ExplorationPane {
     void setTargetablePositions(List<Pair<PartyType, Integer>> targetableList, List<Pair<PartyType, Integer>> allActors);
 
     /**
+     * Enable the interaction with all the ActorViewers inside the ExplorationPane.
+     */
+    void setAllAsTargetable();
+
+    /**
      * Return the component which allow to change room.
      * @return
      *  the roomAdvancer node

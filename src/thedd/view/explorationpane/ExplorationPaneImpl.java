@@ -109,6 +109,12 @@ public final class ExplorationPaneImpl extends BorderPane implements Exploration
                  .forEach(a -> getPartyBox(Objects.requireNonNull(a.getLeft())).getChildren().get(a.getRight()).setDisable(false));
     }
 
+    @Override
+    public void setAllAsTargetable() {
+        enemyParty.getChildren().forEach(c -> c.setDisable(false));
+        alliedParty.getChildren().forEach(c -> c.setDisable(false));
+    }
+
 
     @Override
     public Node getRoomAdvancer() {
