@@ -1,12 +1,12 @@
-package thedd.controller.informations;
+package thedd.controller.information;
 
 import thedd.model.character.BasicCharacter;
 import thedd.model.character.statistics.Statistic;
 
 /**
- * Implementation of {@link StatisticsInformations}.
+ * Implementation of {@link StatisticsInformation}.
  */
-public final class StatisticsInformationsImpl implements StatisticsInformations {
+public final class StatisticsInformationImpl implements StatisticsInformation {
 
     private BasicCharacter character;
     // This static int represent the number of characters to skip in class path name
@@ -18,7 +18,7 @@ public final class StatisticsInformationsImpl implements StatisticsInformations 
      * 
      * @param character the character.
      */
-    public StatisticsInformationsImpl(final BasicCharacter character) {
+    public StatisticsInformationImpl(final BasicCharacter character) {
         this.character = character;
     }
 

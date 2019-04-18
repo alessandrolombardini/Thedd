@@ -1,4 +1,4 @@
-package thedd.controller.informations;
+package thedd.controller.information;
 
 import thedd.model.character.BasicCharacter;
 
@@ -7,7 +7,7 @@ import thedd.model.character.BasicCharacter;
  * statistics. The Statistics view-controller will ask from this class all the
  * required informations.
  */
-public interface StatisticsInformations {
+public interface StatisticsInformation {
 
     /**
      * This method allows to update the current character from the one statistic's
