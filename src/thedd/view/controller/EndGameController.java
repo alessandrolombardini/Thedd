@@ -13,13 +13,16 @@ import thedd.view.ApplicationViewState;
 /**
  * View controller of game over scene.
  */
-public class GameOverController extends ViewNodeControllerImpl {
+public class EndGameController extends ViewNodeControllerImpl {
 
     @FXML
     private AnchorPane gameOverTitleImage;
 
     private static final String GAME_OVER_TITLE_URL = "images" + System.getProperty("file.separator") + "titles"
                                                        + System.getProperty("file.separator") + "gameOver_title.png";
+    private static final String WIN_TITLE_URL = "images" + System.getProperty("file.separator") + "titles"
+                                                + System.getProperty("file.separator") + "dark_destruction_title.png";
+
     private static final double TITLE_HEIGHT_PERC = 1.0;
     private static final double TITLE_WIDTH_PERC = 1.0;
 
@@ -52,8 +55,8 @@ public class GameOverController extends ViewNodeControllerImpl {
      */
     @Override
     protected void initView() {
-        final Image imageGameOver = new Image(GAME_OVER_TITLE_URL);
-        final BackgroundImage backgroundGameOver = new BackgroundImage(imageGameOver, BackgroundRepeat.NO_REPEAT, 
+        final Image image = new Image(this.getController().hasPlayerWon() ? WIN_TITLE_URL : GAME_OVER_TITLE_URL);
+        final BackgroundImage backgroundGameOver = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, 
                                                                BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, 
                                                                new BackgroundSize(TITLE_HEIGHT_PERC, TITLE_WIDTH_PERC, 
                                                                true, true, true, false));

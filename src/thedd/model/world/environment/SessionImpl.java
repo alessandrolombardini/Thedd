@@ -50,14 +50,14 @@ public final class SessionImpl implements Session {
     }
 
     @Override
-    public String toString() {
-        return "SessionImpl [environment=" + this.environment + ", playerCharacter=" + this.playerCharacter + "]";
-    }
-
-    @Override
     public boolean hasPlayerWon() {
         return this.environment.isCurrentLastFloor() 
                 && !this.environment.getCurrentFloor().hasNextRoom()
                 && this.environment.getCurrentFloor().getCurrentRoom().checkToMoveOn();
+    }
+
+    @Override
+    public String toString() {
+        return "SessionImpl [environment=" + this.environment + ", playerCharacter=" + this.playerCharacter + "]";
     }
 }
