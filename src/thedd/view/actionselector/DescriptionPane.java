@@ -17,7 +17,7 @@ import javafx.scene.layout.Pane;
 import thedd.utils.observer.Observable;
 import thedd.utils.observer.Observer;
 import thedd.view.extensions.AdaptiveFontButton;
-import thedd.view.extensions.ScrollableText;
+import thedd.view.extensions.AdaptiveFontScrollableText;
 
 /**
  * The pane that holds the description of the current action and the navigation bar. 
@@ -28,7 +28,7 @@ public class DescriptionPane extends Pane implements Observable<Command> {
     private static final double PADDING_PERC = 0.02;
     private static final int N_COLS = 6;
     private final List<Observer<Command>> listeners = new ArrayList<>();
-    private final ScrollableText textArea;
+    private final AdaptiveFontScrollableText textArea;
     private final DoubleProperty upperAreaHeight = new SimpleDoubleProperty();
     private final DoubleProperty lowerAreaHeight = new SimpleDoubleProperty();
     private final DoubleProperty buttonSizeByWidth = new SimpleDoubleProperty();
@@ -49,7 +49,7 @@ public class DescriptionPane extends Pane implements Observable<Command> {
         padding.bind(this.widthProperty().multiply(PADDING_PERC));
         buttonSizeByWidth.bind(this.widthProperty().subtract(padding.multiply(2)).divide(N_COLS));
 
-        textArea = new ScrollableText("[Description is missing]");
+        textArea = new AdaptiveFontScrollableText("[Description is missing]");
         this.getChildren().add(textArea);
         textArea.prefWidthProperty().bind(this.widthProperty().subtract(padding.multiply(2)));
         textArea.layoutXProperty().bind(padding);

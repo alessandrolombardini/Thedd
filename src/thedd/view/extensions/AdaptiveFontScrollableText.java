@@ -15,9 +15,9 @@ public final class AdaptiveFontScrollableText extends ScrollPane implements Adap
     private static final int PROPORTIONAL_DIVIDER = 30;
 
     /**
-     * ScrollableText constructor.
+     * AdaptiveFontScrollableText's constructor.
      * 
-     * @param value is the content of the Text.
+     * @param value is the content of the node.
      */
     public AdaptiveFontScrollableText(@NamedArg("text") final String value) {
         super(TEXT);
