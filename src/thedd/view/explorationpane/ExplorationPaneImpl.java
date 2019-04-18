@@ -80,6 +80,16 @@ public final class ExplorationPaneImpl extends BorderPane implements Exploration
     }
 
     @Override
+    public void updatePositionTooltip(final Pair<PartyType, Integer> position, final String newTooltip) {
+        final HBox partySelected = getPartyBox(position.getLeft());
+        if (Objects.requireNonNull(position).getRight() < partySelected.getChildren().size()) {
+            ((ActorViewerImpl) partySelected.getChildren().get(position.getRight())).updateTooltipText(Objects.requireNonNull(newTooltip));
+        } else {
+            throw new IllegalArgumentException("The position passed does not exist.");
+        }
+    }
+
+    @Override
     public void setEnemyImages(final List<Image> images) {
         enemyParty.getChildren().clear();
         IntStream.range(0, Objects.requireNonNull(images).size()).forEach(i -> enemyParty.getChildren().add(new ActorViewerImpl(PartyType.ENEMY, i, Objects.requireNonNull(images.get(i)))));
