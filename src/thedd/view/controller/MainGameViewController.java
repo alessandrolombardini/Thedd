@@ -47,6 +47,7 @@ public class MainGameViewController extends ViewNodeControllerImpl implements Ga
         this.nodeControllers.put(Position.UP, Optional.empty());
         this.nodeControllers.put(Position.DOWN_SX, Optional.empty());
         this.nodeControllers.put(Position.DOWN_DX, Optional.empty());
+        this.nodeControllers.values().forEach(c -> c.get().setDialogFactory(this.getDialogFactory()));
     }
 
     @Override
