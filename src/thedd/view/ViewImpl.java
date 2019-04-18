@@ -1,5 +1,6 @@
 package thedd.view;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import javafx.application.Application;
@@ -9,6 +10,11 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import thedd.controller.Controller;
 import thedd.controller.ControllerImpl;
+import thedd.model.combat.action.Action;
+import thedd.model.combat.action.result.ActionResult;
+import thedd.model.combat.actor.ActionActor;
+import thedd.view.controller.MainGameViewController;
+import thedd.view.controller.interfaces.GameView;
 import thedd.view.dialog.DialogFactory;
 import thedd.view.dialog.DialogFactoryImpl;
 import thedd.view.nodewrapper.ViewNodeWrapper;
@@ -32,6 +38,7 @@ public class ViewImpl extends Application implements View {
     private final Controller controller;
     private Optional<Stage> stage;
     private Optional<ViewNodeWrapper> actualScene;
+    private Optional<ApplicationViewState> actualViewState;
     private boolean viewStarted;
 
     /**
@@ -43,6 +50,7 @@ public class ViewImpl extends Application implements View {
         this.dialogFactory = new DialogFactoryImpl();
         this.stage = Optional.empty();
         this.actualScene = Optional.empty();
+        this.actualViewState = Optional.empty();
         this.viewStarted = false;
     }
 
@@ -63,7 +71,7 @@ public class ViewImpl extends Application implements View {
      * {@inheritDoc}
      */
     @Override
-    public final void setScene(final ApplicationViewState state) {
+    public final void setState(final ApplicationViewState state) {
         Objects.requireNonNull(state);
         if (!this.stage.isPresent()) {
             throw new IllegalStateException(ERROR_STAGEUNSETTED);
@@ -72,7 +80,7 @@ public class ViewImpl extends Application implements View {
                                                                                     this.controller, 
                                                                                     this));
         this.actualScene.get().getController().setDialogFactory(this.dialogFactory);
-        this.actualScene.get().getController().update();
+        this.actualViewState = Optional.of(state);
         final Scene newScene = new Scene((Parent) this.actualScene.get().getNode());
         final Stage stage = this.stage.get();
         final double width = stage.getWidth();
@@ -96,6 +104,70 @@ public class ViewImpl extends Application implements View {
         }
     }
 
+    @Override
+    public final void showInventory() {
+        if (this.getGameViewController().isPresent()) {
+            this.getGameViewController().get().showInventory();
+        }
+    }
+
+    @Override
+    public final void showActionSelector() {
+        if (this.getGameViewController().isPresent()) {
+            this.getGameViewController().get().showActionSelector();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final void showActionTargets(final List<ActionActor> targets, final List<ActionActor> alliedParty,
+                                        final List<ActionActor> enemyParty, final Action action) {
+        if (this.getGameViewController().isPresent()) {
+            this.getGameViewController().get().showTargets(targets, alliedParty, enemyParty, action);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final void resetActionTargets(final Action action) {
+        if (this.getGameViewController().isPresent()) {
+            this.getGameViewController().get().hideTargets();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final void showActionEffect(final ActionResult result, final Action action) {
+        if (this.getGameViewController().isPresent()) {
+            this.getGameViewController().get().visualizeAction(result);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final void showActionResult(final ActionResult result, final Action action) {
+        if (this.getGameViewController().isPresent()) {
+            this.getGameViewController().get().logAction(result);
+        }
+    }
+
+    private Optional<GameView> getGameViewController() {
+        if (this.actualViewState.isPresent() && this.actualViewState.get() == ApplicationViewState.GAME
+                && this.actualScene.get().getController() instanceof MainGameViewController) {
+            final GameView gameView = (GameView) (this.actualScene.get().getController());
+            return Optional.of(gameView);
+        }
+        return Optional.empty();
+    }
+
     private void initView() {
         if (!this.stage.isPresent()) {
             throw new IllegalStateException(ERROR_STAGEUNSETTED);
@@ -104,9 +176,8 @@ public class ViewImpl extends Application implements View {
         stage.setTitle(GAME_NAME);
         stage.setHeight(STAGE_HEIGHT);
         stage.setWidth(STAGE_WIDTH);
-//      stage.minHeightProperty().bind(stage.widthProperty().multiply(0.6));
-//      stage.maxHeightProperty().bind(stage.widthProperty().multiply(0.6));
         stage.setResizable(true);
-        setScene(FIRST_APP_STATE);
+        setState(FIRST_APP_STATE);
     }
+
 }
