@@ -2,7 +2,7 @@ package thedd.controller;
 
 import java.util.Objects;
 import java.util.Optional;
-
+import java.util.stream.IntStream;
 import javafx.application.Platform;
 import thedd.controller.informations.InventoryInformations;
 import thedd.controller.informations.InventoryInformationsImpl;
@@ -20,7 +20,9 @@ import thedd.model.combat.encounter.HostileEncounter;
 import thedd.model.combat.instance.ActionExecutionInstance;
 import thedd.model.combat.instance.CombatStatus;
 import thedd.model.combat.instance.ExecutionInstanceImpl;
+import thedd.model.character.BasicCharacter;
 import thedd.model.item.Item;
+import thedd.model.item.ItemFactory;
 import thedd.model.item.usableitem.UsableItem;
 import thedd.model.world.environment.EnvironmentImpl;
 import thedd.model.world.environment.Session;
@@ -63,6 +65,12 @@ public class ControllerImpl implements Controller {
                 this.model.setSession(session);
                 this.inventoryInfo = new InventoryInformationsImpl(this.model.getSession().getPlayerCharacter());
                 this.statisticsInfo = new StatisticsInformationsImpl(this.model.getSession().getPlayerCharacter());
+
+                BasicCharacter charac = this.model.getSession().getPlayerCharacter();
+                IntStream.range(0, 150).forEach(i -> {
+                    charac.getInventory().addItem(ItemFactory.getRandomItem());
+                });
+
                 return true;
             }
         }
@@ -146,7 +154,16 @@ public class ControllerImpl implements Controller {
         return this.statisticsInfo;
     }
 
-    //Action execution and combat management session
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateStatistics(final BasicCharacter character) {
+        this.statisticsInfo.setCharacter(character);
+        this.view.update();
+    }
+
+    // Action execution and combat management session
 
     /**
      * {@inheritDoc}
@@ -155,7 +172,7 @@ public class ControllerImpl implements Controller {
     public void undoActionSelection() {
         final ActionActor playerActor = this.model.getSession().getPlayerCharacter();
         playerActor.resetSelectedAction();
-        //call view to tell player to select a new action
+        // call view to tell player to select a new action
     }
 
     /**
@@ -185,7 +202,7 @@ public class ControllerImpl implements Controller {
         instance.addPlayerPartyMember(playerActor);
         actionExecutor.get().setExecutionInstance(instance);
         if (action.getTargets().isEmpty()) {
-            //call view to tell player to select a target
+            // call view to tell player to select a target
         } else {
             evaluateNextAction();
         }
@@ -201,7 +218,7 @@ public class ControllerImpl implements Controller {
         }
         final ActionExecutor executor = actionExecutor.get();
         executor.executeCurrentAction();
-        //tell view to log        
+        // tell view to log
     }
 
     /**
@@ -220,21 +237,21 @@ public class ControllerImpl implements Controller {
             actionExecutor = Optional.empty();
             break;
         case PLAYER_LOST:
-            //TODO
+            // TODO
             break;
         case PLAYER_WON:
-            //TODO
+            // TODO
             break;
         case ROUND_IN_PROGRESS:
             evaluateNextAction();
             break;
         case ROUND_PAUSED:
-            //tell view to select a new action
+            // tell view to select a new action
             break;
         default:
             executor.prepareNextRound();
-            //view.showNextTurn ?
-            //tell view to select a new action
+            // view.showNextTurn ?
+            // tell view to select a new action
             break;
         }
     }
@@ -251,7 +268,7 @@ public class ControllerImpl implements Controller {
         if (combatExecutor.isRoundReady()) {
             evaluateNextAction();
         } else {
-            //call view to tell player to select an action
+            // call view to tell player to select an action
         }
     }
 
@@ -259,7 +276,7 @@ public class ControllerImpl implements Controller {
         actionExecutor.ifPresent(a -> {
             a.setNextAction();
             final Optional<ActionResult> result = a.evaluateCurrentAction();
-            //view visualize(result)
+            // view visualize(result)
         });
     }
 
@@ -279,6 +296,7 @@ public class ControllerImpl implements Controller {
     @Override
     public void selectAction(final Action action) {
         model.getSession().getPlayerCharacter().addActionToQueue(action.getCopy(), true);
-        //call view to tell player to select a target (even if the action target type is SELF?)
+        // call view to tell player to select a target (even if the action target type
+        // is SELF?)
     }
 }

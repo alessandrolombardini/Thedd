@@ -41,7 +41,7 @@ public final class ViewNodeWrapperFactory {
             subViewController.init(view, controller);
             return new ViewNodeWrapperImpl(node, subViewController);
         } catch (IOException e) {
-            throw new IllegalPathStateException(ERROR_FXMLNOTFOUND);
+            throw new IllegalPathStateException(ERROR_FXMLNOTFOUND + e.toString());
         }
     }
 }

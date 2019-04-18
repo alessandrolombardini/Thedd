@@ -4,6 +4,7 @@ import thedd.controller.informations.InventoryInformations;
 import thedd.controller.informations.StatisticsInformations;
 import thedd.model.combat.action.Action;
 import thedd.model.combat.actor.ActionActor;
+import thedd.model.character.BasicCharacter;
 import thedd.model.item.Item;
 
 /**
@@ -76,22 +77,23 @@ public interface Controller {
     StatisticsInformations getStatisticsInformations();
 
     /**
-     * Resets the player's selected action and prompts the view
-     * to let the player choose another action.
+     * <<<<<<< Updated upstream Resets the player's selected action and prompts the
+     * view to let the player choose another action.
      */
     void undoActionSelection();
 
     /**
-     * Sets the provided actor as the target of the player's
-     * current action and, if the round is ready, evaluates
-     * that action.
+     * Sets the provided actor as the target of the player's current action and, if
+     * the round is ready, evaluates that action.
+     * 
      * @param target the target to assign to the current action
      */
     void targetSelected(ActionActor target);
 
     /**
-     * Sets the {@link ActionExecutor} as a {@link OutOfCombatActionExecutor}
-     * and starts it passing the provided action.
+     * Sets the {@link ActionExecutor} as a {@link OutOfCombatActionExecutor} and
+     * starts it passing the provided action.
+     * 
      * @param action the action to execute
      */
     void executeSingleAction(Action action);
@@ -107,9 +109,18 @@ public interface Controller {
     void evaluateExecutionState();
 
     /**
-     * Sets the provided action as the player's selected action and prompts
-     * the view to let the player choose a target.
+     * Sets the provided action as the player's selected action and prompts the view
+     * to let the player choose a target.
+     * 
      * @param action the selected action
      */
     void selectAction(Action action);
+
+    /**
+     * This method enable to set the targeted character to show its statistics
+     * informations.
+     * 
+     * @param character a BasicCharacter.
+     */
+    void updateStatistics(BasicCharacter character);
 }
