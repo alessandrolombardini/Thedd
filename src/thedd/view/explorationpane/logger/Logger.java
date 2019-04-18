@@ -20,7 +20,7 @@ public interface Logger {
      * @param isVisible
      *          whether the logger is visible
      */
-    void setVisible(boolean isVisible);
+    void setVisibility(boolean isVisible);
 
     /**
      * Set the {@link LoggerManager} which will manage this Logger.
