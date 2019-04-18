@@ -34,14 +34,14 @@ public interface Logger {
      * @return
      *          the width {@link DoubleProperty} 
      */
-    DoubleProperty widthProperty();
+    DoubleProperty getWidthProperty();
 
     /**
      * Get the height property of this graphical component.
      * @return
      *          the height {@link DoubleProperty}
      */
-    DoubleProperty heightProperty();
+    DoubleProperty getHeightProperty();
 
     /**
      * The translateX property of this graphical component.
