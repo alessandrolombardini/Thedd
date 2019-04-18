@@ -70,6 +70,17 @@ public interface ExplorationPane {
     void updatePartyTooltip(PartyType partySide, List<String> newTooltips);
 
     /**
+     * Update the tooltip of a single ActorViewer. 
+     * @throws IllegalArgumentException
+     *          when the position is not valid
+     * @param position
+     *          the position of the ActorViewer
+     * @param newTooltip
+     *          the new tooltip to set
+     */
+    void updatePositionTooltip(Pair<PartyType, Integer> position, String newTooltip);
+
+    /**
      * Enable the interaction with the ActorViewer specified in the list of possible targets.
      * The other ActorViewer are disabled until a new call of this method. 
      * @param targetableList
