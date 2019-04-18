@@ -5,10 +5,10 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.IntStream;
 import javafx.application.Platform;
-import thedd.controller.informations.InventoryInformations;
-import thedd.controller.informations.InventoryInformationsImpl;
-import thedd.controller.informations.StatisticsInformations;
-import thedd.controller.informations.StatisticsInformationsImpl;
+import thedd.controller.information.PlayerInformation;
+import thedd.controller.information.PlayerInformationImpl;
+import thedd.controller.information.StatisticsInformation;
+import thedd.controller.information.StatisticsInformationImpl;
 import thedd.model.Model;
 import thedd.model.ModelImpl;
 import thedd.model.combat.action.Action;
@@ -39,8 +39,8 @@ public class ControllerImpl implements Controller {
 
     private final View view;
     private final Model model;
-    private InventoryInformations inventoryInfo;
-    private StatisticsInformations statisticsInfo;
+    private PlayerInformation playerInfo;
+    private StatisticsInformation statisticsInfo;
     private Optional<ActionExecutor> actionExecutor = Optional.empty();
 
     /**
@@ -66,11 +66,11 @@ public class ControllerImpl implements Controller {
                     || numOfRooms >= EnvironmentImpl.MIN_NUMBER_OF_ROOMS) {
                 final Session session = new SessionImpl(Optional.ofNullable(playerName), numOfFloors, numOfRooms);
                 this.model.setSession(session);
-                this.inventoryInfo = new InventoryInformationsImpl(this.model.getSession().getPlayerCharacter());
-                this.statisticsInfo = new StatisticsInformationsImpl(this.model.getSession().getPlayerCharacter());
+                this.playerInfo = new PlayerInformationImpl(this.model.getSession().getPlayerCharacter());
+                this.statisticsInfo = new StatisticsInformationImpl(this.model.getSession().getPlayerCharacter());
 
                 BasicCharacter charac = this.model.getSession().getPlayerCharacter();
-                IntStream.range(0, 150).forEach(i -> {
+                IntStream.range(0, 15).forEach(i -> {
                     charac.getInventory().addItem(ItemFactory.getRandomItem());
                 });
 
@@ -92,6 +92,7 @@ public class ControllerImpl implements Controller {
         return !number.isEmpty() && number.chars().allMatch(Character::isDigit);
     }
 
+    // -------------------------------------------------------------------
     /**
      * {@inheritDoc}
      */
@@ -100,7 +101,6 @@ public class ControllerImpl implements Controller {
         return this.model.getSession().getPlayerCharacter().isInCombat();
     }
 
-    // Martina's Feature
     /**
      * {@inheritDoc}
      */
@@ -117,19 +117,20 @@ public class ControllerImpl implements Controller {
     public void useItem(final Item item) {
         if (item.isUsable()) {
             final UsableItem usable = (UsableItem) item;
-            usable.getAction(); // devo passare questo argomento al metodo di ivan che permette di selezionare
-                                // il target
+            this.selectAction(usable.getAction());
+            playerInfo.setUsedItem(item);
+            this.view.update();
         }
-        this.view.update();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void equipItem(final Item item) {
-        this.model.getSession().getPlayerCharacter().equipItem(item);
+    public boolean equipItem(final Item item) {
+        final boolean ret = this.model.getSession().getPlayerCharacter().equipItem(item);
         this.view.update();
+        return ret;
     }
 
     /**
@@ -145,15 +146,15 @@ public class ControllerImpl implements Controller {
      * {@inheritDoc}
      */
     @Override
-    public InventoryInformations getInventoryInformations() {
-        return this.inventoryInfo;
+    public PlayerInformation getPlayerInformation() {
+        return this.playerInfo;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public StatisticsInformations getStatisticsInformations() {
+    public StatisticsInformation getStatisticsInformation() {
         return this.statisticsInfo;
     }
 
@@ -166,7 +167,8 @@ public class ControllerImpl implements Controller {
         this.view.update();
     }
 
-    // Action execution and combat management session
+    // ----------------------------------------------------Action execution and
+    // combat management session
 
     /**
      * {@inheritDoc}
@@ -312,6 +314,7 @@ public class ControllerImpl implements Controller {
     public final boolean nextFloor(final FloorDetails floorDetails) {
         return this.model.getSession().getEnvironment().setNextFloor(floorDetails);
     }
+
     @Override
     public final List<RoomEvent> getRoomEvents() {
         return this.model.getSession().getEnvironment().getCurrentFloor().getCurrentRoom().getEvents();

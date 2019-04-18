@@ -2,8 +2,8 @@ package thedd.controller;
 
 import java.util.List;
 
-import thedd.controller.informations.InventoryInformations;
-import thedd.controller.informations.StatisticsInformations;
+import thedd.controller.information.PlayerInformation;
+import thedd.controller.information.StatisticsInformation;
 import thedd.model.combat.action.Action;
 import thedd.model.combat.actor.ActionActor;
 import thedd.model.character.BasicCharacter;
@@ -56,8 +56,9 @@ public interface Controller {
      * This method equip the specified item.
      * 
      * @param item the specified item.
+     * @return true if equipment is successfully completed, otherwise false.
      */
-    void equipItem(Item item);
+    boolean equipItem(Item item);
 
     /**
      * This method unequip the specified item.
@@ -71,14 +72,14 @@ public interface Controller {
      * 
      * @return an InventoryInformation class.
      */
-    InventoryInformations getInventoryInformations();
+    PlayerInformation getPlayerInformation();
 
     /**
      * The method returns the Statistics Information's wrapper.
      * 
      * @return an StatisticsInformation class.
      */
-    StatisticsInformations getStatisticsInformations();
+    StatisticsInformation getStatisticsInformation();
 
     /**
      * <<<<<<< Updated upstream Resets the player's selected action and prompts the
@@ -139,7 +140,8 @@ public interface Controller {
      * Try to move into next floor.
      * 
      * @param floorDetails that describe the selected floor
-     * @return true only if is possibile to change floor and the FloorDetails is valid.
+     * @return true only if is possibile to change floor and the FloorDetails is
+     *         valid.
      */
     boolean nextFloor(FloorDetails floorDetails);
 
