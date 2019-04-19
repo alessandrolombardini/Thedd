@@ -5,7 +5,7 @@ import thedd.model.character.BasicCharacterImpl;
 /**
  * Headless extension of {@link thedd.model.character.BasicCharacterImpl}.
  */
-public class HeadlessNPC extends BasicCharacterImpl {
+public class Headless extends BasicCharacterImpl {
 
     /**
      * Headless' constructor.
@@ -13,7 +13,7 @@ public class HeadlessNPC extends BasicCharacterImpl {
      * @param name       name of this NPC.
      * @param multiplier rate multiplied at the basic statistics.
      */
-    public HeadlessNPC(final String name, final double multiplier) {
+    public Headless(final String name, final double multiplier) {
         super(name, multiplier);
         // ret.addWeightedAction(new ActionImpl() , RandomActionPrority.DEFAULT);
     }

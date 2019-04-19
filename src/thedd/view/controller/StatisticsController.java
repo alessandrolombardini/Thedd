@@ -12,7 +12,9 @@ import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import thedd.model.combat.status.Status;
 import thedd.view.extensions.AdaptiveFontLabel;
+import thedd.view.imageloader.DirectoryPicker;
 import thedd.view.imageloader.ImageLoader;
+import thedd.view.imageloader.ImageLoaderImpl;
 
 /**
  * Class that handle the Statistics View.
@@ -30,9 +32,9 @@ public class StatisticsController extends ViewNodeControllerImpl {
     private AnchorPane imageContent;
     @FXML
     private TableColumn<Status, String> column;
-    private static final String IMAGE_TAG = "_PROFILE";
     private static final double BACKGROUND_WIDTH_PERCENTAGE = 1.0;
     private static final double BACKGROUND_HEIGHT_PERCENTAGE = 1.0;
+    private final ImageLoader imageFactory = new ImageLoaderImpl();
 
     /**
      * Statistics controller constructor.
@@ -52,7 +54,7 @@ public class StatisticsController extends ViewNodeControllerImpl {
         this.constitutionValue.setText(this.getController().getStatisticsInformation().getConstitutionValue());
         this.strengthValue.setText(this.getController().getStatisticsInformation().getStrengthValue());
         // Set the Character's image.
-        Image img = loadRelatedImage();
+        Image img = imageFactory.loadSingleImage(DirectoryPicker.STATISTICS_PROFILES, this.getController().getStatisticsInformation().getCharacterType());
         BackgroundImage bg = new BackgroundImage(img, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.CENTER,
                 new BackgroundSize(BACKGROUND_WIDTH_PERCENTAGE, BACKGROUND_HEIGHT_PERCENTAGE, true, true, true, false));
@@ -69,10 +71,4 @@ public class StatisticsController extends ViewNodeControllerImpl {
         column.setSortable(false);
         column.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
     }
-
-    private Image loadRelatedImage() {
-        final String type = this.getController().getStatisticsInformation().getCharacterType();
-        return ImageLoader.valueOf(type.toUpperCase() + IMAGE_TAG).getImage();
-    }
-
 }
