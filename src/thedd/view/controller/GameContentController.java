@@ -113,10 +113,12 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
 
     private void continueInput() {
         performer.ifPresent(p -> p.getSelectedAction().get().applyEffects(null /*MainCharacter*/));
+        mainPane.hideDialog();
     }
 
     private void cancelInput() {
         performer = Optional.empty();
+        mainPane.hideDialog();
     }
 
     @Override
