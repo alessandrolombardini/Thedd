@@ -49,6 +49,11 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
         this.inventory = new InventoryImpl();
         this.equipment = new ArrayList<>();
 
+        final Modifier<ActionEffect> ailmentsResistance = new StatBasedModifier<>(Statistic.CONSTITUTION, this, 1,
+                new DamageModifier(-0.01, true, ModifierActivation.ACTIVE_ON_DEFENCE));
+        final List<Tag> tags = Arrays.asList(EffectTag.POISON_DAMAGE);
+        ailmentsResistance.addRequirement(new TagRequirement<>(false, TagRequirementType.REQUIRED, tags));
+        addEffectModifier(ailmentsResistance, true);
     }
 
     /**
@@ -79,10 +84,10 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
         Objects.requireNonNull(item);
         if (item.isEquipable()) {
             final EquipableItem equipItem = (EquipableItem) item;
-            if (checkEquipment(equipItem)) {
+            if (isItemEquipableOnEquipment(equipItem)) {
                 this.inventory.removeItem(item);
-                this.equipment.add((EquipableItem) equipItem);
                 equipItem.onEquip(this);
+                this.equipment.add(equipItem);
                 return true;
             }
         }
@@ -102,7 +107,7 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
     }
 
     @Override
-    public final List<? extends Item> getEquippedItems() {
+    public final List<EquipableItem> getEquippedItems() {
         return Collections.unmodifiableList(this.equipment);
     }
 
@@ -147,25 +152,28 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
         if (super.equals(obj) && obj instanceof BasicCharacterImpl) {
             final BasicCharacterImpl other = (BasicCharacterImpl) obj;
             return inventory.equals(other.getInventory()) && stat.equals(other.getAllStat())
-                    && equipment.equals(other.getEquippedItems());
+                    && getEquippedItems().equals(other.getEquippedItems());
         }
         return false;
     }
 
-    // Returns true if this Item can be equipped, else false.
-    private boolean checkEquipment(final EquipableItem item) {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isItemEquipableOnEquipment(final EquipableItem item) {
         if (item.getType().isWeapon()) {
-            if (this.equipment.stream().noneMatch(it -> it.getType() == EquipableItemType.TWO_HANDED)) {
-                final int oneHandWeapons = (int) this.equipment.stream()
+            if (this.getEquippedItems().stream().noneMatch(it -> it.getType() == EquipableItemType.TWO_HANDED)) {
+                final int oneHandWeapons = (int) this.getEquippedItems().stream()
                         .filter(it -> it.getType() == EquipableItemType.ONE_HANDED).count();
                 return (oneHandWeapons == 0 || (oneHandWeapons == 1 && item.getType() == EquipableItemType.ONE_HANDED));
             }
             return false;
         } else if (item.getType() == EquipableItemType.RING) {
-            return ((int) this.equipment.stream().filter(it -> it.getType() == EquipableItemType.RING)
+            return ((int) this.getEquippedItems().stream().filter(it -> it.getType() == EquipableItemType.RING)
                     .count() < EquipableItemType.getMaxNumOfRings());
         } else {
-            return this.equipment.stream().noneMatch(it -> it.getType() == item.getType());
+            return this.getEquippedItems().stream().noneMatch(it -> it.getType() == item.getType());
         }
     }
 

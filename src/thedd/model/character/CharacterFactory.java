@@ -2,10 +2,10 @@ package thedd.model.character;
 
 import java.util.Objects;
 import java.util.Optional;
-import thedd.model.character.types.DarkDestructorNPC;
+import thedd.model.character.types.DarkDestructor;
 import thedd.model.character.types.EnemyCharacterType;
-import thedd.model.character.types.GoblinNPC;
-import thedd.model.character.types.HeadlessNPC;
+import thedd.model.character.types.Goblin;
+import thedd.model.character.types.Headless;
 import thedd.model.character.types.PlayerCharacter;
 import thedd.model.world.Difficulty;
 
@@ -53,9 +53,9 @@ public final class CharacterFactory {
         Objects.requireNonNull(type);
         Objects.requireNonNull(difficulty);
         if (type == EnemyCharacterType.GOBLIN) {
-            return new GoblinNPC(type.toString(), generateRandomRate() * difficulty.getLevelOfDifficulty());
+            return new Goblin(type.toString(), generateRandomRate() * difficulty.getLevelOfDifficulty());
         }
-        return new HeadlessNPC(type.toString(), difficulty.getLevelOfDifficulty() * generateRandomRate());
+        return new Headless(type.toString(), difficulty.getLevelOfDifficulty() * generateRandomRate());
     }
 
     /**
@@ -67,7 +67,7 @@ public final class CharacterFactory {
      */
     public static BasicCharacter createFinalBoss(final Difficulty difficulty) {
         Objects.requireNonNull(difficulty);
-        return new DarkDestructorNPC(BOSS_NAME, difficulty.getLevelOfDifficulty() * BOSS_RATE * generateRandomRate());
+        return new DarkDestructor(BOSS_NAME, difficulty.getLevelOfDifficulty() * BOSS_RATE * generateRandomRate());
     }
 
     // Generate Random value between 1 and 2.

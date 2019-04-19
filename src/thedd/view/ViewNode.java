@@ -20,7 +20,7 @@ public enum ViewNode {
     /**
      * Game over scene.
      */
-    GAME_OVER("endGame.fxml"),
+    END_GAME("endGame.fxml"),
 
     /**
      * Game scene.

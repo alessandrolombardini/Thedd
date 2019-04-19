@@ -27,10 +27,12 @@ import thedd.model.item.Item;
 import thedd.model.item.ItemFactory;
 import thedd.model.item.usableitem.UsableItem;
 import thedd.model.roomevent.RoomEvent;
+import thedd.model.roomevent.combatevent.CombatEvent;
 import thedd.model.world.environment.EnvironmentImpl;
 import thedd.model.world.environment.Session;
 import thedd.model.world.environment.SessionImpl;
 import thedd.model.world.floor.FloorDetails;
+import thedd.model.world.room.Room;
 import thedd.view.View;
 
 /**
@@ -60,26 +62,44 @@ public class ControllerImpl implements Controller {
      */
     @Override
     public final boolean newGame(final String playerName, final String numberOfRooms, final String numberOfFloors) {
-        if (this.checkNumber(numberOfRooms) && this.checkNumber(numberOfFloors)) {
+        if (this.isValidNumberOfRooms(numberOfRooms) && this.isValidNumberOfFloors(numberOfFloors)) {
             final int numOfRooms = Integer.parseInt(numberOfRooms);
             final int numOfFloors = Integer.parseInt(numberOfFloors);
-            if (numOfFloors >= EnvironmentImpl.MIN_NUMBER_OF_FLOORS
-                    || numOfRooms >= EnvironmentImpl.MIN_NUMBER_OF_ROOMS) {
-                final Session session = new SessionImpl(Optional.ofNullable(playerName), numOfFloors, numOfRooms);
-                this.model.setSession(session);
-                this.playerInfo = new PlayerInformationImpl(this.model.getSession().getPlayerCharacter());
-                this.statisticsInfo = new StatisticsInformationImpl(this.model.getSession().getPlayerCharacter());
+            final Session session = new SessionImpl(Optional.ofNullable(playerName), numOfFloors, numOfRooms);
+            this.model.setSession(session);
+            this.playerInfo = new PlayerInformationImpl(this.model.getSession().getPlayerCharacter());
+            this.statisticsInfo = new StatisticsInformationImpl(this.model.getSession().getPlayerCharacter());
 
-                BasicCharacter charac = this.model.getSession().getPlayerCharacter();
-                IntStream.range(0, 15).forEach(i -> {
-                    charac.getInventory().addItem(ItemFactory.getRandomItem());
-                });
-                charac.getStat(Statistic.HEALTH_POINT).updateActual(- 50);
+            BasicCharacter charac = this.model.getSession().getPlayerCharacter();
+            IntStream.range(0, 15).forEach(i -> {
+                charac.getInventory().addItem(ItemFactory.getRandomItem());
+            });
 
-                return true;
-            }
+            return true;
         }
         return false;
+    }
+
+    @Override
+    public final boolean isValidNumberOfRooms(final String numberOfRooms) {
+        if (this.checkNumber(numberOfRooms)) {
+            final int numOfRooms = Integer.parseInt(numberOfRooms);
+            return numOfRooms >= EnvironmentImpl.MIN_NUMBER_OF_ROOMS;
+        }
+        return false;
+    }
+
+    @Override
+    public final boolean isValidNumberOfFloors(final String numberOfFloors) {
+        if (this.checkNumber(numberOfFloors)) {
+            final int numOfFloors = Integer.parseInt(numberOfFloors);
+            return numOfFloors >= EnvironmentImpl.MIN_NUMBER_OF_FLOORS;
+        }
+        return false;
+    }
+
+    private boolean checkNumber(final String number) {
+        return !number.isEmpty() && number.chars().allMatch(Character::isDigit);
     }
 
     /**
@@ -88,10 +108,6 @@ public class ControllerImpl implements Controller {
     @Override
     public final void closeApplication() {
         Platform.exit();
-    }
-
-    private boolean checkNumber(final String number) {
-        return !number.isEmpty() && number.chars().allMatch(Character::isDigit);
     }
 
     // -------------------------------------------------------------------
@@ -309,7 +325,19 @@ public class ControllerImpl implements Controller {
 
     @Override
     public final boolean nextRoom() {
-        return this.model.getSession().getEnvironment().getCurrentFloor().nextRoom();
+        final boolean isChanged = this.model.getSession().getEnvironment().getCurrentFloor().nextRoom();
+        if (isChanged) {
+            final Room room = this.model.getSession().getEnvironment().getCurrentFloor().getCurrentRoom();
+            if (!room.getEvents().stream().anyMatch(e -> e instanceof CombatEvent)) {
+                this.updateStatuses();
+                final CombatEvent combat = room.getEvents().stream().filter(e -> e instanceof CombatEvent)
+                                                                    .findAny()
+                                                                    .map(e -> (CombatEvent) e)
+                                                                    .get();
+                this.startCombat(combat.getHostileEncounter());
+            }
+        }
+        return isChanged;
     }
 
     @Override

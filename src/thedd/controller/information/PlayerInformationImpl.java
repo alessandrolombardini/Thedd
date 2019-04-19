@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import thedd.model.item.Item;
+import thedd.model.item.equipableitem.EquipableItem;
 import thedd.model.character.BasicCharacter;
 import thedd.model.combat.action.Action;
 
@@ -63,11 +64,16 @@ public final class PlayerInformationImpl implements PlayerInformation {
         this.usedItem = Optional.empty();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public List<Action> getPlayerActions() {
         return this.character.getAvailableActionsList();
+    }
+
+    @Override
+    public boolean isItemEquipableOnEquipment(final Item item) {
+        if (item.isEquipable()) {
+            return this.character.isItemEquipableOnEquipment((EquipableItem) item);
+        }
+        return false;
     }
 }

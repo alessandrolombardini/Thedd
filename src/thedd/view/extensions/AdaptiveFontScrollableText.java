@@ -10,7 +10,7 @@ import javafx.scene.input.MouseEvent;
  * This class extends {@link ScrollPane} adding a {@link Text} into it.
  */
 public final class AdaptiveFontScrollableText extends ScrollPane implements AdaptiveFontComponent {
-    private static final Label TEXT = new Label();
+    private final Label text = new Label();
     private static final String STYLESHEET = "styles/scrollable_text_style.css";
     private static final int PROPORTIONAL_DIVIDER = 30;
 
@@ -20,9 +20,10 @@ public final class AdaptiveFontScrollableText extends ScrollPane implements Adap
      * @param value is the content of the node.
      */
     public AdaptiveFontScrollableText(@NamedArg("text") final String value) {
-        super(TEXT);
-        TEXT.setFocusTraversable(false);
-        TEXT.setWrapText(true);
+        super();
+        this.setContent(text);
+        text.setFocusTraversable(false);
+        text.setWrapText(true);
         this.addEventFilter(MouseEvent.ANY, new EventHandler<MouseEvent>() {
             @Override
             public void handle(final MouseEvent event) {
@@ -34,13 +35,13 @@ public final class AdaptiveFontScrollableText extends ScrollPane implements Adap
         this.setHbarPolicy(ScrollBarPolicy.NEVER);
         this.setFocusTraversable(false);
         if (value == null) {
-            TEXT.setText("");
+            text.setText("");
         } else {
-            TEXT.setText(value);
+            text.setText(value);
         }
         this.setFitToWidth(true);
         this.getStylesheets().add(ClassLoader.getSystemClassLoader().getResource(STYLESHEET).toExternalForm());
-        this.setFontRatioFromOtherObject(PROPORTIONAL_DIVIDER, TEXT, this);
+        this.setFontRatioFromOtherObject(PROPORTIONAL_DIVIDER, text, this);
     }
 
     /**
@@ -49,7 +50,7 @@ public final class AdaptiveFontScrollableText extends ScrollPane implements Adap
      * @param value the String.
      */
     public void setText(final String value) {
-        TEXT.setText(value);
+        text.setText(value);
     }
 
     @Override

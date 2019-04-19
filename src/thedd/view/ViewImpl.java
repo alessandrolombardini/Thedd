@@ -15,8 +15,6 @@ import thedd.model.combat.action.result.ActionResult;
 import thedd.model.combat.actor.ActionActor;
 import thedd.view.controller.MainGameViewController;
 import thedd.view.controller.interfaces.GameView;
-import thedd.view.dialog.DialogFactory;
-import thedd.view.dialog.DialogFactoryImpl;
 import thedd.view.nodewrapper.ViewNodeWrapper;
 import thedd.view.nodewrapper.ViewNodeWrapperFactory;
 
@@ -34,7 +32,6 @@ public class ViewImpl extends Application implements View {
     private static final double STAGE_HEIGHT = Screen.getPrimary().getBounds().getHeight() / WIDTH * HEIGHT;
     private static final ApplicationViewState FIRST_APP_STATE = ApplicationViewState.MENU;
 
-    private final DialogFactory dialogFactory;
     private final Controller controller;
     private Optional<Stage> stage;
     private Optional<ViewNodeWrapper> actualScene;
@@ -47,7 +44,6 @@ public class ViewImpl extends Application implements View {
     public ViewImpl() {
         super();
         this.controller = new ControllerImpl(this);
-        this.dialogFactory = new DialogFactoryImpl();
         this.stage = Optional.empty();
         this.actualScene = Optional.empty();
         this.actualViewState = Optional.empty();
@@ -64,6 +60,7 @@ public class ViewImpl extends Application implements View {
             throw new IllegalStateException(ERROR_STAGEUNSETTED);
         }
         this.stage = Optional.of(primaryStage);
+        this.stage.get().centerOnScreen();
         this.initView();
     }
 
@@ -79,7 +76,6 @@ public class ViewImpl extends Application implements View {
         this.actualScene = Optional.of(ViewNodeWrapperFactory.createViewNodeWrapper(state.getViewNode(), 
                                                                                     this.controller, 
                                                                                     this));
-        this.actualScene.get().getController().setDialogFactory(this.dialogFactory);
         this.actualViewState = Optional.of(state);
         final Scene newScene = new Scene((Parent) this.actualScene.get().getNode());
         final Stage stage = this.stage.get();

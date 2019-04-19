@@ -3,52 +3,21 @@ package thedd.view.imageloader;
 import javafx.scene.image.Image;
 
 /**
- * Contains path for the specified images and load them into a {@link Image}.
+ * Factory Of Images.
  */
-public enum ImageLoader {
+public interface ImageLoader {
 
     /**
-     * Profile image of Player character.
-     */
-    PLAYERCHARACTER_PROFILE("/profiles/player.png"),
-
-    /**
-     * Profile picture of Headless character.
-     */
-    HEADLESSNPC_PROFILE("/profiles/headless.png"),
-
-    /**
-     * Profile picture of Dark Destructor character.
-     */
-    DARKDESTRUCTORNPC_PROFILE("/profiles/dark_destructor.png"),
-
-    /**
-     * Profile picture of Goblin character.
-     */
-    GOBLINNPC_PROFILE("/profiles/dark_destructors.png");
-
-    private static final String LOCATION = "images/";
-    private final String path;
-
-    ImageLoader(final String path) {
-        this.path = path;
-    }
-
-    /**
-     * Return the path of the image as a String.
+     * This method returns an image loaded from specified directory and with
+     * specified String objname. If the image isn't found inside the directory, then
+     * a default image will be loaded.
      * 
-     * @return a {@link String}
+     * @param directory a DirectoryPicker value, represents the directory where the
+     *                  specified image with objname is searched.
+     * @param objname   a String representation of the image that will be loaded.
+     *                  This value could be the name of the object.
+     * @return an Image
      */
-    public String getPath() {
-        return LOCATION + path;
-    }
+    Image loadSingleImage(DirectoryPicker directory, String objname);
 
-    /**
-     * Return the loaded image of the specified path.
-     * 
-     * @return a {@link Image}
-     */
-    public Image getImage() {
-        return new Image(LOCATION + path);
-    }
 }

@@ -8,6 +8,7 @@ import thedd.model.character.statistics.StatValues;
 import thedd.model.character.statistics.Statistic;
 import thedd.model.combat.actor.automatic.AutomaticActionActor;
 import thedd.model.item.Item;
+import thedd.model.item.equipableitem.EquipableItem;
 
 /**
  * Interface that define the characters.
@@ -66,7 +67,16 @@ public interface BasicCharacter extends AutomaticActionActor {
     /**
      * This method returns a list with all the equipped items.
      * 
-     * @return a list of items
+     * @return a list of Equipable Items
      */
-    List<? extends Item> getEquippedItems();
+    List<EquipableItem> getEquippedItems();
+
+    /**
+     * This method returns true if the specified EquipableItem is Equipable on
+     * Player's Equipments.
+     * 
+     * @param item the specified item
+     * @return true if is equipable, otherwise false.
+     */
+    boolean isItemEquipableOnEquipment(EquipableItem item);
 }

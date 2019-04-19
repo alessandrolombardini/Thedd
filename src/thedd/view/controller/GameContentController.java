@@ -20,9 +20,6 @@ import javafx.util.Duration;
 import thedd.model.character.BasicCharacter;
 import thedd.model.character.statistics.StatValues;
 import thedd.model.character.statistics.Statistic;
-import thedd.model.character.types.DarkDestructorNPC;
-import thedd.model.character.types.GoblinNPC;
-import thedd.model.character.types.HeadlessNPC;
 import thedd.model.combat.action.Action;
 import thedd.model.combat.action.result.ActionResult;
 import thedd.model.combat.action.result.ActionResultType;
@@ -38,7 +35,9 @@ import thedd.view.explorationpane.enums.PartyType;
 import thedd.view.explorationpane.enums.TargetSelectionState;
 import thedd.view.explorationpane.logger.LoggerImpl;
 import thedd.view.explorationpane.logger.LoggerManager;
+import thedd.view.imageloader.DirectoryPicker;
 import thedd.view.imageloader.ImageLoader;
+import thedd.view.imageloader.ImageLoaderImpl;
 
 public class GameContentController extends ViewNodeControllerImpl implements Observer<Pair<PartyType, Integer>>, ExplorationView {
 
@@ -51,6 +50,7 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
     private Optional<InteractableActionPerformer> performer = Optional.empty();
     private final List<ActionActor> alliedParty = new ArrayList<>();
     private final List<ActionActor> enemyParty = new ArrayList<>();
+    private final ImageLoader imgLoader = new ImageLoaderImpl();
 
     @Override
     public final void update() {
@@ -58,7 +58,7 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
         explorationPane.setRoomAdvancerVisible(state == TargetSelectionState.EXPLORATION && !this.getController().isCurrentLastRoom());
 
         final List<Image> alliedImages = new ArrayList<>();
-        alliedImages.add(ImageLoader.PLAYERCHARACTER_PROFILE.getImage());
+        alliedImages.add(imgLoader.loadSingleImage(DirectoryPicker.STATISTICS_PROFILES, "playercharacter"));
         explorationPane.setAllyImages(alliedImages);
         updateSingleTarget(this.getController().getPlayer(), new ImmutablePair<PartyType, Integer>(PartyType.ALLIED, 0), Optional.empty());
 
@@ -67,7 +67,8 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
         if (this.getController().isCombatActive()) {
             final CombatEvent ce = this.getController().getRoomEvents().stream().filter(rm -> rm.getType() == RoomEventType.COMBAT_EVENT).findFirst().map(rm -> (CombatEvent) rm).get(); 
             ce.getHostileEncounter().getNPCs().stream().forEach(npc -> {
-                enemyImages.add(mapClassToActionActor(npc.getClass())); enemyActors.add(npc);
+                enemyImages.add(mapActionActorToImage(npc)); 
+                enemyActors.add(npc);
             });
         } else {
             //TODO case InteractableActionPerformer
@@ -251,16 +252,8 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
         }
     }
 
-    private Image mapClassToActionActor(final Class<?> c) {
-        if (c.equals(GoblinNPC.class)) {
-            return ImageLoader.GOBLINNPC_PROFILE.getImage();
-        } else if (c.equals(HeadlessNPC.class)) {
-            return ImageLoader.HEADLESSNPC_PROFILE.getImage();
-        } else if (c.equals(DarkDestructorNPC.class)) {
-            return ImageLoader.DARKDESTRUCTORNPC_PROFILE.getImage();
-        } else {
-            throw new IllegalArgumentException();
-        }
+    private Image mapActionActorToImage(final ActionActor c) {
+            return imgLoader.loadSingleImage(DirectoryPicker.STATISTICS_PROFILES, c.getName());
     }
 
     private void changeRoomTransition() {

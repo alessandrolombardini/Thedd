@@ -30,9 +30,6 @@ public class InventoryController extends ViewNodeControllerImpl {
     private static final String EQUIP_BUTTON_LABEL = "Equip";
     private static final String UNEQUIP_BUTTON_LABEL = "Unequip";
     private static final String USE_BUTTON_LABEL = "Use";
-    private static final String ERROR = "ERROR";
-    private static final String EQUIP_ERROR_DESCRIPTION = "You can't equip this item because its slot is already full.\n"
-            + "Please liberate the slot before to equip this item.";
 
     /**
      * Method that handle the Use button.
@@ -43,12 +40,11 @@ public class InventoryController extends ViewNodeControllerImpl {
         if (this.useButton.getText().equals(USE_BUTTON_LABEL)) {
             this.getController().useItem(selection);
         } else if (this.useButton.getText().equals(EQUIP_BUTTON_LABEL)) {
-            final EquipableItem selected = new EquipableItemImpl(selection.getId(), selection.getBaseName(), ((EquipableItem) selection).getType(), selection.getRarity(), selection.getDescription());
+            final EquipableItem selected = new EquipableItemImpl(selection.getId(), selection.getBaseName(),
+                    ((EquipableItem) selection).getType(), selection.getRarity(), selection.getDescription());
             ((EquipableItem) selection).getActionEffects().forEach(ae -> selected.addActionEffect(ae));
             ((EquipableItem) selection).getAdditionalActions().forEach(a -> selected.addAdditionalAction(a));
-            if (!this.getController().equipItem(selected)) {
-               System.out.println(this.getDialogFactory().createErrorDialog(ERROR, EQUIP_ERROR_DESCRIPTION).toString());
-            }
+            this.getController().equipItem(selected);
         } else {
             this.getController().unequipItem(selection);
         }
@@ -86,7 +82,7 @@ public class InventoryController extends ViewNodeControllerImpl {
         column.setResizable(true);
         column.setSortable(false);
         column.setCellValueFactory(
-                cellData -> new SimpleStringProperty(cellData.getValue().getName() + addTag(cellData.getValue())));
+                cellData -> new SimpleStringProperty(addTag(cellData.getValue()) + cellData.getValue().getName()));
         showItemDetails(null);
         table.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> showItemDetails(newValue));
@@ -102,18 +98,23 @@ public class InventoryController extends ViewNodeControllerImpl {
     public void showItemDetails(final Item item) {
         if (item != null) {
             if (item.isEquipable()) {
-                this.content.setText(item.getName() + " is an Equipable Item"
-                                + (this.getController().getPlayerInformation().isEquipped(item)
-                                        ? " [Currently Equipped]"
-                                        : ".\nYou have " + this.getController().getPlayerInformation()
-                                                .getInventoryItemQuantity(item) + " of them")
-                                + ".\n\nDescription: \n" + item.getDescription() + "\n\nEffects: \n"
-                                + item.getEffectDescription());
+                this.content.setText(item.getName()
+                        + (this.getController().getPlayerInformation().isEquipped(item) ? " [Currently Equipped]" : "")
+                        + (!this.getController().getPlayerInformation().isItemEquipableOnEquipment(item)
+                                && !this.getController().getPlayerInformation().isEquipped(item)
+                                        ? "\nYou cannot equip this item: maximum slot limit reached!"
+                                        : "")
+                        + "\n\nDescription: \n" + item.getDescription() + "\n\nEffects: \n"
+                        + item.getEffectDescription() + "\nType: Equipable Item. \n\nYou have "
+                        + (!this.getController().getPlayerInformation().isEquipped(item)
+                                ? this.getController().getPlayerInformation().getInventoryItemQuantity(item)
+                                        + " of them in your inventory."
+                                : ""));
             } else {
-                this.content.setText(item.getName() + ": an Usable Item.\nYou have "
+                this.content.setText(item.getName() + "\n\nDescription: \n" + item.getDescription() + "\n\nEffects: \n"
+                        + item.getEffectDescription() + "\n\nType: Usable Item. \n\nYou have "
                         + this.getController().getPlayerInformation().getInventoryItemQuantity(item)
-                        + " of them.\n\nDescription: \n" + item.getDescription() + "\n\nEffects: \n"
-                        + item.getEffectDescription());
+                        + " of them in your inventory.");
             }
         } else {
             this.content.setText("Select an Item first.");
@@ -137,7 +138,8 @@ public class InventoryController extends ViewNodeControllerImpl {
                     this.useButton.setDisable(!((usable.isUsableInCombat() && this.getController().isCombatActive())
                             || (usable.isUsableOutOfCombat() && !this.getController().isCombatActive())));
                 } else {
-                    this.useButton.setDisable(this.getController().isCombatActive());
+                    this.useButton.setDisable(this.getController().isCombatActive()
+                            || !this.getController().getPlayerInformation().isItemEquipableOnEquipment(item));
                     this.useButton.setText(EQUIP_BUTTON_LABEL);
                 }
                 this.deleteButton.setDisable(this.getController().isCombatActive());
@@ -150,7 +152,7 @@ public class InventoryController extends ViewNodeControllerImpl {
 
     private String addTag(final Item item) {
         if (this.getController().getPlayerInformation().isEquipped(item)) {
-            return " (E)";
+            return "(E) ";
         } else {
             return "";
         }

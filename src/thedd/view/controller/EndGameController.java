@@ -19,9 +19,9 @@ public class EndGameController extends ViewNodeControllerImpl {
     private AnchorPane gameOverTitleImage;
 
     private static final String GAME_OVER_TITLE_URL = "images" + System.getProperty("file.separator") + "titles"
-                                                       + System.getProperty("file.separator") + "gameOver_title.png";
+                                                       + System.getProperty("file.separator") + "game_over.png";
     private static final String WIN_TITLE_URL = "images" + System.getProperty("file.separator") + "titles"
-                                                + System.getProperty("file.separator") + "dark_destruction_title.png";
+                                                + System.getProperty("file.separator") + "victory.png";
 
     private static final double TITLE_HEIGHT_PERC = 1.0;
     private static final double TITLE_WIDTH_PERC = 1.0;

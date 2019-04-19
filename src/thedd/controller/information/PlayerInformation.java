@@ -61,4 +61,13 @@ public interface PlayerInformation {
      * @return a List<Action>
      */
     List<Action> getPlayerActions();
+
+    /**
+     * This method returns if the specified item is equipable in player's
+     * equipments.
+     * 
+     * @param item the specified item.
+     * @return true if the specified item is equipable, otherwise false.
+     */
+    boolean isItemEquipableOnEquipment(Item item);
 }

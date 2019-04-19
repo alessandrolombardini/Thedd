@@ -4,7 +4,6 @@ import java.util.Objects;
 import java.util.Optional;
 import thedd.controller.Controller;
 import thedd.view.View;
-import thedd.view.dialog.DialogFactory;
 
 /**
  * Implementation of the {@link ViewNodeController}.
@@ -16,7 +15,6 @@ public abstract class ViewNodeControllerImpl implements ViewNodeController {
 
     private Optional<View> view;
     private Optional<Controller> controller;
-    private Optional<DialogFactory> dialogFactory;
 
     /**
      * Constructor of SubViewControllerImpl.
@@ -24,7 +22,6 @@ public abstract class ViewNodeControllerImpl implements ViewNodeController {
     protected ViewNodeControllerImpl() { 
         this.view = Optional.empty();
         this.controller = Optional.empty();
-        this.dialogFactory = Optional.empty();
     }
 
     /**
@@ -40,15 +37,6 @@ public abstract class ViewNodeControllerImpl implements ViewNodeController {
         this.view = Optional.of(view);
         this.controller = Optional.of(controller);
         this.initView();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final void setDialogFactory(final DialogFactory dialogFactory) {
-        Objects.requireNonNull(dialogFactory);
-        this.dialogFactory = Optional.of(dialogFactory);
     }
 
     /**
@@ -93,21 +81,5 @@ public abstract class ViewNodeControllerImpl implements ViewNodeController {
             throw new IllegalStateException(ERROR_NOSETTED);
         }
         return this.view.get();
-    }
-
-    /**
-     * Getter of the DialogFactory.
-     * 
-     * @return 
-     *          the dialogFactory
-     *
-     * @throws IllegalStateException
-     *          if the dialog hasn't been setted
-     */
-    protected DialogFactory getDialogFactory() {
-        if (!this.dialogFactory.isPresent()) {
-            throw new IllegalStateException(ERROR_NOSETTED);
-        }
-        return this.dialogFactory.get();
     }
 }

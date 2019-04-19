@@ -5,7 +5,7 @@ import thedd.model.character.BasicCharacterImpl;
 /**
  * Goblin extension of {@link thedd.model.character.BasicCharacterImpl}.
  */
-public class GoblinNPC extends BasicCharacterImpl {
+public class Goblin extends BasicCharacterImpl {
 
     /**
      * Goblin's constructor.
@@ -13,7 +13,7 @@ public class GoblinNPC extends BasicCharacterImpl {
      * @param name       name of this NPC.
      * @param multiplier rate multiplied at the basic statistics.
      */
-    public GoblinNPC(final String name, final double multiplier) {
+    public Goblin(final String name, final double multiplier) {
         super(name, multiplier);
         // this.addWeightedAction(new ActionImpl() , RandomActionPrority.DEFAULT);
     }
