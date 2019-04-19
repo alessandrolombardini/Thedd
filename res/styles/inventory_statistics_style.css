@@ -56,3 +56,29 @@ AdaptiveFontButton:hover {
 .background {
 	-fx-background-color: #111;
 }
+
+
+
+#menu {
+    -fx-background-image: url("castelloBackground.jpg");
+    -fx-background-color: rgb(0, 0, 0);
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: contain;
+    -fx-background-position: center center;
+}
+
+#newGame {
+    -fx-background-image: url("blackBackground.jpg");
+    -fx-background-color: rgb(0, 0, 0);
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: contain;
+    -fx-background-position: center center;
+}
+
+#gameOver {
+    -fx-background-image: url("blackBackground.jpg");
+    -fx-background-color: rgb(0, 0, 0);
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: contain;
+    -fx-background-position: center center;
+}
