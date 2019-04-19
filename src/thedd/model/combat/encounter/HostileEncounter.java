@@ -31,6 +31,7 @@ public interface HostileEncounter {
     /**
      * Gets the list of hostile NPCs that are going to
      * participate in the skirmish.
+     * The iteration order of this list is predictable.
      * @return the list of hostile NPCs
      */
     Set<ActionActor> getNPCs();

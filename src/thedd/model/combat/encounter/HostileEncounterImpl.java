@@ -2,7 +2,7 @@ package thedd.model.combat.encounter;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -16,7 +16,7 @@ import thedd.model.combat.actor.ActionActor;
 public final class HostileEncounterImpl implements HostileEncounter {
 
     private ActionExecutor combatLogic;
-    private final Set<ActionActor> npcs = new HashSet<>();
+    private final Set<ActionActor> npcs = new LinkedHashSet<>();
     /**
      * Basic constructor. Initializes combatLogic with null and 
      * adds an empty list of enemies to the combat instance. 
