@@ -20,7 +20,7 @@ public final class ImageLoaderImpl implements ImageLoader {
         if (path == null) {
             return this.defaultImage;
         }
-        return new Image(directory.getDirectory() + fileName);
+        return new Image(path.toString());
     }
 
 }
