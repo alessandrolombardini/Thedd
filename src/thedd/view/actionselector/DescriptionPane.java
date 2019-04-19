@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
 import javafx.animation.AnimationTimer;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -28,7 +27,7 @@ public class DescriptionPane extends Pane implements Observable<Command> {
     private static final double PADDING_PERC = 0.02;
     private static final int N_COLS = 6;
     private final List<Observer<Command>> listeners = new ArrayList<>();
-    private final AdaptiveFontScrollableText textArea;
+    private final AdaptiveFontScrollableText scrollableText = new AdaptiveFontScrollableText("[Description is missing]");
     private final DoubleProperty upperAreaHeight = new SimpleDoubleProperty();
     private final DoubleProperty lowerAreaHeight = new SimpleDoubleProperty();
     private final DoubleProperty buttonSizeByWidth = new SimpleDoubleProperty();
@@ -49,12 +48,11 @@ public class DescriptionPane extends Pane implements Observable<Command> {
         padding.bind(this.widthProperty().multiply(PADDING_PERC));
         buttonSizeByWidth.bind(this.widthProperty().subtract(padding.multiply(2)).divide(N_COLS));
 
-        textArea = new AdaptiveFontScrollableText("[Description is missing]");
-        this.getChildren().add(textArea);
-        textArea.prefWidthProperty().bind(this.widthProperty().subtract(padding.multiply(2)));
-        textArea.layoutXProperty().bind(padding);
-        textArea.prefHeightProperty().bind(upperAreaHeight.subtract(padding));
-        textArea.layoutYProperty().bind(padding);
+        this.getChildren().add(scrollableText);
+        scrollableText.prefWidthProperty().bind(this.widthProperty().subtract(padding.multiply(2)));
+        scrollableText.layoutXProperty().bind(padding);
+        scrollableText.prefHeightProperty().bind(upperAreaHeight.subtract(padding));
+        scrollableText.layoutYProperty().bind(padding);
 
         getChildren().addAll(buttons);
     }
@@ -69,17 +67,7 @@ public class DescriptionPane extends Pane implements Observable<Command> {
         final boolean disableForward = selectedIndex >= numItems - 1;
         final boolean disableBackwards = selectedIndex <= 0;
 
-        final StringBuilder sb = new StringBuilder();
-        sb.append(action.getName())
-          .append("\n\n");
-        if (!action.getTags().isEmpty()) {
-            sb.append(action.getTags())
-              .append("\n");
-        }
-        sb.append(action.getDescription())
-          .append("\n\n")
-          .append(action.getEffectsPreview());
-        textArea.setText(sb.toString());
+        scrollableText.setText(action.getDescription());
         buttons.get(0).setDisable(disableBackwards);
         buttons.get(1).setDisable(false);
         buttons.get(2).setDisable(disableForward);
@@ -95,14 +83,8 @@ public class DescriptionPane extends Pane implements Observable<Command> {
     public void showCategory(final VisualCategory category, final int selectedIndex, final int numItems) {
         final boolean disableForward = selectedIndex >= numItems - 1;
         final boolean disableBackwards = selectedIndex <= 0;
-        final StringBuilder sb = new StringBuilder();
-        sb.append("Category name: ");
-        sb.append(category.getName());
-        if (!category.getActions().isEmpty()) {
-            sb.append("\n\nActions in this category: ");
-            category.getActions().forEach(a -> sb.append("\n\t").append(a.getName()));
-        }
-        textArea.setText(sb.toString());
+
+        scrollableText.setText(category.getDescription());
         buttons.get(0).setDisable(disableBackwards);
         buttons.get(1).setDisable(false);
         buttons.get(2).setDisable(disableForward);

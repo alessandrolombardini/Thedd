@@ -19,12 +19,12 @@ public class DamageModifier extends AbstractValueModifier<ActionEffect> {
 
     /**
      * Adds the value to the damage, such as:<br>
-     * damageToBeAdded = isPercentage ? DamageEffect.getDamage() * getValue : getValue;
+     * damageToBeAdded = isPercentage ? DamageEffect.getBaseDamage() * getValue : getValue;
      * @throws ClassCastException
      */
     @Override
     public void modify(final ActionEffect effect) {
-        final double modifier = isPercentage() ? ((DamageEffect) effect).getDamage() * getValue() : getValue();
+        final double modifier = isPercentage() ? ((DamageEffect) effect).getBaseDamage() * getValue() : getValue();
         ((DamageEffect) effect).addToDamage(modifier);
     }
 
