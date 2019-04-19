@@ -5,6 +5,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import thedd.model.item.Item;
+import thedd.model.item.equipableitem.EquipableItem;
+import thedd.model.item.equipableitem.EquipableItemImpl;
 import thedd.model.item.usableitem.UsableItem;
 import thedd.view.extensions.AdaptiveFontButton;
 import thedd.view.extensions.AdaptiveFontScrollableText;
@@ -38,7 +40,10 @@ public class InventoryController extends ViewNodeControllerImpl {
         if (this.useButton.getText().equals(USE_BUTTON_LABEL)) {
             this.getController().useItem(selection);
         } else if (this.useButton.getText().equals(EQUIP_BUTTON_LABEL)) {
-            this.getController().equipItem(selection);
+            final EquipableItem selected = new EquipableItemImpl(selection.getId(), selection.getBaseName(), ((EquipableItem) selection).getType(), selection.getRarity(), selection.getDescription());
+            ((EquipableItem) selection).getActionEffects().forEach(ae -> selected.addActionEffect(ae));
+            ((EquipableItem) selection).getAdditionalActions().forEach(a -> selected.addAdditionalAction(a));
+            this.getController().equipItem(selected);
         } else {
             this.getController().unequipItem(selection);
         }
@@ -127,7 +132,7 @@ public class InventoryController extends ViewNodeControllerImpl {
                 this.deleteButton.setDisable(true);
             } else {
                 if (item.isUsable()) {
-                    UsableItem usable = (UsableItem) item;
+                    final UsableItem usable = (UsableItem) item;
                     this.useButton.setText(USE_BUTTON_LABEL);
                     this.useButton.setDisable(!((usable.isUsableInCombat() && this.getController().isCombatActive())
                             || (usable.isUsableOutOfCombat() && !this.getController().isCombatActive())));

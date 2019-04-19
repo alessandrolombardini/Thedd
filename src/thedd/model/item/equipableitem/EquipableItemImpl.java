@@ -85,7 +85,7 @@ public class EquipableItemImpl extends AbstractItem implements EquipableItem {
         Objects.requireNonNull(equipper);
         additionalActions.forEach(equipper::addActionToAvailable);
         providedEffects.forEach(e -> e.apply(equipper));
-        isEquipped = true;
+        this.isEquipped = true;
     }
 
     @Override
@@ -93,7 +93,7 @@ public class EquipableItemImpl extends AbstractItem implements EquipableItem {
         Objects.requireNonNull(equipper);
         additionalActions.forEach(equipper::removeActionFromAvailable);
         providedEffects.stream().filter(e -> e instanceof RemovableEffect).forEach(e -> ((RemovableEffect) e).remove());
-        isEquipped = false;
+        this.isEquipped = false;
     }
 
     @Override
@@ -158,8 +158,8 @@ public class EquipableItemImpl extends AbstractItem implements EquipableItem {
         if (!(other instanceof EquipableItemImpl) || ((EquipableItemImpl) other).isEquipped != this.isEquipped) {
             return false;
         }
-        return this.additionalActions.equals(other.getAdditionalActions())
-               && this.providedEffects.equals(other.getActionEffects());
+        return this.additionalActions.containsAll(other.getAdditionalActions())
+               && this.providedEffects.containsAll(other.getActionEffects());
     }
 
     @Override

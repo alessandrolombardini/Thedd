@@ -50,6 +50,11 @@ public abstract class AbstractItem implements Item {
     }
 
     @Override
+    public final String getBaseName() {
+        return this.name;
+    }
+
+    @Override
     public final boolean isEquipable() {
         return this instanceof EquipableItem;
     }
@@ -105,5 +110,6 @@ public abstract class AbstractItem implements Item {
         return Objects.equals(description, other.description) && id == other.id && Objects.equals(name, other.name)
                 && Objects.equals(rarity, other.rarity);
     }
+
 
 }
