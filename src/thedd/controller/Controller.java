@@ -187,4 +187,10 @@ public interface Controller {
      */
     boolean hasPlayerWon();
 
+    /**
+     * This method return the player.
+     * @return the player
+     */
+    BasicCharacter getPlayer();
+
 }
