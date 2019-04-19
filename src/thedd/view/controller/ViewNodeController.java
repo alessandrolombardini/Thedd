@@ -2,20 +2,11 @@ package thedd.view.controller;
 
 import thedd.controller.Controller;
 import thedd.view.View;
-import thedd.view.dialog.DialogFactory;
 
 /**
  * Interface describing a SubViewController.
  */
 public interface ViewNodeController {
-
-    /**
-     * Setter of {@link DialogFactory}.
-     * 
-     * @param dialogFactory
-     *          dialogFactory reference
-     */
-    void setDialogFactory(DialogFactory dialogFactory);
 
     /**
      * Initialize the view controller.
