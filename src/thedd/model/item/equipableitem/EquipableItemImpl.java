@@ -112,7 +112,7 @@ public class EquipableItemImpl extends AbstractItem implements EquipableItem {
     public final void addActionEffect(final ActionEffect newEffect) {
         final int maxNumOfEffects = this.getRarityModifiers().get(this.getRarity()).getLeft() + NUM_OF_INNATE_MODIFIERS;
         if (providedEffects.size() < maxNumOfEffects) {
-            providedEffects.add(Objects.requireNonNull(newEffect));
+            providedEffects.add(Objects.requireNonNull(newEffect.getCopy()));
         } else {
             throw new IllegalStateException("There is no more room for additional effects");
         }
@@ -121,7 +121,7 @@ public class EquipableItemImpl extends AbstractItem implements EquipableItem {
     @Override
     public final void addAdditionalAction(final Action newAction) {
         if (additionalActions.size() < this.getRarityModifiers().get(this.getRarity()).getRight()) {
-            additionalActions.add(Objects.requireNonNull(newAction));
+            additionalActions.add(Objects.requireNonNull(newAction.getCopy()));
         } else {
             throw new IllegalStateException("There is no more room for additional actions");
         }
