@@ -1,11 +1,13 @@
 package thedd.model.character;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import thedd.model.character.inventory.Inventory;
 import thedd.model.character.inventory.InventoryImpl;
@@ -33,7 +35,7 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
 
     private final EnumMap<Statistic, StatValues> stat;
     private final Inventory inventory;
-    private final List<EquipableItem> equipment;
+    private final Map<EquipableItem, Integer> equipment;
     private int hash;
 
     /**
@@ -47,7 +49,7 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
         this.stat = new EnumMap<>(Statistic.class);
         setBasicStat(multiplier);
         this.inventory = new InventoryImpl();
-        this.equipment = new ArrayList<>();
+        this.equipment = new HashMap<>();
 
     }
 
@@ -79,10 +81,10 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
         Objects.requireNonNull(item);
         if (item.isEquipable()) {
             final EquipableItem equipItem = (EquipableItem) item;
-            if (checkEquipment(equipItem)) {
+            if (isItemEquipableOnEquipment(equipItem)) {
                 this.inventory.removeItem(item);
-                this.equipment.add((EquipableItem) equipItem);
                 equipItem.onEquip(this);
+                addEquipment((EquipableItem) equipItem);
                 return true;
             }
         }
@@ -92,18 +94,19 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
     @Override
     public final boolean unequipItem(final Item item) {
         Objects.requireNonNull(item);
-        final int index = equipment.indexOf(item);
-        if (index == -1) {
-            return false;
+        if (this.equipment.containsKey(item) && item.isEquipable()) {
+            final EquipableItem equipable = (EquipableItem) item;
+            removeEquipment(equipable);
+            equipable.onUnequip(this);
+            this.inventory.addItem(equipable);
+            return true;
         }
-        this.equipment.get(index).onUnequip(this);
-        this.inventory.addItem(equipment.remove(index));
-        return true;
+        return false;
     }
 
     @Override
-    public final List<? extends Item> getEquippedItems() {
-        return Collections.unmodifiableList(this.equipment);
+    public final List<EquipableItem> getEquippedItems() {
+        return Collections.unmodifiableList(this.equipment.keySet().stream().collect(Collectors.toList()));
     }
 
     @Override
@@ -147,25 +150,41 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
         if (super.equals(obj) && obj instanceof BasicCharacterImpl) {
             final BasicCharacterImpl other = (BasicCharacterImpl) obj;
             return inventory.equals(other.getInventory()) && stat.equals(other.getAllStat())
-                    && equipment.equals(other.getEquippedItems());
+                    && getEquippedItems().equals(other.getEquippedItems());
         }
         return false;
     }
 
-    // Returns true if this Item can be equipped, else false.
-    private boolean checkEquipment(final EquipableItem item) {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getEquippedQuantity(final Item item) {
+        Objects.requireNonNull(item);
+        if (!this.equipment.containsKey(item)) {
+            return 0;
+        } else {
+            return this.equipment.get(item);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isItemEquipableOnEquipment(final EquipableItem item) {
         if (item.getType().isWeapon()) {
-            if (this.equipment.stream().noneMatch(it -> it.getType() == EquipableItemType.TWO_HANDED)) {
-                final int oneHandWeapons = (int) this.equipment.stream()
+            if (this.getEquippedItems().stream().noneMatch(it -> it.getType() == EquipableItemType.TWO_HANDED)) {
+                final int oneHandWeapons = (int) this.getEquippedItems().stream()
                         .filter(it -> it.getType() == EquipableItemType.ONE_HANDED).count();
                 return (oneHandWeapons == 0 || (oneHandWeapons == 1 && item.getType() == EquipableItemType.ONE_HANDED));
             }
             return false;
         } else if (item.getType() == EquipableItemType.RING) {
-            return ((int) this.equipment.stream().filter(it -> it.getType() == EquipableItemType.RING)
+            return ((int) this.getEquippedItems().stream().filter(it -> it.getType() == EquipableItemType.RING)
                     .count() < EquipableItemType.getMaxNumOfRings());
         } else {
-            return this.equipment.stream().noneMatch(it -> it.getType() == item.getType());
+            return this.getEquippedItems().stream().noneMatch(it -> it.getType() == item.getType());
         }
     }
 
@@ -179,5 +198,20 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
         this.stat.put(Statistic.CONSTITUTION, new StatValuesImpl((int) value, StatValuesImpl.NO_MAX));
         value = Statistic.STRENGTH.getBasicValue() * multiplier;
         this.stat.put(Statistic.STRENGTH, new StatValuesImpl((int) value, StatValuesImpl.NO_MAX));
+    }
+
+    private void addEquipment(final EquipableItem item) {
+        if (this.equipment.containsKey(item)) {
+            this.equipment.put(item, this.equipment.get(item) + 1);
+        } else {
+            this.equipment.put(item, 1);
+        }
+    }
+
+    private void removeEquipment(final EquipableItem item) {
+        this.equipment.put(item, this.equipment.get(item) - 1);
+        if (this.equipment.get(item) <= 0) {
+            this.equipment.remove(item);
+        }
     }
 }

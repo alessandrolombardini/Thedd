@@ -68,9 +68,9 @@ public interface Controller {
     void unequipItem(Item item);
 
     /**
-     * The method returns the Inventory Information's wrapper.
+     * The method returns the PlayerInformation's wrapper.
      * 
-     * @return an InventoryInformation class.
+     * @return an PlayerInformation class.
      */
     PlayerInformation getPlayerInformation();
 

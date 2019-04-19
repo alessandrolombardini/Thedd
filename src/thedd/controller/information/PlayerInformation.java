@@ -22,6 +22,14 @@ public interface PlayerInformation {
     String getInventoryItemQuantity(Item item);
 
     /**
+     * Returns the quantity of the specified item on the player's equipments.
+     * 
+     * @param item the specified item
+     * @return the quantity
+     */
+    String getEquippedItemQuantity(Item item);
+
+    /**
      * Returns a list of all the Items in player's inventory.
      * 
      * @return a list of Item
@@ -61,4 +69,13 @@ public interface PlayerInformation {
      * @return a List<Action>
      */
     List<Action> getPlayerActions();
+
+    /**
+     * This method returns if the specified item is equipable in player's
+     * equipments.
+     * 
+     * @param item the specified item.
+     * @return true if the specified item is equipable, otherwise false.
+     */
+    boolean isItemEquipableOnEquipment(Item item);
 }
