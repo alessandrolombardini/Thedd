@@ -21,7 +21,6 @@ public enum ActionCategory {
      * Actions given by the interaction with InteractableActionPerformer.
      */
     INTERACTABLE,
-
     /**
      * Actions given by a Status.
      */

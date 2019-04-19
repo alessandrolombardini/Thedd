@@ -16,7 +16,7 @@ import thedd.model.combat.tag.EffectTag;
 public class PoisonStatusAction extends ActionImpl {
 
     private static final double DAMAGE = 5d;
-    private static final double HITCHANCE = 0.5;
+    private static final double HITCHANCE = 1d;
 
     /**
      * 
