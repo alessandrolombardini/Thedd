@@ -187,4 +187,20 @@ public interface Controller {
      */
     boolean hasPlayerWon();
 
+    /**
+     * This method allows to know if the number of rooms inserted by the player is valid.
+     * 
+     * @param numberOfRooms inserted by the player
+     * @return if the number of rooms is valid
+     */
+    boolean isValidNumberOfRooms(String numberOfRooms);
+
+    /**
+     * This method allows to know if the number of floors inserted is valid.
+     * 
+     * @param numberOfFloors inserted by the player
+     * @return if the number of rooms is valid
+     */
+    boolean isValidNumberOfFloors(String numberOfFloors);
+
 }

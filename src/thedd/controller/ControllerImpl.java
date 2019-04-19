@@ -59,25 +59,44 @@ public class ControllerImpl implements Controller {
      */
     @Override
     public final boolean newGame(final String playerName, final String numberOfRooms, final String numberOfFloors) {
-        if (this.checkNumber(numberOfRooms) && this.checkNumber(numberOfFloors)) {
+        if (this.isValidNumberOfRooms(numberOfRooms) && this.isValidNumberOfFloors(numberOfFloors)) {
             final int numOfRooms = Integer.parseInt(numberOfRooms);
             final int numOfFloors = Integer.parseInt(numberOfFloors);
-            if (numOfFloors >= EnvironmentImpl.MIN_NUMBER_OF_FLOORS
-                    || numOfRooms >= EnvironmentImpl.MIN_NUMBER_OF_ROOMS) {
-                final Session session = new SessionImpl(Optional.ofNullable(playerName), numOfFloors, numOfRooms);
-                this.model.setSession(session);
-                this.playerInfo = new PlayerInformationImpl(this.model.getSession().getPlayerCharacter());
-                this.statisticsInfo = new StatisticsInformationImpl(this.model.getSession().getPlayerCharacter());
+            final Session session = new SessionImpl(Optional.ofNullable(playerName), numOfFloors, numOfRooms);
+            this.model.setSession(session);
+            this.playerInfo = new PlayerInformationImpl(this.model.getSession().getPlayerCharacter());
+            this.statisticsInfo = new StatisticsInformationImpl(this.model.getSession().getPlayerCharacter());
 
-                BasicCharacter charac = this.model.getSession().getPlayerCharacter();
-                IntStream.range(0, 15).forEach(i -> {
-                    charac.getInventory().addItem(ItemFactory.getRandomItem());
-                });
+            BasicCharacter charac = this.model.getSession().getPlayerCharacter();
+            IntStream.range(0, 15).forEach(i -> {
+                charac.getInventory().addItem(ItemFactory.getRandomItem());
+            });
 
-                return true;
-            }
+            return true;
         }
         return false;
+    }
+
+    @Override
+    public final boolean isValidNumberOfRooms(final String numberOfRooms) {
+        if (this.checkNumber(numberOfRooms)) {
+            final int numOfRooms = Integer.parseInt(numberOfRooms);
+            return numOfRooms >= EnvironmentImpl.MIN_NUMBER_OF_ROOMS;
+        }
+        return false;
+    }
+
+    @Override
+    public final boolean isValidNumberOfFloors(final String numberOfFloors) {
+        if (this.checkNumber(numberOfFloors)) {
+            final int numOfFloors = Integer.parseInt(numberOfFloors);
+            return numOfFloors >= EnvironmentImpl.MIN_NUMBER_OF_FLOORS;
+        }
+        return false;
+    }
+
+    private boolean checkNumber(final String number) {
+        return !number.isEmpty() && number.chars().allMatch(Character::isDigit);
     }
 
     /**
@@ -86,10 +105,6 @@ public class ControllerImpl implements Controller {
     @Override
     public final void closeApplication() {
         Platform.exit();
-    }
-
-    private boolean checkNumber(final String number) {
-        return !number.isEmpty() && number.chars().allMatch(Character::isDigit);
     }
 
     // -------------------------------------------------------------------
