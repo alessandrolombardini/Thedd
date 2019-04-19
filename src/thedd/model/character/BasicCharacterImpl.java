@@ -48,6 +48,7 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
         setBasicStat(multiplier);
         this.inventory = new InventoryImpl();
         this.equipment = new ArrayList<>();
+
     }
 
     /**
@@ -79,9 +80,9 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
         if (item.isEquipable()) {
             final EquipableItem equipItem = (EquipableItem) item;
             if (checkEquipment(equipItem)) {
+                this.inventory.removeItem(item);
                 this.equipment.add((EquipableItem) equipItem);
                 equipItem.onEquip(this);
-                this.inventory.removeItem(item);
                 return true;
             }
         }
