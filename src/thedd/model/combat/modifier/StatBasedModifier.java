@@ -20,20 +20,17 @@ public class StatBasedModifier<T extends Modifiable> implements ValueModifier<T>
 
     private final ValueModifier<T> modifier;
     private final Statistic statistic;
-    private final double multiplier;
     private final BasicCharacter target;
 
     /**
      * Public constructor of the modifier.
      * @param targetStat the {@link Statistic} to monitor
      * @param targetCharacter the {@link BasicCharater to monitor}
-     * @param multiplier a multiplier for the statistic value
      * @param modifier the decorated modifier
      */
-    public StatBasedModifier(final Statistic targetStat, final BasicCharacter targetCharacter, final double multiplier, final ValueModifier<T> modifier) {
+    public StatBasedModifier(final Statistic targetStat, final BasicCharacter targetCharacter, final ValueModifier<T> modifier) {
         this.modifier = modifier;
         statistic = targetStat;
-        this.multiplier = multiplier;
         target = targetCharacter;
     }
 
@@ -124,7 +121,7 @@ public class StatBasedModifier<T extends Modifiable> implements ValueModifier<T>
     }
 
     private double getUpdatedValue() {
-        final double mul = target.getStat(statistic).getActual() * multiplier;
+        final double mul = target.getStat(statistic).getActual();
         return modifier.getValue() * mul;
     }
 
