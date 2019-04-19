@@ -7,10 +7,16 @@ package thedd.model.item;
 public interface Item {
 
     /**
-     * Return the name of the Item.
+     * Return the name of the Item with the rarity of it.
      * @return the name of the object
      */
     String getName();
+
+    /**
+     * Return only the name of the item.
+     * @return the name of the item
+     */
+    String getBaseName();
 
     /**
      * Return whether the item is an instance of {@link thedd.model.item.equipableitem.EquipableItem}.
