@@ -1,24 +1,24 @@
 package thedd.view.explorationpane;
 
 import java.util.Objects;
-import java.util.Optional;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.ObjectExpression;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
-import thedd.utils.observer.Observer;
-import thedd.view.explorationpane.confirmationdialog.BiOptionDialog;
-import thedd.view.explorationpane.confirmationdialog.DialogResponse;
+import javafx.scene.text.Font;
+import thedd.view.explorationpane.confirmationdialog.OptionDialog;
 
 /**
- * A {@link StackPane} which observes a {@link DialogResponse} 
- * and can run any function based on the response of a modal dialog it can create and show.
+ * A {@link StackPane} which can run any function based on the response of a modal dialog it can create and show.
  *
  */
-public class TopStackPane extends StackPane implements Observer<DialogResponse>, DialogResponseManager, ModalDialogViewer {
+public class TopStackPane extends StackPane implements DialogResponseManager, ModalDialogViewer {
 
-    private final BiOptionDialog bop = new BiOptionDialog();
+    private final OptionDialog bop = new OptionDialog();
     private Runnable onDialogAccept = (() -> {
         return;
     });
@@ -45,11 +45,36 @@ public class TopStackPane extends StackPane implements Observer<DialogResponse>,
     public TopStackPane() {
         final double half = 0.5;
         this.setAlignment(Pos.CENTER);
+
+        final int twentyFive = 25;
+        final int fifteen = 15;
+        final int five = 5;
+        final int two = 2;
+
+        final ObjectExpression<Font> bi = Bindings.createObjectBinding(
+              () -> Font.font((bop.getWidthProperty().add(bop.getHeightProperty()).doubleValue()) / (twentyFive * two)), bop.getWidthProperty(),
+              bop.getHeightProperty());
+
+        final Button accept = new Button("Accept");
+        accept.fontProperty().bind(bi);
+        accept.prefWidthProperty().bind(bop.getWidthProperty().multiply(getPercentageAsDecimal(twentyFive)));
+        accept.prefHeightProperty().bind(bop.getHeightProperty().multiply(getPercentageAsDecimal(fifteen)));
+        accept.setOnAction(e -> onDialogAccept.run());
+
+        final Button cancel = new Button("Cancel");
+        cancel.fontProperty().bind(bi);
+        cancel.prefWidthProperty().bind(bop.getWidthProperty().multiply(getPercentageAsDecimal(twentyFive)));
+        cancel.prefHeightProperty().bind(bop.getHeightProperty().multiply(getPercentageAsDecimal(fifteen)));
+        cancel.setOnAction(e -> onDialogDecline.run());
+
+        bop.getButtonDistance().bind(bop.getWidthProperty().multiply(getPercentageAsDecimal(five)));
+        bop.addButton(accept);
+        bop.addButton(cancel);
+
         bop.translateXProperty().bind(this.widthProperty().multiply(half).subtract(bop.getWidthProperty().multiply(half)));
         bop.translateYProperty().bind(this.heightProperty().multiply(half).subtract(bop.getHeightProperty().multiply(half)));
         bop.getWidthProperty().bind(this.widthProperty().multiply(half));
         bop.getHeightProperty().bind(this.heightProperty().multiply(half));
-        bop.bindObserver(this);
     }
 
     @Override
@@ -66,20 +91,6 @@ public class TopStackPane extends StackPane implements Observer<DialogResponse>,
     }
 
     @Override
-    public final void trigger(final Optional<DialogResponse> message) {
-        if (!Objects.requireNonNull(message).isPresent()) {
-            throw new IllegalArgumentException("Message expected. None arrived.");
-        } else {
-            hideDialog();
-            if (message.get() == DialogResponse.ACCEPTED) {
-                onDialogAccept.run();
-            } else {
-                onDialogDecline.run();
-            }
-        }
-    }
-
-    @Override
     public final void setDialogAccepted(final Runnable onAccept) {
         onDialogAccept = Objects.requireNonNull(onAccept);
     }
@@ -87,6 +98,10 @@ public class TopStackPane extends StackPane implements Observer<DialogResponse>,
     @Override
     public final void setDialogDeclined(final Runnable onDecline) {
         onDialogDecline = Objects.requireNonNull(onDecline);
+    }
+
+    private double getPercentageAsDecimal(final int percentage) {
+        return percentage / 100.0;
     }
 
 }
