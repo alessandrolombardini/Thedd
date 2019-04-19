@@ -104,11 +104,17 @@ public class MainGameViewController extends ViewNodeControllerImpl implements Ga
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final void showInventory() {
         this.showNode(inventoryContent, ViewNode.INVENTORY, Position.DOWN_SX);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final void showActionSelector() {
         this.showNode(inventoryContent, ViewNode.ACTION_SELECTOR, Position.DOWN_SX);
