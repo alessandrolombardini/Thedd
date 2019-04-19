@@ -13,11 +13,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javafx.animation.TranslateTransition;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.fxml.FXML;
-import javafx.scene.effect.DisplacementMap;
-import javafx.scene.effect.FloatMap;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
@@ -28,17 +24,14 @@ import thedd.model.character.types.DarkDestructorNPC;
 import thedd.model.character.types.GoblinNPC;
 import thedd.model.character.types.HeadlessNPC;
 import thedd.model.combat.action.Action;
-import thedd.model.combat.action.ActionCategory;
 import thedd.model.combat.action.result.ActionResult;
 import thedd.model.combat.action.result.ActionResultType;
 import thedd.model.combat.actor.ActionActor;
-import thedd.model.combat.status.Status;
 import thedd.model.roomevent.RoomEventType;
 import thedd.model.roomevent.combatevent.CombatEvent;
 import thedd.model.roomevent.interactableactionperformer.InteractableActionPerformer;
 import thedd.utils.observer.Observer;
 import thedd.view.controller.interfaces.ExplorationView;
-import thedd.view.controller.interfaces.GameView;
 import thedd.view.explorationpane.ExplorationPaneImpl;
 import thedd.view.explorationpane.TopStackPane;
 import thedd.view.explorationpane.enums.PartyType;
@@ -77,7 +70,7 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
                 enemyImages.add(mapClassToActionActor(npc.getClass())); enemyActors.add(npc);
             });
         } else {
-            
+            //TODO case InteractableActionPerformer
         }
 
         explorationPane.setEnemyImages(enemyImages);
