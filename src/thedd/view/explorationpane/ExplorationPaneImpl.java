@@ -44,6 +44,8 @@ public final class ExplorationPaneImpl extends BorderPane implements Exploration
         alliedParty = new HBox(SPACING_VALUE);
         roomAdvancer = new ImageView();
 
+        alliedParty.setAlignment(Pos.CENTER_LEFT);
+
         enemiesAndNext.getChildren().add(enemyParty);
         enemiesAndNext.getChildren().add(roomAdvancer);
         enemiesAndNext.setAlignment(Pos.CENTER_RIGHT);
@@ -94,6 +96,7 @@ public final class ExplorationPaneImpl extends BorderPane implements Exploration
         enemyParty.getChildren().clear();
         IntStream.range(0, Objects.requireNonNull(images).size()).forEach(i -> enemyParty.getChildren().add(new ActorViewerImpl(PartyType.ENEMY, i, Objects.requireNonNull(images.get(i)))));
         enemyParty.getChildren().forEach(c -> ((ActorViewerImpl) c).bindObserver(observer));
+        resizeAllComponents();
     }
 
     @Override
@@ -101,6 +104,7 @@ public final class ExplorationPaneImpl extends BorderPane implements Exploration
         alliedParty.getChildren().clear();
         IntStream.range(0, Objects.requireNonNull(images).size()).forEach(i -> alliedParty.getChildren().add(new ActorViewerImpl(PartyType.ALLIED, i, Objects.requireNonNull(images.get(i)))));
         alliedParty.getChildren().forEach(c -> ((ActorViewerImpl) c).bindObserver(observer));
+        resizeAllComponents();
     }
 
     @Override

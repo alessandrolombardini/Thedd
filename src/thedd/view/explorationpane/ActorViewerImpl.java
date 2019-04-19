@@ -43,6 +43,7 @@ public class ActorViewerImpl extends ImageView implements Observable<Pair<PartyT
         this.partyPosition = partyPosition;
         registeredObservers = new ArrayList<>();
         this.setOnMouseClicked(e -> this.emit());
+        this.setPreserveRatio(true);
 
         tooltip = new Tooltip();
         Tooltip.install(this, tooltip);
