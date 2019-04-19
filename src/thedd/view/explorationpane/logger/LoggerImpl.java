@@ -54,7 +54,7 @@ public class LoggerImpl extends GridPane implements Logger {
         this.getRowConstraints().addAll(row1, row2);
 
         this.setPadding(new Insets(PADDING));
-        this.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
+        this.setBackground(new Background(new BackgroundFill(Color.web("#040404"), null, null)));
 
         text = new AdaptiveFontLabel(FONT_RATIO);
         text.setTextFill(Color.WHITE);
