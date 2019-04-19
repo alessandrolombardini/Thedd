@@ -54,19 +54,19 @@
 					                  <children> 
 				                          <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="1" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 				                             <children>
-				                                <AdaptiveFontLabel ratio="20" fx:id="playerNameLabel" text="Player name:" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+				                                <AdaptiveFontLabel ratio="20" styleClass="labelNewPlay" fx:id="playerNameLabel" text="Player name:" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
 				                             </children>
 				                          </AnchorPane>
 				                          
 				                          <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="3" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 				                             <children>
-				                                <AdaptiveFontLabel ratio="20" fx:id="numberOfFloorsLabel" text="Number of floors:"  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+				                                <AdaptiveFontLabel ratio="20" styleClass="labelNewPlay" fx:id="numberOfFloorsLabel" text="Number of floors:"  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
 											</children>
 				                          </AnchorPane>
 				                          
 				                          <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="6" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 				                             <children>
-				                                <AdaptiveFontLabel ratio="20" fx:id="numberOfRoomsLabel" text="Number of rooms per floor:"  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+				                                <AdaptiveFontLabel ratio="20" styleClass="labelNewPlay" fx:id="numberOfRoomsLabel" text="Number of rooms per floor:"  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
 				                                </children>
 				                          </AnchorPane>
 				                          
@@ -86,11 +86,7 @@
 				                             <children>
 				                                <AdaptiveFontTextField ratio="14" fx:id="numberOfFloorsTextField" minHeight="0" minWidth="0" alignment="CENTER_RIGHT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
 											</children>
-				                          </AnchorPane><AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="3" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-				                             <children>
-				                                <AdaptiveFontLabel ratio="20" fx:id="numberOfFloorsLabel" text="Number of floors:"  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
-											</children>
-				                          </AnchorPane>
+										 </AnchorPane>
 				                          
 				                          <AnchorPane GridPane.columnIndex="2"  GridPane.rowIndex="9" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 				                             <children>

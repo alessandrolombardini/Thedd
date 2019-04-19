@@ -95,8 +95,5 @@ public class NewGameController extends ViewNodeControllerImpl {
                                                                new BackgroundSize(TITLE_HEIGHT_PERC, TITLE_WIDTH_PERC, 
                                                                true, true, true, false));
         this.newGameTitleImage.setBackground(new Background(backgroundGameOver));
-        this.playerNameLabel.setAlignment(Pos.CENTER_RIGHT);
-        this.numberOfRoomsLabel.setAlignment(Pos.CENTER_RIGHT);
-        this.numberOfFloorsLabel.setAlignment(Pos.CENTER_RIGHT);
     }
 }
