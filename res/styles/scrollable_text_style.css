@@ -33,3 +33,7 @@
 .scroll-bar:vertical .increment-button{
 	-fx-background-color: transparent;
 }
+
+.label {
+	-fx-alignment:top_left;
+}
