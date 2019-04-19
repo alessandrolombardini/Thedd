@@ -12,12 +12,15 @@ import thedd.model.character.inventory.InventoryImpl;
 import thedd.model.character.statistics.StatValues;
 import thedd.model.character.statistics.StatValuesImpl;
 import thedd.model.character.statistics.Statistic;
+import thedd.model.combat.action.Action;
 import thedd.model.combat.action.effect.ActionEffect;
 import thedd.model.combat.actor.automatic.AbstractAutomaticActor;
 import thedd.model.combat.modifier.DamageModifier;
+import thedd.model.combat.modifier.HitChanceModifier;
 import thedd.model.combat.modifier.Modifier;
 import thedd.model.combat.modifier.ModifierActivation;
 import thedd.model.combat.modifier.StatBasedModifier;
+import thedd.model.combat.requirements.tags.EffectTagsRequirement;
 import thedd.model.combat.requirements.tags.TagRequirement;
 import thedd.model.combat.requirements.tags.TagRequirementType;
 import thedd.model.combat.tag.EffectTag;
@@ -49,11 +52,7 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
         this.inventory = new InventoryImpl();
         this.equipment = new ArrayList<>();
 
-        final Modifier<ActionEffect> ailmentsResistance = new StatBasedModifier<>(Statistic.CONSTITUTION, this, 1,
-                new DamageModifier(-0.01, true, ModifierActivation.ACTIVE_ON_DEFENCE));
-        final List<Tag> tags = Arrays.asList(EffectTag.POISON_DAMAGE);
-        ailmentsResistance.addRequirement(new TagRequirement<>(false, TagRequirementType.REQUIRED, tags));
-        addEffectModifier(ailmentsResistance, true);
+        setCommonStatBasedModifiers();
     }
 
     /**
@@ -187,5 +186,48 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
         this.stat.put(Statistic.CONSTITUTION, new StatValuesImpl((int) value, StatValuesImpl.NO_MAX));
         value = Statistic.STRENGTH.getBasicValue() * multiplier;
         this.stat.put(Statistic.STRENGTH, new StatValuesImpl((int) value, StatValuesImpl.NO_MAX));
+    }
+
+    private void setCommonStatBasedModifiers() {
+        final ModifierActivation offensive = ModifierActivation.ACTIVE_ON_ATTACK;
+        final ModifierActivation defensive = ModifierActivation.ACTIVE_ON_DEFENCE;
+        List<Tag> requiredTags = new ArrayList<Tag>();
+        List<Tag> allowedTags = new ArrayList<Tag>();
+
+        //Resistance to poison per CONSTITUTION point
+        final Modifier<ActionEffect> cosPoisonResistance = new StatBasedModifier<>(Statistic.CONSTITUTION, this,
+                                                       new DamageModifier(-0.025, true, defensive));
+        requiredTags = Arrays.asList(EffectTag.POISON_DAMAGE);
+        cosPoisonResistance.addRequirement(new TagRequirement<>(false, TagRequirementType.REQUIRED, requiredTags));
+
+        //Bonus to damage per STRENGTH point
+        final Modifier<ActionEffect> strDamage = new StatBasedModifier<>(Statistic.STRENGTH, this,
+                new DamageModifier(2, false, offensive));
+        requiredTags = Arrays.asList(EffectTag.NORMAL_DAMAGE);
+        strDamage.addRequirement(new TagRequirement<>(false, TagRequirementType.REQUIRED, requiredTags));
+
+        //Bonus to hit chance per AGILITY point
+        final Modifier<Action> dexHitChance = new StatBasedModifier<>(Statistic.AGILITY, this,
+                new HitChanceModifier(0.025, true, offensive));
+        requiredTags = Arrays.asList(EffectTag.NORMAL_DAMAGE);
+        dexHitChance.addRequirement(new EffectTagsRequirement<>(false, TagRequirementType.REQUIRED, requiredTags));
+
+        //Bonus to chances of being missed by a physical attack per AGILITY point
+        final Modifier<Action> dexMissChance = new StatBasedModifier<>(Statistic.AGILITY, this,
+                new HitChanceModifier(-0.015, true, defensive));
+        requiredTags = Arrays.asList(EffectTag.NORMAL_DAMAGE);
+        dexMissChance.addRequirement(new EffectTagsRequirement<>(false, TagRequirementType.REQUIRED, requiredTags));
+
+        //Resistance to physical damage per CONSTITUTION point
+        final Modifier<ActionEffect> cosDmgResistance = new StatBasedModifier<>(Statistic.CONSTITUTION, this,
+                new DamageModifier(-0.025, true, defensive));
+        allowedTags = Arrays.asList(EffectTag.NORMAL_DAMAGE, EffectTag.AP_DAMAGE);
+        cosDmgResistance.addRequirement(new TagRequirement<>(false, TagRequirementType.ALLOWED, allowedTags));
+
+        addActionModifier(dexMissChance, true);
+        addActionModifier(dexHitChance, true);
+        addEffectModifier(cosDmgResistance, true);
+        addEffectModifier(strDamage, true);
+        addEffectModifier(cosPoisonResistance, true);
     }
 }
