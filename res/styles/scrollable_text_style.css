@@ -4,6 +4,8 @@
 	-fx-border-color: #333;
 }
 
+/* CREDIT FOR THIS SCROLLBAR STYLE: https://farrukhobaid.wordpress.com/2013/01/16/dark-scrollbar-skin-for-javafx/ */
+
 .scroll-bar{
  -fx-background-color: #333;
  -fx-background-radius: 2.0em;

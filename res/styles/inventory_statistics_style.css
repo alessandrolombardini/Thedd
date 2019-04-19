@@ -28,6 +28,8 @@
         radial-gradient(center 50.0% 50.0%, radius 100.0%, rgba(101.0,108.0,119.0,0.9), #111);
 }
 
+/*CREDIT FOR THIS BUTTON STYLE: http://fxexperience.com/2011/12/styling-fx-buttons-with-css/ */
+
 AdaptiveFontButton {
     -fx-padding: 8.0 15.0 15.0 15.0;
     -fx-background-insets: 0.0,0.0 0.0 5.0 0.0, 0.0 0.0 6.0 0.0, 0.0 0.0 7.0 0.0;
