@@ -361,8 +361,17 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
      * @return true of the target can parry the action, false otherwise
      */
     protected boolean canTargetParry(final ActionActor target) {
+        /*An action can be blocked only if:
+         * -The action is not unblockable
+         * -The action is offensive
+         * -The target of the action is not the actor executing it
+         * -The action is not of type STATUS
+         * -The target's action is of type parry
+         * -The target is not in the queue ->  this means it has already activated its defense
+        */
         return target.getSelectedAction().isPresent()
                 && !currentAction.get().getTags().contains(ActionTag.UNBLOCKABLE)
+                && currentAction.get().getTags().contains(ActionTag.OFFENSIVE)
                 && currentAction.get().getTargetType() != TargetType.SELF
                 && currentAction.get().getCategory() != ActionCategory.STATUS
                 && target.getSelectedAction().get().getTags().contains(ActionTag.PARRY)
