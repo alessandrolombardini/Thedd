@@ -40,7 +40,8 @@ public class InventoryController extends ViewNodeControllerImpl {
         if (this.useButton.getText().equals(USE_BUTTON_LABEL)) {
             this.getController().useItem(selection);
         } else if (this.useButton.getText().equals(EQUIP_BUTTON_LABEL)) {
-            final EquipableItem selected = new EquipableItemImpl(selection.getId(), selection.getBaseName(), ((EquipableItem) selection).getType(), selection.getRarity(), selection.getDescription());
+            final EquipableItem selected = new EquipableItemImpl(selection.getId(), selection.getBaseName(),
+                    ((EquipableItem) selection).getType(), selection.getRarity(), selection.getDescription());
             ((EquipableItem) selection).getActionEffects().forEach(ae -> selected.addActionEffect(ae));
             ((EquipableItem) selection).getAdditionalActions().forEach(a -> selected.addAdditionalAction(a));
             this.getController().equipItem(selected);
@@ -99,19 +100,19 @@ public class InventoryController extends ViewNodeControllerImpl {
             if (item.isEquipable()) {
                 this.content.setText(item.getName()
                         + (this.getController().getPlayerInformation().isEquipped(item) ? " [Currently Equipped]" : "")
-                        + (this.getController().getPlayerInformation().isItemEquipableOnEquipment(item)
-                                ? "" : "\nYou cannot equip this item: maximum slot limit reached!")
-                        + ".\n\nDescription: \n" + item.getDescription() + "\n\nEffects: \n" 
-                        + item.getEffectDescription() + "\n\nType: Equipable Item. \n\nYou have "
-                        + (this.getController().getPlayerInformation().isEquipped(item)
-                                ? "equipped " + this.getController().getPlayerInformation()
-                                    .getEquippedItemQuantity(item) + " of them."
-                                : this.getController().getPlayerInformation().getInventoryItemQuantity(item)
-                                    + " of them in your inventory."));
+                        + (!this.getController().getPlayerInformation().isItemEquipableOnEquipment(item)
+                                && !this.getController().getPlayerInformation().isEquipped(item)
+                                        ? "\nYou cannot equip this item: maximum slot limit reached!"
+                                        : "")
+                        + "\n\nDescription: \n" + item.getDescription() + "\n\nEffects: \n"
+                        + item.getEffectDescription() + "\nType: Equipable Item. \n\nYou have "
+                        + (!this.getController().getPlayerInformation().isEquipped(item)
+                                ? this.getController().getPlayerInformation().getInventoryItemQuantity(item)
+                                        + " of them in your inventory."
+                                : ""));
             } else {
-                this.content.setText(item.getName() + ".\n\nDescription: \n" + item.getDescription() + "\n\nEffects: \n"
-                        + item.getEffectDescription() 
-                        + "\n\nType: Usable Item. \n\nYou have "
+                this.content.setText(item.getName() + "\n\nDescription: \n" + item.getDescription() + "\n\nEffects: \n"
+                        + item.getEffectDescription() + "\n\nType: Usable Item. \n\nYou have "
                         + this.getController().getPlayerInformation().getInventoryItemQuantity(item)
                         + " of them in your inventory.");
             }

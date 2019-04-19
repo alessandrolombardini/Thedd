@@ -70,11 +70,6 @@ public final class PlayerInformationImpl implements PlayerInformation {
     }
 
     @Override
-    public String getEquippedItemQuantity(final Item item) {
-        return String.valueOf(this.character.getEquippedQuantity(item));
-    }
-
-    @Override
     public boolean isItemEquipableOnEquipment(final Item item) {
         if (item.isEquipable()) {
             return this.character.isItemEquipableOnEquipment((EquipableItem) item);

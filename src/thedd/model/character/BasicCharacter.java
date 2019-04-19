@@ -72,14 +72,6 @@ public interface BasicCharacter extends AutomaticActionActor {
     List<EquipableItem> getEquippedItems();
 
     /**
-     * This method returns the quantity of the specified item into the equipments.
-     * 
-     * @param item the specified item.
-     * @return a int value: the quantity into the equipments of this item.
-     */
-    int getEquippedQuantity(Item item);
-
-    /**
      * This method returns true if the specified EquipableItem is Equipable on
      * Player's Equipments.
      * 

@@ -1,13 +1,11 @@
 package thedd.model.character;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import thedd.model.character.inventory.Inventory;
 import thedd.model.character.inventory.InventoryImpl;
@@ -35,7 +33,7 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
 
     private final EnumMap<Statistic, StatValues> stat;
     private final Inventory inventory;
-    private final Map<EquipableItem, Integer> equipment;
+    private final List<EquipableItem> equipment;
     private int hash;
 
     /**
@@ -49,8 +47,13 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
         this.stat = new EnumMap<>(Statistic.class);
         setBasicStat(multiplier);
         this.inventory = new InventoryImpl();
-        this.equipment = new HashMap<>();
+        this.equipment = new ArrayList<>();
 
+        final Modifier<ActionEffect> ailmentsResistance = new StatBasedModifier<>(Statistic.CONSTITUTION, this, 1,
+                new DamageModifier(-0.01, true, ModifierActivation.ACTIVE_ON_DEFENCE));
+        final List<Tag> tags = Arrays.asList(EffectTag.POISON_DAMAGE);
+        ailmentsResistance.addRequirement(new TagRequirement<>(false, TagRequirementType.REQUIRED, tags));
+        addEffectModifier(ailmentsResistance, true);
     }
 
     /**
@@ -84,7 +87,7 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
             if (isItemEquipableOnEquipment(equipItem)) {
                 this.inventory.removeItem(item);
                 equipItem.onEquip(this);
-                addEquipment((EquipableItem) equipItem);
+                this.equipment.add(equipItem);
                 return true;
             }
         }
@@ -94,19 +97,18 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
     @Override
     public final boolean unequipItem(final Item item) {
         Objects.requireNonNull(item);
-        if (this.equipment.containsKey(item) && item.isEquipable()) {
-            final EquipableItem equipable = (EquipableItem) item;
-            removeEquipment(equipable);
-            equipable.onUnequip(this);
-            this.inventory.addItem(equipable);
-            return true;
+        final int index = equipment.indexOf(item);
+        if (index == -1) {
+            return false;
         }
-        return false;
+        this.equipment.get(index).onUnequip(this);
+        this.inventory.addItem(equipment.remove(index));
+        return true;
     }
 
     @Override
     public final List<EquipableItem> getEquippedItems() {
-        return Collections.unmodifiableList(this.equipment.keySet().stream().collect(Collectors.toList()));
+        return Collections.unmodifiableList(this.equipment);
     }
 
     @Override
@@ -159,19 +161,6 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
      * {@inheritDoc}
      */
     @Override
-    public int getEquippedQuantity(final Item item) {
-        Objects.requireNonNull(item);
-        if (!this.equipment.containsKey(item)) {
-            return 0;
-        } else {
-            return this.equipment.get(item);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public boolean isItemEquipableOnEquipment(final EquipableItem item) {
         if (item.getType().isWeapon()) {
             if (this.getEquippedItems().stream().noneMatch(it -> it.getType() == EquipableItemType.TWO_HANDED)) {
@@ -198,20 +187,5 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
         this.stat.put(Statistic.CONSTITUTION, new StatValuesImpl((int) value, StatValuesImpl.NO_MAX));
         value = Statistic.STRENGTH.getBasicValue() * multiplier;
         this.stat.put(Statistic.STRENGTH, new StatValuesImpl((int) value, StatValuesImpl.NO_MAX));
-    }
-
-    private void addEquipment(final EquipableItem item) {
-        if (this.equipment.containsKey(item)) {
-            this.equipment.put(item, this.equipment.get(item) + 1);
-        } else {
-            this.equipment.put(item, 1);
-        }
-    }
-
-    private void removeEquipment(final EquipableItem item) {
-        this.equipment.put(item, this.equipment.get(item) - 1);
-        if (this.equipment.get(item) <= 0) {
-            this.equipment.remove(item);
-        }
     }
 }
