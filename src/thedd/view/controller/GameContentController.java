@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -18,6 +19,8 @@ import thedd.model.character.statistics.Statistic;
 import thedd.model.combat.action.Action;
 import thedd.model.combat.action.result.ActionResult;
 import thedd.model.combat.actor.ActionActor;
+import thedd.model.roomevent.RoomEventType;
+import thedd.model.roomevent.combatevent.CombatEvent;
 import thedd.model.roomevent.interactableactionperformer.InteractableActionPerformer;
 import thedd.utils.observer.Observer;
 import thedd.view.controller.interfaces.ExplorationView;
@@ -43,7 +46,9 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
 
     @Override
     public final void update() {
+        state = (this.getController().isCombatActive() ? TargetSelectionState.COMBAT_INFORMATION : TargetSelectionState.EXPLORATION); 
         explorationPane.setRoomAdvancerVisible(state == TargetSelectionState.EXPLORATION);
+        
     }
 
     @Override
@@ -69,6 +74,9 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
 
     @Override
     public final void trigger(final Optional<Pair<PartyType, Integer>> message) {
+        if (!Objects.requireNonNull(message).isPresent()) {
+            throw new IllegalArgumentException("Message is empty and a non-empty message was expected");
+        }
         switch (state) {
             case EXPLORATION:
                 //prendo la contraption in posizione message.get().getRight()
@@ -76,14 +84,16 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
                 mainPane.showDialog("Do you want to interact with this object?"); //faccio aprire il dialog
                 break;
             case COMBAT_INFORMATION:
-                //prendo il personaggio in posizione x
-                //dico alla view delle statistiche di aggiornarsi con le statistiche per pg selezionato
-                
-                //this.getController().getStatisticsInformations().setCharacter(character);
+                if (message.get().getLeft() == PartyType.ALLIED && message.get().getRight() == 0) {
+                    this.getController().updateStatistics(this.getController().getPlayer());
+                } else if (message.get().getLeft() == PartyType.ENEMY) {
+                    final CombatEvent ce = (CombatEvent) this.getController().getRoomEvents().stream().filter(re -> re.getType() == RoomEventType.COMBAT_EVENT).findFirst().get();
+                    this.getController().updateStatistics((BasicCharacter) ce.getHostileEncounter().getNPCs().stream().collect(Collectors.toList()).get(message.get().getRight()));
+                }
                 break;
             case COMBAT_TARGET:
-                //prendo il personaggio in posizione x
-                //dico al ActionExecutor che è stato selezionato come bersaglio
+                final List<ActionActor> selectedParty = getSelectedParty(Objects.requireNonNull(message.get().getLeft()));
+                this.getController().targetSelected(selectedParty.get(message.get().getRight()));
                 break;
             default:
                 break;
@@ -181,6 +191,17 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
                                    + "HP: " + targetHP.getActual() + "/" + targetHP.getMax() + '\n'
                                    + (action.isPresent() ? "Chanche to hit: " + Objects.requireNonNull(action).get().getHitChance(target) + '\n' : "");
             explorationPane.updatePositionTooltip(Objects.requireNonNull(position), tooltip);
+        }
+    }
+
+    private List<ActionActor> getSelectedParty(final PartyType side) {
+        switch (Objects.requireNonNull(side)) {
+            case ALLIED:
+                return alliedParty;
+            case ENEMY:
+                return enemyParty;
+            default:
+                return null;
         }
     }
 
