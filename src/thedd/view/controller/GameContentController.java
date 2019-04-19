@@ -3,6 +3,7 @@ package thedd.view.controller;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -11,14 +12,27 @@ import java.util.stream.IntStream;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
+import javafx.animation.TranslateTransition;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.fxml.FXML;
+import javafx.scene.effect.DisplacementMap;
+import javafx.scene.effect.FloatMap;
 import javafx.scene.image.Image;
+import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 import thedd.model.character.BasicCharacter;
 import thedd.model.character.statistics.StatValues;
 import thedd.model.character.statistics.Statistic;
+import thedd.model.character.types.DarkDestructorNPC;
+import thedd.model.character.types.GoblinNPC;
+import thedd.model.character.types.HeadlessNPC;
 import thedd.model.combat.action.Action;
+import thedd.model.combat.action.ActionCategory;
 import thedd.model.combat.action.result.ActionResult;
+import thedd.model.combat.action.result.ActionResultType;
 import thedd.model.combat.actor.ActionActor;
+import thedd.model.combat.status.Status;
 import thedd.model.roomevent.RoomEventType;
 import thedd.model.roomevent.combatevent.CombatEvent;
 import thedd.model.roomevent.interactableactionperformer.InteractableActionPerformer;
@@ -31,8 +45,9 @@ import thedd.view.explorationpane.enums.PartyType;
 import thedd.view.explorationpane.enums.TargetSelectionState;
 import thedd.view.explorationpane.logger.LoggerImpl;
 import thedd.view.explorationpane.logger.LoggerManager;
+import thedd.view.imageloader.ImageLoader;
 
-public class GameContentController extends ViewNodeControllerImpl implements Observer<Pair<PartyType, Integer>>, ExplorationView, GameView {
+public class GameContentController extends ViewNodeControllerImpl implements Observer<Pair<PartyType, Integer>>, ExplorationView {
 
     @FXML
     private TopStackPane mainPane;
@@ -47,8 +62,26 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
     @Override
     public final void update() {
         state = (this.getController().isCombatActive() ? TargetSelectionState.COMBAT_INFORMATION : TargetSelectionState.EXPLORATION); 
-        explorationPane.setRoomAdvancerVisible(state == TargetSelectionState.EXPLORATION);
-        
+        explorationPane.setRoomAdvancerVisible(state == TargetSelectionState.EXPLORATION && !this.getController().isCurrentLastRoom());
+
+        final List<Image> alliedImages = new ArrayList<>();
+        alliedImages.add(ImageLoader.PLAYERCHARACTER_PROFILE.getImage());
+        explorationPane.setAllyImages(alliedImages);
+        updateSingleTarget(this.getController().getPlayer(), new ImmutablePair<PartyType, Integer>(PartyType.ALLIED, 0), Optional.empty());
+
+        final List<Image> enemyImages = new ArrayList<>();
+        final List<ActionActor> enemyActors = new ArrayList<>();
+        if (this.getController().isCombatActive()) {
+            final CombatEvent ce = this.getController().getRoomEvents().stream().filter(rm -> rm.getType() == RoomEventType.COMBAT_EVENT).findFirst().map(rm -> (CombatEvent) rm).get(); 
+            ce.getHostileEncounter().getNPCs().stream().forEach(npc -> {
+                enemyImages.add(mapClassToActionActor(npc.getClass())); enemyActors.add(npc);
+            });
+        } else {
+            
+        }
+
+        explorationPane.setEnemyImages(enemyImages);
+        IntStream.range(0,  enemyActors.size()).forEach(i -> updateSingleTarget(enemyActors.get(i), new ImmutablePair<>(PartyType.ENEMY, i), Optional.empty()));
     }
 
     @Override
@@ -58,7 +91,14 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
         mainPane.setDialogDeclined(() -> cancelInput()); 
         mainPane.getChildren().add(explorationPane);
         explorationPane.changeBackgroundImage(new Image(ClassLoader.getSystemResourceAsStream("bgimg.jpg")));
-        explorationPane.getRoomAdvancer().setOnMouseClicked(e -> provaLog()/*mainPane.showDialog("Cambi stanza?")*/);
+        explorationPane.getRoomAdvancer().setOnMouseClicked(e -> {
+            changeRoomTransition();
+            this.getController().nextRoom();
+            this.getView().update();
+        });
+        explorationPane.setActorViewerObserver(this);
+        explorationPane.prefWidthProperty().bind(mainPane.widthProperty());
+        explorationPane.prefHeightProperty().bind(mainPane.heightProperty());
         explorationPane.autosize();
 
         final int two = 2;
@@ -70,6 +110,8 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
         log.getHeightProperty().bind(explorationPane.heightProperty().divide(six));
         log.translateYProperty().bind(explorationPane.heightProperty().subtract(log.getHeightProperty().add(bottomPadding)).divide(two));
         mainPane.getChildren().add(log);
+        this.getController().nextRoom();
+        update();
     }
 
     @Override
@@ -79,9 +121,13 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
         }
         switch (state) {
             case EXPLORATION:
-                //prendo la contraption in posizione message.get().getRight()
-                //la salvo in una variabile optional
-                mainPane.showDialog("Do you want to interact with this object?"); //faccio aprire il dialog
+                if (message.get().getLeft() == PartyType.ENEMY) {
+                    performer = Optional.of(this.getController().getRoomEvents().stream().filter(re -> re.getType() == RoomEventType.INTERACTABLE_ACTION_PERFORMER)
+                                                                                         .map(rm -> (InteractableActionPerformer) rm)
+                                                                                         .collect(Collectors.toList()).get(message.get().getRight()));
+                    performer.get().getSelectedAction().get().setTarget(this.getController().getPlayer());
+                    mainPane.showDialog("Do you want to interact with this object?");
+                }
                 break;
             case COMBAT_INFORMATION:
                 if (message.get().getLeft() == PartyType.ALLIED && message.get().getRight() == 0) {
@@ -100,19 +146,8 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
         }
     }
 
-    private void provaLog() {
-        final LinkedList<String> queue = new LinkedList<>();
-        queue.add("Prova1");
-        queue.add("Prova2");
-        final LoggerManager lm = new LoggerManager(log, queue);
-        log.setLoggerManager(lm);
-        final Thread t = new Thread(lm);
-        t.setDaemon(true);
-        t.start();
-    }
-
     private void continueInput() {
-        performer.ifPresent(p -> p.getSelectedAction().get().applyEffects(null /*MainCharacter*/));
+        performer.ifPresent(p -> p.getSelectedAction().get().applyEffects(this.getController().getPlayer()));
         mainPane.hideDialog();
     }
 
@@ -122,7 +157,7 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
     }
 
     @Override
-    public void showTargets(final List<ActionActor> targetables, 
+    public final void showTargets(final List<ActionActor> targetables, 
                             final List<ActionActor> alliedParty, 
                             final List<ActionActor> enemyParty,
                             final Action action) {
@@ -151,7 +186,7 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
     }
 
     @Override
-    public void hideTargets() {
+    public final void hideTargets() {
         explorationPane.setAllAsTargetable();
         state = TargetSelectionState.COMBAT_INFORMATION;
         IntStream.range(0, alliedParty.size())
@@ -163,26 +198,42 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
     }
 
     @Override
-    public void logAction(final ActionResult result) {
-        
+    public final void logAction(final ActionResult result) {
+            final LinkedList<String> queue = new LinkedList<>();
+            final String sourceName = result.getAction().getSource().get().getName();
+            final String targetNames = result.getAction().getTargets().stream().map(t -> t.getName()).collect(Collectors.joining(", "));
+            switch (result.getAction().getCategory()) {
+                case STANDARD:
+                case SPECIAL:
+                    queue.add(sourceName + " used " + result.getAction().getName() + " on " + targetNames);
+                    break;
+                case ITEM:
+                    queue.add(sourceName + " used " + result.getAction().getName() + " on " + (result.getAction().getSource().equals(result.getAction().getTarget()) ? "self" : targetNames));
+                    break;
+                case INTERACTABLE:
+                    queue.add(sourceName + " interacted with " + result.getAction().getSource().get().getName());
+                    break;
+                case STATUS:
+                    queue.add(sourceName + " suffers from " + result.getAction().getName());
+                    break;
+                default:
+                    queue.add("Log not specified");
+            }
+
+            result.getAction().getTargets().forEach(t -> {
+                final ActionResultType ar = result.getResults().stream().filter(p -> p.getLeft().equals(t)).findFirst().get().getRight(); 
+                queue.add(t.getName() + " has " + (ar == ActionResultType.PARRIED ? "" : "been ") + ar.toString().toLowerCase(Locale.getDefault()));
+            });
+            final LoggerManager lm = new LoggerManager(log, queue);
+            log.setLoggerManager(lm);
+            final Thread t = new Thread(lm);
+            t.setDaemon(true);
+            t.start();
     }
 
     @Override
     public void visualizeAction(final ActionResult result) {
         // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void showInventory() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void showActionSelector() {
-        // TODO Auto-generated method stub
-        
     }
 
     private void updateSingleTarget(final ActionActor target, final Pair<PartyType, Integer> position, final Optional<Action> action) {
@@ -205,6 +256,31 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
             default:
                 return null;
         }
+    }
+
+    private Image mapClassToActionActor(final Class<?> c) {
+        if (c.equals(GoblinNPC.class)) {
+            return ImageLoader.GOBLINNPC_PROFILE.getImage();
+        } else if (c.equals(HeadlessNPC.class)) {
+            return ImageLoader.HEADLESSNPC_PROFILE.getImage();
+        } else if (c.equals(DarkDestructorNPC.class)) {
+            return ImageLoader.DARKDESTRUCTORNPC_PROFILE.getImage();
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    private void changeRoomTransition() {
+        final Rectangle node = new Rectangle(explorationPane.getWidth(), explorationPane.getHeight());
+        node.widthProperty().bind(explorationPane.widthProperty());
+        node.heightProperty().bind(explorationPane.heightProperty());
+        mainPane.getChildren().add(node);
+
+        final TranslateTransition tt = new TranslateTransition(Duration.seconds(2), node);
+        tt.setFromX(explorationPane.getWidth());
+        tt.setToX(-node.getWidth());
+        tt.playFromStart();
+        tt.setOnFinished(e -> mainPane.getChildren().remove(node));
     }
 
 }
