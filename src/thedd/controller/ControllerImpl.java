@@ -26,10 +26,12 @@ import thedd.model.item.Item;
 import thedd.model.item.ItemFactory;
 import thedd.model.item.usableitem.UsableItem;
 import thedd.model.roomevent.RoomEvent;
+import thedd.model.roomevent.combatevent.CombatEvent;
 import thedd.model.world.environment.EnvironmentImpl;
 import thedd.model.world.environment.Session;
 import thedd.model.world.environment.SessionImpl;
 import thedd.model.world.floor.FloorDetails;
+import thedd.model.world.room.Room;
 import thedd.view.View;
 
 /**
@@ -322,7 +324,14 @@ public class ControllerImpl implements Controller {
 
     @Override
     public final boolean nextRoom() {
-        return this.model.getSession().getEnvironment().getCurrentFloor().nextRoom();
+        final boolean isChanged = this.model.getSession().getEnvironment().getCurrentFloor().nextRoom();
+        if (isChanged) {
+            final Room room = this.model.getSession().getEnvironment().getCurrentFloor().getCurrentRoom();
+            if (!room.getEvents().stream().anyMatch(e -> e instanceof CombatEvent)) {
+                this.updateStatuses();
+            }
+        }
+        return isChanged;
     }
 
     @Override
