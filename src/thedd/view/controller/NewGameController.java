@@ -1,17 +1,17 @@
 package thedd.view.controller;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Control;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import thedd.view.ApplicationViewState;
+import thedd.view.extensions.AdaptiveFontLabel;
 
 /**
  * View controller of the new game scene.
@@ -21,6 +21,10 @@ public class NewGameController extends ViewNodeControllerImpl {
     private static final String ERROR_TITLE_INPUTERROR = "Input error";
     private static final String ERROR_TEXT_NULL = "Nope, you have to insert number of rooms and floors";
     private static final String ERROR_TEXT_NONVALIDVALUE = "Nope, the number of rooms and/or floors is not acceptable";
+    private static final String NEW_GAME_TITLE_URL = "images" + System.getProperty("file.separator") + "titles"
+                                                      + System.getProperty("file.separator") + "gameOver_title.png";
+    private static final double TITLE_HEIGHT_PERC = 1.0;
+    private static final double TITLE_WIDTH_PERC = 1.0;
 
     @FXML
     private TextField playerNameTextField;
@@ -32,26 +36,17 @@ public class NewGameController extends ViewNodeControllerImpl {
     private TextField numberOfFloorsTextField;
 
     @FXML
-    private Label playerNameLabel;
+    private AdaptiveFontLabel playerNameLabel;
 
     @FXML
-    private Label numberOfRoomsLabel;
+    private AdaptiveFontLabel numberOfRoomsLabel;
 
     @FXML
-    private Label numberOfFloorsLabel;
+    private AdaptiveFontLabel numberOfFloorsLabel;
 
     @FXML
-    private Button playButton;
+    private AnchorPane newGameTitleImage;
 
-    @FXML
-    private BorderPane newGame;
-
-    private static final double LABEL_HEIGHT_RATE = 0.10;
-    private static final double LABEL_WIDTH_RATE = 0.20;
-    private static final double TEXT_HEIGHT_RATE = 0.10;
-    private static final double TEXT_WIDTH_RATE = 0.20;
-    private static final double BUTTON_HEIGHT_RATE = 0.08;
-    private static final double BUTTON_WIDTH_RATE = 0.12;
 
     /**
      *Start new game.
@@ -65,7 +60,7 @@ public class NewGameController extends ViewNodeControllerImpl {
                                                  this.numberOfFloorsTextField.getText())) {
             this.getDialogFactory().createErrorDialog(ERROR_TITLE_INPUTERROR, ERROR_TEXT_NONVALIDVALUE).show();
         } else {
-            this.getView().setScene(ApplicationViewState.GAME);
+            this.getView().setState(ApplicationViewState.GAME);
         }
     }
 
@@ -82,15 +77,14 @@ public class NewGameController extends ViewNodeControllerImpl {
      */
     @Override
     protected void initView() {
-        final List<Control> labels = new ArrayList<>();
-        final List<Control> texts = new ArrayList<>();
-        labels.addAll(Arrays.asList(numberOfFloorsLabel, numberOfRoomsLabel, playerNameLabel));
-        texts.addAll(Arrays.asList(numberOfFloorsTextField, numberOfRoomsTextField, playerNameTextField));
-        labels.forEach(c -> this.setBind(c, this.newGame, LABEL_HEIGHT_RATE, LABEL_WIDTH_RATE));
-        texts.forEach(c -> this.setBind(c, this.newGame, TEXT_HEIGHT_RATE, TEXT_WIDTH_RATE));
-        this.setBind(this.playButton, this.newGame, BUTTON_HEIGHT_RATE, BUTTON_WIDTH_RATE);
-        this.numberOfFloorsTextField.setAlignment(Pos.CENTER);
-        this.numberOfRoomsTextField.setAlignment(Pos.CENTER);
-        this.playerNameTextField.setAlignment(Pos.CENTER);
+        final Image imageNewGame = new Image(NEW_GAME_TITLE_URL);
+        final BackgroundImage backgroundGameOver = new BackgroundImage(imageNewGame, BackgroundRepeat.NO_REPEAT, 
+                                                               BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, 
+                                                               new BackgroundSize(TITLE_HEIGHT_PERC, TITLE_WIDTH_PERC, 
+                                                               true, true, true, false));
+        this.newGameTitleImage.setBackground(new Background(backgroundGameOver));
+        this.playerNameLabel.setAlignment(Pos.CENTER_RIGHT);
+        this.numberOfRoomsLabel.setAlignment(Pos.CENTER_RIGHT);
+        this.numberOfFloorsLabel.setAlignment(Pos.CENTER_RIGHT);
     }
 }

@@ -127,44 +127,58 @@ public class ActionSelectorController extends ViewNodeControllerImpl implements 
             iconsPane.scrollUp();
             break;
         case RETURN:
-            if (actionSelected) {
-                actionSelected = false;
-                iconsPane.setDisable(false);
-                descriptionPane.setSelectionAndMovement(false);
-                //enable what needs to be enabled
-                //Controller.undoSelection
-            } else {
-                iconsPane.passItems(categories.stream()
-                        .map(c -> c.getImage()).collect(Collectors.toList()));
-                categorySelected = false;
-                updateDescription();
-            }
+            undoSelection();
             break;
         case SELECT:
-            if (!categorySelected) {
-                categorySelected = true;
-                selectedCategoryIndex = iconsPane.getSelectedIndex();
-                if (selectedCategoryIndex >= categories.size() - 1) {
-                    //open inventory
-                    //close this
-                } else {
-                    iconsPane.passItems(categories.get(selectedCategoryIndex).getActions().stream()
-                            .map(c -> c.getImage()).collect(Collectors.toList()));
-                    updateDescription();
-                }
-            } else {
-                actionSelected = true;
-                iconsPane.setDisable(true);
-                descriptionPane.setSelectionAndMovement(true);
-                //Disable action selections and scroll, enable only "undo selection" button
-                //Controller.selectAction(items.get(iconsPane.getSelectedIndex).getAction)
-            }
+            selectItem();
             break;
         case UPDATE:
             updateDescription();
             break;
         default:
             break;
+        }
+    }
+
+    private void selectItem() {
+        if (!categorySelected) {
+            categorySelected = true;
+            selectedCategoryIndex = iconsPane.getSelectedIndex();
+            if (selectedCategoryIndex >= categories.size() - 1) {
+                //open inventory
+                //close this
+            } else {
+                iconsPane.passItems(categories.get(selectedCategoryIndex).getActions().stream()
+                        .map(c -> c.getImage()).collect(Collectors.toList()));
+                updateDescription();
+            }
+        } else {
+            actionSelected = true;
+            iconsPane.setDisable(true);
+            descriptionPane.setSelectionAndMovement(true);
+            //Disable action selections and scroll, enable only "undo selection" button
+            //Controller.selectAction(items.get(iconsPane.getSelectedIndex).getAction)
+            final int selectedActionIndex = iconsPane.getSelectedIndex(); 
+            final Action selectedAction = categories.get(selectedCategoryIndex)
+                                                    .getActions()
+                                                    .get(selectedActionIndex)
+                                                    .getAction();
+            getController().selectAction(selectedAction);
+        }
+    }
+
+    private void undoSelection() {
+        if (actionSelected) {
+            actionSelected = false;
+            iconsPane.setDisable(false);
+            descriptionPane.setSelectionAndMovement(false);
+            //enable what needs to be enabled
+            getController().undoActionSelection();
+        } else {
+            iconsPane.passItems(categories.stream()
+                    .map(c -> c.getImage()).collect(Collectors.toList()));
+            categorySelected = false;
+            updateDescription();
         }
     }
 

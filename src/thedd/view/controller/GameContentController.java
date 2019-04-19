@@ -20,6 +20,8 @@ import thedd.model.combat.action.result.ActionResult;
 import thedd.model.combat.actor.ActionActor;
 import thedd.model.roomevent.interactableactionperformer.InteractableActionPerformer;
 import thedd.utils.observer.Observer;
+import thedd.view.controller.interfaces.ExplorationView;
+import thedd.view.controller.interfaces.GameView;
 import thedd.view.explorationpane.ExplorationPaneImpl;
 import thedd.view.explorationpane.TopStackPane;
 import thedd.view.explorationpane.enums.PartyType;
@@ -27,7 +29,7 @@ import thedd.view.explorationpane.enums.TargetSelectionState;
 import thedd.view.explorationpane.logger.LoggerImpl;
 import thedd.view.explorationpane.logger.LoggerManager;
 
-public class GameContentController extends ViewNodeControllerImpl implements Observer<Pair<PartyType, Integer>>, ControllerShowMethods {
+public class GameContentController extends ViewNodeControllerImpl implements Observer<Pair<PartyType, Integer>>, ExplorationView, GameView {
 
     @FXML
     private TopStackPane mainPane;

@@ -1,7 +1,7 @@
 .label {
 	-fx-text-fill: #fff;
 	-fx-label-padding: 0.5em;
-	-fx-alignment: TOP_LEFT;
+	-fx-alignment: center;
 	-fx-font-size: 1.0em;
 }
 
@@ -13,12 +13,8 @@
 
 .table-view {
 	-fx-alignment: center;
-	-fx-background-color: #111;
+	-fx-background-color: #222;
 	-fx-base: #444;
-}
-
-.column-header .label {
-	-fx-alignment:center;
 }
 
 .column-header {

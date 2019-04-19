@@ -56,7 +56,7 @@ public final class ItemGiverEffect extends AbstractActionEffect {
     }
 
     @Override
-    public ActionEffect getCopy() {
+    public ActionEffect getSpecializedCopy() {
         return new ItemGiverEffect(itemGiven);
     }
 

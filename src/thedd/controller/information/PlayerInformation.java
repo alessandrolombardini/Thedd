@@ -1,6 +1,9 @@
-package thedd.controller.informations;
+package thedd.controller.information;
 
 import java.util.List;
+import java.util.Optional;
+
+import thedd.model.combat.action.Action;
 import thedd.model.item.Item;
 
 /**
@@ -8,7 +11,7 @@ import thedd.model.item.Item;
  * class contains informations about the player character and inventory
  * view-controller will ask from this class all the required informations.
  */
-public interface InventoryInformations {
+public interface PlayerInformation {
 
     /**
      * Returns the quantity of the specified item on the player's inventory.
@@ -32,4 +35,30 @@ public interface InventoryInformations {
      * @return a boolean value.
      */
     boolean isEquipped(Item item);
+
+    /**
+     * This method save the current used item before applying its effects.
+     * 
+     * @param item an Item.
+     */
+    void setUsedItem(Item item);
+
+    /**
+     * This method get the current used item before applying its effects.
+     * 
+     * @return an Optional<Item>.
+     */
+    Optional<Item> getUsedItem();
+
+    /**
+     * This method resets the current used item before applying its effecs.
+     */
+    void resetUsedItem();
+
+    /**
+     * This method returns a list of player's available actions.
+     * 
+     * @return a List<Action>
+     */
+    List<Action> getPlayerActions();
 }

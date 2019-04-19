@@ -20,4 +20,12 @@ public interface Session {
      * @return the environment
      */
     Environment getEnvironment();
+
+    /**
+     * This method allows to know if the player has won.
+     * 
+     * @return true if the player has won
+     */
+    boolean hasPlayerWon();
+
 }

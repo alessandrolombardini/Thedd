@@ -1,5 +1,7 @@
 package thedd.model.roomevent.combatevent;
 
+import java.util.Objects;
+
 import thedd.model.combat.encounter.HostileEncounter;
 import thedd.model.combat.encounter.HostileEncounterImpl;
 import thedd.model.combat.instance.CombatStatus;
@@ -42,6 +44,29 @@ public final class CombatEventImpl extends AbstractRoomEvent implements CombatEv
     @Override
     public boolean isSkippable() {
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + Objects.hash(hostileEncounter);
+        return result;
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!super.equals(obj)) {
+            return false;
+        }
+        if (!(obj instanceof CombatEventImpl)) {
+            return false;
+        }
+        final CombatEventImpl other = (CombatEventImpl) obj;
+        return Objects.equals(hostileEncounter, other.hostileEncounter);
     }
 
 }

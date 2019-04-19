@@ -10,22 +10,22 @@ public enum ViewNode {
     /**
      * Menu scene.
      */
-    MENU("menu_form.fxml"),
+    MENU("menu.fxml"),
 
     /**
      * New game scene.
      */
-    NEW_GAME("newGame_form.fxml"),
+    NEW_GAME("newGame.fxml"),
 
     /**
      * Game over scene.
      */
-    GAME_OVER("gameOver_form.fxml"),
+    GAME_OVER("endGame.fxml"),
 
     /**
      * Game scene.
      */
-    GAME("game_form.fxml"),
+    GAME("game.fxml"),
 
     /**
      * The top pane.
@@ -40,7 +40,12 @@ public enum ViewNode {
     /**
      * Statistics overview scene.
      */
-    STATISTICS("statistics.fxml");
+    STATISTICS("statistics.fxml"),
+
+    /**
+     * Statistics overview scene.
+     */
+    ACTION_SELECTOR("actionSelector.fxml");
 
     /**
      * Use of the char '/' because it's used by istructions that required that type

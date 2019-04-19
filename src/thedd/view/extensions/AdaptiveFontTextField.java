@@ -19,7 +19,7 @@ public class AdaptiveFontTextField extends TextField implements AdaptiveFontComp
     public AdaptiveFontTextField(@NamedArg("ratio") final int ratio) {
         super();
         this.ratio = ratio;
-        this.setFontRatio(ratio, this);
+        this.setFontRatioFromSameObject(ratio, this);
     }
 
     /**

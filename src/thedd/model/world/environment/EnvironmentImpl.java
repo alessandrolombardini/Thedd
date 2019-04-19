@@ -6,7 +6,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
 import thedd.model.world.Difficulty;
 import thedd.model.world.floor.Floor;
 import thedd.model.world.floor.FloorDetails;
@@ -37,9 +36,8 @@ public class EnvironmentImpl implements Environment {
 
     private static final String ERROR_OUTOFRANGE = "Number of floors or rooms is out of range";
     private static final String ERROR_LASTFLOOR = "No more floors available";
-    private static final String ERROR_UNCHANGEABLEFLOOR = "The actual floor is unchangeable";
     private static final String ERROR_UNSETTEDFLOOR = "No floors setted";
-    private static final String ERROR_UNVALIDNEXTFLOOR = "FloorDetails non valid, it should be one of env options";
+    private static final Difficulty INIT_DIFFICULTY_LEVEL = Difficulty.NORMAL;
 
     private final List<Floor> floors;
     private final FloorDetailsFactory floorDeatailsFactory;
@@ -66,6 +64,7 @@ public class EnvironmentImpl implements Environment {
         this.numberOfRooms = numberOfRooms;
         this.floorOptions = Optional.empty();
         this.actuaIndexFloor = NONE_FLOORS;
+        this.initEnvironment();
     }
 
     /**
@@ -91,16 +90,18 @@ public class EnvironmentImpl implements Environment {
      * {@inheritDoc}
      */
     @Override
-    public final void setNextFloor(final FloorDetails floorDetails) {
+    public final boolean setNextFloor(final FloorDetails floorDetails) {
         Objects.requireNonNull(floorDetails);
         if (!this.floors.isEmpty() && !this.floors.get(this.getCurrentFloorIndex()).checkToChangeFloor()) {
-            throw new IllegalStateException(ERROR_UNCHANGEABLEFLOOR);
+            return false;
         } else if (!this.floorOptions.isPresent() || !this.floorOptions.get().contains(floorDetails)) {
-            throw new IllegalArgumentException(ERROR_UNVALIDNEXTFLOOR);
+            return false;
         }
         this.actuaIndexFloor++;
         this.floorOptions = Optional.empty();
         this.floors.add(this.actuaIndexFloor, new FloorImpl(floorDetails));
+        this.getCurrentFloor().nextRoom();
+        return true;
     }
 
     /**
@@ -128,6 +129,15 @@ public class EnvironmentImpl implements Environment {
                         .collect(Collectors.toList());
         this.floorOptions = Optional.of(choices);
         return choices;
+    }
+
+    private void initEnvironment() {
+        final List<FloorDetails> floorOptions = this.getFloorOptions();
+        final int easyIndex = floorOptions.indexOf(floorOptions.stream()
+                                                               .filter(f -> f.getDifficult() == INIT_DIFFICULTY_LEVEL)
+                                                               .findAny()
+                                                               .get());
+        this.setNextFloor(floorOptions.get(easyIndex));
     }
 
     private boolean isLastFloor(final int index) {

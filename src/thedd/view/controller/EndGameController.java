@@ -11,31 +11,34 @@ import javafx.scene.layout.BackgroundSize;
 import thedd.view.ApplicationViewState;
 
 /**
- * View controller of scene menu.
+ * View controller of game over scene.
  */
-public class MenuController extends ViewNodeControllerImpl {
+public class EndGameController extends ViewNodeControllerImpl {
 
-    private static final String TITLE_URL = "images" + System.getProperty("file.separator") + "titles"
-                                            + System.getProperty("file.separator") + "dark_destruction_title.png";
+    @FXML
+    private AnchorPane gameOverTitleImage;
+
+    private static final String GAME_OVER_TITLE_URL = "images" + System.getProperty("file.separator") + "titles"
+                                                       + System.getProperty("file.separator") + "gameOver_title.png";
+    private static final String WIN_TITLE_URL = "images" + System.getProperty("file.separator") + "titles"
+                                                + System.getProperty("file.separator") + "dark_destruction_title.png";
+
     private static final double TITLE_HEIGHT_PERC = 1.0;
     private static final double TITLE_WIDTH_PERC = 1.0;
 
-    @FXML
-    private AnchorPane titleImage;
-
     /**
-     * Go to new game scene.
+     * Back to menu scene.
      */
     @FXML
-    protected final void handleNewGameButtonAction() {
-        this.getView().setState(ApplicationViewState.NEW_GAME);
+    protected final void handleBackToMenuButtonAction() {
+        this.getView().setState(ApplicationViewState.MENU);
     }
 
     /**
      * Close the application.
      */
     @FXML
-    protected void handleExitButtonAction() {
+    protected void handleCloseButtonAction() {
         this.getController().closeApplication();
     }
 
@@ -52,12 +55,12 @@ public class MenuController extends ViewNodeControllerImpl {
      */
     @Override
     protected void initView() {
-        final Image imageMenu = new Image(TITLE_URL);
-        final BackgroundImage backgroundMenu = new BackgroundImage(imageMenu, BackgroundRepeat.NO_REPEAT, 
+        final Image image = new Image(this.getController().hasPlayerWon() ? WIN_TITLE_URL : GAME_OVER_TITLE_URL);
+        final BackgroundImage backgroundGameOver = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, 
                                                                BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, 
                                                                new BackgroundSize(TITLE_HEIGHT_PERC, TITLE_WIDTH_PERC, 
                                                                true, true, true, false));
-        this.titleImage.setBackground(new Background(backgroundMenu));
+        this.gameOverTitleImage.setBackground(new Background(backgroundGameOver));
     }
 
 }

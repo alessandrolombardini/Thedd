@@ -1,8 +1,7 @@
 package thedd.model.combat.action.effect;
 
 /**
- * {@link model.combat.action.effect.ActionEffect} which change a {@link model.character.Statistic} 
- * of a {@link model.character.BasicCharacter}. It can also be removed and the bonus would no longer
+ * {@link model.combat.action.effect.ActionEffect} which can be removed and the effect will no longer
  * be grated to the target after the removal.
  *
  */

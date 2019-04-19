@@ -47,8 +47,26 @@ public abstract class AbstractActionEffect implements ActionEffect {
     @Override
     public abstract String getPreviewMessage();
 
+    /**
+     * Gets a new instance of the non abstract implementation.<br>
+     * The copy should only be initialized with its special attributes
+     * (such as damage for DamageEffects, resistance for DamageResistanceEffects...).
+     * Any attribute shared between all effects (such as tags) shall be copied and set
+     * by the getCopy template method of the {@link AbstractActionEffect } class.
+     * @return a partial copy of the class
+     */
+    protected abstract ActionEffect getSpecializedCopy();
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public abstract ActionEffect getCopy();
+    public final ActionEffect getCopy() {
+        final ActionEffect copy = getSpecializedCopy();
+        copy.addTags(getPermanentTags(), true);
+        copy.addTags(getNonPermanentTags(), false);
+        return copy;
+    }
 
     @Override
     public final void updateEffectByTarget(final ActionActor target) {
@@ -72,7 +90,7 @@ public abstract class AbstractActionEffect implements ActionEffect {
             permanentTags.addAll(tags);
         } else {
             this.tags.addAll(tags.stream()
-                    .filter(permanentTags::contains)
+                    .filter(t -> !permanentTags.contains(t))
                     .collect(Collectors.toSet()));
         }
     }

@@ -1,8 +1,6 @@
 package thedd.view.actionselector;
 
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +22,10 @@ public class VisualAction {
             System.err.println("Image for action " + fileName + " not found");
             this.image = new Image(this.getClass().getResourceAsStream("/actions/not_found.png"));
         }
+    }
+
+    public Action getAction() {
+        return action.getCopy();
     }
 
     public Image getImage() {

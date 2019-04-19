@@ -116,13 +116,17 @@ public class RoomFactoryImpl implements RoomFactory {
                  .boxed()
                  .map(i -> CharacterFactory.createEnemy(EnemyCharacterType.getRandom(), this.getEnemiesMultiplier()))
                  .forEach(c -> combatEvent.getHostileEncounter().addNPC(c));
-        combatEvent.getHostileEncounter().setCombatLogic(new DefaultCombatActionExecutor(combatEvent.getHostileEncounter().getNPCs()));
-        events.add(combatEvent);
-        events.addAll(IntStream.range(0, getQuantityOfInteractableAction().get(RoomContent.CONTRAPTION))
+        if (!combatEvent.getHostileEncounter().getNPCs().isEmpty()) {
+            combatEvent.getHostileEncounter()
+                       .setCombatLogic(new DefaultCombatActionExecutor(combatEvent.getHostileEncounter().getNPCs()));
+            events.add(combatEvent);
+        }
+        final EnumMap<RoomContent, Integer> interactableActions = getQuantityOfInteractableAction();
+        events.addAll(IntStream.range(0, interactableActions.get(RoomContent.CONTRAPTION))
                                .boxed()
                                .map(b -> RoomEventHelper.getContraption())
                                .collect(Collectors.toList()));
-        events.addAll(IntStream.range(0, getQuantityOfInteractableAction().get(RoomContent.TREASURE))
+        events.addAll(IntStream.range(0, interactableActions.get(RoomContent.TREASURE))
                                .boxed()
                                .map(b -> RoomEventHelper.getTreasureChest())
                                .collect(Collectors.toList()));
@@ -142,7 +146,7 @@ public class RoomFactoryImpl implements RoomFactory {
         final EnumMap<RoomContent, Integer> content = new EnumMap<RoomContent, Integer>(RoomContent.class);
         content.put(RoomContent.CONTRAPTION, 0);
         content.put(RoomContent.TREASURE, 0);
-        final int maxInteractableSettableAfterNextRoom = MAX_INTERACTABLE_ACTIONS_PER_ROOM * (this.getRemainingBaseRoomsToSet() - 1);
+        final int maxInteractableSettableAfterNextRoom = MAX_INTERACTABLE_ACTIONS_PER_ROOM * (this.getRemainingBaseRoomsToSet());
         /* If the number of remaining interactable is high maybe it has to set in this room many of them to be sure to set all*/
         if (this.getRamainingInteractableToSet() > maxInteractableSettableAfterNextRoom || RandomUtils.nextBoolean()) {
             int minInteractable = 0;
@@ -180,7 +184,7 @@ public class RoomFactoryImpl implements RoomFactory {
     }
 
     private int getRemainingBaseRoomsToSet() {
-        return this.floorDetails.getNumberOfRooms() - (this.roomIndex + 1) - 1;
+        return (this.floorDetails.getNumberOfRooms() - (this.roomIndex + 1)) - 1;
     }
 
 }

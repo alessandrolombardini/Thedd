@@ -9,17 +9,17 @@ import javafx.scene.input.MouseEvent;
 /**
  * This class extends {@link ScrollPane} adding a {@link Text} into it.
  */
-public class ScrollableText extends ScrollPane {
+public final class AdaptiveFontScrollableText extends ScrollPane implements AdaptiveFontComponent {
     private static final Label TEXT = new Label();
-    private static final int SCROLLBAR_WIDTH = 10;
     private static final String STYLESHEET = "styles/scrollable_text_style.css";
+    private static final int PROPORTIONAL_DIVIDER = 30;
 
     /**
-     * ScrollableText constructor.
+     * AdaptiveFontScrollableText's constructor.
      * 
-     * @param value is the content of the Text.
+     * @param value is the content of the node.
      */
-    public ScrollableText(@NamedArg("text") final String value) {
+    public AdaptiveFontScrollableText(@NamedArg("text") final String value) {
         super(TEXT);
         TEXT.setFocusTraversable(false);
         TEXT.setWrapText(true);
@@ -31,11 +31,8 @@ public class ScrollableText extends ScrollPane {
                 }
             }
         });
-        this.setMinSize(0, 0);
         this.setHbarPolicy(ScrollBarPolicy.NEVER);
         this.setFocusTraversable(false);
-        TEXT.minWidthProperty().bind(this.widthProperty().subtract(SCROLLBAR_WIDTH));
-        TEXT.minHeightProperty().bind(this.heightProperty());
         if (value == null) {
             TEXT.setText("");
         } else {
@@ -43,6 +40,7 @@ public class ScrollableText extends ScrollPane {
         }
         this.setFitToWidth(true);
         this.getStylesheets().add(ClassLoader.getSystemClassLoader().getResource(STYLESHEET).toExternalForm());
+        this.setFontRatioFromOtherObject(PROPORTIONAL_DIVIDER, TEXT, this);
     }
 
     /**
@@ -52,5 +50,10 @@ public class ScrollableText extends ScrollPane {
      */
     public void setText(final String value) {
         TEXT.setText(value);
+    }
+
+    @Override
+    public int getRatio() {
+        return PROPORTIONAL_DIVIDER;
     }
 }

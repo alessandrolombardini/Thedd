@@ -42,7 +42,7 @@ public final class ViewNodeWrapperFactory {
             return new ViewNodeWrapperImpl(node, subViewController);
         } catch (IOException e) {
             e.printStackTrace();
-            throw new IllegalPathStateException(ERROR_FXMLNOTFOUND);
+            throw new IllegalPathStateException(ERROR_FXMLNOTFOUND + e.toString());
         }
     }
 }

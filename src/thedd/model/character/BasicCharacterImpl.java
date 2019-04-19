@@ -1,6 +1,7 @@
 package thedd.model.character;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
@@ -11,7 +12,16 @@ import thedd.model.character.inventory.InventoryImpl;
 import thedd.model.character.statistics.StatValues;
 import thedd.model.character.statistics.StatValuesImpl;
 import thedd.model.character.statistics.Statistic;
+import thedd.model.combat.action.effect.ActionEffect;
 import thedd.model.combat.actor.automatic.AbstractAutomaticActor;
+import thedd.model.combat.modifier.DamageModifier;
+import thedd.model.combat.modifier.Modifier;
+import thedd.model.combat.modifier.ModifierActivation;
+import thedd.model.combat.modifier.StatBasedModifier;
+import thedd.model.combat.requirements.tags.TagRequirement;
+import thedd.model.combat.requirements.tags.TagRequirementType;
+import thedd.model.combat.tag.EffectTag;
+import thedd.model.combat.tag.Tag;
 import thedd.model.item.Item;
 import thedd.model.item.equipableitem.EquipableItem;
 import thedd.model.item.equipableitem.EquipableItemType;
@@ -72,8 +82,8 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
                 this.equipment.add((EquipableItem) equipItem);
                 equipItem.onEquip(this);
                 this.inventory.removeItem(item);
+                return true;
             }
-            return true;
         }
         return false;
     }

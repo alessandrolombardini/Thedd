@@ -16,6 +16,7 @@ import thedd.model.combat.action.effect.ActionEffect;
 import thedd.model.combat.action.effect.RemovableEffect;
 import thedd.model.combat.actor.ActionActor;
 import thedd.model.item.AbstractItem;
+import thedd.model.item.Item;
 import thedd.model.item.ItemRarity;
 import thedd.model.item.ItemRarityImpl;
 
@@ -38,6 +39,8 @@ public class EquipableItemImpl extends AbstractItem implements EquipableItem {
     private final List<ActionEffect> providedEffects;
     private final List<Action> additionalActions;
 
+    private boolean isEquipped;
+
     private final EquipableItemType type;
 
     /**
@@ -59,6 +62,7 @@ public class EquipableItemImpl extends AbstractItem implements EquipableItem {
         this.type = Objects.requireNonNull(t);
         providedEffects = new ArrayList<>();
         additionalActions = new ArrayList<>();
+        isEquipped = false;
     }
 
     @Override
@@ -81,6 +85,7 @@ public class EquipableItemImpl extends AbstractItem implements EquipableItem {
         Objects.requireNonNull(equipper);
         additionalActions.forEach(equipper::addActionToAvailable);
         providedEffects.forEach(e -> e.apply(equipper));
+        isEquipped = true;
     }
 
     @Override
@@ -88,6 +93,7 @@ public class EquipableItemImpl extends AbstractItem implements EquipableItem {
         Objects.requireNonNull(equipper);
         additionalActions.forEach(equipper::removeActionFromAvailable);
         providedEffects.stream().filter(e -> e instanceof RemovableEffect).forEach(e -> ((RemovableEffect) e).remove());
+        isEquipped = false;
     }
 
     @Override
@@ -133,7 +139,7 @@ public class EquipableItemImpl extends AbstractItem implements EquipableItem {
 
     @Override
     public final int hashCode() {
-        return Objects.hash(super.hashCode(), additionalActions, providedEffects, type);
+        return Objects.hash(super.hashCode(), additionalActions, providedEffects, type, isEquipped);
     }
 
     @Override
@@ -141,12 +147,19 @@ public class EquipableItemImpl extends AbstractItem implements EquipableItem {
         if (!super.equals(obj)) {
             return false;
         }
-        final EquipableItemImpl other = (EquipableItemImpl) obj;
-        if (this.type != other.type) {
+        final Item iObj = (Item) obj;
+        if (!iObj.isEquipable()) {
             return false;
         }
-        return this.additionalActions.containsAll(other.additionalActions)
-               && this.providedEffects.containsAll(other.providedEffects);
+        final EquipableItem other = (EquipableItem) obj;
+        if (this.type != other.getType()) {
+            return false;
+        }
+        if (!(other instanceof EquipableItemImpl) || ((EquipableItemImpl) other).isEquipped != this.isEquipped) {
+            return false;
+        }
+        return this.additionalActions.equals(other.getAdditionalActions())
+               && this.providedEffects.equals(other.getActionEffects());
     }
 
     @Override

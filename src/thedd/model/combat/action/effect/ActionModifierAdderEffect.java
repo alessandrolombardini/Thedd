@@ -67,7 +67,7 @@ public final class ActionModifierAdderEffect extends AbstractActionEffect implem
     }
 
     @Override
-    public ActionEffect getCopy() {
+    public ActionEffect getSpecializedCopy() {
         return new ActionModifierAdderEffect(modifier, isPermanent);
     }
 }
