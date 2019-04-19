@@ -23,7 +23,7 @@ public enum ApplicationViewState {
     /**
      * Game over state.
      */
-    GAME_OVER(ViewNode.GAME_OVER);
+    END_GAME(ViewNode.END_GAME);
 
     private final ViewNode gameSubView;
 

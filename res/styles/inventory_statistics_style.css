@@ -57,7 +57,12 @@ AdaptiveFontButton:hover {
 	-fx-background-color: #111;
 }
 
-
+.labelNewPlay {
+	-fx-text-fill: #fff;
+	-fx-label-padding: 0.5em;
+	-fx-alignment: center-right;
+	-fx-font-size: 1.0em;
+}
 
 #menu {
     -fx-background-image: url("castelloBackground.jpg");

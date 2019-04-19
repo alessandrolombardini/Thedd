@@ -60,6 +60,7 @@ public class MainGameViewController extends ViewNodeControllerImpl implements Ga
         this.showNode(gameContent, INIT_NODE_UP, Position.UP);
         this.showNode(inventoryContent, INIT_NODE_DOWN_SX, Position.DOWN_SX);
         this.showNode(statisticsContent, INIT_NODE_DOWN_DX, Position.DOWN_DX);
+        this.gameContent.toFront();
     }
 
     /**
@@ -116,7 +117,12 @@ public class MainGameViewController extends ViewNodeControllerImpl implements Ga
     private void showNode(final AnchorPane pane, final ViewNode typeOfNode, final Position pos) {
         final ViewNodeWrapper node = ViewNodeWrapperFactory.createViewNodeWrapper(typeOfNode, this.getController(),
                                                                                   this.getView());
-        pane.getChildren().add(node.getNode());
+        final int nodeToChange = 0;
+        if (pane.getChildren().isEmpty()) {
+            pane.getChildren().add(nodeToChange, node.getNode());
+        } else {
+            pane.getChildren().set(nodeToChange, node.getNode());
+        }
         this.nodeControllers.put(pos, Optional.of(node.getController()));
     }
 

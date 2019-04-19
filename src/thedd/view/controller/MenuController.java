@@ -16,7 +16,7 @@ import thedd.view.ApplicationViewState;
 public class MenuController extends ViewNodeControllerImpl {
 
     private static final String TITLE_URL = "images" + System.getProperty("file.separator") + "titles"
-                                            + System.getProperty("file.separator") + "dark_destruction_title.png";
+                                            + System.getProperty("file.separator") + "title.png";
     private static final double TITLE_HEIGHT_PERC = 1.0;
     private static final double TITLE_WIDTH_PERC = 1.0;
 

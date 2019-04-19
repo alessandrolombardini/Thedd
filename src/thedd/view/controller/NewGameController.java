@@ -19,7 +19,7 @@ import thedd.view.extensions.AdaptiveFontLabel;
 public class NewGameController extends ViewNodeControllerImpl {
 
     private static final String NEW_GAME_TITLE_URL = "images" + System.getProperty("file.separator") + "titles"
-                                                     + System.getProperty("file.separator") + "gameOver_title.png";
+                                                     + System.getProperty("file.separator") + "game_settings.png";
     private static final double TITLE_HEIGHT_PERC = 1.0;
     private static final double TITLE_WIDTH_PERC = 1.0;
     private static final String ERROR_UNVALIDVALUE = "Should be greater than 0.";
@@ -95,8 +95,5 @@ public class NewGameController extends ViewNodeControllerImpl {
                                                                new BackgroundSize(TITLE_HEIGHT_PERC, TITLE_WIDTH_PERC, 
                                                                true, true, true, false));
         this.newGameTitleImage.setBackground(new Background(backgroundGameOver));
-        this.playerNameLabel.setAlignment(Pos.CENTER_RIGHT);
-        this.numberOfRoomsLabel.setAlignment(Pos.CENTER_RIGHT);
-        this.numberOfFloorsLabel.setAlignment(Pos.CENTER_RIGHT);
     }
 }
