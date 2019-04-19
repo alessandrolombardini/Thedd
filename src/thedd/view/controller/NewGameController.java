@@ -18,13 +18,13 @@ import thedd.view.extensions.AdaptiveFontLabel;
  */
 public class NewGameController extends ViewNodeControllerImpl {
 
-    private static final String ERROR_TITLE_INPUTERROR = "Input error";
-    private static final String ERROR_TEXT_NULL = "Nope, you have to insert number of rooms and floors";
-    private static final String ERROR_TEXT_NONVALIDVALUE = "Nope, the number of rooms and/or floors is not acceptable";
     private static final String NEW_GAME_TITLE_URL = "images" + System.getProperty("file.separator") + "titles"
-                                                      + System.getProperty("file.separator") + "gameOver_title.png";
+                                                     + System.getProperty("file.separator") + "gameOver_title.png";
     private static final double TITLE_HEIGHT_PERC = 1.0;
     private static final double TITLE_WIDTH_PERC = 1.0;
+    private static final String ERROR_UNVALIDVALUE = "Should be greater than 0.";
+    private static final String ERROR_UNPRESENTVALUE = "Should be present.";
+    private static final String ERROR_VOID = " ";
 
     @FXML
     private TextField playerNameTextField;
@@ -45,25 +45,37 @@ public class NewGameController extends ViewNodeControllerImpl {
     private AdaptiveFontLabel numberOfFloorsLabel;
 
     @FXML
-    private AnchorPane newGameTitleImage;
+    private AdaptiveFontLabel errorNumberOfRooms;
 
+    @FXML
+    private AdaptiveFontLabel errorNumberOfFloors;
+
+    @FXML
+    private AnchorPane newGameTitleImage;
 
     /**
      *Start new game.
      */
     @FXML
     protected void handlePlayButtonAction() {
-        if (this.numberOfRoomsTextField.getText().isEmpty() || this.numberOfFloorsTextField.getText().isEmpty()) {
-            this.getDialogFactory().createErrorDialog(ERROR_TITLE_INPUTERROR, ERROR_TEXT_NULL).show();
-        } else if (!this.getController().newGame(this.playerNameTextField.getText(),
-                                                 this.numberOfFloorsTextField.getText(), 
-                                                 this.numberOfFloorsTextField.getText())) {
-            this.getDialogFactory().createErrorDialog(ERROR_TITLE_INPUTERROR, ERROR_TEXT_NONVALIDVALUE).show();
-        } else {
+        this.errorNumberOfFloors.setText(ERROR_VOID);
+        this.errorNumberOfRooms.setText(ERROR_VOID);
+        if (this.numberOfFloorsTextField.getText().isEmpty()) {
+            this.errorNumberOfFloors.setText(ERROR_UNPRESENTVALUE);
+        } else if (!this.getController().isValidNumberOfFloors(this.numberOfFloorsTextField.getText())) {
+            this.errorNumberOfFloors.setText(ERROR_UNVALIDVALUE);
+        }
+        if (this.numberOfRoomsTextField.getText().isEmpty()) {
+            this.errorNumberOfRooms.setText(ERROR_UNPRESENTVALUE);
+        } else if (!this.getController().isValidNumberOfRooms(this.numberOfRoomsTextField.getText())) {
+            this.errorNumberOfRooms.setText(ERROR_UNVALIDVALUE);
+        }
+        if (this.getController().newGame(this.playerNameTextField.getText(),
+                                         this.numberOfFloorsTextField.getText(), 
+                                         this.numberOfFloorsTextField.getText())) {
             this.getView().setState(ApplicationViewState.GAME);
         }
     }
-
     /**
      * {@inheritDoc}
      */
