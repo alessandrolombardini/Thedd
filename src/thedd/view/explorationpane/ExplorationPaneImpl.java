@@ -36,7 +36,6 @@ public final class ExplorationPaneImpl extends BorderPane implements Exploration
 
     private final HBox enemyParty;
     private final HBox alliedParty;
-    private final HBox enemiesAndNext;
     private final ImageView roomAdvancer;
     private Observer<Pair<PartyType, Integer>> observer;
 
@@ -45,7 +44,10 @@ public final class ExplorationPaneImpl extends BorderPane implements Exploration
      */
     public ExplorationPaneImpl() {
         super();
-        enemiesAndNext = new HBox(SPACING_VALUE);
+
+        this.setMinSize(0.0, 0.0);
+
+        final HBox enemiesAndNext = new HBox(SPACING_VALUE);
         enemyParty = new HBox(SPACING_VALUE);
         alliedParty = new HBox(SPACING_VALUE);
         roomAdvancer = new ImageView();
