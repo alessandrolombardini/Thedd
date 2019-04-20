@@ -248,6 +248,7 @@ public class ControllerImpl implements Controller {
         executor.executeCurrentAction();
         // tell view to log
         view.showActionResult(executor.getLastActionResult().get(), null);
+        evaluateExecutionState();
         view.update();
     }
 
@@ -270,6 +271,8 @@ public class ControllerImpl implements Controller {
             // TODO
             break;
         case PLAYER_WON:
+            System.out.println("vinto");
+            model.getPlayerCharacter().setIsInCombat(false);
             // TODO
             break;
         case ROUND_IN_PROGRESS:
@@ -344,7 +347,9 @@ public class ControllerImpl implements Controller {
                                                                     .findAny()
                                                                     .map(e -> (CombatEvent) e)
                                                                     .get();
+                this.getPlayer().setIsInCombat(true);
                 this.startCombat(combat.getHostileEncounter());
+                this.view.update();
             } else {
                 this.updateStatuses();
             }
