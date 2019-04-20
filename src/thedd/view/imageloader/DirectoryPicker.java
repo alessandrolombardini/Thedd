@@ -9,7 +9,22 @@ public enum DirectoryPicker {
     /**
      * Directory where all the statistics images are located.
      */
-    STATISTICS_PROFILES("statistics");
+    STATISTICS_PROFILES("statistics"),
+
+    /**
+     * Directory where all titles images are located.
+     */
+    TITLES("titles"),
+
+    /**
+     * Directory where images relate to actions are located.
+     */
+    ACTIONS("actions"),
+
+    /**
+     * Directory where images relate to action categories are located.
+     */
+    ACTION_CATEGORIES("actions/categories");
 
     private static final String BASIC_DIR = "/images/";
     private final String directory;

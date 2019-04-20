@@ -9,14 +9,15 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import thedd.view.ApplicationViewState;
+import thedd.view.imageloader.DirectoryPicker;
+import thedd.view.imageloader.ImageLoaderImpl;
 
 /**
  * View controller of scene menu.
  */
 public class MenuController extends ViewNodeControllerImpl {
 
-    private static final String TITLE_URL = "images" + System.getProperty("file.separator") + "titles"
-                                            + System.getProperty("file.separator") + "title.png";
+    private static final String TITLE_IMAGE_NAME = "title";
     private static final double TITLE_HEIGHT_PERC = 1.0;
     private static final double TITLE_WIDTH_PERC = 1.0;
 
@@ -52,7 +53,7 @@ public class MenuController extends ViewNodeControllerImpl {
      */
     @Override
     protected void initView() {
-        final Image imageMenu = new Image(TITLE_URL);
+        final Image imageMenu = new ImageLoaderImpl().loadSingleImage(DirectoryPicker.TITLES, TITLE_IMAGE_NAME);
         final BackgroundImage backgroundMenu = new BackgroundImage(imageMenu, BackgroundRepeat.NO_REPEAT, 
                                                                BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, 
                                                                new BackgroundSize(TITLE_HEIGHT_PERC, TITLE_WIDTH_PERC, 

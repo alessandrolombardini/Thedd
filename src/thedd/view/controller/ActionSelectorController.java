@@ -112,6 +112,7 @@ public class ActionSelectorController extends ViewNodeControllerImpl implements 
         GridPane.setRowIndex(descriptionPane, 0);
         descriptionPane.bindObserver(this);
         iconsPane.bindObserver(this);
+        passItems(getController().getPlayerInformation().getPlayerActions());
     }
 
     /**
@@ -145,8 +146,8 @@ public class ActionSelectorController extends ViewNodeControllerImpl implements 
             categorySelected = true;
             selectedCategoryIndex = iconsPane.getSelectedIndex();
             if (selectedCategoryIndex >= categories.size() - 1) {
-                //open inventory
-                //close this
+                getView().showInventory();
+                return;
             } else {
                 iconsPane.passItems(categories.get(selectedCategoryIndex).getActions().stream()
                         .map(c -> c.getImage()).collect(Collectors.toList()));
@@ -157,7 +158,6 @@ public class ActionSelectorController extends ViewNodeControllerImpl implements 
             iconsPane.setDisable(true);
             descriptionPane.setSelectionAndMovement(true);
             //Disable action selections and scroll, enable only "undo selection" button
-            //Controller.selectAction(items.get(iconsPane.getSelectedIndex).getAction)
             final int selectedActionIndex = iconsPane.getSelectedIndex(); 
             final Action selectedAction = categories.get(selectedCategoryIndex)
                                                     .getActions()
@@ -174,6 +174,7 @@ public class ActionSelectorController extends ViewNodeControllerImpl implements 
             descriptionPane.setSelectionAndMovement(false);
             //enable what needs to be enabled
             getController().undoActionSelection();
+            updateDescription();
         } else {
             iconsPane.passItems(categories.stream()
                     .map(c -> c.getImage()).collect(Collectors.toList()));

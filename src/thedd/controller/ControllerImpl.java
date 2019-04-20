@@ -206,6 +206,10 @@ public class ControllerImpl implements Controller {
         final ActionActor playerActor = this.model.getSession().getPlayerCharacter();
         final ActionExecutor currentExecutor = actionExecutor.get();
         playerActor.getSelectedAction().ifPresent(a -> {
+            playerInfo.getUsedItem().ifPresent(i -> {
+                this.model.getSession().getPlayerCharacter().getInventory().removeItem(i);
+                playerInfo.resetUsedItem();
+            });
             a.setTargets(target, a.getValidTargets(currentExecutor.getExecutionInstance()));
             currentExecutor.addActorToQueue(playerActor);
         });
@@ -269,7 +273,7 @@ public class ControllerImpl implements Controller {
             evaluateNextAction();
             break;
         case ROUND_PAUSED:
-            // tell view to select a new action
+            //tell view to select a new action (by extension, enable all appropriate view components) 
             break;
         default:
             executor.prepareNextRound();

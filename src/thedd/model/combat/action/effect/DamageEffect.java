@@ -15,7 +15,6 @@ public class DamageEffect extends AbstractActionEffect {
 
     private final int baseDamage;
     private int damage;
-    private int dealtDamage;
 
     /**
      * @param baseAmount the base amount of damage dealt
@@ -31,7 +30,6 @@ public class DamageEffect extends AbstractActionEffect {
      */
     @Override
     public final void apply(final ActionActor target) {
-        dealtDamage = damage;
         if (target instanceof BasicCharacter) {
             ((BasicCharacter) target).getStat(Statistic.HEALTH_POINT).updateActual(-damage);
         }

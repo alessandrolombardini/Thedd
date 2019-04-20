@@ -23,6 +23,10 @@ public enum EffectTag implements Tag {
      */
     HOLY_DAMAGE("Holy damage", false),
     /**
+     * To be applied to effects that deal damage which ignores armor.
+     */
+    AP_DAMAGE("Armor piercing", false),
+    /**
      * TO be applied to effects that cannot be modified.
      */
     IGNORES_MODIFIERS("Ignores modifiers", true);

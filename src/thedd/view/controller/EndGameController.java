@@ -9,6 +9,8 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import thedd.view.ApplicationViewState;
+import thedd.view.imageloader.DirectoryPicker;
+import thedd.view.imageloader.ImageLoaderImpl;
 
 /**
  * View controller of game over scene.
@@ -18,10 +20,8 @@ public class EndGameController extends ViewNodeControllerImpl {
     @FXML
     private AnchorPane gameOverTitleImage;
 
-    private static final String GAME_OVER_TITLE_URL = "images" + System.getProperty("file.separator") + "titles"
-                                                       + System.getProperty("file.separator") + "game_over.png";
-    private static final String WIN_TITLE_URL = "images" + System.getProperty("file.separator") + "titles"
-                                                + System.getProperty("file.separator") + "victory.png";
+    private static final String TITLE_IMAGE_NAME_GAME_OVER = "game_over";
+    private static final String TITLE_IMAGE_NAME_WIN = "victory";
 
     private static final double TITLE_HEIGHT_PERC = 1.0;
     private static final double TITLE_WIDTH_PERC = 1.0;
@@ -55,7 +55,9 @@ public class EndGameController extends ViewNodeControllerImpl {
      */
     @Override
     protected void initView() {
-        final Image image = new Image(this.getController().hasPlayerWon() ? WIN_TITLE_URL : GAME_OVER_TITLE_URL);
+        final Image image = new ImageLoaderImpl().loadSingleImage(DirectoryPicker.TITLES,
+                                                                  this.getController().hasPlayerWon() 
+                                                                  ? TITLE_IMAGE_NAME_WIN : TITLE_IMAGE_NAME_GAME_OVER);
         final BackgroundImage backgroundGameOver = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, 
                                                                BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, 
                                                                new BackgroundSize(TITLE_HEIGHT_PERC, TITLE_WIDTH_PERC, 
