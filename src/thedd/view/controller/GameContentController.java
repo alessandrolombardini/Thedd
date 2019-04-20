@@ -120,6 +120,7 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
         log.translateYProperty().bind(explorationPane.heightProperty().subtract(log.getHeightProperty().add(bottomPadding)).divide(two));
         mainPane.getChildren().add(log);
         this.getController().nextRoom();
+        setNewBackgroundImage();
         update();
     }
 
@@ -285,6 +286,10 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
                 : imgLoader.loadSingleImage(DirectoryPicker.CHARACTER_COMMON, "dead_enemy");
     }
 
+    private void setNewBackgroundImage() {
+        currentBackgroundImage = backgroundImage(this.getController().isCurrentLastFloor() && this.getController().isCurrentLastRoom());
+    }
+
     private void changeRoomTransition() {
         final Rectangle node = new Rectangle(explorationPane.getWidth(), explorationPane.getHeight());
         node.widthProperty().bind(explorationPane.widthProperty());
@@ -296,7 +301,7 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
         tt.setToX(-node.getWidth());
         tt.playFromStart();
         tt.setOnFinished(e -> mainPane.getChildren().remove(node));
-        currentBackgroundImage = backgroundImage(this.getController().isCurrentLastFloor() && this.getController().isCurrentLastRoom());
+        setNewBackgroundImage();
     }
 
     private String iapTooltip(final InteractableActionPerformer roomEvent) {
