@@ -9,7 +9,12 @@ public enum DirectoryPicker {
     /**
      * Directory where all the statistics images are located.
      */
-    STATISTICS_PROFILES("statistics"),
+    STATISTICS_PROFILES("statistics/characters"),
+
+    /**
+     * Directory where all the statistics categories images are located.
+     */
+    STATISTICS_CATEGORIES("statistics/categories"),
 
     /**
      * Directory where all titles images are located.
