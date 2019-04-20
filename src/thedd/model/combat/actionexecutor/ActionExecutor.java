@@ -94,4 +94,11 @@ public interface ActionExecutor {
      */
     boolean canActorAct(ActionActor actor);
 
+    /**
+     * Gets the {@link ActionResult} updated with the last call to
+     * {@link #evaluateCurrentAction()}.
+     * @return the last action result
+     */
+    Optional<ActionResult> getLastActionResult();
+
 }
