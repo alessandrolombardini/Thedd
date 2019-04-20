@@ -116,4 +116,11 @@ public interface ExplorationPane {
      */
     void setRoomAdvancerVisible(boolean isVisible);
 
+    /**
+     * Disable an ActorViewer.
+     * @param position
+     *          the actor viewer to disable
+     */
+    void disableViewer(Pair<PartyType, Integer> position);
+
 }
