@@ -16,7 +16,7 @@ import thedd.model.combat.actor.ActionActor;
 import thedd.view.controller.MainGameViewController;
 import thedd.view.controller.interfaces.GameView;
 import thedd.view.nodewrapper.ViewNodeWrapper;
-import thedd.view.nodewrapper.ViewNodeWrapperFactory;
+import thedd.view.nodewrapper.ViewNodeWrapper;
 
 /**
  * Implementation of {@link View}.
@@ -73,7 +73,7 @@ public class ViewImpl extends Application implements View {
         if (!this.stage.isPresent()) {
             throw new IllegalStateException(ERROR_STAGEUNSETTED);
         }
-        this.actualScene = Optional.of(ViewNodeWrapperFactory.createViewNodeWrapper(state.getViewNode(), 
+        this.actualScene = Optional.of(ViewNodeWrapper.createViewNodeWrapper(state.getViewNode(), 
                                                                                     this.controller, 
                                                                                     this));
         this.actualViewState = Optional.of(state);

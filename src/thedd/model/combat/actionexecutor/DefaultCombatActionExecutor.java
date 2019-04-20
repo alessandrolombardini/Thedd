@@ -329,6 +329,14 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<ActionResult> getLastActionResult() {
+        return currentActionResult;
+    }
+
+    /**
      * Tells all the actors in the hostile party to set their next
      * actions and targets.
      */
