@@ -19,6 +19,8 @@ import thedd.model.combat.action.effect.DamageEffect;
 import thedd.model.combat.action.effect.DamageResistanceAdderEffect;
 import thedd.model.combat.action.effect.EquipmentStatisticChangerEffect;
 import thedd.model.combat.action.effect.StatusGiverEffect;
+import thedd.model.combat.action.implementations.DivineIntervention;
+import thedd.model.combat.action.implementations.NastyStrike;
 import thedd.model.combat.action.targeting.DefaultTargeting;
 import thedd.model.combat.modifier.DamageAdderModifier;
 import thedd.model.combat.status.poison.PoisonStatus;
@@ -160,30 +162,8 @@ public final class ItemFactory {
         private static final List<Action> ACTIONS = new ArrayList<>();
 
         static {
-            final String nastyStrikeDescription = "A malicious blow dealt with monstrous agility. It injects a powerful toxin in the body of the target.";
-            final double nastyStrikeBaseDamage = 1.0;
-            final int nastyStrikeDuration = 3;
-            final Action nastyStrike = new ActionImpl("Nasty strike", ActionCategory.SPECIAL, new DefaultTargeting(), 1.0, TargetType.EVERYONE, nastyStrikeDescription, LogMessageType.STANDARD_ACTION);
-            final DamageEffect nastyStrikeDamageEffect = new DamageEffect(nastyStrikeBaseDamage);
-            nastyStrikeDamageEffect.addTag(EffectTag.POISON_DAMAGE, true);
-            nastyStrikeDamageEffect.addTag(EffectTag.IGNORES_MODIFIERS, true);
-            nastyStrike.addEffect(nastyStrikeDamageEffect);
-            final StatusGiverEffect nastyStrikePoisonStatusGiver = new StatusGiverEffect(new PoisonStatus(nastyStrikeDuration));
-            nastyStrikePoisonStatusGiver.addTag(EffectTag.IGNORES_MODIFIERS, true);
-            nastyStrike.addEffect(nastyStrikePoisonStatusGiver);
-            ACTIONS.add(nastyStrike);
-
-            final String divineInterventionDescription = "A punitive beam of sacred light which scorches the target.";
-            final double divineInterventionBaseFireDamage = 3.0;
-            final double divineInterventionBaseHolyDamage = 3.0;
-            final Action divineIntervention = new ActionImpl("Divine Intervention", ActionCategory.SPECIAL, new DefaultTargeting(), 1.0, TargetType.EVERYONE, divineInterventionDescription, LogMessageType.STANDARD_ACTION);
-            final DamageEffect firePart = new DamageEffect(divineInterventionBaseFireDamage);
-            firePart.addTag(EffectTag.FIRE_DAMAGE, true);
-            final DamageEffect holyPart = new DamageEffect(divineInterventionBaseHolyDamage);
-            holyPart.addTag(EffectTag.HOLY_DAMAGE, true);
-            divineIntervention.addEffect(firePart);
-            divineIntervention.addEffect(holyPart);
-            ACTIONS.add(divineIntervention);
+            ACTIONS.add(new NastyStrike());
+            ACTIONS.add(new DivineIntervention());
         }
 
         private static Action getRandomAdditionalAction() {
