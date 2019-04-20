@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import javafx.geometry.Point2D;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -44,12 +45,19 @@ public class ActorViewerImpl extends ImageView implements Observable<Pair<PartyT
         registeredObservers = new ArrayList<>();
         this.setOnMouseClicked(e -> this.emit());
         this.setPreserveRatio(true);
+        this.setPickOnBounds(true);
 
         tooltip = new Tooltip();
-        Tooltip.install(this, tooltip);
         this.setOnMouseEntered(e -> {
             if (!this.isDisabled()) {
-                tooltip.show(this, 0.0, 0.0); 
+                /* Snippet code taken from 
+                   https://stackoverflow.com/questions/13049362/javafx-how-to-set-correct-tooltip-position
+                   and modified to support needs.
+                */
+                final Point2D p = this.localToScene(0.0, 0.0);
+                tooltip.show(this, 
+                             p.getX() + this.getScene().getX() + this.getScene().getWindow().getX() + this.getFitWidth() / 4,
+                             p.getY() + this.getScene().getY() + this.getScene().getWindow().getY()); 
             }
         });
         this.setOnMouseExited(e -> { 
