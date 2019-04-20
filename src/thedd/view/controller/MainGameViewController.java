@@ -12,7 +12,7 @@ import thedd.view.ViewNode;
 import thedd.view.controller.interfaces.ExplorationView;
 import thedd.view.controller.interfaces.GameView;
 import thedd.view.nodewrapper.ViewNodeWrapper;
-import thedd.view.nodewrapper.ViewNodeWrapperFactory;
+import thedd.view.nodewrapper.ViewNodeWrapper;
 
 /**
  * View controller of game scene.
@@ -121,7 +121,7 @@ public class MainGameViewController extends ViewNodeControllerImpl implements Ga
     }
 
     private void showNode(final AnchorPane pane, final ViewNode typeOfNode, final Position pos) {
-        final ViewNodeWrapper node = ViewNodeWrapperFactory.createViewNodeWrapper(typeOfNode, this.getController(),
+        final ViewNodeWrapper node = ViewNodeWrapper.createViewNodeWrapper(typeOfNode, this.getController(),
                                                                                   this.getView());
         final int nodeToChange = 0;
         if (pane.getChildren().isEmpty()) {
