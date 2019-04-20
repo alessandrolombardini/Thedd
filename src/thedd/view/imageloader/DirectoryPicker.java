@@ -29,7 +29,7 @@ public enum DirectoryPicker {
     /**
      * Directory where images relative to bot allies and enemies are located.
      */
-    CHARACTER_COMMON("character/common"),
+    CHARACTER_COMMON("characters/common"),
 
     /**
      * Directory where images relative to ActionPerformers are located.
