@@ -32,12 +32,11 @@ public final class StatValuesImpl implements StatValues {
         if (this.actual + value <= 0) {
             this.actual = 0;
         } else {
-            if (this.max != NO_MAX) {
-                if (this.actual + value > this.max) {
-                    this.actual = this.max;
-                }
+            if (this.max != NO_MAX && this.actual + value > this.max) {
+                this.actual = this.max;
+            } else {
+                this.actual = this.actual + value;
             }
-            this.actual = this.actual + value;
         }
     }
 
