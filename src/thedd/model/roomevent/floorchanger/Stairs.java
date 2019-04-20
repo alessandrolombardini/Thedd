@@ -20,6 +20,6 @@ public final class Stairs extends AbstractFloorChangerEvent implements RoomEvent
 
     @Override
     public boolean isSkippable() {
-        return false;
+        return true;
     }
 }
