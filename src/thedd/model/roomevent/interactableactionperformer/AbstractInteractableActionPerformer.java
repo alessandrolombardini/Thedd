@@ -24,7 +24,6 @@ public abstract class AbstractInteractableActionPerformer extends AbstractAction
     public AbstractInteractableActionPerformer(final String name, final Action action) {
         super(name);
         super.addActionToAvailable(Objects.requireNonNull(action));
-        super.insertActionIntoQueue(0, action, false);
         action.setSource(this);
         this.completed = false;
     }
