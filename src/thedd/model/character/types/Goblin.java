@@ -35,7 +35,7 @@ public class Goblin extends BasicCharacterImpl {
 
     private void setPermanentModifiers() {
         final ModifierActivation defensive = ModifierActivation.ACTIVE_ON_DEFENCE;
-        List<Tag> requiredTags = new ArrayList<Tag>();
+        final List<Tag> requiredTags = new ArrayList<Tag>();
 
         final Modifier<ActionEffect> poisonResistance = new DamageModifier(-0.8, true, defensive);
         requiredTags.add(EffectTag.POISON_DAMAGE);

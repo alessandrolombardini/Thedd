@@ -35,8 +35,8 @@ public class DarkDestructor extends BasicCharacterImpl {
 
     private void setPermanentModifiers() {
         final ModifierActivation defensive = ModifierActivation.ACTIVE_ON_DEFENCE;
-        List<Tag> requiredTags = new ArrayList<Tag>();
-        List<Tag> allowedTags = new ArrayList<Tag>();
+        final List<Tag> requiredTags = new ArrayList<Tag>();
+        final List<Tag> allowedTags = new ArrayList<Tag>();
 
         //Resistance to physical damage
         final Modifier<ActionEffect> damageResistance = new DamageModifier(-0.3, true, defensive);

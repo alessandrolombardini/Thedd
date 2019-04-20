@@ -30,7 +30,7 @@ public class OutOfCombatActionExecutor implements ActionExecutor {
     private Optional<Status> currentStatus = Optional.empty();
     private final List<Status> statusQueue = new ArrayList<>();
     private Iterator<Status> iterator;
-    private boolean roundStarted = false;
+    private boolean roundStarted;
 
     /**
      * @param action the action to be executed

@@ -53,8 +53,7 @@ public class StatusGiverEffect extends AbstractActionEffect {
      */
     @Override
     public ActionEffect getSpecializedCopy() {
-        final ActionEffect copy = new StatusGiverEffect(status);
-        return copy;
+        return new StatusGiverEffect(status);
     }
 
 }
