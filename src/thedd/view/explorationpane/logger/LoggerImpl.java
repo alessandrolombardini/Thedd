@@ -8,7 +8,6 @@ import javafx.beans.property.DoubleProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BackgroundImage;
@@ -21,6 +20,9 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import thedd.view.extensions.AdaptiveFontLabel;
+import thedd.view.imageloader.DirectoryPicker;
+import thedd.view.imageloader.ImageLoader;
+import thedd.view.imageloader.ImageLoaderImpl;
 
 /**
  * {@link GridPane} which acts as {@link Logger}.
@@ -65,6 +67,7 @@ public class LoggerImpl extends GridPane implements Logger {
 
         loggerManager = Optional.empty();
 
+        final ImageLoader imgl = new ImageLoaderImpl();
         final Button close = new Button();
         close.setPickOnBounds(true);
         close.setTranslateY(PADDING);
@@ -72,7 +75,7 @@ public class LoggerImpl extends GridPane implements Logger {
         close.prefHeightProperty().bind(this.getHeightProperty().multiply(ROW_HEIGHT_PERC / 100));
         close.setBackground(new Background(
                               new BackgroundImage(
-                                new Image(ClassLoader.getSystemResourceAsStream("btnLogger.png")), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(1.0,  1.0,  true, true, true, false))));
+                                imgl.loadSingleImage(DirectoryPicker.ICON, "closelogger"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(1.0,  1.0,  true, true, true, false))));
         close.setOnAction(e -> loggerManager.ifPresent(lm -> lm.cancel()));
         this.add(close, 1, 0, 1, 1);
     }
