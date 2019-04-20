@@ -27,6 +27,7 @@ import thedd.model.combat.actor.ActionActor;
 import thedd.model.roomevent.RoomEventType;
 import thedd.model.roomevent.combatevent.CombatEvent;
 import thedd.model.roomevent.interactableactionperformer.InteractableActionPerformer;
+import thedd.model.world.floor.FloorDetails;
 import thedd.utils.observer.Observer;
 import thedd.view.controller.interfaces.ExplorationView;
 import thedd.view.explorationpane.ExplorationPaneImpl;
@@ -63,19 +64,26 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
         updateSingleTarget(this.getController().getPlayer(), new ImmutablePair<PartyType, Integer>(PartyType.ALLIED, 0), Optional.empty());
 
         final List<Image> enemyImages = new ArrayList<>();
-        final List<ActionActor> enemyActors = new ArrayList<>();
         if (this.getController().isCombatActive()) {
+            final List<ActionActor> enemyActors = new ArrayList<>();
             final CombatEvent ce = this.getController().getRoomEvents().stream().filter(rm -> rm.getType() == RoomEventType.COMBAT_EVENT).findFirst().map(rm -> (CombatEvent) rm).get(); 
             ce.getHostileEncounter().getNPCs().stream().forEach(npc -> {
                 enemyImages.add(mapActionActorToImage(npc)); 
                 enemyActors.add(npc);
             });
+            IntStream.range(0,  enemyActors.size()).forEach(i -> updateSingleTarget(enemyActors.get(i), new ImmutablePair<>(PartyType.ENEMY, i), Optional.empty()));
         } else {
-            //TODO case InteractableActionPerformer
+            if (this.getController().isCurrentLastRoom()) {
+                //aggiungi immagini scale
+                IntStream.range(0, this.getController().getStairsOptions().size()).forEach(i -> explorationPane.updatePositionTooltip(new ImmutablePair<PartyType, Integer>(PartyType.ENEMY, i), stairsTooltip(i)));
+            } else {
+                final List<InteractableActionPerformer> iapEvents = new ArrayList<>();
+                this.getController().getRoomEvents().stream().filter(rm -> rm.getType() == RoomEventType.INTERACTABLE_ACTION_PERFORMER).map(rm -> (InteractableActionPerformer) rm).forEach(iap -> iapEvents.add(iap));
+                //Aggiungi immagini a enemyImages
+                IntStream.range(0, iapEvents.size()).forEach(i -> explorationPane.updatePositionTooltip(new ImmutablePair<PartyType, Integer>(PartyType.ENEMY, i), iapTooltip(iapEvents.get(i))));
+            }
         }
-
         explorationPane.setEnemyImages(enemyImages);
-        IntStream.range(0,  enemyActors.size()).forEach(i -> updateSingleTarget(enemyActors.get(i), new ImmutablePair<>(PartyType.ENEMY, i), Optional.empty()));
     }
 
     @Override
@@ -134,6 +142,11 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
             case COMBAT_TARGET:
                 final List<ActionActor> selectedParty = getSelectedParty(Objects.requireNonNull(message.get().getLeft()));
                 this.getController().targetSelected(selectedParty.get(message.get().getRight()));
+                break;
+            case STAIRS:
+                this.getController().nextFloor(this.getController().getStairsOptions().get(message.get().getRight()));
+                changeRoomTransition();
+                update();
                 break;
             default:
                 break;
@@ -267,6 +280,26 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
         tt.setToX(-node.getWidth());
         tt.playFromStart();
         tt.setOnFinished(e -> mainPane.getChildren().remove(node));
+    }
+
+    private String iapTooltip(final InteractableActionPerformer roomEvent) {
+        if (roomEvent.getName().equals("Trap") || roomEvent.getName().equals("Treasure Chest")) {
+            return "A treasure chest";
+        } else {
+            return ((InteractableActionPerformer) roomEvent).getSelectedAction().get().getDescription();
+        }
+    }
+
+    private Image iapImage(final InteractableActionPerformer roomEvent) {
+        return null;
+    }
+
+    private String stairsTooltip(final int position) {
+        final FloorDetails fd = this.getController().getStairsOptions().get(position);
+        return "Next floor:\n" 
+               + "Difficulty: " + fd.getDifficult()
+               + "Number of enemies: " + fd.getNumberOfEnemies() + "\n" 
+               + "Number of treasures: " + fd.getNumberOfTreasures() + "\n"; 
     }
 
 }
