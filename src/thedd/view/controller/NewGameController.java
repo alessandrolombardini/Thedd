@@ -71,7 +71,7 @@ public class NewGameController extends ViewNodeControllerImpl {
             this.errorNumberOfRooms.setText(ERROR_UNVALIDVALUE);
         }
         if (this.getController().newGame(this.playerNameTextField.getText(),
-                                         this.numberOfFloorsTextField.getText(), 
+                                         this.numberOfRoomsTextField.getText(), 
                                          this.numberOfFloorsTextField.getText())) {
             this.getView().setState(ApplicationViewState.GAME);
         }

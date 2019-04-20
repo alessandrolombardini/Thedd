@@ -78,13 +78,13 @@
 				                          
 				                          <AnchorPane GridPane.columnIndex="3" GridPane.rowIndex="3" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 				                             <children>
-				                                <AdaptiveFontTextField ratio="14" fx:id="numberOfRoomsTextField" minHeight="0" minWidth="0" alignment="CENTER_RIGHT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+				                                <AdaptiveFontTextField ratio="14" fx:id="numberOfFloorsTextField" minHeight="0" minWidth="0" alignment="CENTER_RIGHT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
 							  				</children>
 				                          </AnchorPane>
 				                          
 				                          <AnchorPane GridPane.columnIndex="3" GridPane.rowIndex="6" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 				                             <children>
-				                                <AdaptiveFontTextField ratio="14" fx:id="numberOfFloorsTextField" minHeight="0" minWidth="0" alignment="CENTER_RIGHT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+				                                <AdaptiveFontTextField ratio="14" fx:id="numberOfRoomsTextField" minHeight="0" minWidth="0" alignment="CENTER_RIGHT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
 											</children>
 										 </AnchorPane>
 				                          
