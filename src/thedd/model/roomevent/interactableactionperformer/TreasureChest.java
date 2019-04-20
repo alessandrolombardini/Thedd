@@ -29,7 +29,7 @@ public class TreasureChest extends AbstractInteractableActionPerformer implement
      * 
      */
     public TreasureChest() {
-        super(NAME, ACTION);
+        super(NAME, ACTION.getCopy());
     }
 
     /**
