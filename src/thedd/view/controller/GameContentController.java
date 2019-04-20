@@ -56,6 +56,7 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
     private final List<ActionActor> alliedParty = new ArrayList<>();
     private final List<ActionActor> enemyParty = new ArrayList<>();
     private final ImageLoader imgLoader = new ImageLoaderImpl();
+    private Image currentBackgroundImage; 
 
     @Override
     public final void update() {
@@ -90,7 +91,7 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
             }
         }
         explorationPane.setRoomAdvancerVisible(state == TargetSelectionState.EXPLORATION && !this.getController().isCurrentLastRoom());
-        explorationPane.changeBackgroundImage(backgroundImage(this.getController().isCurrentLastFloor() && this.getController().isCurrentLastRoom()));
+        explorationPane.changeBackgroundImage(currentBackgroundImage);
     }
 
     @Override
@@ -279,7 +280,9 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
     }
 
     private Image mapActionActorToImage(final ActionActor c) {
-            return imgLoader.loadSingleImage(DirectoryPicker.ENEMY_BATTLE, ((BasicCharacter) c).getStat(Statistic.HEALTH_POINT).getActual() > 0 ? c.getName() : "dead_enemy");
+        return ((BasicCharacter) c).getStat(Statistic.HEALTH_POINT).getActual() > 0 
+                ? imgLoader.loadSingleImage(DirectoryPicker.ENEMY_BATTLE, c.getName()) 
+                : imgLoader.loadSingleImage(DirectoryPicker.CHARACTER_COMMON, "dead_enemy");
     }
 
     private void changeRoomTransition() {
@@ -293,6 +296,7 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
         tt.setToX(-node.getWidth());
         tt.playFromStart();
         tt.setOnFinished(e -> mainPane.getChildren().remove(node));
+        currentBackgroundImage = backgroundImage(this.getController().isCurrentLastFloor() && this.getController().isCurrentLastRoom());
     }
 
     private String iapTooltip(final InteractableActionPerformer roomEvent) {
