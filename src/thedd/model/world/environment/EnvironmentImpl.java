@@ -100,7 +100,6 @@ public class EnvironmentImpl implements Environment {
         this.actuaIndexFloor++;
         this.floorOptions = Optional.empty();
         this.floors.add(this.actuaIndexFloor, new FloorImpl(floorDetails));
-        this.getCurrentFloor().nextRoom();
         return true;
     }
 
