@@ -27,6 +27,11 @@ public enum DirectoryPicker {
     ENEMY_BATTLE("characters/battle/enemy"),
 
     /**
+     * Directory where images relative to bot allies and enemies are located.
+     */
+    CHARACTER_COMMON("character/common"),
+
+    /**
      * Directory where images relative to ActionPerformers are located.
      */
     INTERACTABLE_ACTION_PERFORMER("iap"),
