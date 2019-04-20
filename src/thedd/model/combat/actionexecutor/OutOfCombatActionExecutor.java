@@ -195,6 +195,14 @@ public class OutOfCombatActionExecutor implements ActionExecutor {
         return !roundStarted;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<ActionResult> getLastActionResult() {
+        return currentActionResult;
+    }
+
     private void addNewlyAppliedStatuses(final ActionActor target) {
         target.getStatuses().stream()
                             .filter(s -> !s.isUpdated())

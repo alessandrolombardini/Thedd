@@ -188,6 +188,14 @@ public class StatusUpdateActionExecutor implements ActionExecutor {
      * {@inheritDoc}
      */
     @Override
+    public Optional<ActionResult> getLastActionResult() {
+        return currentActionResult;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean canActorAct(final ActionActor actor) {
         return false;
     }
