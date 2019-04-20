@@ -108,7 +108,7 @@ public class EnvironmentImpl implements Environment {
      */
     @Override
     public final boolean isCurrentLastFloor() {
-        return this.isLastFloor(this.getCurrentFloorIndex());
+        return this.getCurrentFloorIndex() == (this.numberOfFloors - 1);
     }
 
     /**
@@ -122,9 +122,9 @@ public class EnvironmentImpl implements Environment {
             return this.floorOptions.get();
         }
         final List<FloorDetails> choices;
+        final boolean isNextBossFloor = this.getCurrentFloorIndex() == this.numberOfFloors - 2;
         choices = Stream.of(Difficulty.values())
-                        .map(d -> this.floorDeatailsFactory.createFloorDetails(d, this.numberOfRooms,
-                                                                  this.isLastFloor(this.getCurrentFloorIndex() + 1)))
+                        .map(d -> this.floorDeatailsFactory.createFloorDetails(d, this.numberOfRooms, isNextBossFloor))
                         .collect(Collectors.toList());
         this.floorOptions = Optional.of(choices);
         return choices;
@@ -137,10 +137,6 @@ public class EnvironmentImpl implements Environment {
                                                                .findAny()
                                                                .get());
         this.setNextFloor(floorOptions.get(easyIndex));
-    }
-
-    private boolean isLastFloor(final int index) {
-        return index == (this.numberOfFloors - 1);
     }
 
     @Override

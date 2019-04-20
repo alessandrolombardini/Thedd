@@ -129,7 +129,7 @@ public class ViewImpl extends Application implements View {
      * {@inheritDoc}
      */
     @Override
-    public final void resetActionTargets(final Action action) {
+    public final void resetActionTargets() {
         if (this.getGameViewController().isPresent()) {
             this.getGameViewController().get().hideTargets();
         }
@@ -139,7 +139,7 @@ public class ViewImpl extends Application implements View {
      * {@inheritDoc}
      */
     @Override
-    public final void showActionEffect(final ActionResult result, final Action action) {
+    public final void showActionEffect(final ActionResult result) {
         if (this.getGameViewController().isPresent()) {
             this.getGameViewController().get().visualizeAction(result);
         }
@@ -149,7 +149,7 @@ public class ViewImpl extends Application implements View {
      * {@inheritDoc}
      */
     @Override
-    public final void showActionResult(final ActionResult result, final Action action) {
+    public final void showActionResult(final ActionResult result) {
         if (this.getGameViewController().isPresent()) {
             this.getGameViewController().get().logAction(result);
         }
