@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import thedd.model.character.BasicCharacterImpl;
+import thedd.model.combat.action.TargetType;
 import thedd.model.combat.action.effect.ActionEffect;
+import thedd.model.combat.action.implementations.LightAttack;
 import thedd.model.combat.modifier.DamageModifier;
 import thedd.model.combat.modifier.Modifier;
 import thedd.model.combat.modifier.ModifierActivation;
@@ -28,6 +30,7 @@ public class DarkDestructor extends BasicCharacterImpl {
         super(name, multiplier);
         // ret.addWeightedAction(new ActionImpl() , RandomActionPrority.DEFAULT);
         setPermanentModifiers();
+        super.addActionToAvailable(new LightAttack(TargetType.FOE));
     }
 
     private void setPermanentModifiers() {
