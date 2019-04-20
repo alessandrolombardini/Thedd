@@ -1,8 +1,10 @@
 package thedd.controller;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import javafx.application.Platform;
 import thedd.controller.information.PlayerInformation;
@@ -22,6 +24,7 @@ import thedd.model.combat.instance.ActionExecutionInstance;
 import thedd.model.combat.instance.CombatStatus;
 import thedd.model.combat.instance.ExecutionInstanceImpl;
 import thedd.model.character.BasicCharacter;
+import thedd.model.character.statistics.Statistic;
 import thedd.model.item.Item;
 import thedd.model.item.ItemFactory;
 import thedd.model.item.usableitem.UsableItem;
@@ -192,6 +195,7 @@ public class ControllerImpl implements Controller {
         final ActionActor playerActor = this.model.getPlayerCharacter();
         playerActor.resetSelectedAction();
         // call view to tell player to select a new action
+        view.resetActionTargets(null);
     }
 
     /**
@@ -226,6 +230,7 @@ public class ControllerImpl implements Controller {
         actionExecutor.get().setExecutionInstance(instance);
         if (action.getTargets().isEmpty()) {
             // call view to tell player to select a target
+            
         } else {
             evaluateNextAction();
         }
@@ -242,6 +247,8 @@ public class ControllerImpl implements Controller {
         final ActionExecutor executor = actionExecutor.get();
         executor.executeCurrentAction();
         // tell view to log
+        view.showActionResult(executor.getLastActionResult().get(), null);
+        view.update();
     }
 
     /**
@@ -300,6 +307,7 @@ public class ControllerImpl implements Controller {
             a.setNextAction();
             final Optional<ActionResult> result = a.evaluateCurrentAction();
             // view visualize(result)
+            view.showActionEffect(result.get(), null);
         });
     }
 
@@ -321,6 +329,9 @@ public class ControllerImpl implements Controller {
         model.getPlayerCharacter().addActionToQueue(action.getCopy(), true);
         // call view to tell player to select a target (even if the action target type
         // is SELF?)
+        final ActionExecutionInstance aei = actionExecutor.get().getExecutionInstance();
+        final List<ActionActor> targetables = nonDeadTargets(action.getValidTargets(aei));
+        view.showActionTargets(targetables, aei.getPlayerParty(), aei.getNPCsParty(), action);
     }
 
     @Override
@@ -379,5 +390,11 @@ public class ControllerImpl implements Controller {
     @Override
     public final BasicCharacter getPlayer() {
         return this.model.getPlayerCharacter();
+    }
+
+    private List<ActionActor> nonDeadTargets(final List<ActionActor> targets) {
+        return targets.stream()
+                      .filter(t -> t instanceof BasicCharacter && ((BasicCharacter) t).getStat(Statistic.HEALTH_POINT).getActual() > 0)
+                      .collect(Collectors.toList());
     }
 }
