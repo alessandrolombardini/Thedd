@@ -22,15 +22,12 @@ import thedd.model.combat.instance.ActionExecutionInstance;
 import thedd.model.combat.instance.CombatStatus;
 import thedd.model.combat.instance.ExecutionInstanceImpl;
 import thedd.model.character.BasicCharacter;
-import thedd.model.character.statistics.Statistic;
 import thedd.model.item.Item;
 import thedd.model.item.ItemFactory;
 import thedd.model.item.usableitem.UsableItem;
 import thedd.model.roomevent.RoomEvent;
 import thedd.model.roomevent.combatevent.CombatEvent;
 import thedd.model.world.environment.EnvironmentImpl;
-import thedd.model.world.environment.Session;
-import thedd.model.world.environment.SessionImpl;
 import thedd.model.world.floor.FloorDetails;
 import thedd.model.world.room.Room;
 import thedd.view.View;
@@ -65,12 +62,11 @@ public class ControllerImpl implements Controller {
         if (this.isValidNumberOfRooms(numberOfRooms) && this.isValidNumberOfFloors(numberOfFloors)) {
             final int numOfRooms = Integer.parseInt(numberOfRooms);
             final int numOfFloors = Integer.parseInt(numberOfFloors);
-            final Session session = new SessionImpl(Optional.ofNullable(playerName), numOfFloors, numOfRooms);
-            this.model.setSession(session);
-            this.playerInfo = new PlayerInformationImpl(this.model.getSession().getPlayerCharacter());
-            this.statisticsInfo = new StatisticsInformationImpl(this.model.getSession().getPlayerCharacter());
+            this.model.initGame(Optional.ofNullable(playerName), numOfFloors, numOfRooms);
+            this.playerInfo = new PlayerInformationImpl(this.model.getPlayerCharacter());
+            this.statisticsInfo = new StatisticsInformationImpl(this.model.getPlayerCharacter());
 
-            BasicCharacter charac = this.model.getSession().getPlayerCharacter();
+            BasicCharacter charac = this.model.getPlayerCharacter();
             IntStream.range(0, 15).forEach(i -> {
                 charac.getInventory().addItem(ItemFactory.getRandomItem());
             });
@@ -116,7 +112,7 @@ public class ControllerImpl implements Controller {
      */
     @Override
     public boolean isCombatActive() {
-        return this.model.getSession().getPlayerCharacter().isInCombat();
+        return this.model.getPlayerCharacter().isInCombat();
     }
 
     /**
@@ -124,7 +120,7 @@ public class ControllerImpl implements Controller {
      */
     @Override
     public void deleteItem(final Item item) {
-        this.model.getSession().getPlayerCharacter().getInventory().removeItem(item);
+        this.model.getPlayerCharacter().getInventory().removeItem(item);
         this.view.update();
     }
 
@@ -146,7 +142,7 @@ public class ControllerImpl implements Controller {
      */
     @Override
     public boolean equipItem(final Item item) {
-        final boolean ret = this.model.getSession().getPlayerCharacter().equipItem(item);
+        final boolean ret = this.model.getPlayerCharacter().equipItem(item);
         this.view.update();
         return ret;
     }
@@ -156,7 +152,7 @@ public class ControllerImpl implements Controller {
      */
     @Override
     public void unequipItem(final Item item) {
-        this.model.getSession().getPlayerCharacter().unequipItem(item);
+        this.model.getPlayerCharacter().unequipItem(item);
         this.view.update();
     }
 
@@ -193,7 +189,7 @@ public class ControllerImpl implements Controller {
      */
     @Override
     public void undoActionSelection() {
-        final ActionActor playerActor = this.model.getSession().getPlayerCharacter();
+        final ActionActor playerActor = this.model.getPlayerCharacter();
         playerActor.resetSelectedAction();
         // call view to tell player to select a new action
     }
@@ -203,11 +199,11 @@ public class ControllerImpl implements Controller {
      */
     @Override
     public void targetSelected(final ActionActor target) {
-        final ActionActor playerActor = this.model.getSession().getPlayerCharacter();
+        final ActionActor playerActor = this.model.getPlayerCharacter();
         final ActionExecutor currentExecutor = actionExecutor.get();
         playerActor.getSelectedAction().ifPresent(a -> {
             playerInfo.getUsedItem().ifPresent(i -> {
-                this.model.getSession().getPlayerCharacter().getInventory().removeItem(i);
+                this.model.getPlayerCharacter().getInventory().removeItem(i);
                 playerInfo.resetUsedItem();
             });
             a.setTargets(target, a.getValidTargets(currentExecutor.getExecutionInstance()));
@@ -223,7 +219,7 @@ public class ControllerImpl implements Controller {
      */
     @Override
     public void executeSingleAction(final Action action) {
-        final ActionActor playerActor = this.model.getSession().getPlayerCharacter();
+        final ActionActor playerActor = this.model.getPlayerCharacter();
         final ActionExecutionInstance instance = new ExecutionInstanceImpl();
         actionExecutor = Optional.of(new OutOfCombatActionExecutor(action));
         instance.addPlayerPartyMember(playerActor);
@@ -284,7 +280,7 @@ public class ControllerImpl implements Controller {
     }
 
     private void startCombat(final HostileEncounter encounter) {
-        final ActionActor playerActor = this.model.getSession().getPlayerCharacter();
+        final ActionActor playerActor = this.model.getPlayerCharacter();
         final ActionExecutionInstance instance = new ExecutionInstanceImpl();
         final ActionExecutor combatExecutor = encounter.getCombatLogic();
         instance.addPlayerPartyMember(playerActor);
@@ -310,7 +306,7 @@ public class ControllerImpl implements Controller {
     private void updateStatuses() {
         final ActionExecutor executor = new StatusUpdateActionExecutor();
         final ActionExecutionInstance instance = new ExecutionInstanceImpl();
-        instance.addPlayerPartyMember(model.getSession().getPlayerCharacter());
+        instance.addPlayerPartyMember(model.getPlayerCharacter());
         executor.setExecutionInstance(instance);
         executor.startExecutor();
         actionExecutor = Optional.of(executor);
@@ -322,23 +318,24 @@ public class ControllerImpl implements Controller {
      */
     @Override
     public void selectAction(final Action action) {
-        model.getSession().getPlayerCharacter().addActionToQueue(action.getCopy(), true);
+        model.getPlayerCharacter().addActionToQueue(action.getCopy(), true);
         // call view to tell player to select a target (even if the action target type
         // is SELF?)
     }
 
     @Override
     public final boolean nextRoom() {
-        final boolean isChanged = this.model.getSession().getEnvironment().getCurrentFloor().nextRoom();
+        final boolean isChanged = this.model.getEnvironment().getCurrentFloor().nextRoom();
         if (isChanged) {
-            final Room room = this.model.getSession().getEnvironment().getCurrentFloor().getCurrentRoom();
-            if (!room.getEvents().stream().anyMatch(e -> e instanceof CombatEvent)) {
-                this.updateStatuses();
+            final Room room = this.model.getEnvironment().getCurrentFloor().getCurrentRoom();
+            if (room.getEvents().stream().anyMatch(e -> e instanceof CombatEvent)) {
                 final CombatEvent combat = room.getEvents().stream().filter(e -> e instanceof CombatEvent)
                                                                     .findAny()
                                                                     .map(e -> (CombatEvent) e)
                                                                     .get();
                 this.startCombat(combat.getHostileEncounter());
+            } else {
+                this.updateStatuses();
             }
         }
         return isChanged;
@@ -346,41 +343,41 @@ public class ControllerImpl implements Controller {
 
     @Override
     public final boolean nextFloor(final FloorDetails floorDetails) {
-        return this.model.getSession().getEnvironment().setNextFloor(floorDetails);
+        return this.model.getEnvironment().setNextFloor(floorDetails);
     }
 
     @Override
     public final List<RoomEvent> getRoomEvents() {
-        return this.model.getSession().getEnvironment().getCurrentFloor().getCurrentRoom().getEvents();
+        return this.model.getEnvironment().getCurrentFloor().getCurrentRoom().getEvents();
     }
 
     @Override
     public final List<FloorDetails> getStairsOptions() {
-        return this.model.getSession().getEnvironment().getFloorOptions();
+        return this.model.getEnvironment().getFloorOptions();
     }
 
     @Override
     public final boolean isCurrentLastFloor() {
-        return this.model.getSession().getEnvironment().isCurrentLastFloor();
+        return this.model.getEnvironment().isCurrentLastFloor();
     }
 
     @Override
     public final boolean isCurrentLastRoom() {
-        return !this.model.getSession().getEnvironment().getCurrentFloor().hasNextRoom();
+        return !this.model.getEnvironment().getCurrentFloor().hasNextRoom();
     }
 
     @Override
     public final boolean isCurrentRoomCompleted() {
-        return this.model.getSession().getEnvironment().getCurrentFloor().getCurrentRoom().checkToMoveOn();
+        return this.model.getEnvironment().getCurrentFloor().getCurrentRoom().checkToMoveOn();
     }
 
     @Override
     public final boolean hasPlayerWon() {
-        return this.model.getSession().hasPlayerWon();
+        return this.model.hasPlayerWon();
     }
 
     @Override
     public final BasicCharacter getPlayer() {
-        return this.model.getSession().getPlayerCharacter();
+        return this.model.getPlayerCharacter();
     }
 }
