@@ -261,6 +261,9 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
                                    + "HP: " + targetHP.getActual() + "/" + targetHP.getMax() + '\n'
                                    + (action.isPresent() ? "Chanche to hit: " + Objects.requireNonNull(action).get().getHitChance(target) + '\n' : "");
             explorationPane.updatePositionTooltip(Objects.requireNonNull(position), tooltip);
+            if (bcTarget.getStat(Statistic.HEALTH_POINT).getActual() <= 0) {
+                    explorationPane.disableViewer(position);
+            }
         }
     }
 
@@ -276,7 +279,7 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
     }
 
     private Image mapActionActorToImage(final ActionActor c) {
-            return imgLoader.loadSingleImage(DirectoryPicker.ENEMY_BATTLE, c.getName());
+            return imgLoader.loadSingleImage(DirectoryPicker.ENEMY_BATTLE, ((BasicCharacter) c).getStat(Statistic.HEALTH_POINT).getActual() > 0 ? c.getName() : "dead_enemy");
     }
 
     private void changeRoomTransition() {
