@@ -36,26 +36,22 @@ public interface View {
 
     /**
      * Reset targets of an action.
-     * 
-     * @param action of targets
      */
-    void resetActionTargets(Action action);
+    void resetActionTargets();
 
     /**
      * Show effect of an action.
      * 
      * @param result of the action
-     * @param action to show
      */
-    void showActionEffect(ActionResult result, Action action);
+    void showActionEffect(ActionResult result);
 
     /**
      * Show result of an action.
      * 
      * @param result the result to show
-     * @param action to show
      */
-    void showActionResult(ActionResult result, Action action);
+    void showActionResult(ActionResult result);
 
     /**
      * Show inventory.
