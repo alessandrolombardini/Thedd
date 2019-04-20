@@ -6,6 +6,7 @@ import java.util.stream.IntStream;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
@@ -19,6 +20,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import thedd.utils.observer.Observer;
 import thedd.view.explorationpane.enums.PartyType;
+import thedd.view.imageloader.DirectoryPicker;
+import thedd.view.imageloader.ImageLoader;
+import thedd.view.imageloader.ImageLoaderImpl;
 
 /**
  * 
@@ -27,7 +31,8 @@ import thedd.view.explorationpane.enums.PartyType;
 public final class ExplorationPaneImpl extends BorderPane implements ExplorationPane {
 
     private static final double SPACING_VALUE = 2.5;
-    private static final double IMMAGINARY_COLUMNS = 8;
+    private static final double IMMAGINARY_COLUMNS = 6;
+    private static final double PADDING = 10;
 
     private final HBox enemyParty;
     private final HBox alliedParty;
@@ -45,17 +50,20 @@ public final class ExplorationPaneImpl extends BorderPane implements Exploration
         roomAdvancer = new ImageView();
 
         alliedParty.setAlignment(Pos.BOTTOM_LEFT);
+        enemyParty.setAlignment(Pos.BOTTOM_RIGHT);
 
         enemiesAndNext.getChildren().add(enemyParty);
         enemiesAndNext.getChildren().add(roomAdvancer);
         enemiesAndNext.setAlignment(Pos.BOTTOM_RIGHT);
 
-        roomAdvancer.setImage(new Image(ClassLoader.getSystemResourceAsStream("images/icons/NextRoomImg.png")));
+        final ImageLoader imgl = new ImageLoaderImpl();
+        roomAdvancer.setImage(imgl.loadSingleImage(DirectoryPicker.ROOM_CHANGER, "door"));
         roomAdvancer.setPreserveRatio(true);
         roomAdvancer.setPickOnBounds(true);
 
         this.setRight(enemiesAndNext);
         this.setLeft(alliedParty);
+        this.setPadding(new Insets(PADDING));
 
         this.widthProperty().addListener(list -> resizeAllComponents());
         this.heightProperty().addListener(list -> resizeAllComponents());
