@@ -7,6 +7,8 @@ import org.apache.commons.lang3.RandomUtils;
 import edu.princeton.cs.algs4.StdRandom;
 import thedd.model.world.Difficulty;
 import thedd.model.world.environment.EnvironmentImpl;
+import thedd.model.world.floor.FloorDetails.FloorDetails;
+import thedd.model.world.floor.FloorDetails.FloorDetailsBuilderImpl;
 import thedd.model.world.room.RoomFactoryImpl;
 
 /**
@@ -32,13 +34,13 @@ public final class FloorDetailsFactoryImpl implements FloorDetailsFactory {
         final int numberOfTreasures = this.getRandomNumberOfTreasure(numberOfRooms - 1, difficulty,
                                                                      numberOfContraptions);
         final int numberOfEnemies = this.getRandomNumberOfEnemies(numberOfRooms - 1, difficulty);
-        return new FloorDetailsImpl.FloorDetailsBuilderImpl().setDifficulty(difficulty)
-                                                             .setNumberOfRooms(numberOfRooms)
-                                                             .setIsLastFloor(lastFloor)
-                                                             .setNumberOfEnemies(numberOfEnemies)
-                                                             .setNumberOfContraptions(numberOfContraptions)
-                                                             .setNumberOfTreasures(numberOfTreasures)
-                                                             .build();
+        return new FloorDetailsBuilderImpl().setDifficulty(difficulty)
+                                            .setNumberOfRooms(numberOfRooms)
+                                            .setIsLastFloor(lastFloor)
+                                            .setNumberOfEnemies(numberOfEnemies)
+                                            .setNumberOfContraptions(numberOfContraptions)
+                                            .setNumberOfTreasures(numberOfTreasures)
+                                            .build();
     }
 
     private int getRandomNumberOfEnemies(final int effectiveNumberOfRooms, final Difficulty difficulty) {

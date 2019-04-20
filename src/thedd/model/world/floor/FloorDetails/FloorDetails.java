@@ -1,4 +1,4 @@
-package thedd.model.world.floor;
+package thedd.model.world.floor.FloorDetails;
 
 import thedd.model.world.Difficulty;
 

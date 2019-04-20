@@ -28,7 +28,7 @@ import thedd.model.combat.actor.ActionActor;
 import thedd.model.roomevent.RoomEventType;
 import thedd.model.roomevent.combatevent.CombatEvent;
 import thedd.model.roomevent.interactableactionperformer.InteractableActionPerformer;
-import thedd.model.world.floor.FloorDetails;
+import thedd.model.world.floor.FloorDetails.FloorDetails;
 import thedd.utils.observer.Observer;
 import thedd.view.controller.interfaces.ExplorationView;
 import thedd.view.explorationpane.ExplorationPaneImpl;

@@ -3,7 +3,7 @@ package thedd.model.world.environment;
 import java.util.List;
 
 import thedd.model.world.floor.Floor;
-import thedd.model.world.floor.FloorDetails;
+import thedd.model.world.floor.FloorDetails.FloorDetails;
 
 /**
  * Interface that define the environment.

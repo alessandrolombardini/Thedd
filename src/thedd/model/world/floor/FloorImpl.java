@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import thedd.model.world.floor.FloorDetails.FloorDetails;
 import thedd.model.world.room.Room;
 import thedd.model.world.room.RoomFactory;
 import thedd.model.world.room.RoomFactoryImpl;

@@ -9,7 +9,7 @@ import thedd.model.combat.actor.ActionActor;
 import thedd.model.character.BasicCharacter;
 import thedd.model.item.Item;
 import thedd.model.roomevent.RoomEvent;
-import thedd.model.world.floor.FloorDetails;
+import thedd.model.world.floor.FloorDetails.FloorDetails;
 
 /**
  * Interface describing the controller of the pattern MVC of this application.

@@ -28,7 +28,7 @@ import thedd.model.item.usableitem.UsableItem;
 import thedd.model.roomevent.RoomEvent;
 import thedd.model.roomevent.combatevent.CombatEvent;
 import thedd.model.world.environment.EnvironmentImpl;
-import thedd.model.world.floor.FloorDetails;
+import thedd.model.world.floor.FloorDetails.FloorDetails;
 import thedd.model.world.room.Room;
 import thedd.view.View;
 

@@ -20,8 +20,8 @@ import thedd.model.combat.actionexecutor.DefaultCombatActionExecutor;
 import thedd.model.roomevent.RoomEvent;
 import thedd.model.roomevent.RoomEventHelper;
 import thedd.model.roomevent.combatevent.CombatEvent;
-import thedd.model.world.floor.FloorDetails;
 import thedd.model.world.floor.FloorImpl;
+import thedd.model.world.floor.FloorDetails.FloorDetails;
 
 /**
  * Implementation of {@link thedd.model.world.RoomFactory}.

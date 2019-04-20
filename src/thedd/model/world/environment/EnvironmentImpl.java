@@ -8,10 +8,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import thedd.model.world.Difficulty;
 import thedd.model.world.floor.Floor;
-import thedd.model.world.floor.FloorDetails;
 import thedd.model.world.floor.FloorDetailsFactory;
 import thedd.model.world.floor.FloorDetailsFactoryImpl;
 import thedd.model.world.floor.FloorImpl;
+import thedd.model.world.floor.FloorDetails.FloorDetails;
 
 /**
  * Implementation of {@link thedd.model.world.Environment}.
