@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
@@ -24,7 +23,6 @@ import thedd.model.character.statistics.StatValues;
 import thedd.model.character.statistics.Statistic;
 import thedd.model.combat.action.Action;
 import thedd.model.combat.action.result.ActionResult;
-import thedd.model.combat.action.result.ActionResultType;
 import thedd.model.combat.actor.ActionActor;
 import thedd.model.roomevent.RoomEventType;
 import thedd.model.roomevent.combatevent.CombatEvent;
@@ -79,13 +77,14 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
             IntStream.range(0,  enemyActors.size()).forEach(i -> updateSingleTarget(enemyActors.get(i), new ImmutablePair<>(PartyType.ENEMY, i), Optional.empty()));
             this.getView().showActionSelector();
         } else {
-            state = TargetSelectionState.EXPLORATION;
             this.getView().showInventory();
             if (this.getController().isCurrentLastRoom()) {
+                state = TargetSelectionState.STAIRS;
                 this.getController().getStairsOptions().forEach(so -> enemyImages.add(imgLoader.loadSingleImage(DirectoryPicker.ROOM_CHANGER, "stairs")));
                 explorationPane.setEnemyImages(enemyImages);
                 IntStream.range(0, this.getController().getStairsOptions().size()).forEach(i -> explorationPane.updatePositionTooltip(new ImmutablePair<PartyType, Integer>(PartyType.ENEMY, i), stairsTooltip(i)));
             } else {
+                state = TargetSelectionState.EXPLORATION;
                 final List<InteractableActionPerformer> iapEvents = new ArrayList<>();
                 this.getController().getRoomEvents().stream().filter(rm -> rm.getType() == RoomEventType.INTERACTABLE_ACTION_PERFORMER && !rm.isCompleted()).map(rm -> (InteractableActionPerformer) rm).forEach(iap -> iapEvents.add(iap));
                 iapEvents.forEach(iap -> enemyImages.add(iapImage(iap)));
@@ -95,6 +94,7 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
         }
         explorationPane.setRoomAdvancerVisible(state == TargetSelectionState.EXPLORATION && !this.getController().isCurrentLastRoom());
         explorationPane.changeBackgroundImage(currentBackgroundImage);
+        mainPane.autosize();
         explorationPane.forceResize();
     }
 
@@ -163,6 +163,8 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
             case STAIRS:
                 changeRoomTransition();
                 this.getController().nextFloor(this.getController().getStairsOptions().get(message.get().getRight()));
+                this.getController().nextRoom();
+                setNewBackgroundImage();
                 update();
                 break;
             default:
@@ -229,29 +231,24 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
     @Override
     public final void logAction(final ActionResult result) {
             final LinkedList<String> queue = new LinkedList<>();
-            final String sourceName = result.getAction().getSource().get().getName();
-            final String targetNames = result.getAction().getTargets().stream().map(t -> t.getName()).collect(Collectors.joining(", "));
-            switch (result.getAction().getCategory()) {
-                case STANDARD:
-                case SPECIAL:
-                    queue.add(sourceName + " used " + result.getAction().getName() + " on " + targetNames);
+            result.getResults().forEach(r -> {
+                switch (r.getRight()) {
+                case HIT:
+                    queue.add(result.getAction().getLogMessage(result.getAction().getTarget().get(), true));
+                    result.getAction().getEffects().forEach(e -> {
+                        e.setTarget(r.getKey());
+                        queue.add(e.getLogMessage());
+                    });
                     break;
-                case ITEM:
-                    queue.add(sourceName + " used " + result.getAction().getName() + " on " + (result.getAction().getSource().equals(result.getAction().getTarget()) ? "self" : targetNames));
+                case MISSED:
+                    queue.add(result.getAction().getLogMessage(result.getAction().getTarget().get(), false));
                     break;
-                case INTERACTABLE:
-                    queue.add(targetNames + " interacted with " + result.getAction().getSource().get().getName());
-                    break;
-                case STATUS:
-                    queue.add(sourceName + " suffers from " + result.getAction().getName());
+                case PARRIED:
+                    queue.add(r.getLeft().getName() + " parried " + result.getAction().getSource().get().getName() + "'s action");
                     break;
                 default:
-                    queue.add("Log not specified");
-            }
-
-            result.getAction().getTargets().forEach(t -> {
-                final ActionResultType ar = result.getResults().stream().filter(p -> p.getLeft().equals(t)).findFirst().get().getRight(); 
-                queue.add(t.getName() + " has " + (ar == ActionResultType.PARRIED ? "" : "been ") + ar.toString().toLowerCase(Locale.getDefault()));
+                    break;
+                }
             });
             final LoggerManager lm = new LoggerManager(log, queue);
             log.setLoggerManager(lm);
@@ -333,7 +330,7 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
     private String stairsTooltip(final int position) {
         final FloorDetails fd = this.getController().getStairsOptions().get(position);
         return "Next floor:\n" 
-               + "Difficulty: " + fd.getDifficult()
+               + "Difficulty: " + fd.getDifficult() + "\n"
                + "Number of enemies: " + fd.getNumberOfEnemies() + "\n" 
                + "Number of treasures: " + fd.getNumberOfTreasures() + "\n"; 
     }
