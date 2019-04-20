@@ -46,7 +46,7 @@ public final class StatValuesImpl implements StatValues {
         if (this.max != NO_MAX) {
             final int oldMax = this.max;
             this.max = this.max + value;
-            updateActual((int) (this.actual * this.max) / oldMax);
+            this.actual = (int) Math.round(this.actual * (((double) this.max) / ((double) oldMax)));
         }
     }
 

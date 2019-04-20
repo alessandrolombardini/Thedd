@@ -188,6 +188,12 @@ public interface Controller {
     boolean hasPlayerWon();
 
     /**
+     * This method return the player.
+     * @return the player
+     */
+    BasicCharacter getPlayer();
+
+    /**
      * This method allows to know if the number of rooms inserted by the player is valid.
      * 
      * @param numberOfRooms inserted by the player

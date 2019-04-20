@@ -32,7 +32,7 @@ public class MainGameViewController extends ViewNodeControllerImpl implements Ga
     @FXML
     private AnchorPane gameContent;
 
-    private static final ViewNode INIT_NODE_UP = ViewNode.STATISTICS;
+    private static final ViewNode INIT_NODE_UP = ViewNode.TOP_PANE;
     private static final ViewNode INIT_NODE_DOWN_SX = ViewNode.INVENTORY;
     private static final ViewNode INIT_NODE_DOWN_DX = ViewNode.STATISTICS;
 

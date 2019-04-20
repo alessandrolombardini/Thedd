@@ -22,6 +22,7 @@ import thedd.model.combat.instance.ActionExecutionInstance;
 import thedd.model.combat.instance.CombatStatus;
 import thedd.model.combat.instance.ExecutionInstanceImpl;
 import thedd.model.character.BasicCharacter;
+import thedd.model.character.statistics.Statistic;
 import thedd.model.item.Item;
 import thedd.model.item.ItemFactory;
 import thedd.model.item.usableitem.UsableItem;
@@ -376,5 +377,10 @@ public class ControllerImpl implements Controller {
     @Override
     public final boolean hasPlayerWon() {
         return this.model.getSession().hasPlayerWon();
+    }
+
+    @Override
+    public final BasicCharacter getPlayer() {
+        return this.model.getSession().getPlayerCharacter();
     }
 }

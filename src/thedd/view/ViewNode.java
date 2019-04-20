@@ -23,9 +23,14 @@ public enum ViewNode {
     END_GAME("endGame.fxml"),
 
     /**
-     * Game over scene.
+     * Game scene.
      */
     GAME("game.fxml"),
+
+    /**
+     * The top pane.
+     */
+    TOP_PANE("gameContent_form.fxml"),
 
     /**
      * Inventory overview scene.
