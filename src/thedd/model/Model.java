@@ -1,6 +1,9 @@
 package thedd.model;
 
-import thedd.model.world.environment.Session;
+import java.util.Optional;
+
+import thedd.model.character.BasicCharacter;
+import thedd.model.world.environment.Environment;
 
 /**
  * This class describe the model of the pattern MVC.
@@ -11,16 +14,33 @@ public interface Model {
     /**
      * This method allows to set a new game session.
      * 
-     * @param session represent the new game session
-     * @return true if there isn't session alredy setted
+     * @param playerCharacterName name of the player character
+     * @param numOfLevels         number of levels of map
+     * @param numOfRooms          number of rooms of each floor of the map
+     * @return true if all values are good and it's possible create a new game
+     * 
      */
-    boolean setSession(Session session);
+    boolean initGame(Optional<String> playerCharacterName, int numOfLevels, int numOfRooms);
 
     /**
-     * This method allows to get the current session.
+     * This method allows to get the player character of the game session.
      * 
-     * @return the current Session
+     * @return the player character
      */
-    Session getSession();
+    BasicCharacter getPlayerCharacter();
+
+    /**
+     * This method allows to get the environment of the game session.
+     * 
+     * @return the environment
+     */
+    Environment getEnvironment();
+
+    /**
+     * This method allows to know if the player has won.
+     * 
+     * @return true if the player has won
+     */
+    boolean hasPlayerWon();
 
 }
