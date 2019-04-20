@@ -9,32 +9,22 @@ public enum DirectoryPicker {
     /**
      * Directory where all the statistics images are located.
      */
-    STATISTICS_PROFILES("statistics/characters"),
+    CHARACTERS_CLOSEUP("characters/closeup"),
 
     /**
      * Directory where all the statistics categories images are located.
      */
-    STATISTICS_CATEGORIES("statistics/categories"),
+    STATISTICS_CATEGORIES("statistics"),
 
     /**
      * Directory where all the images relative to allies are located.
      */
-    ALLY_BATTLE("ally/battle"),
-
-    /**
-     * Directory where all the images relative to ally portraits are located.
-     */
-    ALLY_CLOSEUP("ally/closeup"),
+    ALLY_BATTLE("characters/battle/ally"),
 
     /**
      * Directory where images relative to enemies in battle are located.
      */
-    ENEMY_BATTLE("enemy/battle"),
-
-    /**
-     * Directory where images relative to enemy portraits are located.
-     */
-    ENEMY_CLOSEUP("enemy/closeup"),
+    ENEMY_BATTLE("characters/battle/enemy"),
 
     /**
      * Directory where images relative to ActionPerformers are located.

@@ -63,7 +63,7 @@ public class InventoryController extends ViewNodeControllerImpl {
      */
     @FXML
     public final void handleBackButton() {
-        // TO-DO
+        this.getView().showActionSelector();
     }
 
     /**

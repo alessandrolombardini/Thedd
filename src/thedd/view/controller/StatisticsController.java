@@ -2,7 +2,9 @@ package thedd.view.controller;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
@@ -10,6 +12,7 @@ import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
+import thedd.model.character.statistics.Statistic;
 import thedd.model.combat.status.Status;
 import thedd.view.extensions.AdaptiveFontLabel;
 import thedd.view.imageloader.DirectoryPicker;
@@ -29,7 +32,15 @@ public class StatisticsController extends ViewNodeControllerImpl {
     @FXML
     private AdaptiveFontLabel agilityValue;
     @FXML
-    private AnchorPane imageContent;
+    private AnchorPane playerImage;
+    @FXML
+    private AnchorPane constitutionImage;
+    @FXML
+    private AnchorPane strengthImage;
+    @FXML
+    private AnchorPane agilityImage;
+    @FXML
+    private AnchorPane lifePointsImage;
     @FXML
     private TableColumn<Status, String> column;
     private static final double BACKGROUND_WIDTH_PERCENTAGE = 1.0;
@@ -54,12 +65,17 @@ public class StatisticsController extends ViewNodeControllerImpl {
         this.constitutionValue.setText(this.getController().getStatisticsInformation().getConstitutionValue());
         this.strengthValue.setText(this.getController().getStatisticsInformation().getStrengthValue());
         // Set the Character's image.
-        Image img = imageFactory.loadSingleImage(DirectoryPicker.STATISTICS_PROFILES, this.getController().getStatisticsInformation().getCharacterType());
-        BackgroundImage bg = new BackgroundImage(img, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
-                BackgroundPosition.CENTER,
-                new BackgroundSize(BACKGROUND_WIDTH_PERCENTAGE, BACKGROUND_HEIGHT_PERCENTAGE, true, true, true, false));
-        // Third boolean, if false ignore image's ratio, otherwise keep it.
-        this.imageContent.setBackground(new Background(bg));
+        this.playerImage.setBackground(setBackgroundImage(
+                loadStatProfileImage(this.getController().getStatisticsInformation().getCharacterType())));
+        // Set Statistic's category image.
+        this.agilityImage.setBackground(setBackgroundImage(loadStatCategoryImage(Statistic.AGILITY)));
+        addTooltip(agilityImage, Statistic.AGILITY.toString());
+        this.lifePointsImage.setBackground(setBackgroundImage(loadStatCategoryImage(Statistic.HEALTH_POINT)));
+        addTooltip(lifePointsImage, Statistic.HEALTH_POINT.toString());
+        this.constitutionImage.setBackground(setBackgroundImage(loadStatCategoryImage(Statistic.CONSTITUTION)));
+        addTooltip(constitutionImage, Statistic.CONSTITUTION.toString());
+        this.strengthImage.setBackground(setBackgroundImage(loadStatCategoryImage(Statistic.STRENGTH)));
+        addTooltip(strengthImage, Statistic.STRENGTH.toString());
     }
 
     /**
@@ -70,5 +86,25 @@ public class StatisticsController extends ViewNodeControllerImpl {
         update();
         column.setSortable(false);
         column.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
+    }
+
+    private Background setBackgroundImage(final Image img) {
+        BackgroundImage bg = new BackgroundImage(img, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                new BackgroundSize(BACKGROUND_WIDTH_PERCENTAGE, BACKGROUND_HEIGHT_PERCENTAGE, true, true, true, false));
+        // Third boolean, if false ignore image's ratio, otherwise keep it.
+        return new Background(bg);
+    }
+
+    private Image loadStatCategoryImage(final Statistic type) {
+        return imageFactory.loadSingleImage(DirectoryPicker.STATISTICS_CATEGORIES, type.toString());
+    }
+
+    private Image loadStatProfileImage(final String name) {
+        return imageFactory.loadSingleImage(DirectoryPicker.CHARACTERS_CLOSEUP, name);
+    }
+
+    private void addTooltip(final Node node, final String text) {
+        Tooltip.install(node, new Tooltip(text));
     }
 }

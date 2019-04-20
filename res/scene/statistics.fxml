@@ -31,7 +31,7 @@
 						<RowConstraints vgrow="SOMETIMES" fillHeight="true" minHeight="0.0" percentHeight="30"/>
 					</rowConstraints>
 					<children>
-						<AnchorPane fx:id="imageContent" />
+						<AnchorPane fx:id="playerImage" />
 						<GridPane GridPane.columnIndex="1">
 							<columnConstraints>
 								<ColumnConstraints hgrow="SOMETIMES" fillWidth="true" minWidth="0.0" percentWidth="50.0"/>
@@ -43,36 +43,21 @@
 								<RowConstraints vgrow="SOMETIMES" fillHeight="true" minHeight="0.0" percentHeight="33.33"/>
 							</rowConstraints>
 							<children>
-								<AnchorPane>
-									<children>
-										<AdaptiveFontLabel ratio="7" text="COS" textAlignment="CENTER"
-											AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-									</children>
-								</AnchorPane>
+								<AnchorPane fx:id="constitutionImage" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
 								<AnchorPane GridPane.columnIndex="1">
 									<children>
 										<AdaptiveFontLabel ratio="7" fx:id="constitutionValue" text="N/D" textAlignment="CENTER"
 											AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
 									</children>
 								</AnchorPane>
-								<AnchorPane GridPane.rowIndex="1">
-									<children>
-										<AdaptiveFontLabel ratio="7" text="STR" textAlignment="CENTER" 
-											AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-									</children>
-								</AnchorPane>
-								<AnchorPane GridPane.rowIndex="2">
-									<children>
-										<AdaptiveFontLabel ratio="7" text="AGI" textAlignment="CENTER"
-											AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-									</children>
-								</AnchorPane>
+								<AnchorPane GridPane.rowIndex="1" fx:id="strengthImage" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
 								<AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="1">
 									<children>
 										<AdaptiveFontLabel ratio="7" fx:id="strengthValue" text="N/D" textAlignment="CENTER"
 											AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
 									</children>
 								</AnchorPane>
+								<AnchorPane GridPane.rowIndex="2" fx:id="agilityImage" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
 								<AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="2">
 									<children>
 										<AdaptiveFontLabel ratio="7" fx:id="agilityValue" textAlignment="CENTER" 
@@ -81,12 +66,7 @@
 								</AnchorPane>
 							</children>
 						</GridPane>
-						<AnchorPane GridPane.rowIndex="1">
-							<children>
-								<AdaptiveFontLabel text="Life Points" ratio="10" textAlignment="CENTER" 
-									AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-							</children>
-						</AnchorPane>
+						<AnchorPane GridPane.rowIndex="1" fx:id="lifePointsImage" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
 						<AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="1">
 							<children>
 								<AdaptiveFontLabel fx:id="healthValue" ratio="10" text="N/D" textAlignment="CENTER" 

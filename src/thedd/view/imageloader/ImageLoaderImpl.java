@@ -18,6 +18,7 @@ public final class ImageLoaderImpl implements ImageLoader {
         final String fileName = objname.toLowerCase().replace(" ", "_").concat(".png");
         final URL path = this.getClass().getResource(directory.getDirectory() + fileName);
         if (path == null) {
+            System.err.println("Image " + fileName + " not found.");
             return this.defaultImage;
         }
         return new Image(path.toString());
