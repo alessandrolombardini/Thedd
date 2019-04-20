@@ -159,6 +159,11 @@ public final class ExplorationPaneImpl extends BorderPane implements Exploration
         partySelected.getChildren().get(position.getRight()).setDisable(true);
     }
 
+    @Override
+    public void forceResize() {
+        resizeAllComponents();
+    }
+
     private HBox getPartyBox(final PartyType partySide) {
         switch (partySide) {
         case ALLIED:

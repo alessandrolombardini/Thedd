@@ -123,4 +123,10 @@ public interface ExplorationPane {
      */
     void disableViewer(Pair<PartyType, Integer> position);
 
+    /**
+     * Force his components to resize.
+     * This method should be only used to fix update glitches.
+     */
+    void forceResize();
+
 }
