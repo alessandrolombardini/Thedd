@@ -1,6 +1,5 @@
 package thedd.controller;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -195,7 +194,7 @@ public class ControllerImpl implements Controller {
         final ActionActor playerActor = this.model.getPlayerCharacter();
         playerActor.resetSelectedAction();
         // call view to tell player to select a new action
-        view.resetActionTargets(null);
+        view.resetActionTargets();
     }
 
     /**
@@ -247,7 +246,7 @@ public class ControllerImpl implements Controller {
         final ActionExecutor executor = actionExecutor.get();
         executor.executeCurrentAction();
         // tell view to log
-        view.showActionResult(executor.getLastActionResult().get(), null);
+        view.showActionResult(executor.getLastActionResult().get());
         evaluateExecutionState();
         view.update();
     }
@@ -310,7 +309,7 @@ public class ControllerImpl implements Controller {
             a.setNextAction();
             final Optional<ActionResult> result = a.evaluateCurrentAction();
             // view visualize(result)
-            view.showActionEffect(result.get(), null);
+            view.showActionEffect(result.get());
         });
     }
 
