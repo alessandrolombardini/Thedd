@@ -329,12 +329,13 @@ public class ControllerImpl implements Controller {
         if (isChanged) {
             final Room room = this.model.getEnvironment().getCurrentFloor().getCurrentRoom();
             if (room.getEvents().stream().anyMatch(e -> e instanceof CombatEvent)) {
-                this.updateStatuses();
                 final CombatEvent combat = room.getEvents().stream().filter(e -> e instanceof CombatEvent)
                                                                     .findAny()
                                                                     .map(e -> (CombatEvent) e)
                                                                     .get();
                 this.startCombat(combat.getHostileEncounter());
+            } else {
+                this.updateStatuses();
             }
         }
         return isChanged;
