@@ -153,6 +153,12 @@ public final class ExplorationPaneImpl extends BorderPane implements Exploration
         roomAdvancer.setVisible(isVisible);
     }
 
+    @Override
+    public void disableViewer(final Pair<PartyType, Integer> position) {
+        final HBox partySelected = Objects.requireNonNull(getPartyBox(Objects.requireNonNull(position).getLeft()));
+        partySelected.getChildren().get(position.getRight()).setDisable(true);
+    }
+
     private HBox getPartyBox(final PartyType partySide) {
         switch (partySide) {
         case ALLIED:
@@ -175,4 +181,5 @@ public final class ExplorationPaneImpl extends BorderPane implements Exploration
         });
         roomAdvancer.setFitWidth((roomAdvancer.isVisible() ? 1.0 : Double.MIN_NORMAL) * this.widthProperty().doubleValue() / IMMAGINARY_COLUMNS);
     }
+
 }
