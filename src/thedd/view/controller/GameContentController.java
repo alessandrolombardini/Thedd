@@ -166,7 +166,7 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
     }
 
     private void continueInput() {
-        performer.ifPresent(p -> p.getSelectedAction().get().applyEffects(this.getController().getPlayer()));
+        performer.ifPresent(p -> this.getController().executeSingleAction(p.getNextQueuedAction().get()));
         mainPane.hideDialog();
     }
 
@@ -251,8 +251,8 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
     }
 
     @Override
-    public void visualizeAction(final ActionResult result) {
-        // TODO Auto-generated method stub
+    public final void visualizeAction(final ActionResult result) {
+        this.getController().executeCurrentAction();
     }
 
     private void updateSingleTarget(final ActionActor target, final Pair<PartyType, Integer> position, final Optional<Action> action) {
@@ -283,7 +283,7 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
     private Image mapActionActorToImage(final ActionActor c) {
         return ((BasicCharacter) c).getStat(Statistic.HEALTH_POINT).getActual() > 0 
                 ? imgLoader.loadSingleImage(DirectoryPicker.ENEMY_BATTLE, c.getName()) 
-                : imgLoader.loadSingleImage(DirectoryPicker.CHARACTER_COMMON, "dead_enemy");
+                : imgLoader.loadSingleImage(DirectoryPicker.CHARACTER_COMMON, "dead_character");
     }
 
     private void setNewBackgroundImage() {
