@@ -63,6 +63,7 @@ public class ActorViewerImpl extends ImageView implements Observable<Pair<PartyT
         this.setOnMouseExited(e -> { 
             tooltip.hide();
         });
+        tooltip.setAutoHide(true);
     }
 
     @Override
