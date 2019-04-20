@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -40,6 +41,9 @@ import thedd.view.imageloader.DirectoryPicker;
 import thedd.view.imageloader.ImageLoader;
 import thedd.view.imageloader.ImageLoaderImpl;
 
+/**
+ * Controller of the top pane of the game.
+ */
 public class GameContentController extends ViewNodeControllerImpl implements Observer<Pair<PartyType, Integer>>, ExplorationView {
 
     @FXML
@@ -55,35 +59,38 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
 
     @Override
     public final void update() {
-        state = (this.getController().isCombatActive() ? TargetSelectionState.COMBAT_INFORMATION : TargetSelectionState.EXPLORATION); 
-        explorationPane.setRoomAdvancerVisible(state == TargetSelectionState.EXPLORATION && !this.getController().isCurrentLastRoom());
-
         final List<Image> alliedImages = new ArrayList<>();
-        alliedImages.add(imgLoader.loadSingleImage(DirectoryPicker.STATISTICS_PROFILES, "playercharacter"));
+        alliedImages.add(imgLoader.loadSingleImage(DirectoryPicker.ALLY_BATTLE, "renato_corteccioni"));
         explorationPane.setAllyImages(alliedImages);
         updateSingleTarget(this.getController().getPlayer(), new ImmutablePair<PartyType, Integer>(PartyType.ALLIED, 0), Optional.empty());
 
         final List<Image> enemyImages = new ArrayList<>();
         if (this.getController().isCombatActive()) {
+            state = TargetSelectionState.COMBAT_INFORMATION;
             final List<ActionActor> enemyActors = new ArrayList<>();
             final CombatEvent ce = this.getController().getRoomEvents().stream().filter(rm -> rm.getType() == RoomEventType.COMBAT_EVENT).findFirst().map(rm -> (CombatEvent) rm).get(); 
             ce.getHostileEncounter().getNPCs().stream().forEach(npc -> {
                 enemyImages.add(mapActionActorToImage(npc)); 
                 enemyActors.add(npc);
             });
+            explorationPane.setEnemyImages(enemyImages);
             IntStream.range(0,  enemyActors.size()).forEach(i -> updateSingleTarget(enemyActors.get(i), new ImmutablePair<>(PartyType.ENEMY, i), Optional.empty()));
         } else {
+            state = TargetSelectionState.EXPLORATION;
             if (this.getController().isCurrentLastRoom()) {
-                //aggiungi immagini scale
+                this.getController().getStairsOptions().forEach(so -> enemyImages.add(imgLoader.loadSingleImage(DirectoryPicker.ROOM_CHANGER, "stairs")));
+                explorationPane.setEnemyImages(enemyImages);
                 IntStream.range(0, this.getController().getStairsOptions().size()).forEach(i -> explorationPane.updatePositionTooltip(new ImmutablePair<PartyType, Integer>(PartyType.ENEMY, i), stairsTooltip(i)));
             } else {
                 final List<InteractableActionPerformer> iapEvents = new ArrayList<>();
                 this.getController().getRoomEvents().stream().filter(rm -> rm.getType() == RoomEventType.INTERACTABLE_ACTION_PERFORMER).map(rm -> (InteractableActionPerformer) rm).forEach(iap -> iapEvents.add(iap));
-                //Aggiungi immagini a enemyImages
+                iapEvents.forEach(iap -> enemyImages.add(iapImage(iap)));
+                explorationPane.setEnemyImages(enemyImages);
                 IntStream.range(0, iapEvents.size()).forEach(i -> explorationPane.updatePositionTooltip(new ImmutablePair<PartyType, Integer>(PartyType.ENEMY, i), iapTooltip(iapEvents.get(i))));
             }
         }
-        explorationPane.setEnemyImages(enemyImages);
+        explorationPane.setRoomAdvancerVisible(state == TargetSelectionState.EXPLORATION && !this.getController().isCurrentLastRoom());
+        explorationPane.changeBackgroundImage(backgroundImage(this.getController().isCurrentLastFloor() && this.getController().isCurrentLastRoom()));
     }
 
     @Override
@@ -92,7 +99,6 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
         mainPane.setDialogAccepted(() -> continueInput());
         mainPane.setDialogDeclined(() -> cancelInput()); 
         mainPane.getChildren().add(explorationPane);
-        explorationPane.changeBackgroundImage(new Image(ClassLoader.getSystemResourceAsStream("bgimg.jpg")));
         explorationPane.getRoomAdvancer().setOnMouseClicked(e -> {
             changeRoomTransition();
             this.getController().nextRoom();
@@ -124,11 +130,15 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
         switch (state) {
             case EXPLORATION:
                 if (message.get().getLeft() == PartyType.ENEMY) {
-                    performer = Optional.of(this.getController().getRoomEvents().stream().filter(re -> re.getType() == RoomEventType.INTERACTABLE_ACTION_PERFORMER)
+                    if (!this.getController().isCurrentLastRoom()) {
+                        performer = Optional.of(this.getController().getRoomEvents().stream().filter(re -> re.getType() == RoomEventType.INTERACTABLE_ACTION_PERFORMER)
                                                                                          .map(rm -> (InteractableActionPerformer) rm)
                                                                                          .collect(Collectors.toList()).get(message.get().getRight()));
-                    performer.get().getSelectedAction().get().setTarget(this.getController().getPlayer());
-                    mainPane.showDialog("Do you want to interact with this object?");
+                        performer.get().getSelectedAction().get().setTarget(this.getController().getPlayer());
+                        mainPane.showDialog("Do you want to interact with this object?");
+                    } else {
+                        this.getController().nextFloor(this.getController().getStairsOptions().get(message.get().getRight()));
+                    }
                 }
                 break;
             case COMBAT_INFORMATION:
@@ -266,7 +276,7 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
     }
 
     private Image mapActionActorToImage(final ActionActor c) {
-            return imgLoader.loadSingleImage(DirectoryPicker.STATISTICS_PROFILES, c.getName());
+            return imgLoader.loadSingleImage(DirectoryPicker.ENEMY_BATTLE, c.getName());
     }
 
     private void changeRoomTransition() {
@@ -286,12 +296,16 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
         if (roomEvent.getName().equals("Trap") || roomEvent.getName().equals("Treasure Chest")) {
             return "A treasure chest";
         } else {
-            return ((InteractableActionPerformer) roomEvent).getSelectedAction().get().getDescription();
+            return roomEvent.getActionQueue().get(0).getDescription();
         }
     }
 
     private Image iapImage(final InteractableActionPerformer roomEvent) {
-        return null;
+        if (roomEvent.getName().equals("Trap") || roomEvent.getName().equals("Treasure Chest")) {
+            return imgLoader.loadSingleImage(DirectoryPicker.INTERACTABLE_ACTION_PERFORMER, "treasure_chest");
+        } else {
+            return imgLoader.loadSingleImage(DirectoryPicker.INTERACTABLE_ACTION_PERFORMER, roomEvent.getName());
+        }
     }
 
     private String stairsTooltip(final int position) {
@@ -302,4 +316,13 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
                + "Number of treasures: " + fd.getNumberOfTreasures() + "\n"; 
     }
 
+    private Image backgroundImage(final boolean isBossRoom) {
+        if (isBossRoom) {
+            return imgLoader.loadSingleImage(DirectoryPicker.BACKGROUND, "boss_background");
+        } else {
+            final int numOfBG = 2;
+            final Random r = new Random();
+            return imgLoader.loadSingleImage(DirectoryPicker.BACKGROUND, "background" + r.nextInt(numOfBG));
+        }
+    }
 }
