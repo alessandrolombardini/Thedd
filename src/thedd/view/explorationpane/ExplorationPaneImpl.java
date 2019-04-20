@@ -44,11 +44,11 @@ public final class ExplorationPaneImpl extends BorderPane implements Exploration
         alliedParty = new HBox(SPACING_VALUE);
         roomAdvancer = new ImageView();
 
-        alliedParty.setAlignment(Pos.CENTER_LEFT);
+        alliedParty.setAlignment(Pos.BOTTOM_LEFT);
 
         enemiesAndNext.getChildren().add(enemyParty);
         enemiesAndNext.getChildren().add(roomAdvancer);
-        enemiesAndNext.setAlignment(Pos.CENTER_RIGHT);
+        enemiesAndNext.setAlignment(Pos.BOTTOM_RIGHT);
 
         roomAdvancer.setImage(new Image(ClassLoader.getSystemResourceAsStream("images/icons/NextRoomImg.png")));
         roomAdvancer.setPreserveRatio(true);
