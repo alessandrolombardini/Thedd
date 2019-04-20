@@ -16,8 +16,13 @@ public enum TargetSelectionState {
     EXPLORATION, 
 
     /**
-     * There is no need to select something. Ignore the input.
+     * A combat target statistics will be displayed.
      */
-    COMBAT_INFORMATION;
+    COMBAT_INFORMATION,
+
+    /**
+     * There are stairs to choose among.
+     */
+    STAIRS;
 
 }
