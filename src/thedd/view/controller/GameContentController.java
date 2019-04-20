@@ -1,6 +1,7 @@
 package thedd.view.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -76,15 +77,17 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
             });
             explorationPane.setEnemyImages(enemyImages);
             IntStream.range(0,  enemyActors.size()).forEach(i -> updateSingleTarget(enemyActors.get(i), new ImmutablePair<>(PartyType.ENEMY, i), Optional.empty()));
+            this.getView().showActionSelector();
         } else {
             state = TargetSelectionState.EXPLORATION;
+            this.getView().showInventory();
             if (this.getController().isCurrentLastRoom()) {
                 this.getController().getStairsOptions().forEach(so -> enemyImages.add(imgLoader.loadSingleImage(DirectoryPicker.ROOM_CHANGER, "stairs")));
                 explorationPane.setEnemyImages(enemyImages);
                 IntStream.range(0, this.getController().getStairsOptions().size()).forEach(i -> explorationPane.updatePositionTooltip(new ImmutablePair<PartyType, Integer>(PartyType.ENEMY, i), stairsTooltip(i)));
             } else {
                 final List<InteractableActionPerformer> iapEvents = new ArrayList<>();
-                this.getController().getRoomEvents().stream().filter(rm -> rm.getType() == RoomEventType.INTERACTABLE_ACTION_PERFORMER).map(rm -> (InteractableActionPerformer) rm).forEach(iap -> iapEvents.add(iap));
+                this.getController().getRoomEvents().stream().filter(rm -> rm.getType() == RoomEventType.INTERACTABLE_ACTION_PERFORMER && !rm.isCompleted()).map(rm -> (InteractableActionPerformer) rm).forEach(iap -> iapEvents.add(iap));
                 iapEvents.forEach(iap -> enemyImages.add(iapImage(iap)));
                 explorationPane.setEnemyImages(enemyImages);
                 IntStream.range(0, iapEvents.size()).forEach(i -> explorationPane.updatePositionTooltip(new ImmutablePair<PartyType, Integer>(PartyType.ENEMY, i), iapTooltip(iapEvents.get(i))));
@@ -115,6 +118,7 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
         final int bottomPadding = 10;
 
         log.setVisible(false);
+        log.setText("");
         log.getWidthProperty().bind(explorationPane.widthProperty().divide(two));
         log.getHeightProperty().bind(explorationPane.heightProperty().divide(six));
         log.translateYProperty().bind(explorationPane.heightProperty().subtract(log.getHeightProperty().add(bottomPadding)).divide(two));
@@ -136,7 +140,7 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
                         performer = Optional.of(this.getController().getRoomEvents().stream().filter(re -> re.getType() == RoomEventType.INTERACTABLE_ACTION_PERFORMER)
                                                                                              .map(rm -> (InteractableActionPerformer) rm)
                                                                                              .collect(Collectors.toList()).get(message.get().getRight()));
-                        performer.get().getActionQueue().get(0).setTarget(this.getController().getPlayer());
+                        performer.get().getActionQueue().get(0).setTargets(this.getController().getPlayer(), Arrays.asList(this.getController().getPlayer()));
                         mainPane.showDialog("Do you want to interact with this object?");
                     } else {
                         this.getController().nextFloor(this.getController().getStairsOptions().get(message.get().getRight()));
@@ -166,8 +170,12 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
     }
 
     private void continueInput() {
-        performer.ifPresent(p -> this.getController().executeSingleAction(p.getNextQueuedAction().get()));
+        performer.ifPresent(p -> {
+            this.getController().executeSingleAction(p.getNextQueuedAction().get());
+            p.complete();
+        });
         mainPane.hideDialog();
+        update();
     }
 
     private void cancelInput() {
