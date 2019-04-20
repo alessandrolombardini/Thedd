@@ -32,10 +32,11 @@ public final class ExplorationPaneImpl extends BorderPane implements Exploration
 
     private static final double SPACING_VALUE = 2.5;
     private static final double IMMAGINARY_COLUMNS = 6;
-    private static final double PADDING = 10;
+    private static final double PADDING = 20;
 
     private final HBox enemyParty;
     private final HBox alliedParty;
+    private final HBox enemiesAndNext;
     private final ImageView roomAdvancer;
     private Observer<Pair<PartyType, Integer>> observer;
 
@@ -44,7 +45,7 @@ public final class ExplorationPaneImpl extends BorderPane implements Exploration
      */
     public ExplorationPaneImpl() {
         super();
-        final HBox enemiesAndNext = new HBox(SPACING_VALUE);
+        enemiesAndNext = new HBox(SPACING_VALUE);
         enemyParty = new HBox(SPACING_VALUE);
         alliedParty = new HBox(SPACING_VALUE);
         roomAdvancer = new ImageView();
@@ -63,7 +64,6 @@ public final class ExplorationPaneImpl extends BorderPane implements Exploration
 
         this.setRight(enemiesAndNext);
         this.setLeft(alliedParty);
-        this.setPadding(new Insets(PADDING));
 
         this.widthProperty().addListener(list -> resizeAllComponents());
         this.heightProperty().addListener(list -> resizeAllComponents());
@@ -180,6 +180,7 @@ public final class ExplorationPaneImpl extends BorderPane implements Exploration
             ((ActorViewerImpl) c).setFitHeight(this.heightProperty().doubleValue());
         });
         roomAdvancer.setFitWidth((roomAdvancer.isVisible() ? 1.0 : Double.MIN_NORMAL) * this.widthProperty().doubleValue() / IMMAGINARY_COLUMNS);
+        this.setPadding(new Insets(0.0, roomAdvancer.isVisible() ? 0.0 : PADDING, this.getHeight() / 10, PADDING));
     }
 
 }
