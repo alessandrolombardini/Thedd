@@ -1,7 +1,7 @@
 package thedd.view.controller;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -53,7 +53,7 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
     private final ExplorationPaneImpl explorationPane = new ExplorationPaneImpl();
     private final LoggerImpl log = new LoggerImpl();
     private TargetSelectionState state;
-    private Optional<InteractableActionPerformer> performer = Optional.empty();
+    private Optional<Action> performing = Optional.empty();
     private final List<ActionActor> alliedParty = new ArrayList<>();
     private final List<ActionActor> enemyParty = new ArrayList<>();
     private final ImageLoader imgLoader = new ImageLoaderImpl();
@@ -95,6 +95,7 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
         }
         explorationPane.setRoomAdvancerVisible(state == TargetSelectionState.EXPLORATION && !this.getController().isCurrentLastRoom());
         explorationPane.changeBackgroundImage(currentBackgroundImage);
+        explorationPane.forceResize();
     }
 
     @Override
@@ -123,6 +124,7 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
         log.getHeightProperty().bind(explorationPane.heightProperty().divide(six));
         log.translateYProperty().bind(explorationPane.heightProperty().subtract(log.getHeightProperty().add(bottomPadding)).divide(two));
         mainPane.getChildren().add(log);
+        mainPane.autosize();
         this.getController().nextRoom();
         setNewBackgroundImage();
         update();
@@ -137,10 +139,9 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
             case EXPLORATION:
                 if (message.get().getLeft() == PartyType.ENEMY) {
                     if (!this.getController().isCurrentLastRoom()) {
-                        performer = Optional.of(this.getController().getRoomEvents().stream().filter(re -> re.getType() == RoomEventType.INTERACTABLE_ACTION_PERFORMER)
+                        performing = Optional.of(this.getController().getRoomEvents().stream().filter(re -> re.getType() == RoomEventType.INTERACTABLE_ACTION_PERFORMER && !re.isCompleted())
                                                                                              .map(rm -> (InteractableActionPerformer) rm)
-                                                                                             .collect(Collectors.toList()).get(message.get().getRight()));
-                        performer.get().getActionQueue().get(0).setTargets(this.getController().getPlayer(), Arrays.asList(this.getController().getPlayer()));
+                                                                                             .collect(Collectors.toList()).get(message.get().getRight()).getAvailableActionsList().get(0));
                         mainPane.showDialog("Do you want to interact with this object?");
                     } else {
                         this.getController().nextFloor(this.getController().getStairsOptions().get(message.get().getRight()));
@@ -160,8 +161,8 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
                 this.getController().targetSelected(selectedParty.get(message.get().getRight()));
                 break;
             case STAIRS:
-                this.getController().nextFloor(this.getController().getStairsOptions().get(message.get().getRight()));
                 changeRoomTransition();
+                this.getController().nextFloor(this.getController().getStairsOptions().get(message.get().getRight()));
                 update();
                 break;
             default:
@@ -170,16 +171,17 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
     }
 
     private void continueInput() {
-        performer.ifPresent(p -> {
-            this.getController().executeSingleAction(p.getNextQueuedAction().get());
-            p.complete();
+        performing.ifPresent(p -> {
+            p.setTargets(this.getController().getPlayer(), Collections.emptyList());
+            this.getController().executeSingleAction(p);
+            ((InteractableActionPerformer) p.getSource().get()).complete();
         });
         mainPane.hideDialog();
         update();
     }
 
     private void cancelInput() {
-        performer = Optional.empty();
+        performing = Optional.empty();
         mainPane.hideDialog();
     }
 
@@ -238,7 +240,7 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
                     queue.add(sourceName + " used " + result.getAction().getName() + " on " + (result.getAction().getSource().equals(result.getAction().getTarget()) ? "self" : targetNames));
                     break;
                 case INTERACTABLE:
-                    queue.add(sourceName + " interacted with " + result.getAction().getSource().get().getName());
+                    queue.add(targetNames + " interacted with " + result.getAction().getSource().get().getName());
                     break;
                 case STATUS:
                     queue.add(sourceName + " suffers from " + result.getAction().getName());
@@ -316,7 +318,7 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
         if (roomEvent.getName().equals("Trap") || roomEvent.getName().equals("Treasure Chest")) {
             return "A treasure chest";
         } else {
-            return roomEvent.getActionQueue().get(0).getDescription();
+            return roomEvent.getAvailableActionsList().get(0).getDescription();
         }
     }
 
