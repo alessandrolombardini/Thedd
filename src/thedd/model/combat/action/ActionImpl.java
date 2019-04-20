@@ -274,8 +274,7 @@ public class ActionImpl implements Action {
         } else {
             final Action o = ((Action) other);
             return  Objects.equals(getName(), o.getName())
-                    && getBaseHitChance() == o.getBaseHitChance()
-                    && getSource().equals(o.getSource());
+                    && getBaseHitChance() == o.getBaseHitChance();
         }
     }
 
