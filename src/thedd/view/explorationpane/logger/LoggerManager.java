@@ -15,7 +15,7 @@ import javafx.event.EventHandler;
  */
 public class LoggerManager extends Task<Integer> {
 
-    private static final int MILLISECONDS_SLEEP = 1000;
+    private static final int MILLISECONDS_SLEEP = 2000;
 
     //This logger is a graphic component. It cannot be static as it can vary between different LoggerManagers.
     @SuppressWarnings("PMD.LoggerIsNotStaticFinal")
