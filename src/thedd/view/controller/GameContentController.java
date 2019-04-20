@@ -132,8 +132,8 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
                 if (message.get().getLeft() == PartyType.ENEMY) {
                     if (!this.getController().isCurrentLastRoom()) {
                         performer = Optional.of(this.getController().getRoomEvents().stream().filter(re -> re.getType() == RoomEventType.INTERACTABLE_ACTION_PERFORMER)
-                                                                                         .map(rm -> (InteractableActionPerformer) rm)
-                                                                                         .collect(Collectors.toList()).get(message.get().getRight()));
+                                                                                             .map(rm -> (InteractableActionPerformer) rm)
+                                                                                             .collect(Collectors.toList()).get(message.get().getRight()));
                         performer.get().getActionQueue().get(0).setTarget(this.getController().getPlayer());
                         mainPane.showDialog("Do you want to interact with this object?");
                     } else {
