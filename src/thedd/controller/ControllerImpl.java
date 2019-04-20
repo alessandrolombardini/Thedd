@@ -5,6 +5,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
 import javafx.application.Platform;
 import thedd.controller.information.PlayerInformation;
 import thedd.controller.information.PlayerInformationImpl;
@@ -12,6 +13,8 @@ import thedd.controller.information.StatisticsInformation;
 import thedd.controller.information.StatisticsInformationImpl;
 import thedd.model.Model;
 import thedd.model.ModelImpl;
+import thedd.model.character.BasicCharacter;
+import thedd.model.character.statistics.Statistic;
 import thedd.model.combat.action.Action;
 import thedd.model.combat.action.result.ActionResult;
 import thedd.model.combat.actionexecutor.ActionExecutor;
@@ -22,8 +25,6 @@ import thedd.model.combat.encounter.HostileEncounter;
 import thedd.model.combat.instance.ActionExecutionInstance;
 import thedd.model.combat.instance.CombatStatus;
 import thedd.model.combat.instance.ExecutionInstanceImpl;
-import thedd.model.character.BasicCharacter;
-import thedd.model.character.statistics.Statistic;
 import thedd.model.item.Item;
 import thedd.model.item.ItemFactory;
 import thedd.model.item.usableitem.UsableItem;
@@ -270,8 +271,6 @@ public class ControllerImpl implements Controller {
             // TODO
             break;
         case PLAYER_WON:
-            System.out.println("vinto");
-            model.getPlayerCharacter().setIsInCombat(false);
             // TODO
             break;
         case ROUND_IN_PROGRESS:
@@ -309,7 +308,11 @@ public class ControllerImpl implements Controller {
             a.setNextAction();
             final Optional<ActionResult> result = a.evaluateCurrentAction();
             // view visualize(result)
-            view.showActionEffect(result.get());
+            if (result.isPresent()) {
+                view.showActionEffect(result.get());
+            } else {
+                evaluateExecutionState();
+            }
         });
     }
 

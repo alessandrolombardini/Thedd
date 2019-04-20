@@ -3,6 +3,7 @@ package thedd.view;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -15,7 +16,6 @@ import thedd.model.combat.action.result.ActionResult;
 import thedd.model.combat.actor.ActionActor;
 import thedd.view.controller.MainGameViewController;
 import thedd.view.controller.interfaces.GameView;
-import thedd.view.nodewrapper.ViewNodeWrapper;
 import thedd.view.nodewrapper.ViewNodeWrapper;
 
 /**
