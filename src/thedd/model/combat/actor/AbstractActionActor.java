@@ -35,8 +35,9 @@ public abstract class AbstractActionActor implements ActionActor {
     private final Set<Action> availableActions = new LinkedHashSet<Action>();
     private final List<Action> queuedActions = new ArrayList<>();
     private final String name;
-    private boolean inCombat;
+    private final boolean inPlayerParty;
     private Optional<Action> selectedAction = Optional.empty();
+    private boolean inCombat;
 
     @Override
     public abstract int getPriority();
@@ -44,9 +45,11 @@ public abstract class AbstractActionActor implements ActionActor {
     /**
      * Constructor of the class.
      * @param name the name of the actor.
+     * @param isInPlayerParty true if the actor is part of the player's party
      */
-    public AbstractActionActor(final String name) {
+    public AbstractActionActor(final String name, final boolean isInPlayerParty) {
         this.name = name;
+        inPlayerParty = isInPlayerParty;
     }
 
     /**
@@ -380,6 +383,14 @@ public abstract class AbstractActionActor implements ActionActor {
     public void resetActionsQueue() {
         resetSelectedAction();
         queuedActions.clear();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isInPlayerParty() {
+        return inPlayerParty;
     }
 
 }
