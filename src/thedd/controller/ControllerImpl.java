@@ -35,6 +35,7 @@ import thedd.model.roomevent.combatevent.CombatEvent;
 import thedd.model.world.environment.EnvironmentImpl;
 import thedd.model.world.floor.FloorDetails.FloorDetails;
 import thedd.model.world.room.Room;
+import thedd.view.ApplicationViewState;
 import thedd.view.View;
 
 /**
@@ -289,15 +290,16 @@ public class ControllerImpl implements Controller {
             break;
         case PLAYER_LOST:
             System.out.println("player morto");
-            // TODO
+            this.view.setState(ApplicationViewState.END_GAME);
             view.update();
             break;
         case PLAYER_WON:
+            System.out.println("playerWon");
             view.showActionResult(roundResults);
             roundResults.clear();
-            this.view.showInventory();
-            view.update();
-            // TODO
+//            this.view.showInventory();
+//            view.update();
+            this.view.setState(ApplicationViewState.END_GAME);
             break;
         case ROUND_IN_PROGRESS:
             evaluateNextAction();

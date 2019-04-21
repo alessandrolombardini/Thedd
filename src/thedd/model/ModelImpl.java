@@ -14,7 +14,6 @@ import thedd.model.world.environment.EnvironmentImpl;
 public final class ModelImpl implements Model {
 
     private static final String ERROR_NOGAMESETTED = "Game hasn't been setted yet";
-    private static final String ERROR_GAMEALREDYSETTED = "Game has been alredy setted";
 
     private Optional<Environment> environment;
     private Optional<BasicCharacter> playerCharacter;
@@ -67,9 +66,6 @@ public final class ModelImpl implements Model {
      */
     @Override
     public boolean initGame(final Optional<String> playerCharacterName, final int numOfLevels, final int numOfRooms) {
-        if (this.environment.isPresent() || this.playerCharacter.isPresent()) {
-            throw new IllegalStateException(ERROR_GAMEALREDYSETTED);
-        }
         Objects.requireNonNull(playerCharacterName);
         if (numOfLevels < EnvironmentImpl.MIN_NUMBER_OF_FLOORS || numOfRooms < EnvironmentImpl.MIN_NUMBER_OF_ROOMS) {
             return false;
