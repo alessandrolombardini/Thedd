@@ -5,14 +5,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
-
 import thedd.model.combat.action.Action;
+import thedd.model.combat.action.ActionBuilder;
 import thedd.model.combat.action.ActionCategory;
-import thedd.model.combat.action.ActionImpl;
 import thedd.model.combat.action.LogMessageType;
-import thedd.model.combat.action.TargetType;
 import thedd.model.combat.action.effect.ActionEffect;
-import thedd.model.combat.action.targeting.DefaultTargeting;
 import thedd.model.item.AbstractItem;
 import thedd.model.item.ItemRarity;
 import thedd.model.item.ItemRarityImpl;
@@ -59,10 +56,12 @@ public class UsableItemImpl extends AbstractItem implements UsableItem {
         super(id, name, rarity, description);
         this.usableInCombat = usableInCombat;
         this.usableOutOfCombat = usableOutOfCombat;
-        action = new ActionImpl(this.getName(), ActionCategory.ITEM, 
-                                new DefaultTargeting(), 1.0,
-                                TargetType.EVERYONE, this.getDescription(),
-                                LogMessageType.ITEM_ACTION);
+        action = new ActionBuilder().setName(this.getName())
+                                    .setCategory(ActionCategory.ITEM)
+                                    .setBaseHitChance(1d)
+                                    .setDescription(description)
+                                    .setLogMessage(LogMessageType.ITEM_ACTION)
+                                    .build();
     }
 
     @Override
