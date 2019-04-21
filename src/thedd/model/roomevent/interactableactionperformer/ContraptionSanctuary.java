@@ -1,12 +1,10 @@
 package thedd.model.roomevent.interactableactionperformer;
 
 import thedd.model.combat.action.Action;
+import thedd.model.combat.action.ActionBuilder;
 import thedd.model.combat.action.ActionCategory;
-import thedd.model.combat.action.ActionImpl;
 import thedd.model.combat.action.LogMessageType;
-import thedd.model.combat.action.TargetType;
 import thedd.model.combat.action.effect.HealingEffect;
-import thedd.model.combat.action.targeting.DefaultTargeting;
 
 /**
  * Specialization of {@link thedd.model.roomevent.interactableactionperformer.InteractableActionPerformer}.
@@ -19,10 +17,12 @@ public class ContraptionSanctuary extends AbstractInteractableActionPerformer im
 
     static {
         final String description = "A sanctuary which heals wayfares who stop by.";
-        ACTION = new ActionImpl(NAME, ActionCategory.INTERACTABLE, 
-                                 new DefaultTargeting(), 1.0, 
-                                 TargetType.EVERYONE, description, 
-                                 LogMessageType.CONTRAPTION_ACTION);
+        ACTION = new ActionBuilder().setName(NAME)
+                                    .setCategory(ActionCategory.INTERACTABLE)
+                                    .setBaseHitChance(1d)
+                                    .setDescription(description)
+                                    .setLogMessage(LogMessageType.CONTRAPTION_ACTION)
+                                    .build();
         ACTION.addEffect(new HealingEffect(1.0));
     }
 
