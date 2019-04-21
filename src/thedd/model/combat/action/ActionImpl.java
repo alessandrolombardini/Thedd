@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import thedd.model.combat.action.effect.ActionEffect;
+import thedd.model.combat.action.executionpolicies.ExecutionPolicy;
 import thedd.model.combat.action.targeting.ActionTargeting;
 import thedd.model.combat.actor.ActionActor;
 import thedd.model.combat.instance.ActionExecutionInstance;
@@ -40,6 +41,7 @@ public class ActionImpl implements Action {
     private String description;
     private String name;
     private final ActionTargeting targeting;
+    private final ExecutionPolicy effectPolicy;
 
     /**
      * Public constructor.
@@ -51,12 +53,12 @@ public class ActionImpl implements Action {
      * @param category the category of the action
      * @param targeting the targeting system of the action
      */
-    public ActionImpl(final String name, final ActionCategory category,
+    /*public ActionImpl(final String name, final ActionCategory category,
             final ActionTargeting targeting, final double baseHitChance,
             final TargetType targetType, final String description,
             final LogMessageType logMessage) {
         this(null, name, Collections.<ActionEffect>emptyList(), category, targeting, baseHitChance, targetType, description, logMessage);
-    } 
+    } */
 
     /**
      * Public constructor.
@@ -69,12 +71,12 @@ public class ActionImpl implements Action {
      * @param category the category of the action
      * @param targeting the targeting system of the action
      */
-    public ActionImpl(final ActionActor source, final String name,
+    /*public ActionImpl(final ActionActor source, final String name,
             final ActionCategory category, final ActionTargeting targeting,
             final double baseHitChance, final TargetType targetType, 
             final String description, final LogMessageType logMessage) {
         this(source, name, Collections.<ActionEffect>emptyList(), category, targeting, baseHitChance, targetType, description, logMessage);
-    }
+    }*/
 
     /**
      * Public constructor.
@@ -87,12 +89,13 @@ public class ActionImpl implements Action {
      * @param logMessage the category of message for the logger
      * @param category the category of the action
      * @param targeting the targeting system of the action
+     * @param effectPolicy the policy with which the effects are applied to the targets
      */
     public ActionImpl(final ActionActor source, final String name,
             final List<ActionEffect> effects, final ActionCategory category,
             final ActionTargeting targeting,  final double baseHitChance,
             final TargetType targetType, final String description,
-            final LogMessageType logMessage) {
+            final LogMessageType logMessage, final ExecutionPolicy effectPolicy) {
         this.targeting = Objects.requireNonNull(targeting);
         this.category = category;
         this.source = Optional.ofNullable(source);
@@ -103,6 +106,24 @@ public class ActionImpl implements Action {
         this.effects.addAll(effects);
         this.source.ifPresent(s -> effects.forEach(e -> e.setSource(s)));
         this.logMessage = logMessage;
+        this.effectPolicy = effectPolicy;
+    }
+
+    /**
+     * Constructor which copies the fields of a give action.
+     * @param action the action to be copied
+     */
+    public ActionImpl(final Action action) {
+        this(action.getSource().orElse(null),
+             action.getName(),
+             action.getEffects(),
+             action.getCategory(),
+             action.getTargetingPolicy(),
+             action.getBaseHitChance(),
+             action.getTargetType(),
+             action.getDescription(),
+             action.getLogType(),
+             action.getExecutionPolicy());
     }
 
     /**
@@ -184,13 +205,7 @@ public class ActionImpl implements Action {
     @Override
     public void applyEffects(final ActionActor target) {
         applyModifiers(target, (m) -> !(m instanceof HitChanceModifier));
-        if (target != null) {
-            effects.stream().forEach((e) -> {
-                e.updateEffectBySource(getSource().get());
-                e.updateEffectByTarget(target);
-                e.apply(target);
-            });
-        }
+        effectPolicy.applyEffects(this, target);
     }
 
     /**
@@ -243,14 +258,6 @@ public class ActionImpl implements Action {
     @Override
     public void addToCurrentHitChance(final double value) {
         currentHitChance += value;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setTargetType(final TargetType targetType) {
-        this.targetType = targetType;
     }
 
     /**
@@ -355,7 +362,15 @@ public class ActionImpl implements Action {
      */
     @Override
     public Action getCopy() {
-        final Action copy = new ActionImpl(getName(), getCategory(), targeting, getBaseHitChance(), getTargetType(), getDescription(), logMessage);
+        final Action copy = new ActionBuilder().setName(name)
+                                               .setCategory(category)
+                                               .setTargetingPolicy(targeting)
+                                               .setBaseHitChance(baseHitChance)
+                                               .setTargetType(targetType)
+                                               .setDescription(description)
+                                               .setLogMessage(logMessage)
+                                               .setExecutionPolicy(effectPolicy)
+                                               .build();
         getEffects().forEach(e -> copy.addEffect(e.getCopy()));
         copy.addTags(tags, false);
         copy.addTags(permanentTags, true);
@@ -417,6 +432,30 @@ public class ActionImpl implements Action {
         throw new UnsupportedOperationException("Not supported, use setTargets instead");
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ActionTargeting getTargetingPolicy() {
+        return targeting.getCopy();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LogMessageType getLogType() {
+        return logMessage;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ExecutionPolicy getExecutionPolicy() {
+        return effectPolicy.getCopy();
+    }
+
     private void applyModifiers(final ActionActor target, final Predicate<Modifier<Action>> filterHitChance) {
         currentTarget =  Optional.ofNullable(target);
         if (source.isPresent()) {
@@ -435,4 +474,5 @@ public class ActionImpl implements Action {
                     .forEach(m -> m.modify(this));
         }
     }
+
 }
