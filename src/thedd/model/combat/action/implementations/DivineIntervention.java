@@ -1,11 +1,18 @@
 package thedd.model.combat.action.implementations;
 
+import java.util.Arrays;
+
+import thedd.model.combat.action.Action;
+import thedd.model.combat.action.ActionBuilder;
 import thedd.model.combat.action.ActionCategory;
 import thedd.model.combat.action.ActionImpl;
 import thedd.model.combat.action.LogMessageType;
 import thedd.model.combat.action.TargetType;
 import thedd.model.combat.action.effect.DamageEffect;
-import thedd.model.combat.action.targeting.DefaultTargeting;
+import thedd.model.combat.action.effect.StatusGiverEffect;
+import thedd.model.combat.action.executionpolicies.ExtraActionToSource;
+import thedd.model.combat.action.targeting.TargetTargetParty;
+import thedd.model.combat.status.weakness.WeaknessStatus;
 import thedd.model.combat.tag.ActionTag;
 import thedd.model.combat.tag.EffectTag;
 
@@ -19,12 +26,25 @@ public class DivineIntervention extends ActionImpl {
     private static final double BASE_FIRE_DAMAGE = 3.0;
     private static final double BASE_HOLY_DAMAGE = 3.0;
     private static final double BASE_HIT_CHANCE = 1.0;
+    private static final double WEAKNESS_BASE_HITCHANCE = 0.7d;
+    private static final Action EXTRA_ACTION = new ActionBuilder().setName("Weakness")
+                                                                   .setCategory(ActionCategory.STATUS)
+                                                                   .setLogMessage(LogMessageType.STATUS_ACTION)
+                                                                   .setBaseHitChance(WEAKNESS_BASE_HITCHANCE)
+                                                                   .setEffects(Arrays.asList(new StatusGiverEffect(new WeaknessStatus(3))))
+                                                                   .build();
 
     /**
-     * 
+     * @param targetType the type of target of this action
      */
-    public DivineIntervention() {
-        super(NAME, ActionCategory.STANDARD, new DefaultTargeting(), BASE_HIT_CHANCE, TargetType.EVERYONE, DESCRIPTION, LogMessageType.STANDARD_ACTION);
+    public DivineIntervention(final TargetType targetType) {
+        super(new ActionBuilder().setName(NAME)
+                                 .setDescription(DESCRIPTION)
+                                 .setBaseHitChance(BASE_HIT_CHANCE)
+                                 .setTargetType(targetType)
+                                 .setTargetingPolicy(new TargetTargetParty())
+                                 .setExecutionPolicy(new ExtraActionToSource(EXTRA_ACTION.getCopy()))
+                                 .build());
         this.addTag(ActionTag.OFFENSIVE, true);
 
         final DamageEffect fireDamage = new DamageEffect(BASE_FIRE_DAMAGE);
@@ -36,4 +56,5 @@ public class DivineIntervention extends ActionImpl {
         this.addEffect(fireDamage);
         this.addEffect(holyDamage);
     }
+
 }

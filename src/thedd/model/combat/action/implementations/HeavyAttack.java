@@ -1,13 +1,12 @@
 package thedd.model.combat.action.implementations;
 
 import java.util.Arrays;
-import thedd.model.combat.action.ActionCategory;
+
+import thedd.model.combat.action.ActionBuilder;
 import thedd.model.combat.action.ActionImpl;
-import thedd.model.combat.action.LogMessageType;
 import thedd.model.combat.action.TargetType;
 import thedd.model.combat.action.effect.ActionEffect;
 import thedd.model.combat.action.effect.DamageEffect;
-import thedd.model.combat.action.targeting.DefaultTargeting;
 import thedd.model.combat.tag.ActionTag;
 import thedd.model.combat.tag.EffectTag;
 
@@ -27,8 +26,11 @@ public class HeavyAttack extends ActionImpl {
      * @param targetType the target type of the action
      */
     public HeavyAttack(final TargetType targetType) {
-        super(NAME, ActionCategory.STANDARD, new DefaultTargeting(), BASE_HITCHANCE,
-                targetType, DESCRIPTION, LogMessageType.STANDARD_ACTION);
+        super(new ActionBuilder().setName(NAME)
+                                 .setDescription(DESCRIPTION)
+                                 .setBaseHitChance(BASE_HITCHANCE)
+                                 .setTargetType(targetType)
+                                 .build());
         addTag(ActionTag.OFFENSIVE, true);
 
         //Effects

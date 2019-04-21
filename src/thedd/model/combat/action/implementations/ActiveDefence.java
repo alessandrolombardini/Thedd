@@ -1,10 +1,9 @@
 package thedd.model.combat.action.implementations;
 
-import thedd.model.combat.action.ActionCategory;
+import thedd.model.combat.action.ActionBuilder;
 import thedd.model.combat.action.ActionImpl;
 import thedd.model.combat.action.LogMessageType;
 import thedd.model.combat.action.TargetType;
-import thedd.model.combat.action.targeting.DefaultTargeting;
 import thedd.model.combat.tag.ActionTag;
 
 /**
@@ -26,8 +25,12 @@ public class ActiveDefence extends ActionImpl {
      * Public constructor.
      */
     public ActiveDefence() {
-        super(NAME, ActionCategory.STANDARD, new DefaultTargeting(), BASE_HITCHANCE,
-                TargetType.SELF, DESCRIPTION, LogMessageType.PARRY_ACTION);
+        super(new ActionBuilder().setName(NAME)
+                                 .setDescription(DESCRIPTION)
+                                 .setTargetType(TargetType.SELF)
+                                 .setBaseHitChance(BASE_HITCHANCE)
+                                 .setLogMessage(LogMessageType.PARRY_ACTION)
+                                 .build());
         addTag(ActionTag.DEFENSIVE, true);
         addTag(ActionTag.PARRY, true);
 

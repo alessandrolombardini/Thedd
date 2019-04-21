@@ -1,12 +1,11 @@
 package thedd.model.combat.action.implementations;
 
+import thedd.model.combat.action.ActionBuilder;
 import thedd.model.combat.action.ActionCategory;
 import thedd.model.combat.action.ActionImpl;
-import thedd.model.combat.action.LogMessageType;
 import thedd.model.combat.action.TargetType;
 import thedd.model.combat.action.effect.DamageEffect;
 import thedd.model.combat.action.effect.StatusGiverEffect;
-import thedd.model.combat.action.targeting.DefaultTargeting;
 import thedd.model.combat.status.poison.PoisonStatus;
 import thedd.model.combat.tag.ActionTag;
 import thedd.model.combat.tag.EffectTag;
@@ -24,10 +23,15 @@ public class NastyStrike extends ActionImpl {
     private static final double BASE_HIT_CHANCE = 1.0;
 
     /**
-     * 
+     * @param targetType the target type of the action
      */
-    public NastyStrike() {
-        super(NAME, ActionCategory.SPECIAL, new DefaultTargeting(), BASE_HIT_CHANCE, TargetType.EVERYONE, DESCRIPTION, LogMessageType.STANDARD_ACTION);
+    public NastyStrike(final TargetType targetType) {
+        super(new ActionBuilder().setName(NAME)
+                                 .setDescription(DESCRIPTION)
+                                 .setCategory(ActionCategory.SPECIAL)
+                                 .setBaseHitChance(BASE_HIT_CHANCE)
+                                 .setTargetType(targetType)
+                                 .build());
         this.addTag(ActionTag.OFFENSIVE, true);
         this.addTag(ActionTag.UNBLOCKABLE, true);
         this.addTag(ActionTag.IGNORES_MODIFIERS, true);
