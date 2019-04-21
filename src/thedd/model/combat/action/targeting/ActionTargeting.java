@@ -29,4 +29,10 @@ public interface ActionTargeting {
      */
     List<ActionActor> getValidTargets(ActionExecutionInstance combatInstance, Action sourceAction);
 
+    /**
+     * Gets a copy of the entity.
+     * @return the copy of the entity
+     */
+    ActionTargeting getCopy();
+
 }
