@@ -112,7 +112,9 @@ public class RoomFactoryImpl implements RoomFactory {
     private Room createBaseRoom() {
         final List<RoomEvent> events = new ArrayList<>();
         final CombatEvent combatEvent = RoomEventHelper.getCombat();
-        IntStream.range(0, this.getQuantityOfEnemies())
+        final int numberOfEnemies = this.getQuantityOfEnemies();
+        this.remainingContent.compute(RoomContent.ENEMY, (k, v) -> v - numberOfEnemies);
+        IntStream.range(0, numberOfEnemies)
                  .boxed()
                  .map(i -> CharacterFactory.createEnemy(EnemyCharacterType.getRandom(), this.getEnemiesMultiplier()))
                  .forEach(c -> combatEvent.getHostileEncounter().addNPC(c));
@@ -135,8 +137,8 @@ public class RoomFactoryImpl implements RoomFactory {
 
 
     private int getQuantityOfEnemies() {
-        if (this.remainingContent.get(RoomContent.ENEMY) >= this.getRemainingBaseRoomsToSet()
-                || RandomUtils.nextBoolean()) {
+        if ((this.remainingContent.get(RoomContent.ENEMY) >= this.getRemainingBaseRoomsToSet()
+                || RandomUtils.nextBoolean()) && this.remainingContent.get(RoomContent.ENEMY) > 0) {
             return MAX_ENEMIES_PER_ROOM;
         }
         return MIN_ENEMIES_PER_ROOM;
@@ -171,6 +173,8 @@ public class RoomFactoryImpl implements RoomFactory {
             contentType = Optional.of(RoomContent.CONTRAPTION);
         } else if (this.remainingContent.get(RoomContent.TREASURE) > 0 && !contentType.isPresent()) {
             contentType = Optional.of(RoomContent.TREASURE);
+        } else {
+            contentType = Optional.of(RoomContent.CONTRAPTION);
         }
         return contentType;
     }
