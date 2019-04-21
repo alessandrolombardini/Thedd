@@ -67,4 +67,12 @@ public class DefaultTargeting implements ActionTargeting {
                       .collect(Collectors.toList());
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ActionTargeting getCopy() {
+        return new DefaultTargeting();
+    }
+
 }
