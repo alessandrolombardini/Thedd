@@ -30,6 +30,7 @@ public class InventoryController extends ViewNodeControllerImpl {
     private static final String EQUIP_BUTTON_LABEL = "Equip";
     private static final String UNEQUIP_BUTTON_LABEL = "Unequip";
     private static final String USE_BUTTON_LABEL = "Use";
+    private static final String CANCEL_LABEL = "Cancel";
 
     /**
      * Method that handle the Use button.
@@ -39,12 +40,20 @@ public class InventoryController extends ViewNodeControllerImpl {
         final Item selection = table.getSelectionModel().getSelectedItem();
         if (this.useButton.getText().equals(USE_BUTTON_LABEL)) {
             this.getController().useItem(selection);
+            this.useButton.setText(CANCEL_LABEL);
+            this.backButton.setDisable(true);
+            this.deleteButton.setDisable(true);
         } else if (this.useButton.getText().equals(EQUIP_BUTTON_LABEL)) {
             final EquipableItem selected = new EquipableItemImpl(selection.getId(), selection.getBaseName(),
                     ((EquipableItem) selection).getType(), selection.getRarity(), selection.getDescription());
             ((EquipableItem) selection).getActionEffects().forEach(ae -> selected.addActionEffect(ae));
             ((EquipableItem) selection).getAdditionalActions().forEach(a -> selected.addAdditionalAction(a));
             this.getController().equipItem(selected);
+        } else if (this.useButton.getText().equals(CANCEL_LABEL)) {
+            this.getController().undoActionSelection();
+            this.useButton.setText(USE_BUTTON_LABEL);
+            this.deleteButton.setDisable(false);
+            this.backButton.setDisable(false);
         } else {
             this.getController().unequipItem(selection);
         }
@@ -105,9 +114,9 @@ public class InventoryController extends ViewNodeControllerImpl {
                                         ? "\nYou cannot equip this item: maximum slot limit reached!"
                                         : "")
                         + "\n\nDescription: \n" + item.getDescription() + "\n\nEffects: \n"
-                        + item.getEffectDescription() + "\nType: Equipable Item. \n\nYou have "
+                        + item.getEffectDescription() + "\nType: Equipable Item."
                         + (!this.getController().getPlayerInformation().isEquipped(item)
-                                ? this.getController().getPlayerInformation().getInventoryItemQuantity(item)
+                                ? "\n\nYou have " + this.getController().getPlayerInformation().getInventoryItemQuantity(item)
                                         + " of them in your inventory."
                                 : ""));
             } else {
@@ -142,7 +151,7 @@ public class InventoryController extends ViewNodeControllerImpl {
                             || !this.getController().getPlayerInformation().isItemEquipableOnEquipment(item));
                     this.useButton.setText(EQUIP_BUTTON_LABEL);
                 }
-                this.deleteButton.setDisable(this.getController().isCombatActive());
+                this.deleteButton.setDisable(false);
             }
         } else {
             this.useButton.setVisible(false);

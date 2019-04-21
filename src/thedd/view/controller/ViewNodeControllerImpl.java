@@ -10,7 +10,7 @@ import thedd.view.View;
  */
 public abstract class ViewNodeControllerImpl implements ViewNodeController {
 
-    private static final String ERROR_ALREDYEXIST = "Has been alredy setted";
+    private static final String ERROR_ALREDYEXIST = "Component has been alredy setted";
     private static final String ERROR_NOSETTED = "Component not yet setted";
 
     private Optional<View> view;

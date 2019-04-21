@@ -12,9 +12,9 @@ import thedd.model.combat.actor.ActionActor;
 public interface View {
 
     /**
-     * Set scene of a given state.
+     * Set application state.
      * 
-     * @param state the state of application of the wanted view
+     * @param state the state of the application
      */
     void setState(ApplicationViewState state);
 

@@ -57,6 +57,24 @@ AdaptiveFontButton:hover {
 	-fx-background-color: #111;
 }
 
+.icons-pane-background {
+	-fx-background-color: #222;
+}
+
+.action-selector-button{
+	-fx-background-color: 
+        linear-gradient(from 0.0% 93.0% to 0.0% 100.0%, #1f2429 0.0%, #191d22 100.0%),
+        radial-gradient(center 50.0% 50.0%, radius 100.0%, rgba(101.0,108.0,119.0,0.9), #111);
+    -fx-text-fill: #fff;
+}
+
+.action-selector-button:hover{
+	-fx-background-color:
+        linear-gradient(from 0.0% 93.0% to 0.0% 100.0%, #1f2429 0.0%, #191d22 100.0%),
+        radial-gradient(center 50.0% 50.0%, radius 100.0%, rgba(114.0,131.0,148.0,0.9), rgba(255.0,255.0,255.0,0.5));
+	
+}
+
 .labelNewPlay {
 	-fx-text-fill: #fff;
 	-fx-label-padding: 0.5em;
@@ -66,7 +84,7 @@ AdaptiveFontButton:hover {
 
 #menu {
     -fx-background-image: url("castelloBackground.jpg");
-    -fx-background-color: rgb(0, 0, 0);
+    -fx-background-color: rgb(0.0, 0.0, 0.0);
     -fx-background-repeat: no-repeat;
     -fx-background-size: contain;
     -fx-background-position: center center;
@@ -74,7 +92,7 @@ AdaptiveFontButton:hover {
 
 #newGame {
     -fx-background-image: url("blackBackground.jpg");
-    -fx-background-color: rgb(0, 0, 0);
+    -fx-background-color: rgb(0.0, 0.0, 0.0);
     -fx-background-repeat: no-repeat;
     -fx-background-size: contain;
     -fx-background-position: center center;
@@ -82,7 +100,7 @@ AdaptiveFontButton:hover {
 
 #gameOver {
     -fx-background-image: url("blackBackground.jpg");
-    -fx-background-color: rgb(0, 0, 0);
+    -fx-background-color: rgb(0.0, 0.0, 0.0);
     -fx-background-repeat: no-repeat;
     -fx-background-size: contain;
     -fx-background-position: center center;

@@ -47,13 +47,15 @@ public class DescriptionPane extends Pane implements Observable<Command> {
         lowerAreaHeight.bind(this.heightProperty().subtract(upperAreaHeight));
         padding.bind(this.widthProperty().multiply(PADDING_PERC));
         buttonSizeByWidth.bind(this.widthProperty().subtract(padding.multiply(2)).divide(N_COLS));
-
+        this.getStyleClass().add("background");
         this.getChildren().add(scrollableText);
         scrollableText.prefWidthProperty().bind(this.widthProperty().subtract(padding.multiply(2)));
         scrollableText.layoutXProperty().bind(padding);
         scrollableText.prefHeightProperty().bind(upperAreaHeight.subtract(padding));
         scrollableText.layoutYProperty().bind(padding);
-
+        buttons.forEach(button -> {
+            button.getStyleClass().add("action-selector-button");
+        });
         getChildren().addAll(buttons);
     }
 

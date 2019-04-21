@@ -68,10 +68,8 @@ public class MainGameViewController extends ViewNodeControllerImpl implements Ga
      */
     @Override
     public final void showTargets(final List<ActionActor> targetables, final List<ActionActor> alliedParty,
-            final List<ActionActor> enemyParty, final Action action) {
-        if (this.getExplorationPaneController().isPresent()) {
-            this.getExplorationPaneController().get().showTargets(targetables, alliedParty, enemyParty, action);
-        }
+                                  final List<ActionActor> enemyParty, final Action action) {
+        this.getExplorationPaneController().ifPresent(c -> c.showTargets(targetables, alliedParty, enemyParty, action));
     }
 
     /**
@@ -79,9 +77,7 @@ public class MainGameViewController extends ViewNodeControllerImpl implements Ga
      */
     @Override
     public final void hideTargets() {
-        if (this.getExplorationPaneController().isPresent()) {
-            this.getExplorationPaneController().get().hideTargets();
-        }
+        this.getExplorationPaneController().ifPresent(c -> c.hideTargets());
     }
 
     /**
@@ -89,9 +85,7 @@ public class MainGameViewController extends ViewNodeControllerImpl implements Ga
      */
     @Override
     public final void logAction(final List<ActionResult> result) {
-        if (this.getExplorationPaneController().isPresent()) {
-            this.getExplorationPaneController().get().logAction(result);
-        }
+        this.getExplorationPaneController().ifPresent(c -> c.logAction(result));
     }
 
     /**
@@ -99,9 +93,7 @@ public class MainGameViewController extends ViewNodeControllerImpl implements Ga
      */
     @Override
     public final void visualizeAction(final ActionResult result) {
-        if (this.getExplorationPaneController().isPresent()) {
-            this.getExplorationPaneController().get().visualizeAction(result);
-        }
+        this.getExplorationPaneController().ifPresent(c -> c.visualizeAction(result));
     }
 
     /**
@@ -122,7 +114,7 @@ public class MainGameViewController extends ViewNodeControllerImpl implements Ga
 
     private void showNode(final AnchorPane pane, final ViewNode typeOfNode, final Position pos) {
         final ViewNodeWrapper node = ViewNodeWrapper.createViewNodeWrapper(typeOfNode, this.getController(),
-                                                                                  this.getView());
+                                                                           this.getView());
         node.getController().init(this.getView(), this.getController());
         final int nodeToChange = 0;
         if (pane.getChildren().isEmpty()) {

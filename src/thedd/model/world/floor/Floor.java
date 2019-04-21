@@ -34,7 +34,8 @@ public interface Floor {
 
     /**
      * This method allows to get the index of the current room. If the result is
-     * NONE_ROOMS constant (-1) that means that there aren't rooms yet.
+     * below zero that means that there aren't rooms yet.
+     * The first room has index 0.
      * 
      * @return the current room index
      */
