@@ -44,9 +44,10 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
      * 
      * @param name       the name of the character.
      * @param multiplier rate multiplied at the basic statistics.
+     * @param isInPlayerParty true if the actor is part of the player's party
      */
-    protected BasicCharacterImpl(final String name, final double multiplier) {
-        super(name);
+    protected BasicCharacterImpl(final String name, final double multiplier, final boolean isInPlayerParty) {
+        super(name, isInPlayerParty);
         this.stat = new EnumMap<>(Statistic.class);
         setBasicStat(multiplier);
         this.inventory = new InventoryImpl();

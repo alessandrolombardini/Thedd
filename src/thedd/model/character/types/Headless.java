@@ -17,7 +17,7 @@ public class Headless extends BasicCharacterImpl {
      * @param multiplier rate multiplied at the basic statistics.
      */
     public Headless(final String name, final double multiplier) {
-        super(name, multiplier);
+        super(name, multiplier, false);
         // ret.addWeightedAction(new ActionImpl() , RandomActionPrority.DEFAULT);
         this.addWeightedAction(new LightAttack(TargetType.FOE), RandomPrority.DEFAULT);
 

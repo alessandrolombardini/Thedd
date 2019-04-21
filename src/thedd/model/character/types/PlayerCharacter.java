@@ -2,6 +2,8 @@ package thedd.model.character.types;
 
 import thedd.model.character.BasicCharacterImpl;
 import thedd.model.combat.action.TargetType;
+import thedd.model.combat.action.implementations.ActiveDefence;
+import thedd.model.combat.action.implementations.HeavyAttack;
 import thedd.model.combat.action.implementations.LightAttack;
 
 /**
@@ -18,8 +20,9 @@ public class PlayerCharacter extends BasicCharacterImpl {
      *          rate multiplied at the basic statistics.
      */
     public PlayerCharacter(final String name, final double multiplier) {
-        super(name, multiplier);
-        // ret.addWeightedAction(new ActionImpl(), RandomActionPrority.DEFAULT);
-        this.addActionToAvailable(new LightAttack(TargetType.EVERYONE));
+        super(name, multiplier, true);
+        addActionToAvailable(new LightAttack(TargetType.EVERYONE));
+        addActionToAvailable(new HeavyAttack(TargetType.EVERYONE));
+        addActionToAvailable(new ActiveDefence());
     }
 }

@@ -28,7 +28,7 @@ public class Goblin extends BasicCharacterImpl {
      * @param multiplier rate multiplied at the basic statistics.
      */
     public Goblin(final String name, final double multiplier) {
-        super(name, multiplier);
+        super(name, multiplier, false);
         setPermanentModifiers();
         this.addWeightedAction(new LightAttack(TargetType.FOE), RandomPrority.DEFAULT);
     }

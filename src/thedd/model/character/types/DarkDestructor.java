@@ -27,7 +27,7 @@ public class DarkDestructor extends BasicCharacterImpl {
      * @param multiplier rate multiplied at the basic statistics.
      */
     public DarkDestructor(final String name, final double multiplier) {
-        super(name, multiplier);
+        super(name, multiplier, false);
         // ret.addWeightedAction(new ActionImpl() , RandomActionPrority.DEFAULT);
         setPermanentModifiers();
         super.addActionToAvailable(new LightAttack(TargetType.FOE));
