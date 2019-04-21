@@ -47,28 +47,19 @@ public final class FloorDetailsFactoryImpl implements FloorDetailsFactory {
         final int baseNumber = (int) Math.round(effectiveNumberOfRooms * difficulty.getMultiplier());
         final int maxRandRoundIntNum = (int) Math.round(effectiveNumberOfRooms * Difficulty.EASY.getMultiplier());
         final int roundNumber = RandomUtils.nextInt(0, maxRandRoundIntNum + 1);
-        int result = baseNumber + roundNumber;
-        result = result < RoomFactoryImpl.MIN_ENEMIES_PER_ROOM 
-                        ? RoomFactoryImpl.MIN_ENEMIES_PER_ROOM 
-                        : result;
-        result = result > effectiveNumberOfRooms * RoomFactoryImpl.MAX_ENEMIES_PER_ROOM
-                        ? effectiveNumberOfRooms * RoomFactoryImpl.MAX_ENEMIES_PER_ROOM
-                        : result;
-        return result;
+        final int result = baseNumber + roundNumber;
+        return this.roundNumber(result, RoomFactoryImpl.MIN_ENEMIES_PER_ROOM,
+                                effectiveNumberOfRooms * RoomFactoryImpl.MAX_ENEMIES_PER_ROOM);
     }
 
     private int getRandomNumberOfTreasure(final int effectiveNumOfRooms, final Difficulty difficulty,
                                           final int interagibleSetted) {
         final int baseValue = (int) Math.round(effectiveNumOfRooms * Difficulty.NORMAL.getMultiplier());
         final int baseNumber = getGaussian(baseValue, baseValue);
-        int result = (int) Math.round(baseNumber * difficulty.getMultiplier());
-        result = result < RoomFactoryImpl.MIN_INTERACTABLE_ACTION_PER_ROOM
-                        ? RoomFactoryImpl.MIN_INTERACTABLE_ACTION_PER_ROOM
-                        : result;
-        result = result > (effectiveNumOfRooms * RoomFactoryImpl.MAX_INTERACTABLE_ACTIONS_PER_ROOM) - interagibleSetted
-                        ? (effectiveNumOfRooms * RoomFactoryImpl.MAX_INTERACTABLE_ACTIONS_PER_ROOM) - interagibleSetted
-                        : result;
-        return result;
+        final int result = (int) Math.round(baseNumber * difficulty.getMultiplier());
+        return this.roundNumber(result, RoomFactoryImpl.MIN_INTERACTABLE_ACTION_PER_ROOM, 
+                               (effectiveNumOfRooms * RoomFactoryImpl.MAX_INTERACTABLE_ACTIONS_PER_ROOM) 
+                               - interagibleSetted);
     }
 
     private int getRandomNumberOfContraptions(final int effectiveNumberOfRooms, final Difficulty difficulty,
@@ -76,12 +67,16 @@ public final class FloorDetailsFactoryImpl implements FloorDetailsFactory {
         return this.getRandomNumberOfTreasure(effectiveNumberOfRooms, difficulty, interagibleSetted);
     }
 
-    private static int getGaussian(final int mediumVal, final int var) {
-        //return (int) Math.round(StdRandom.gaussian() * Math.sqrt(mediumVal) + var);
-        int val = (int) Math.round(StdRandom.gaussian(mediumVal, var));
-        val = val < mediumVal - var ? mediumVal - var : var;
-        val = val > mediumVal + var ? mediumVal + var : var;
-        return val;
+    private int getGaussian(final int mediumVal, final int var) {
+        final int val = (int) Math.round(StdRandom.gaussian(mediumVal, var));
+        return this.roundNumber(val, mediumVal - var, mediumVal + var);
+    }
+
+    private int roundNumber(final int number, final int lowerBound, final int upperBound) {
+        int num = number;
+        num = num < lowerBound ? lowerBound : num;
+        num = num > upperBound ? upperBound : num;
+        return num;
     }
 
 }
