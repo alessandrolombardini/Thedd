@@ -22,7 +22,7 @@ public abstract class AbstractInteractableActionPerformer extends AbstractAction
      *          action performed by the contraption
      */
     public AbstractInteractableActionPerformer(final String name, final Action action) {
-        super(name);
+        super(name, false);
         super.addActionToAvailable(Objects.requireNonNull(action));
         action.setSource(this);
         this.completed = false;
