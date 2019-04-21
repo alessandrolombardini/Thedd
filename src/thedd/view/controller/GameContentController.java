@@ -125,7 +125,7 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
         log.translateYProperty().bind(explorationPane.heightProperty().subtract(log.getHeightProperty().add(bottomPadding)).divide(two));
         mainPane.getChildren().add(log);
         mainPane.autosize();
-        //this.getController().nextRoom();
+        this.getController().nextRoom();
         setNewBackgroundImage();
         update();
     }
@@ -341,8 +341,10 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
         final TranslateTransition tt = new TranslateTransition(Duration.seconds(2), node);
         tt.setFromX(explorationPane.getWidth());
         tt.setToX(-node.getWidth());
+        tt.setOnFinished(e -> {
+            mainPane.getChildren().remove(node);
+        });
         tt.playFromStart();
-        tt.setOnFinished(e -> mainPane.getChildren().remove(node));
         setNewBackgroundImage();
     }
 

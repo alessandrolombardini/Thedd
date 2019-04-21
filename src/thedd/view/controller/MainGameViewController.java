@@ -149,5 +149,6 @@ public class MainGameViewController extends ViewNodeControllerImpl implements Ga
     public void partialUpdate() {
         nodeControllers.get(Position.DOWN_DX).ifPresent(n -> n.update());
     }
+
 }
 

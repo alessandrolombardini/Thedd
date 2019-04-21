@@ -77,8 +77,8 @@ public class ControllerImpl implements Controller {
             IntStream.range(0, 15).forEach(i -> {
                 charac.getInventory().addItem(ItemFactory.getRandomItem());
             });
-            return nextRoom();
-            //return true;
+            //return nextRoom();
+            return true;
         }
         return false;
     }
@@ -217,7 +217,6 @@ public class ControllerImpl implements Controller {
     @Override
     public void targetSelected(final ActionActor target) {
         view.hideMessage();
-        System.out.println("Target selected");
         final ActionActor playerActor = this.model.getPlayerCharacter();
         final ActionExecutor currentExecutor = actionExecutor.get();
         playerActor.getSelectedAction().ifPresent(a -> {
@@ -244,7 +243,6 @@ public class ControllerImpl implements Controller {
         instance.addPlayerPartyMember(playerActor);
         actionExecutor.get().setExecutionInstance(instance);
         if (action.getTargets().isEmpty()) {
-            System.out.println("Oggetto usato");
             // call view to tell player to select a target [DONE]
             model.getPlayerCharacter().addActionToQueue(action, true);
             view.showMessage("Select a target");
@@ -295,7 +293,6 @@ public class ControllerImpl implements Controller {
             view.update();
             break;
         case PLAYER_WON:
-            System.out.println("Player vivo");
             view.showActionResult(roundResults);
             roundResults.clear();
             this.view.showInventory();
@@ -341,7 +338,6 @@ public class ControllerImpl implements Controller {
             evaluateNextAction();
         } else {
             // call view to tell player to select an action
-            System.out.println("Messaggio");
             view.showActionSelector();
             view.showMessage("Select an action");
         }

@@ -75,7 +75,9 @@ public interface View {
      */
     void hideMessage();
     
-    
+    /**
+     * Updates the statistic panel.
+     */
     void partialUpdate();
 
 }

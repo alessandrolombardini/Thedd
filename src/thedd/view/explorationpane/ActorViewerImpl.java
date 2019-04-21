@@ -62,7 +62,7 @@ public class ActorViewerImpl extends ImageView implements Observable<Pair<Boolea
                    https://stackoverflow.com/questions/13049362/javafx-how-to-set-correct-tooltip-position
                    and modified to support needs.
                 */
-                final Point2D p = this.localToScene(0.0, 0.0);
+                //final Point2D p = this.localToScene(0.0, 0.0);
                 /*tooltip.show(this,
                              p.getX() + this.getScene().getX() + this.getScene().getWindow().getX() + this.getFitWidth() / 4,
                              p.getY() + this.getScene().getY() + this.getScene().getWindow().getY());
