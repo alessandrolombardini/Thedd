@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 import javafx.scene.image.Image;
 import thedd.model.combat.action.Action;
 import thedd.view.imageloader.DirectoryPicker;
-import thedd.view.imageloader.ImageLoader;
 import thedd.view.imageloader.ImageLoaderImpl;
 
 /**
