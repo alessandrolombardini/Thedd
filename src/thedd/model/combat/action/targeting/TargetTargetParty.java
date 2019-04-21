@@ -1,6 +1,7 @@
 package thedd.model.combat.action.targeting;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import thedd.model.combat.actor.ActionActor;
 
@@ -16,6 +17,16 @@ public class TargetTargetParty extends DefaultTargeting {
      */
     @Override
     public List<ActionActor> getTargets(final ActionActor target, final List<ActionActor> availableTargets) {
-        return availableTargets;
+        return availableTargets.stream()
+                               .filter(t -> t.isInPlayerParty() == target.isInPlayerParty())
+                               .collect(Collectors.toList());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ActionTargeting getCopy() {
+        return new TargetTargetParty();
     }
 }
