@@ -188,4 +188,10 @@ public interface ActionActor extends Taggable {
      */
     void removeActionModifier(Modifier<Action> modifier);
 
+    /**
+     * Gets whether the actor is part of the player's party.
+     * @return true if the actor belongs to the player's party, false otherwise
+     */
+    boolean isInPlayerParty();
+
 }
