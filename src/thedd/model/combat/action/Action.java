@@ -3,6 +3,8 @@ package thedd.model.combat.action;
 import java.util.List;
 
 import thedd.model.combat.action.effect.ActionEffect;
+import thedd.model.combat.action.executionpolicies.ExecutionPolicy;
+import thedd.model.combat.action.targeting.ActionTargeting;
 import thedd.model.combat.actor.ActionActor;
 import thedd.model.combat.common.Modifiable;
 import thedd.model.combat.common.SourceHolder;
@@ -91,12 +93,6 @@ public interface Action extends Modifiable, Taggable, SourceHolder, TargetHolder
     TargetType getTargetType();
 
     /**
-     * Sets the target type of this action.
-     * @param targetType the target type
-     */
-    void setTargetType(TargetType targetType);
-
-    /**
      * Gets whether or not the last roll to hit was a success.
      * @return the result of the last call to {@link #rollToHit}.
      */
@@ -161,5 +157,23 @@ public interface Action extends Modifiable, Taggable, SourceHolder, TargetHolder
      * @return the category of the action
      */
     ActionCategory getCategory();
+
+    /**
+     * Gets the {@link ActionTargeting} of the action.
+     * @return the targeting policy of the action
+     */
+    ActionTargeting getTargetingPolicy();
+
+    /**
+     * Gets the {@link LogMessageType} of the action.
+     * @return the log message format of the action
+     */
+    LogMessageType getLogType();
+
+    /**
+     * Gets the {@link ExecutionPolicy} of the action.
+     * @return the execution policy of the action
+     */
+    ExecutionPolicy getExecutionPolicy();
 
 }
