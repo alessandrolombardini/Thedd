@@ -32,7 +32,7 @@ public interface ExplorationView {
      * 
      * @param result the result to log
      */
-    void logAction(ActionResult result);
+    void logAction(List<ActionResult> result);
 
     /**
      * Show animations of the result of the action, if any.
@@ -40,4 +40,16 @@ public interface ExplorationView {
      * @param result the result to show
      */
     void visualizeAction(ActionResult result);
+
+    /**
+     * 
+     * @param text
+     */
+    void showUserMessage(String text);
+
+    /**
+     * 
+     */
+    void hideUserMessage();
+
 }
