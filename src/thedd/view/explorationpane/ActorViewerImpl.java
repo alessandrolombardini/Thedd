@@ -29,7 +29,6 @@ public class ActorViewerImpl extends ImageView implements Observable<Pair<Boolea
     private final List<Observer<Pair<Boolean, Pair<PartyType, Integer>>>> registeredObservers;
     private final Tooltip tooltip;
     private Optional<Pair<Boolean, Pair<PartyType, Integer>>> message;
-    private boolean isClick;
 
     /**
      * Create a new instance of ActorViewer which visualize an actor of the party partySide, 

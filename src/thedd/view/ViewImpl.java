@@ -173,8 +173,8 @@ public class ViewImpl extends Application implements View {
     }
 
     @Override
-    public void partialUpdate() {
+    public final void partialUpdate() {
         getGameViewController().ifPresent(c -> ((MainGameViewController) c).partialUpdate());
     }
-    
+
 }

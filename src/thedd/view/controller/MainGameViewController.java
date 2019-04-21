@@ -142,7 +142,10 @@ public class MainGameViewController extends ViewNodeControllerImpl implements Ga
     public final void hideUserMessage() {
         getExplorationPaneController().ifPresent(c -> c.hideUserMessage());
     }
-    
+
+    /**
+     * Updates the statistic node.
+     */
     public void partialUpdate() {
         nodeControllers.get(Position.DOWN_DX).ifPresent(n -> n.update());
     }
