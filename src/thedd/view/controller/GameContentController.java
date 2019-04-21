@@ -58,7 +58,6 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
     private final ImageLoader imgLoader = new ImageLoaderImpl();
     private Image currentBackgroundImage; 
     private Optional<OptionDialog> messageDialog = Optional.empty();
-    private volatile List<LoggerManager> logManagers = new ArrayList<>();
 
     @Override
     public final void update() {
@@ -78,9 +77,7 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
             });
             explorationPane.setEnemyImages(enemyImages);
             IntStream.range(0,  enemyActors.size()).forEach(i -> updateSingleTarget(enemyActors.get(i), new ImmutablePair<>(PartyType.ENEMY, i), Optional.empty()));
-            this.getView().showActionSelector();
         } else {
-            this.getView().showInventory();
             if (this.getController().isCurrentLastRoom()) {
                 state = TargetSelectionState.STAIRS;
                 this.getController().getStairsOptions().forEach(so -> enemyImages.add(imgLoader.loadSingleImage(DirectoryPicker.ROOM_CHANGER, "stairs")));
@@ -93,7 +90,6 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
                 iapEvents.forEach(iap -> enemyImages.add(iapImage(iap)));
                 explorationPane.setEnemyImages(enemyImages);
                 IntStream.range(0, iapEvents.size()).forEach(i -> explorationPane.updatePositionTooltip(new ImmutablePair<PartyType, Integer>(PartyType.ENEMY, i), iapTooltip(iapEvents.get(i))));
-                //this.getController().updateStatistics(this.getController().getPlayer());
             }
         }
         explorationPane.setRoomAdvancerVisible(state == TargetSelectionState.EXPLORATION && !this.getController().isCurrentLastRoom());
@@ -163,6 +159,8 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
             case COMBAT_TARGET:
                 final List<ActionActor> selectedParty = getSelectedParty(Objects.requireNonNull(message.get().getLeft()));
                 this.getController().targetSelected(selectedParty.get(message.get().getRight()));
+                alliedParty.clear();
+                enemyParty.clear();
                 break;
             case STAIRS:
                 changeRoomTransition();
