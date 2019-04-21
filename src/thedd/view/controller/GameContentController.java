@@ -14,8 +14,13 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import thedd.model.character.BasicCharacter;
@@ -105,8 +110,8 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
         mainPane.setDialogDeclined(() -> cancelInput()); 
         mainPane.getChildren().add(explorationPane);
         explorationPane.getRoomAdvancer().setOnMouseClicked(e -> {
-            changeRoomTransition();
             this.getController().nextRoom();
+            changeRoomTransition();
             this.getView().update();
         });
         explorationPane.setActorViewerObserver(this);
@@ -169,13 +174,11 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
                 }
                 break;
             case STAIRS:
-                if (message.get().getLeft()) {
-                    if (this.getController().nextFloor(this.getController().getStairsOptions().get(message.get().getRight().getRight()))) {
+                if (message.get().getLeft() && this.getController().nextFloor(this.getController().getStairsOptions().get(message.get().getRight().getRight()))) {
                         changeRoomTransition();
                         this.getController().nextRoom();
                         setNewBackgroundImage();
                         update();
-                    }
                 }
                 break;
             default:
@@ -194,8 +197,8 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
         final int bottomPadding = 10;
         messageDialog.get().getWidthProperty().bind(explorationPane.widthProperty().divide(two));
         messageDialog.get().getHeightProperty().bind(explorationPane.heightProperty().divide(six));
-        messageDialog.get().translateXProperty().bind(explorationPane.widthProperty().subtract(messageDialog.get().widthProperty()).divide(two));
-        messageDialog.get().translateYProperty().bind(explorationPane.heightProperty().subtract(messageDialog.get().getHeightProperty().add(bottomPadding)).divide(two));
+        messageDialog.get().translateXProperty().bind((explorationPane.widthProperty().subtract(messageDialog.get().getWidthProperty())).divide(two));
+        messageDialog.get().translateYProperty().bind(new SimpleDoubleProperty(bottomPadding));
         messageDialog.get().autosize();
         mainPane.getChildren().add(messageDialog.get());
     }
@@ -286,6 +289,22 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
             }));
             final LoggerManager lm = new LoggerManager(log, queue);
             log.setLoggerManager(lm);
+            final EventHandler<MouseEvent> filter = new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(final MouseEvent event) {
+                        event.consume();
+                }
+            };
+            mainPane.addEventFilter(MouseEvent.ANY, filter);
+            final EventHandler<WorkerStateEvent> loggerCloser = new EventHandler<WorkerStateEvent>() {
+                @Override
+                public void handle(final WorkerStateEvent event) {
+                    Platform.runLater(() -> log.setVisibility(false));
+                    mainPane.removeEventFilter(MouseEvent.ANY, filter);
+                }
+            };
+            lm.setOnCancelled(loggerCloser);
+            lm.setOnSucceeded(loggerCloser);
             final Thread t = new Thread(lm);
             t.setDaemon(true);
             t.start();
@@ -338,7 +357,8 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
         node.heightProperty().bind(explorationPane.heightProperty());
         mainPane.getChildren().add(node);
 
-        final TranslateTransition tt = new TranslateTransition(Duration.seconds(2), node);
+        final int transitionTime = 1;
+        final TranslateTransition tt = new TranslateTransition(Duration.seconds(transitionTime), node);
         tt.setFromX(explorationPane.getWidth());
         tt.setToX(-node.getWidth());
         tt.setOnFinished(e -> {
