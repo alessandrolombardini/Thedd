@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javafx.geometry.Point2D;
@@ -21,12 +22,14 @@ import thedd.view.explorationpane.enums.PartyType;
  * {@link thedd.utils.observer.Observable} {@link thedd.view.explorationpane.ActorViewer}.
  * It uses an {@link javafx.scene.image.ImageView} to visualize the actor.
  */
-public class ActorViewerImpl extends ImageView implements Observable<Pair<PartyType, Integer>>, ActorViewer {
+public class ActorViewerImpl extends ImageView implements Observable<Pair<Boolean, Pair<PartyType, Integer>>>, ActorViewer {
 
     private final PartyType partySide;
     private final int partyPosition;
-    private final List<Observer<Pair<PartyType, Integer>>> registeredObservers;
+    private final List<Observer<Pair<Boolean, Pair<PartyType, Integer>>>> registeredObservers;
     private final Tooltip tooltip;
+    private Optional<Pair<Boolean, Pair<PartyType, Integer>>> message;
+    private boolean isClick;
 
     /**
      * Create a new instance of ActorViewer which visualize an actor of the party partySide, 
@@ -43,24 +46,35 @@ public class ActorViewerImpl extends ImageView implements Observable<Pair<PartyT
         this.partySide = Objects.requireNonNull(partySide);
         this.partyPosition = partyPosition;
         registeredObservers = new ArrayList<>();
-        this.setOnMouseClicked(e -> this.emit());
+        this.setOnMouseClicked(e -> {
+            message = Optional.of(new ImmutablePair<>(true, new ImmutablePair<>(partySide, partyPosition)));
+            this.emit();
+        });
         this.setPreserveRatio(true);
         this.setPickOnBounds(true);
 
         tooltip = new Tooltip();
+        Tooltip.install(this, tooltip);
         this.setOnMouseEntered(e -> {
             if (!this.isDisabled()) {
+                message = Optional.of(new ImmutablePair<>(false, new ImmutablePair<>(partySide, partyPosition)));
+                this.emit();
                 /* Snippet code taken from 
                    https://stackoverflow.com/questions/13049362/javafx-how-to-set-correct-tooltip-position
                    and modified to support needs.
                 */
                 final Point2D p = this.localToScene(0.0, 0.0);
-                tooltip.show(this, 
+                /*tooltip.show(this,
                              p.getX() + this.getScene().getX() + this.getScene().getWindow().getX() + this.getFitWidth() / 4,
-                             p.getY() + this.getScene().getY() + this.getScene().getWindow().getY()); 
+                             p.getY() + this.getScene().getY() + this.getScene().getWindow().getY());
+                             */ 
             }
         });
-        this.setOnMouseExited(e -> { 
+        this.setOnMouseExited(e -> {
+            if (!this.isDisabled()) {
+                message = Optional.of(new ImmutablePair<>(false, new ImmutablePair<>(PartyType.ALLIED, 0)));
+                this.emit();
+            }
             tooltip.hide();
         });
         tooltip.setAutoHide(true);
@@ -68,23 +82,23 @@ public class ActorViewerImpl extends ImageView implements Observable<Pair<PartyT
 
     @Override
     public final void emit() {
-        registeredObservers.forEach(o -> o.trigger(Optional.of(Pair.of(partySide, partyPosition))));
+        registeredObservers.forEach(o -> o.trigger(message));
     }
 
     @Override
-    public final void bindObserver(final Observer<Pair<PartyType, Integer>> newObserver) {
+    public final void bindObserver(final Observer<Pair<Boolean, Pair<PartyType, Integer>>> newObserver) {
         registeredObservers.add(Objects.requireNonNull(newObserver));
     }
 
     @Override
-    public final void removeObserver(final Observer<Pair<PartyType, Integer>> observer) {
+    public final void removeObserver(final Observer<Pair<Boolean, Pair<PartyType, Integer>>> observer) {
         if (!registeredObservers.remove(Objects.requireNonNull(observer))) {
             throw new IllegalStateException("The observer was not in the list");
         }
     }
 
     @Override
-    public final Collection<Observer<Pair<PartyType, Integer>>> getRegisteredObservers() {
+    public final Collection<Observer<Pair<Boolean, Pair<PartyType, Integer>>>> getRegisteredObservers() {
         return Collections.unmodifiableList(registeredObservers);
     }
 

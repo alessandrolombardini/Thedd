@@ -2,7 +2,6 @@ package thedd.model.item;
 
 /**
  * An interface to represent items. Any specialization need to extend this interface.
- * 
  */
 public interface Item {
 
@@ -43,7 +42,7 @@ public interface Item {
     int getId();
 
     /**
-     * 
+     * Return the description of the item.
      * @return the description of the item
      */
     String getDescription();

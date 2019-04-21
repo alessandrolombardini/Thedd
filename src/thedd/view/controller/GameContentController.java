@@ -44,7 +44,7 @@ import thedd.view.imageloader.ImageLoaderImpl;
 /**
  * Controller of the top pane of the game.
  */
-public class GameContentController extends ViewNodeControllerImpl implements Observer<Pair<PartyType, Integer>>, ExplorationView {
+public class GameContentController extends ViewNodeControllerImpl implements Observer<Pair<Boolean, Pair<PartyType, Integer>>>, ExplorationView {
 
     @FXML
     private TopStackPane mainPane;
@@ -100,7 +100,7 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
 
     @Override
     protected final void initView() {
-        state = TargetSelectionState.EXPLORATION;
+        //state = TargetSelectionState.EXPLORATION;
         mainPane.setDialogAccepted(() -> continueInput());
         mainPane.setDialogDeclined(() -> cancelInput()); 
         mainPane.getChildren().add(explorationPane);
@@ -125,49 +125,58 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
         log.translateYProperty().bind(explorationPane.heightProperty().subtract(log.getHeightProperty().add(bottomPadding)).divide(two));
         mainPane.getChildren().add(log);
         mainPane.autosize();
-        this.getController().nextRoom();
+        //this.getController().nextRoom();
         setNewBackgroundImage();
         update();
     }
 
     @Override
-    public final void trigger(final Optional<Pair<PartyType, Integer>> message) {
+    public final void trigger(final Optional<Pair<Boolean, Pair<PartyType, Integer>>> message) {
         if (!Objects.requireNonNull(message).isPresent()) {
             throw new IllegalArgumentException("Message is empty and a non-empty message was expected");
         }
         switch (state) {
             case EXPLORATION:
-                if (message.get().getLeft() == PartyType.ENEMY) {
+                if (message.get().getLeft() && message.get().getRight().getLeft() == PartyType.ENEMY) {
                     if (!this.getController().isCurrentLastRoom()) {
                         performing = Optional.of(this.getController().getRoomEvents().stream().filter(re -> re.getType() == RoomEventType.INTERACTABLE_ACTION_PERFORMER && !re.isCompleted())
                                                                                              .map(rm -> (InteractableActionPerformer) rm)
-                                                                                             .collect(Collectors.toList()).get(message.get().getRight()).getAvailableActionsList().get(0));
+                                                                                             .collect(Collectors.toList()).get(message.get().getRight().getRight()).getAvailableActionsList().get(0));
                         mainPane.showDialog("Do you want to interact with this object?");
                     } else {
-                        this.getController().nextFloor(this.getController().getStairsOptions().get(message.get().getRight()));
+                        this.getController().nextFloor(this.getController().getStairsOptions().get(message.get().getRight().getRight()));
                     }
                 }
                 break;
             case COMBAT_INFORMATION:
-                if (message.get().getLeft() == PartyType.ALLIED && message.get().getRight() == 0) {
+                if (!message.get().getLeft()) {
+                    if (message.get().getRight().getLeft() == PartyType.ALLIED && message.get().getRight().getRight() == 0) {
+                        this.getController().updateStatistics(this.getController().getPlayer());
+                    } else if (message.get().getRight().getLeft() == PartyType.ENEMY) {
+                        final CombatEvent ce = (CombatEvent) this.getController().getRoomEvents().stream().filter(re -> re.getType() == RoomEventType.COMBAT_EVENT).findFirst().get();
+                        this.getController().updateStatistics((BasicCharacter) ce.getHostileEncounter().getNPCs().stream().collect(Collectors.toList()).get(message.get().getRight().getRight()));
+                    } 
+                } else {
                     this.getController().updateStatistics(this.getController().getPlayer());
-                } else if (message.get().getLeft() == PartyType.ENEMY) {
-                    final CombatEvent ce = (CombatEvent) this.getController().getRoomEvents().stream().filter(re -> re.getType() == RoomEventType.COMBAT_EVENT).findFirst().get();
-                    this.getController().updateStatistics((BasicCharacter) ce.getHostileEncounter().getNPCs().stream().collect(Collectors.toList()).get(message.get().getRight()));
                 }
                 break;
             case COMBAT_TARGET:
-                final List<ActionActor> selectedParty = getSelectedParty(Objects.requireNonNull(message.get().getLeft()));
-                this.getController().targetSelected(selectedParty.get(message.get().getRight()));
-                alliedParty.clear();
-                enemyParty.clear();
+                if (message.get().getLeft()) {
+                    final List<ActionActor> selectedParty = getSelectedParty(Objects.requireNonNull(message.get().getRight().getLeft()));
+                    this.getController().targetSelected(selectedParty.get(message.get().getRight().getRight()));
+                    alliedParty.clear();
+                    enemyParty.clear();
+                }
                 break;
             case STAIRS:
-                changeRoomTransition();
-                this.getController().nextFloor(this.getController().getStairsOptions().get(message.get().getRight()));
-                this.getController().nextRoom();
-                setNewBackgroundImage();
-                update();
+                if (message.get().getLeft()) {
+                    if (this.getController().nextFloor(this.getController().getStairsOptions().get(message.get().getRight().getRight()))) {
+                        changeRoomTransition();
+                        this.getController().nextRoom();
+                        setNewBackgroundImage();
+                        update();
+                    }
+                }
                 break;
             default:
                 break;
@@ -187,6 +196,7 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
         messageDialog.get().getHeightProperty().bind(explorationPane.heightProperty().divide(six));
         messageDialog.get().translateXProperty().bind(explorationPane.widthProperty().subtract(messageDialog.get().widthProperty()).divide(two));
         messageDialog.get().translateYProperty().bind(explorationPane.heightProperty().subtract(messageDialog.get().getHeightProperty().add(bottomPadding)).divide(two));
+        messageDialog.get().autosize();
         mainPane.getChildren().add(messageDialog.get());
     }
 

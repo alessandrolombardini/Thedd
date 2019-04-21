@@ -74,5 +74,8 @@ public interface View {
      * Hide a message previously shown.
      */
     void hideMessage();
+    
+    
+    void partialUpdate();
 
 }

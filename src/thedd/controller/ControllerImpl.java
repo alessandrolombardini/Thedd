@@ -30,6 +30,7 @@ import thedd.model.item.Item;
 import thedd.model.item.ItemFactory;
 import thedd.model.item.usableitem.UsableItem;
 import thedd.model.roomevent.RoomEvent;
+import thedd.model.roomevent.RoomEventType;
 import thedd.model.roomevent.combatevent.CombatEvent;
 import thedd.model.world.environment.EnvironmentImpl;
 import thedd.model.world.floor.FloorDetails.FloorDetails;
@@ -71,12 +72,13 @@ public class ControllerImpl implements Controller {
             this.playerInfo = new PlayerInformationImpl(this.model.getPlayerCharacter());
             this.statisticsInfo = new StatisticsInformationImpl(this.model.getPlayerCharacter());
 
+
             BasicCharacter charac = this.model.getPlayerCharacter();
             IntStream.range(0, 15).forEach(i -> {
                 charac.getInventory().addItem(ItemFactory.getRandomItem());
             });
-            //nextRoom();
-            return true;
+            return nextRoom();
+            //return true;
         }
         return false;
     }
@@ -136,9 +138,15 @@ public class ControllerImpl implements Controller {
     public void useItem(final Item item) {
         if (item.isUsable()) {
             final UsableItem usable = (UsableItem) item;
-            this.selectAction(usable.getAction());
             playerInfo.setUsedItem(item);
             this.view.update();
+            final Action itemAction = usable.getAction();
+            itemAction.setSource(getPlayer());
+            if (getPlayer().isInCombat()) {
+                this.selectAction(itemAction);
+            } else {
+                this.executeSingleAction(itemAction);
+            }
         }
     }
 
@@ -183,7 +191,8 @@ public class ControllerImpl implements Controller {
     @Override
     public void updateStatistics(final BasicCharacter character) {
         this.statisticsInfo.setCharacter(character);
-        this.view.update();
+        //this.view.update();
+        view.partialUpdate();
     }
 
     // ----------------------------------------------------Action execution and
@@ -237,6 +246,7 @@ public class ControllerImpl implements Controller {
         if (action.getTargets().isEmpty()) {
             System.out.println("Oggetto usato");
             // call view to tell player to select a target [DONE]
+            model.getPlayerCharacter().addActionToQueue(action, true);
             view.showMessage("Select a target");
             final List<ActionActor> targetables = nonDeadTargets(action.getValidTargets(instance));
             view.showActionTargets(targetables, instance.getPlayerParty(), instance.getNPCsParty(), action);
@@ -277,10 +287,12 @@ public class ControllerImpl implements Controller {
             actionExecutor = Optional.empty();
             view.showActionResult(roundResults);
             roundResults.clear();
+            view.update();
             break;
         case PLAYER_LOST:
             System.out.println("player morto");
             // TODO
+            view.update();
             break;
         case PLAYER_WON:
             System.out.println("Player vivo");
@@ -299,12 +311,14 @@ public class ControllerImpl implements Controller {
             roundResults.clear();
             view.showMessage("Select an action");
             view.showActionSelector();
+            view.update();
             break;
         case ROUND_ENDED:
             view.showActionResult(roundResults);
             roundResults.clear();
             view.showMessage("Select an action");
             view.showActionSelector();
+            view.update();
             //view.showMessage("Select an action");
             //view.showActionSelector();
             executor.prepareNextRound();
@@ -364,7 +378,8 @@ public class ControllerImpl implements Controller {
      */
     @Override
     public void selectAction(final Action action) {
-        model.getPlayerCharacter().addActionToQueue(action.getCopy(), true);
+        //action.setSource(getPlayer());
+        model.getPlayerCharacter().addActionToQueue(action, true);
         // call view to tell player to select a target (even if the action target type
         // is SELF?)
 
@@ -380,8 +395,8 @@ public class ControllerImpl implements Controller {
         if (isChanged) {
             final Room room = this.model.getEnvironment().getCurrentFloor().getCurrentRoom();
             if (room.getEvents().stream().anyMatch(e -> e instanceof CombatEvent)) {
-                final CombatEvent combat = room.getEvents().stream().filter(e -> e instanceof CombatEvent)
-                                                                    .findAny()
+                final CombatEvent combat = room.getEvents().stream().filter(e -> e.getType() == RoomEventType.COMBAT_EVENT)
+                                                                    .findFirst()
                                                                     .map(e -> (CombatEvent) e)
                                                                     .get();
                 //this.getPlayer().setIsInCombat(true);

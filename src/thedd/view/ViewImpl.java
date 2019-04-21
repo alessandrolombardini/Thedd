@@ -172,4 +172,9 @@ public class ViewImpl extends Application implements View {
         this.getGameViewController().ifPresent(c -> c.hideUserMessage());
     }
 
+    @Override
+    public void partialUpdate() {
+        getGameViewController().ifPresent(c -> ((MainGameViewController) c).partialUpdate());
+    }
+    
 }

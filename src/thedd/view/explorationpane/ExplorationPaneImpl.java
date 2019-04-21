@@ -37,7 +37,7 @@ public final class ExplorationPaneImpl extends BorderPane implements Exploration
     private final HBox enemyParty;
     private final HBox alliedParty;
     private final ImageView roomAdvancer;
-    private Observer<Pair<PartyType, Integer>> observer;
+    private Observer<Pair<Boolean, Pair<PartyType, Integer>>> observer;
 
     /**
      * Create a new Pane.
@@ -103,7 +103,9 @@ public final class ExplorationPaneImpl extends BorderPane implements Exploration
 
     @Override
     public void setEnemyImages(final List<Image> images) {
+        System.out.println("Pieno " + enemyParty.getChildren().size());
         enemyParty.getChildren().clear();
+        System.out.println("Eliminato " + enemyParty.getChildren().size());
         IntStream.range(0, Objects.requireNonNull(images).size()).forEach(i -> enemyParty.getChildren().add(new ActorViewerImpl(PartyType.ENEMY, i, Objects.requireNonNull(images.get(i)))));
         enemyParty.getChildren().forEach(c -> ((ActorViewerImpl) c).bindObserver(observer));
         resizeAllComponents();
@@ -146,7 +148,7 @@ public final class ExplorationPaneImpl extends BorderPane implements Exploration
     }
 
     @Override
-    public void setActorViewerObserver(final Observer<Pair<PartyType, Integer>> newObserver) {
+    public void setActorViewerObserver(final Observer<Pair<Boolean, Pair<PartyType, Integer>>> newObserver) {
         this.observer = Objects.requireNonNull(newObserver);
     }
 

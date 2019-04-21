@@ -107,7 +107,7 @@ public interface ExplorationPane {
      * @param newObserver
      *          the new observer
      */
-    void setActorViewerObserver(Observer<Pair<PartyType, Integer>> newObserver);
+    void setActorViewerObserver(Observer<Pair<Boolean, Pair<PartyType, Integer>>> newObserver);
 
     /**
      * Set whether the roomAdvancer component is visible.
