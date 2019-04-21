@@ -9,7 +9,11 @@ public enum StatusTag implements Tag {
     /**
      * To be applied to statues that imbue a poisoning condition.
      */
-    POISONED("Poisoned", false);
+    POISONED("Poisoned", false),
+    /**
+     * To be applied to status that imbue a weakening condition.
+     */
+    WEAKENED("Weakened", false);
 
     private final String literal;
     private final boolean hidden;
