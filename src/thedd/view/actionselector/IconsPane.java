@@ -14,13 +14,11 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Paint;
 import javafx.util.Duration;
 import thedd.utils.observer.Observable;
 import thedd.utils.observer.Observer;
@@ -52,9 +50,7 @@ public class IconsPane extends Pane implements Observable<Command> {
         defaultItemSizeByWidth.bind(this.widthProperty().multiply(DEFAULT_ITEM_SIZE_PERC));
         selectedItemSizeByHeight.bind(this.heightProperty().multiply(SELECTED_ITEM_SIZE_PERC));
         defaultItemSizeByHeight.bind(this.heightProperty().multiply(DEFAULT_ITEM_SIZE_PERC));
-
-        setBackground(new Background(new BackgroundFill(Paint.valueOf("red"), null, null)));
-
+        this.getStyleClass().add("icons-pane-background");
         this.setOnScroll(e -> {
             if (e.getDeltaY() < 0) {
                 scrollDown();
