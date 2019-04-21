@@ -169,6 +169,7 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
     @Override
     public Optional<ActionResult> evaluateCurrentAction() {
         if (currentAction.isPresent()) {
+            System.out.println("Presente");
             final Action action = currentAction.get();
             final ActionResult result = new ActionResultImpl(action);
             boolean interrupted = false;
@@ -187,6 +188,7 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
             }
             currentActionResult = Optional.of(result);
         } else {
+            System.out.println("Non presente");
             currentActionResult = Optional.empty();
         }
         return currentActionResult;
