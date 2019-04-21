@@ -22,9 +22,10 @@ public abstract class AbstractAutomaticActor extends AbstractActionActor impleme
 
     /**
      * @param name the name of the actor
+     * @param isInPlayerParty true if the actor is part of the player's party
      */
-    public AbstractAutomaticActor(final String name) {
-        super(name);
+    public AbstractAutomaticActor(final String name, final boolean isInPlayerParty) {
+        super(name, isInPlayerParty);
     }
 
     /**
@@ -110,7 +111,7 @@ public abstract class AbstractAutomaticActor extends AbstractActionActor impleme
 
     /**
      * Gets the the {@link RandomSet} containing the weighted actions.
-     * @return the randomset which holds the actors' weighted actions
+     * @return the random set which holds the actors' weighted actions
      */
     protected RandomSet<Action> getRandomSet() {
         final RandomSet<Action> set = new RandomSetImpl<>();
