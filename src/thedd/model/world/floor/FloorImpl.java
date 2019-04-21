@@ -14,13 +14,9 @@ import thedd.model.world.room.RoomFactoryImpl;
  */
 public class FloorImpl implements Floor {
 
-    /**
-     * Index of none rooms.
-     */
-    public static final int NONE_ROOMS = -1;
-
     private static final String ERROR_UNSETTEDROOM = "No rooms are setted";
     private static final String ERROR_UNVAILABLEROOM = "No room available";
+    private static final int NONE_ROOMS = -1;
 
     private final RoomFactory factory;
     private final List<Room> rooms;

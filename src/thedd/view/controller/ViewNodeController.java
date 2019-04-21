@@ -22,9 +22,6 @@ public interface ViewNodeController {
 
     /**
      * This method allows to update the view controlled by view controller.
-     * 
-     * Should be overrided if the view controller want to do something to refresh it self
-     * when it's called the refresh of the view.
      */
     void update();
 }

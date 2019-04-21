@@ -16,7 +16,6 @@ import thedd.model.combat.action.result.ActionResult;
 import thedd.model.combat.actor.ActionActor;
 import thedd.view.controller.MainGameViewController;
 import thedd.view.controller.interfaces.GameView;
-import thedd.view.explorationpane.confirmationdialog.OptionDialog;
 import thedd.view.nodewrapper.ViewNodeWrapper;
 
 /**
@@ -25,7 +24,6 @@ import thedd.view.nodewrapper.ViewNodeWrapper;
 public class ViewImpl extends Application implements View {
 
     private static final String ERROR_STAGEUNSETTED = "Stage is not setted";
-
     private static final String GAME_NAME = "The dark destruction";
     private static final double WIDTH = 16;
     private static final double HEIGHT = 9;
@@ -97,23 +95,17 @@ public class ViewImpl extends Application implements View {
      */
     @Override
     public final void update() {
-        if (this.actualScene.isPresent()) {
-            this.actualScene.get().getController().update();
-        }
+        this.actualScene.ifPresent(c -> c.getController().update());
     }
 
     @Override
     public final void showInventory() {
-        if (this.getGameViewController().isPresent()) {
-            this.getGameViewController().get().showInventory();
-        }
+        this.getGameViewController().ifPresent(c -> c.showInventory());
     }
 
     @Override
     public final void showActionSelector() {
-        if (this.getGameViewController().isPresent()) {
-            this.getGameViewController().get().showActionSelector();
-        }
+        this.getGameViewController().ifPresent(c -> c.showActionSelector());
     }
 
     /**
@@ -122,9 +114,7 @@ public class ViewImpl extends Application implements View {
     @Override
     public final void showActionTargets(final List<ActionActor> targets, final List<ActionActor> alliedParty,
                                         final List<ActionActor> enemyParty, final Action action) {
-        if (this.getGameViewController().isPresent()) {
-            this.getGameViewController().get().showTargets(targets, alliedParty, enemyParty, action);
-        }
+        this.getGameViewController().ifPresent(c -> c.showTargets(targets, alliedParty, enemyParty, action));
     }
 
     /**
@@ -132,9 +122,7 @@ public class ViewImpl extends Application implements View {
      */
     @Override
     public final void resetActionTargets() {
-        if (this.getGameViewController().isPresent()) {
-            this.getGameViewController().get().hideTargets();
-        }
+        this.getGameViewController().ifPresent(c -> c.hideTargets());
     }
 
     /**
@@ -142,9 +130,7 @@ public class ViewImpl extends Application implements View {
      */
     @Override
     public final void showActionEffect(final ActionResult result) {
-        if (this.getGameViewController().isPresent()) {
-            this.getGameViewController().get().visualizeAction(result);
-        }
+        this.getGameViewController().ifPresent(c -> c.visualizeAction(result));
     }
 
     /**
@@ -152,9 +138,7 @@ public class ViewImpl extends Application implements View {
      */
     @Override
     public final void showActionResult(final List<ActionResult> result) {
-        if (this.getGameViewController().isPresent()) {
-            this.getGameViewController().get().logAction(result);
-        }
+        this.getGameViewController().ifPresent(c -> this.getGameViewController().get().logAction(result));
     }
 
     private Optional<GameView> getGameViewController() {

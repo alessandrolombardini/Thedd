@@ -20,7 +20,6 @@ import thedd.model.combat.actionexecutor.DefaultCombatActionExecutor;
 import thedd.model.roomevent.RoomEvent;
 import thedd.model.roomevent.RoomEventHelper;
 import thedd.model.roomevent.combatevent.CombatEvent;
-import thedd.model.world.floor.FloorImpl;
 import thedd.model.world.floor.FloorDetails.FloorDetails;
 
 /**
@@ -51,6 +50,7 @@ public class RoomFactoryImpl implements RoomFactory {
 
     private static final String ERROR_NOMOREROOMS = "Rooms are over";
     private static final double PROB_TO_SET_INTERAGIBLE = 0.60;
+    private static final int NONE_ROOMS = -1;
 
     private final EnumMap<RoomContent, Integer> remainingContent;
     private final FloorDetails floorDetails;
@@ -65,7 +65,7 @@ public class RoomFactoryImpl implements RoomFactory {
     public RoomFactoryImpl(final FloorDetails floorDetails) {
         Objects.requireNonNull(floorDetails);
         this.floorDetails = floorDetails;
-        this.roomIndex = FloorImpl.NONE_ROOMS;
+        this.roomIndex = RoomFactoryImpl.NONE_ROOMS;
         this.remainingContent = new EnumMap<RoomContent, Integer>(RoomContent.class);
         this.remainingContent.put(RoomContent.ENEMY, this.floorDetails.getNumberOfEnemies());
         this.remainingContent.put(RoomContent.CONTRAPTION, this.floorDetails.getNumberOfContraptions());
@@ -149,7 +149,6 @@ public class RoomFactoryImpl implements RoomFactory {
         content.put(RoomContent.CONTRAPTION, 0);
         content.put(RoomContent.TREASURE, 0);
         final int maxInteractableSettableAfterNextRoom = MAX_INTERACTABLE_ACTIONS_PER_ROOM * (this.getRemainingBaseRoomsToSet());
-        /* If the number of remaining interactable is high maybe it has to set in this room many of them to be sure to set all*/
         if (this.getRamainingInteractableToSet() > maxInteractableSettableAfterNextRoom || RandomUtils.nextBoolean()) {
             int minInteractable = 0;
             if (this.getRamainingInteractableToSet() > maxInteractableSettableAfterNextRoom) {

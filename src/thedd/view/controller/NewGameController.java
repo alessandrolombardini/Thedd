@@ -76,6 +76,7 @@ public class NewGameController extends ViewNodeControllerImpl {
             this.getView().setState(ApplicationViewState.GAME);
         }
     }
+
     /**
      * {@inheritDoc}
      */
