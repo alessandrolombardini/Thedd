@@ -5,6 +5,8 @@ import java.util.Optional;
 import java.util.Set;
 
 import thedd.model.combat.action.effect.ActionEffect;
+import thedd.model.combat.action.executionpolicies.ExecutionPolicy;
+import thedd.model.combat.action.targeting.ActionTargeting;
 import thedd.model.combat.actor.ActionActor;
 import thedd.model.combat.instance.ActionExecutionInstance;
 import thedd.model.combat.tag.Tag;
@@ -118,14 +120,6 @@ public class ActionDecorator implements Action {
     @Override
     public TargetType getTargetType() {
         return action.getTargetType();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setTargetType(final TargetType targetType) {
-        action.setTargetType(targetType);
     }
 
     /**
@@ -270,6 +264,30 @@ public class ActionDecorator implements Action {
     @Override
     public void setTarget(final ActionActor target) {
         action.setTarget(target);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ActionTargeting getTargetingPolicy() {
+        return action.getTargetingPolicy();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LogMessageType getLogType() {
+        return action.getLogType();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ExecutionPolicy getExecutionPolicy() {
+        return action.getExecutionPolicy();
     }
 
 }
