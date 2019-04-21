@@ -264,7 +264,7 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
                                                                 .collect(Collectors.toList());
 
         return combatInstance.getCombatStatus() == CombatStatus.ROUND_PAUSED
-                || actorsQueue.equals(availableActors);
+                || actorsQueue.containsAll(availableActors);
     }
 
     /**
