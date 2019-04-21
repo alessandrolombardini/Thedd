@@ -32,7 +32,15 @@ public enum LogMessageType {
     /**
      * Actions provided by {@link thedd.model.roomevent.interactableactionperformer.TreasureChest}.
      */
-    TREASURE_ACTION;
+    TREASURE_ACTION,
+    /**
+     * Actions that signal that a status is now applied.
+     */
+    STATUS_APPLY,
+    /**
+     * Actions that signal that a status is now expired.
+     */
+    STATUS_EXPIRE;
 
     /**
      * Gets the message associated with the specified action.
@@ -61,6 +69,12 @@ public enum LogMessageType {
         case TREASURE_ACTION: 
             return success ? String.format("%s opened %s", target.getName(), action.getName())
                     : String.format("%s failed to open %s", target.getName(), action.getName());
+        case STATUS_APPLY:
+            return success ? String.format("%s is under the effects of %s", source, action.getName()) 
+                    : String.format("%s has resisted %s", target.getName(), action.getName());
+        case STATUS_EXPIRE:
+            return success ? String.format("%s is now expired (Previously applied to %s)", action.getName(), source) 
+                    : "[STATUS_EXPIRE: this message should not be seen]";
         default:
             return "[Log message missing]";
         }
