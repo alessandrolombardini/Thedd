@@ -154,6 +154,7 @@ public class ActionSelectorController extends ViewNodeControllerImpl implements 
                 updateDescription();
             }
         } else {
+            this.getView().hideMessage();
             actionSelected = true;
             iconsPane.setDisable(true);
             descriptionPane.setSelectionAndMovement(true);

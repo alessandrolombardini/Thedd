@@ -16,6 +16,7 @@ import thedd.model.combat.action.result.ActionResult;
 import thedd.model.combat.actor.ActionActor;
 import thedd.view.controller.MainGameViewController;
 import thedd.view.controller.interfaces.GameView;
+import thedd.view.explorationpane.confirmationdialog.OptionDialog;
 import thedd.view.nodewrapper.ViewNodeWrapper;
 
 /**
@@ -149,7 +150,7 @@ public class ViewImpl extends Application implements View {
      * {@inheritDoc}
      */
     @Override
-    public final void showActionResult(final ActionResult result) {
+    public final void showActionResult(final List<ActionResult> result) {
         if (this.getGameViewController().isPresent()) {
             this.getGameViewController().get().logAction(result);
         }
@@ -174,6 +175,16 @@ public class ViewImpl extends Application implements View {
         stage.setWidth(STAGE_WIDTH);
         stage.setResizable(true);
         setState(FIRST_APP_STATE);
+    }
+
+    @Override
+    public final void showMessage(final String text) {
+        this.getGameViewController().ifPresent(c -> c.showUserMessage(text));
+    }
+
+    @Override
+    public final void hideMessage() {
+        this.getGameViewController().ifPresent(c -> c.hideUserMessage());
     }
 
 }

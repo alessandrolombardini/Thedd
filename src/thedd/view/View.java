@@ -51,7 +51,7 @@ public interface View {
      * 
      * @param result the result to show
      */
-    void showActionResult(ActionResult result);
+    void showActionResult(List<ActionResult> result);
 
     /**
      * Show inventory.
@@ -62,5 +62,17 @@ public interface View {
      * Show action selector.
      */
     void showActionSelector();
+
+    /**
+     * Show a message to the player.
+     * @param text
+     *          the message to show
+     */
+    void showMessage(String text);
+
+    /**
+     * Hide a message previously shown.
+     */
+    void hideMessage();
 
 }

@@ -3,6 +3,7 @@ package thedd.view.controller;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Optional;
+
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
 import thedd.model.combat.action.Action;
@@ -11,7 +12,6 @@ import thedd.model.combat.actor.ActionActor;
 import thedd.view.ViewNode;
 import thedd.view.controller.interfaces.ExplorationView;
 import thedd.view.controller.interfaces.GameView;
-import thedd.view.nodewrapper.ViewNodeWrapper;
 import thedd.view.nodewrapper.ViewNodeWrapper;
 
 /**
@@ -88,7 +88,7 @@ public class MainGameViewController extends ViewNodeControllerImpl implements Ga
      * {@inheritDoc}
      */
     @Override
-    public final void logAction(final ActionResult result) {
+    public final void logAction(final List<ActionResult> result) {
         if (this.getExplorationPaneController().isPresent()) {
             this.getExplorationPaneController().get().logAction(result);
         }
@@ -138,5 +138,15 @@ public class MainGameViewController extends ViewNodeControllerImpl implements Ga
                                                      .filter(c -> c instanceof ExplorationView)
                                                      .map(c -> (ExplorationView) c)
                                                      .findAny();
+    }
+
+    @Override
+    public final void showUserMessage(final String text) {
+        getExplorationPaneController().ifPresent(c -> c.showUserMessage(text));
+    }
+
+    @Override
+    public final void hideUserMessage() {
+        getExplorationPaneController().ifPresent(c -> c.hideUserMessage());
     }
 }

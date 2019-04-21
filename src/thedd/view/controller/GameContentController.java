@@ -32,6 +32,7 @@ import thedd.utils.observer.Observer;
 import thedd.view.controller.interfaces.ExplorationView;
 import thedd.view.explorationpane.ExplorationPaneImpl;
 import thedd.view.explorationpane.TopStackPane;
+import thedd.view.explorationpane.confirmationdialog.OptionDialog;
 import thedd.view.explorationpane.enums.PartyType;
 import thedd.view.explorationpane.enums.TargetSelectionState;
 import thedd.view.explorationpane.logger.LoggerImpl;
@@ -56,6 +57,8 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
     private final List<ActionActor> enemyParty = new ArrayList<>();
     private final ImageLoader imgLoader = new ImageLoaderImpl();
     private Image currentBackgroundImage; 
+    private Optional<OptionDialog> messageDialog = Optional.empty();
+    private volatile List<LoggerManager> logManagers = new ArrayList<>();
 
     @Override
     public final void update() {
@@ -90,6 +93,7 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
                 iapEvents.forEach(iap -> enemyImages.add(iapImage(iap)));
                 explorationPane.setEnemyImages(enemyImages);
                 IntStream.range(0, iapEvents.size()).forEach(i -> explorationPane.updatePositionTooltip(new ImmutablePair<PartyType, Integer>(PartyType.ENEMY, i), iapTooltip(iapEvents.get(i))));
+                //this.getController().updateStatistics(this.getController().getPlayer());
             }
         }
         explorationPane.setRoomAdvancerVisible(state == TargetSelectionState.EXPLORATION && !this.getController().isCurrentLastRoom());
@@ -172,6 +176,28 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
         }
     }
 
+    @Override
+    public final void showUserMessage(final String text) {
+        messageDialog = Optional.of(new OptionDialog());
+        messageDialog.get().setText(text);
+        messageDialog.get().setMouseTransparent(true);
+
+        final int two = 2;
+        final int six = 6;
+        final int bottomPadding = 10;
+        messageDialog.get().getWidthProperty().bind(explorationPane.widthProperty().divide(two));
+        messageDialog.get().getHeightProperty().bind(explorationPane.heightProperty().divide(six));
+        messageDialog.get().translateXProperty().bind(explorationPane.widthProperty().subtract(messageDialog.get().widthProperty()).divide(two));
+        messageDialog.get().translateYProperty().bind(explorationPane.heightProperty().subtract(messageDialog.get().getHeightProperty().add(bottomPadding)).divide(two));
+        mainPane.getChildren().add(messageDialog.get());
+    }
+
+    @Override
+    public final void hideUserMessage() {
+        messageDialog.ifPresent(m -> mainPane.getChildren().remove(m));
+        messageDialog = Optional.empty();
+    }
+
     private void continueInput() {
         performing.ifPresent(p -> {
             p.setTargets(this.getController().getPlayer(), Collections.emptyList());
@@ -229,9 +255,9 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
     }
 
     @Override
-    public final void logAction(final ActionResult result) {
+    public final void logAction(final List<ActionResult> results) {
             final LinkedList<String> queue = new LinkedList<>();
-            result.getResults().forEach(r -> {
+            results.forEach(result -> result.getResults().forEach(r -> {
                 switch (r.getRight()) {
                 case HIT:
                     queue.add(result.getAction().getLogMessage(result.getAction().getTarget().get(), true));
@@ -249,12 +275,13 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
                 default:
                     break;
                 }
-            });
+            }));
             final LoggerManager lm = new LoggerManager(log, queue);
             log.setLoggerManager(lm);
             final Thread t = new Thread(lm);
             t.setDaemon(true);
             t.start();
+
     }
 
     @Override

@@ -1,5 +1,6 @@
 package thedd.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -45,6 +46,7 @@ public class ControllerImpl implements Controller {
     private PlayerInformation playerInfo;
     private StatisticsInformation statisticsInfo;
     private Optional<ActionExecutor> actionExecutor = Optional.empty();
+    private final List<ActionResult> roundResults = new ArrayList<>();
 
     /**
      * Create a new Controller instance.
@@ -194,7 +196,9 @@ public class ControllerImpl implements Controller {
     public void undoActionSelection() {
         final ActionActor playerActor = this.model.getPlayerCharacter();
         playerActor.resetSelectedAction();
-        // call view to tell player to select a new action
+        // call view to tell player to select a new action [DONE]
+        view.showMessage("Select an action");
+        view.showActionSelector();
         view.resetActionTargets();
     }
 
@@ -203,6 +207,8 @@ public class ControllerImpl implements Controller {
      */
     @Override
     public void targetSelected(final ActionActor target) {
+        view.hideMessage();
+        System.out.println("Target selected");
         final ActionActor playerActor = this.model.getPlayerCharacter();
         final ActionExecutor currentExecutor = actionExecutor.get();
         playerActor.getSelectedAction().ifPresent(a -> {
@@ -229,8 +235,11 @@ public class ControllerImpl implements Controller {
         instance.addPlayerPartyMember(playerActor);
         actionExecutor.get().setExecutionInstance(instance);
         if (action.getTargets().isEmpty()) {
-            // call view to tell player to select a target
-            
+            System.out.println("Oggetto usato");
+            // call view to tell player to select a target [DONE]
+            view.showMessage("Select a target");
+            final List<ActionActor> targetables = nonDeadTargets(action.getValidTargets(instance));
+            view.showActionTargets(targetables, instance.getPlayerParty(), instance.getNPCsParty(), action);
         } else {
             evaluateNextAction();
         }
@@ -247,9 +256,9 @@ public class ControllerImpl implements Controller {
         final ActionExecutor executor = actionExecutor.get();
         executor.executeCurrentAction();
         // tell view to log
-        view.showActionResult(executor.getLastActionResult().get());
         evaluateExecutionState();
-        view.update();
+        //
+        //togli view.showActionResult(executor.getLastActionResult().get());
     }
 
     /**
@@ -266,23 +275,40 @@ public class ControllerImpl implements Controller {
         switch (status) {
         case COMBAT_ENDED:
             actionExecutor = Optional.empty();
+            view.showActionResult(roundResults);
+            roundResults.clear();
             break;
         case PLAYER_LOST:
+            System.out.println("player morto");
             // TODO
             break;
         case PLAYER_WON:
+            System.out.println("Player vivo");
+            view.showActionResult(roundResults);
+            roundResults.clear();
+            view.update();
             // TODO
             break;
         case ROUND_IN_PROGRESS:
             evaluateNextAction();
             break;
         case ROUND_PAUSED:
-            //tell view to select a new action (by extension, enable all appropriate view components) 
+            //tell view to select a new action (by extension, enable all appropriate view components)
+            view.showActionResult(roundResults);
+            roundResults.clear();
+            view.showMessage("Select an action");
+            view.showActionSelector();
+            break;
+        case ROUND_ENDED:
+            view.showActionResult(roundResults);
+            roundResults.clear();
+            view.showMessage("Select an action");
+            view.showActionSelector();
+            //view.showMessage("Select an action");
+            //view.showActionSelector();
+            executor.prepareNextRound();
             break;
         default:
-            executor.prepareNextRound();
-            // view.showNextTurn ?
-            // tell view to select a new action
             break;
         }
     }
@@ -300,6 +326,9 @@ public class ControllerImpl implements Controller {
             evaluateNextAction();
         } else {
             // call view to tell player to select an action
+            System.out.println("Messaggio");
+            view.showActionSelector();
+            view.showMessage("Select an action");
         }
     }
 
@@ -309,7 +338,10 @@ public class ControllerImpl implements Controller {
             final Optional<ActionResult> result = a.evaluateCurrentAction();
             // view visualize(result)
             if (result.isPresent()) {
-                view.showActionEffect(result.get());
+                roundResults.add(result.get());
+                //salva actionResult da qualche parte
+                executeCurrentAction();
+                //togli view.showActionEffect(result.get());
             } else {
                 evaluateExecutionState();
             }
@@ -334,9 +366,11 @@ public class ControllerImpl implements Controller {
         model.getPlayerCharacter().addActionToQueue(action.getCopy(), true);
         // call view to tell player to select a target (even if the action target type
         // is SELF?)
+
         final ActionExecutionInstance aei = actionExecutor.get().getExecutionInstance();
         final List<ActionActor> targetables = nonDeadTargets(action.getValidTargets(aei));
         view.showActionTargets(targetables, aei.getPlayerParty(), aei.getNPCsParty(), action);
+        view.showMessage("Select a target");
     }
 
     @Override
@@ -349,7 +383,7 @@ public class ControllerImpl implements Controller {
                                                                     .findAny()
                                                                     .map(e -> (CombatEvent) e)
                                                                     .get();
-                this.getPlayer().setIsInCombat(true);
+                //this.getPlayer().setIsInCombat(true);
                 this.startCombat(combat.getHostileEncounter());
                 this.view.update();
             } else {
