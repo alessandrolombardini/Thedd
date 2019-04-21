@@ -9,6 +9,7 @@ import java.util.function.Function;
 
 import thedd.model.character.statistics.Statistic;
 import thedd.model.combat.action.Action;
+import thedd.model.combat.action.TargetType;
 import thedd.model.combat.action.effect.ActionEffect;
 import thedd.model.combat.action.effect.ActionModifierAdderEffect;
 import thedd.model.combat.action.effect.DamageResistanceAdderEffect;
@@ -154,8 +155,8 @@ public final class ItemFactory {
         private static final List<Action> ACTIONS = new ArrayList<>();
 
         static {
-            ACTIONS.add(new NastyStrike());
-            ACTIONS.add(new DivineIntervention());
+            ACTIONS.add(new NastyStrike(TargetType.EVERYONE));
+            ACTIONS.add(new DivineIntervention(TargetType.EVERYONE));
         }
 
         private static Action getRandomAdditionalAction() {
