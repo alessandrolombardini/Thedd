@@ -1,12 +1,10 @@
 package thedd.view.actionselector;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import javafx.scene.image.Image;
-import thedd.model.combat.action.Action;
 import thedd.view.imageloader.DirectoryPicker;
 import thedd.view.imageloader.ImageLoaderImpl;
 
