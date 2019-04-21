@@ -1,6 +1,8 @@
 package thedd.view.imageloader;
 
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import javafx.scene.image.Image;
 
@@ -9,6 +11,7 @@ import javafx.scene.image.Image;
  */
 public final class ImageLoaderImpl implements ImageLoader {
     private final Image defaultImage = new Image("images/default.png");
+    private static final Map<String, Image> IMAGE_CACHE = new HashMap<>();
 
     /**
      * {@inheritDoc}
@@ -21,7 +24,10 @@ public final class ImageLoaderImpl implements ImageLoader {
             System.err.println("Image " + fileName + " not found.");
             return this.defaultImage;
         }
-        return new Image(path.toString());
+        if (!IMAGE_CACHE.containsKey(path.toString())) {
+            IMAGE_CACHE.put(path.toString(), new Image(path.toString()));
+        }
+        return IMAGE_CACHE.get(path.toString());
     }
 
 }
