@@ -132,37 +132,6 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
         }
     }
 
-    private void applyParry(final Action action, final ActionActor target) {
-        if (combatInstance.getNPCsParty().contains(target)) { //Maybe check if target is Automatic AND his behavior is active
-            setNextAIMove((AutomaticActionActor) target);
-        } else {
-            combatInstance.setCombatStatus(CombatStatus.ROUND_PAUSED);
-        }
-    }
-
-    private void checkStatusResistance(final Action action, final ActionActor target) {
-        if (action.getCategory() == ActionCategory.STATUS
-                && target.equals(action.getSource().get())) {
-                final ActionActor afflictedActor = action.getSource().get();
-                afflictedActor.getStatuses().stream()
-                                             .filter(s -> s.getAction().isPresent())
-                                             .filter(s -> s.getAction().get().equals(action))
-                                             .findFirst()
-                                             .ifPresent(this::depleteStatus);
-        }
-    }
-
-    private void applyEffects(final Action action, final ActionActor target) {
-        action.applyEffects(target);
-        if (target instanceof BasicCharacter
-                && !((BasicCharacter) target).isAlive()) {
-            actorsQueue.remove(target);
-        } else if (canTargetParry(target)) {
-            target.resetSelectedAction();
-        }
-        updateNewlyAppliedStatuses(target);
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -384,6 +353,38 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
                 && currentAction.get().getCategory() != ActionCategory.STATUS
                 && target.getSelectedAction().get().getTags().contains(ActionTag.PARRY)
                 && !actorsQueue.contains(target);
+    }
+
+    private void applyParry(final Action action, final ActionActor target) {
+        target.resetSelectedAction();
+        if (combatInstance.getNPCsParty().contains(target)) { //Maybe check if target is Automatic AND his behavior is active
+            setNextAIMove((AutomaticActionActor) target);
+        } else {
+            combatInstance.setCombatStatus(CombatStatus.ROUND_PAUSED);
+        }
+    }
+
+    private void checkStatusResistance(final Action action, final ActionActor target) {
+        if (action.getCategory() == ActionCategory.STATUS
+                && target.equals(action.getSource().get())) {
+                final ActionActor afflictedActor = action.getSource().get();
+                afflictedActor.getStatuses().stream()
+                                             .filter(s -> s.getAction().isPresent())
+                                             .filter(s -> s.getAction().get().equals(action))
+                                             .findFirst()
+                                             .ifPresent(this::depleteStatus);
+        }
+    }
+
+    private void applyEffects(final Action action, final ActionActor target) {
+        action.applyEffects(target);
+        if (target instanceof BasicCharacter
+                && !((BasicCharacter) target).isAlive()) {
+            actorsQueue.remove(target);
+        } else if (canTargetParry(target)) {
+            target.resetSelectedAction();
+        }
+        updateNewlyAppliedStatuses(target);
     }
 
     private void updateTurnStartStatuses(final ActionActor actor) {
