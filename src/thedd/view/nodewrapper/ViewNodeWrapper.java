@@ -74,7 +74,6 @@ public final class ViewNodeWrapper {
             loader.setLocation(location);
             final Node node = (Node) loader.load();
             final ViewNodeControllerImpl subViewController = loader.getController();
-            subViewController.init(view, controller);
             return new ViewNodeWrapper(node, subViewController);
         } catch (IOException e) {
             e.printStackTrace();

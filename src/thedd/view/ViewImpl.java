@@ -77,6 +77,7 @@ public class ViewImpl extends Application implements View {
         this.actualScene = Optional.of(ViewNodeWrapper.createViewNodeWrapper(state.getViewNode(), 
                                                                                     this.controller, 
                                                                                     this));
+        this.actualScene.get().getController().init(this, this.controller);
         this.actualViewState = Optional.of(state);
         final Scene newScene = new Scene((Parent) this.actualScene.get().getNode());
         final Stage stage = this.stage.get();

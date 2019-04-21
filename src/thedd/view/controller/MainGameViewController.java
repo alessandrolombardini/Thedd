@@ -123,6 +123,7 @@ public class MainGameViewController extends ViewNodeControllerImpl implements Ga
     private void showNode(final AnchorPane pane, final ViewNode typeOfNode, final Position pos) {
         final ViewNodeWrapper node = ViewNodeWrapper.createViewNodeWrapper(typeOfNode, this.getController(),
                                                                                   this.getView());
+        node.getController().init(this.getView(), this.getController());
         final int nodeToChange = 0;
         if (pane.getChildren().isEmpty()) {
             pane.getChildren().add(nodeToChange, node.getNode());
