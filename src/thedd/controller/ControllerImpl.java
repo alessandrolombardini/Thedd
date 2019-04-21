@@ -75,7 +75,7 @@ public class ControllerImpl implements Controller {
             IntStream.range(0, 15).forEach(i -> {
                 charac.getInventory().addItem(ItemFactory.getRandomItem());
             });
-
+            //nextRoom();
             return true;
         }
         return false;
@@ -286,6 +286,7 @@ public class ControllerImpl implements Controller {
             System.out.println("Player vivo");
             view.showActionResult(roundResults);
             roundResults.clear();
+            this.view.showInventory();
             view.update();
             // TODO
             break;
