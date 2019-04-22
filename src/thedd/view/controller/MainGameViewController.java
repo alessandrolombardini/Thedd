@@ -57,9 +57,11 @@ public class MainGameViewController extends ViewNodeControllerImpl implements Ga
 
     @Override
     protected final void initView() {
+        this.showNode(gameContent, INIT_NODE_UP, Position.UP);
         this.showNode(inventoryContent, INIT_NODE_DOWN_SX, Position.DOWN_SX);
         this.showNode(statisticsContent, INIT_NODE_DOWN_DX, Position.DOWN_DX);
-        this.showNode(gameContent, INIT_NODE_UP, Position.UP);
+        getController().nextRoom();
+        update();
         this.gameContent.toFront();
     }
 
@@ -84,7 +86,7 @@ public class MainGameViewController extends ViewNodeControllerImpl implements Ga
      * {@inheritDoc}
      */
     @Override
-    public final void logAction(final List<ActionResult> result) {
+    public final void logAction(final ActionResult result) {
         this.getExplorationPaneController().ifPresent(c -> c.logAction(result));
     }
 
