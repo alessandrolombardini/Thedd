@@ -166,17 +166,6 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
      */
     @Override
     public void updateExecutionStatus() {
-        if (combatInstance.getNumberOfAliveCharacters(combatInstance.getPlayerParty()) <= 0) {
-            combatInstance.setCombatStatus(CombatStatus.PLAYER_LOST);
-            return;
-        } else if (combatInstance.getNumberOfAliveCharacters(combatInstance.getNPCsParty()) <= 0) {
-            combatInstance.setCombatStatus(CombatStatus.PLAYER_WON);
-            combatInstance.getPlayerParty().forEach(a -> {
-                a.setIsInCombat(false);
-                a.resetActionsQueue();
-            });
-            return;
-        }
 
         if (currentActor.isPresent() && currentActor.get().getActionQueue().isEmpty()) {
             final ActionActor actor = currentActor.get();
@@ -197,6 +186,21 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
             combatInstance.getAllParties().forEach(ActionActor::resetSelectedAction);
             combatInstance.getAllParties().forEach(a -> a.getStatuses().forEach(s -> s.setIsUpdated(false)));
         }
+
+        if (!(combatInstance.getCombatStatus() == CombatStatus.ROUND_IN_PROGRESS)) {
+            if (combatInstance.getNumberOfAliveCharacters(combatInstance.getPlayerParty()) <= 0) {
+                combatInstance.setCombatStatus(CombatStatus.PLAYER_LOST);
+                return;
+            } else if (combatInstance.getNumberOfAliveCharacters(combatInstance.getNPCsParty()) <= 0) {
+                combatInstance.setCombatStatus(CombatStatus.PLAYER_WON);
+                combatInstance.getPlayerParty().forEach(a -> {
+                    a.setIsInCombat(false);
+                    a.resetActionsQueue();
+                });
+                return;
+            }
+        }
+
     }
 
     /**
@@ -262,7 +266,6 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
                                                                 combatInstance.getNPCsParty().stream())
                                                                 .filter(a -> canActorAct(a))
                                                                 .collect(Collectors.toList());
-
         return combatInstance.getCombatStatus() == CombatStatus.ROUND_PAUSED
                 || actorsQueue.containsAll(availableActors);
     }
