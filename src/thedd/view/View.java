@@ -49,9 +49,9 @@ public interface View {
     /**
      * Show result of an action.
      * 
-     * @param result the result to show
+     * @param actionResult the result to show
      */
-    void showActionResult(List<ActionResult> result);
+    void showActionResult(ActionResult actionResult);
 
     /**
      * Show inventory.
