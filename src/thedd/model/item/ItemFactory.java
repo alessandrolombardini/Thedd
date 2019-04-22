@@ -15,6 +15,7 @@ import thedd.model.combat.action.effect.ActionModifierAdderEffect;
 import thedd.model.combat.action.effect.DamageResistanceAdderEffect;
 import thedd.model.combat.action.effect.EquipmentStatisticChangerEffect;
 import thedd.model.combat.action.implementations.DivineIntervention;
+import thedd.model.combat.action.implementations.FieryTouch;
 import thedd.model.combat.action.implementations.NastyStrike;
 import thedd.model.combat.modifier.DamageAdderModifier;
 import thedd.model.combat.tag.EffectTag;
@@ -156,7 +157,7 @@ public final class ItemFactory {
 
         static {
             ACTIONS.add(new NastyStrike(TargetType.EVERYONE));
-            ACTIONS.add(new DivineIntervention(TargetType.EVERYONE));
+            ACTIONS.add(new FieryTouch(TargetType.EVERYONE));
         }
 
         private static Action getRandomAdditionalAction() {
