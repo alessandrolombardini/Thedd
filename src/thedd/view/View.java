@@ -74,7 +74,7 @@ public interface View {
      * Hide a message previously shown.
      */
     void hideMessage();
-    
+
     /**
      * Updates the statistic panel.
      */
