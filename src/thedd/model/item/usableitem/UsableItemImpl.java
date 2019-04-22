@@ -66,7 +66,7 @@ public class UsableItemImpl extends AbstractItem implements UsableItem {
 
     @Override
     public final Action getAction() {
-        return action;
+        return action.getCopy();
     }
 
     @Override
