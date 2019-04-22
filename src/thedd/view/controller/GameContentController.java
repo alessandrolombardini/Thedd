@@ -9,12 +9,9 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
-
 import javafx.animation.TranslateTransition;
-import javafx.application.Platform;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
@@ -26,6 +23,7 @@ import javafx.util.Duration;
 import thedd.model.character.BasicCharacter;
 import thedd.model.character.statistics.StatValues;
 import thedd.model.character.statistics.Statistic;
+import thedd.model.character.types.DarkDestructor;
 import thedd.model.combat.action.Action;
 import thedd.model.combat.action.result.ActionResult;
 import thedd.model.combat.actor.ActionActor;
@@ -55,7 +53,6 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
     private TopStackPane mainPane;
 
     private final ExplorationPaneImpl explorationPane = new ExplorationPaneImpl();
-    private final LoggerImpl log = new LoggerImpl();
     private TargetSelectionState state;
     private Optional<Action> performing = Optional.empty();
     private final List<ActionActor> alliedParty = new ArrayList<>();
@@ -63,9 +60,14 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
     private final ImageLoader imgLoader = new ImageLoaderImpl();
     private Image currentBackgroundImage; 
     private Optional<OptionDialog> messageDialog = Optional.empty();
+    private boolean firstUpdate = true;
 
     @Override
     public final void update() {
+        if (firstUpdate) {
+            firstUpdate = false;
+            setNewBackgroundImage();
+        }
         final List<Image> alliedImages = new ArrayList<>();
         alliedImages.add(imgLoader.loadSingleImage(DirectoryPicker.ALLY_BATTLE, "renato_corteccioni"));
         explorationPane.setAllyImages(alliedImages);
@@ -105,7 +107,6 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
 
     @Override
     protected final void initView() {
-        //state = TargetSelectionState.EXPLORATION;
         mainPane.setDialogAccepted(() -> continueInput());
         mainPane.setDialogDeclined(() -> cancelInput()); 
         mainPane.getChildren().add(explorationPane);
@@ -119,20 +120,7 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
         explorationPane.prefHeightProperty().bind(mainPane.heightProperty());
         explorationPane.autosize();
 
-        final int two = 2;
-        final int six = 6;
-        final int bottomPadding = 10;
-
-        log.setVisible(false);
-        log.setText("");
-        log.getWidthProperty().bind(explorationPane.widthProperty().divide(two));
-        log.getHeightProperty().bind(explorationPane.heightProperty().divide(six));
-        log.translateYProperty().bind(explorationPane.heightProperty().subtract(log.getHeightProperty().add(bottomPadding)).divide(two));
-        mainPane.getChildren().add(log);
         mainPane.autosize();
-        this.getController().nextRoom();
-        setNewBackgroundImage();
-        update();
     }
 
     @Override
@@ -155,20 +143,19 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
                 break;
             case COMBAT_INFORMATION:
                 if (!message.get().getLeft()) {
-                    if (message.get().getRight().getLeft() == PartyType.ALLIED && message.get().getRight().getRight() == 0) {
-                        this.getController().updateStatistics(this.getController().getPlayer());
-                    } else if (message.get().getRight().getLeft() == PartyType.ENEMY) {
-                        final CombatEvent ce = (CombatEvent) this.getController().getRoomEvents().stream().filter(re -> re.getType() == RoomEventType.COMBAT_EVENT).findFirst().get();
-                        this.getController().updateStatistics((BasicCharacter) ce.getHostileEncounter().getNPCs().stream().collect(Collectors.toList()).get(message.get().getRight().getRight()));
-                    } 
+                    displayStatistics(message); 
                 } else {
                     this.getController().updateStatistics(this.getController().getPlayer());
                 }
                 break;
             case COMBAT_TARGET:
+                if (!message.get().getLeft()) {
+                    displayStatistics(message);
+                }
                 if (message.get().getLeft()) {
                     final List<ActionActor> selectedParty = getSelectedParty(Objects.requireNonNull(message.get().getRight().getLeft()));
                     this.getController().targetSelected(selectedParty.get(message.get().getRight().getRight()));
+                    this.getController().updateStatistics(this.getController().getPlayer());
                     alliedParty.clear();
                     enemyParty.clear();
                 }
@@ -188,9 +175,12 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
 
     @Override
     public final void showUserMessage(final String text) {
-        messageDialog = Optional.of(new OptionDialog());
+        if (!messageDialog.isPresent()) {
+            messageDialog = Optional.of(new OptionDialog());
+            messageDialog.get().setMouseTransparent(true);
+            mainPane.getChildren().add(messageDialog.get());
+        }
         messageDialog.get().setText(text);
-        messageDialog.get().setMouseTransparent(true);
 
         final int two = 2;
         final int six = 6;
@@ -200,7 +190,6 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
         messageDialog.get().translateXProperty().bind((explorationPane.widthProperty().subtract(messageDialog.get().getWidthProperty())).divide(two));
         messageDialog.get().translateYProperty().bind(new SimpleDoubleProperty(bottomPadding));
         messageDialog.get().autosize();
-        mainPane.getChildren().add(messageDialog.get());
     }
 
     @Override
@@ -266,9 +255,9 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
     }
 
     @Override
-    public final void logAction(final List<ActionResult> results) {
+    public final void logAction(final ActionResult result) {
             final LinkedList<String> queue = new LinkedList<>();
-            results.forEach(result -> result.getResults().forEach(r -> {
+            result.getResults().forEach(r -> {
                 switch (r.getRight()) {
                 case HIT:
                     queue.add(result.getAction().getLogMessage(result.getAction().getTarget().get(), true));
@@ -286,7 +275,14 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
                 default:
                     break;
                 }
-            }));
+                if (r.getKey() instanceof BasicCharacter && !((BasicCharacter) r.getKey()).isAlive()) {
+                    queue.add(r.getKey().getName() + " has been defeated.");
+                    if (r.getKey() instanceof DarkDestructor) {
+                        queue.add("You have completed your mission, brave knight!");
+                    }
+                }
+            });
+            final LoggerImpl log = generateLog();
             final LoggerManager lm = new LoggerManager(log, queue);
             log.setLoggerManager(lm);
             final EventHandler<MouseEvent> filter = new EventHandler<MouseEvent>() {
@@ -299,8 +295,9 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
             final EventHandler<WorkerStateEvent> loggerCloser = new EventHandler<WorkerStateEvent>() {
                 @Override
                 public void handle(final WorkerStateEvent event) {
-                    Platform.runLater(() -> log.setVisibility(false));
+                    mainPane.getChildren().remove(log);
                     mainPane.removeEventFilter(MouseEvent.ANY, filter);
+                    getController().evaluateExecutionState();
                 }
             };
             lm.setOnCancelled(loggerCloser);
@@ -320,9 +317,13 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
         if (Objects.requireNonNull(target) instanceof BasicCharacter) {
             final BasicCharacter bcTarget = (BasicCharacter) target;
             final StatValues targetHP = bcTarget.getStat(Statistic.HEALTH_POINT);
+            final double hitChance = action.isPresent() ? Objects.requireNonNull(action).get().getHitChance(target) : 0;
+            final String hitC = String.format("%.2f%%", hitChance * 100);
+            final Optional<Action> targetAction = target.getSelectedAction();
             final String tooltip = bcTarget.getName() + '\n'
                                    + "HP: " + targetHP.getActual() + "/" + targetHP.getMax() + '\n'
-                                   + (action.isPresent() ? "Chanche to hit: " + Objects.requireNonNull(action).get().getHitChance(target) + '\n' : "");
+                                   + (action.isPresent() ? "Chanche to hit: " + hitC  + '\n' : "")
+                                   + (targetAction.isPresent() ? "Next action: " + targetAction.get().getName() + '\n' : "");
             explorationPane.updatePositionTooltip(Objects.requireNonNull(position), tooltip);
             if (bcTarget.getStat(Statistic.HEALTH_POINT).getActual() <= 0) {
                     explorationPane.disableViewer(position);
@@ -359,8 +360,8 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
 
         final int transitionTime = 1;
         final TranslateTransition tt = new TranslateTransition(Duration.seconds(transitionTime), node);
-        tt.setFromX(explorationPane.getWidth());
-        tt.setToX(-node.getWidth());
+        tt.fromXProperty().bind(explorationPane.widthProperty());
+        tt.toXProperty().bind(explorationPane.widthProperty().multiply(-1));
         tt.setOnFinished(e -> {
             mainPane.getChildren().remove(node);
         });
@@ -399,6 +400,30 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
             final int numOfBG = 2;
             final Random r = new Random();
             return imgLoader.loadSingleImage(DirectoryPicker.BACKGROUND, "background" + r.nextInt(numOfBG));
+        }
+    }
+
+    private LoggerImpl generateLog() {
+        final LoggerImpl log = new LoggerImpl();
+        final int two = 2;
+        final int six = 6;
+        final int bottomPadding = 10;
+
+        log.setVisible(false);
+        log.setText("");
+        log.getWidthProperty().bind(explorationPane.widthProperty().divide(two));
+        log.getHeightProperty().bind(explorationPane.heightProperty().divide(six));
+        log.translateYProperty().bind(explorationPane.heightProperty().subtract(log.getHeightProperty().add(bottomPadding)).divide(two));
+        mainPane.getChildren().add(log);
+        return log;
+    }
+
+    private void displayStatistics(final Optional<Pair<Boolean, Pair<PartyType, Integer>>> message) {
+        if (message.get().getRight().getLeft() == PartyType.ALLIED && message.get().getRight().getRight() == 0) {
+            this.getController().updateStatistics(this.getController().getPlayer());
+        } else if (message.get().getRight().getLeft() == PartyType.ENEMY) {
+            final CombatEvent ce = (CombatEvent) this.getController().getRoomEvents().stream().filter(re -> re.getType() == RoomEventType.COMBAT_EVENT).findFirst().get();
+            this.getController().updateStatistics((BasicCharacter) ce.getHostileEncounter().getNPCs().stream().collect(Collectors.toList()).get(message.get().getRight().getRight()));
         }
     }
 }
