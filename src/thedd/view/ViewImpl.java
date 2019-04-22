@@ -90,6 +90,51 @@ public class ViewImpl extends Application implements View {
         }
     }
 
+    private Optional<GameView> getGameViewController() {
+        if (this.actualViewState.isPresent() && this.actualViewState.get() == ApplicationViewState.GAME
+                && this.actualScene.get().getController() instanceof MainGameViewController) {
+            final GameView gameView = (GameView) (this.actualScene.get().getController());
+            return Optional.of(gameView);
+        }
+        return Optional.empty();
+    }
+
+    private void initView() {
+        if (!this.stage.isPresent()) {
+            throw new IllegalStateException(ERROR_STAGEUNSETTED);
+        }
+        final Stage stage = this.stage.get();
+        stage.setTitle(GAME_NAME);
+        stage.setHeight(STAGE_HEIGHT);
+        stage.setWidth(STAGE_WIDTH);
+        stage.setResizable(true);
+        setState(FIRST_APP_STATE);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final void showMessage(final String text) {
+        this.getGameViewController().ifPresent(c -> c.showUserMessage(text));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final void hideMessage() {
+        this.getGameViewController().ifPresent(c -> c.hideUserMessage());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final void partialUpdate() {
+        getGameViewController().ifPresent(c -> ((MainGameViewController) c).partialUpdate());
+    }
+    
     /**
      * {@inheritDoc}
      */
@@ -98,11 +143,17 @@ public class ViewImpl extends Application implements View {
         this.actualScene.ifPresent(c -> c.getController().update());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final void showInventory() {
         this.getGameViewController().ifPresent(c -> c.showInventory());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final void showActionSelector() {
         this.getGameViewController().ifPresent(c -> c.showActionSelector());
@@ -141,40 +192,5 @@ public class ViewImpl extends Application implements View {
         this.getGameViewController().ifPresent(c -> this.getGameViewController().get().logAction(result));
     }
 
-    private Optional<GameView> getGameViewController() {
-        if (this.actualViewState.isPresent() && this.actualViewState.get() == ApplicationViewState.GAME
-                && this.actualScene.get().getController() instanceof MainGameViewController) {
-            final GameView gameView = (GameView) (this.actualScene.get().getController());
-            return Optional.of(gameView);
-        }
-        return Optional.empty();
-    }
-
-    private void initView() {
-        if (!this.stage.isPresent()) {
-            throw new IllegalStateException(ERROR_STAGEUNSETTED);
-        }
-        final Stage stage = this.stage.get();
-        stage.setTitle(GAME_NAME);
-        stage.setHeight(STAGE_HEIGHT);
-        stage.setWidth(STAGE_WIDTH);
-        stage.setResizable(true);
-        setState(FIRST_APP_STATE);
-    }
-
-    @Override
-    public final void showMessage(final String text) {
-        this.getGameViewController().ifPresent(c -> c.showUserMessage(text));
-    }
-
-    @Override
-    public final void hideMessage() {
-        this.getGameViewController().ifPresent(c -> c.hideUserMessage());
-    }
-
-    @Override
-    public final void partialUpdate() {
-        getGameViewController().ifPresent(c -> ((MainGameViewController) c).partialUpdate());
-    }
 
 }
