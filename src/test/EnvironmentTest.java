@@ -128,13 +128,11 @@ public class EnvironmentTest {
         final FloorDetailsFactory factory = new FloorDetailsFactoryImpl();
         for (int i = EnvironmentImpl.MIN_NUMBER_OF_ROOMS; i < numberOfTest; i++) {
             final FloorDetails details = factory.createFloorDetails(diff, i, false);
-            System.out.println("Dettaglio: " + details);
             final RoomFactory roomFactory = new RoomFactoryImpl(details);
             int numberOfCombat = 0;
             int numberOfInteractable = 0;
             for (int j = 0; j < i; j++) {
                 final List<RoomEvent> events = roomFactory.createRoom().getEvents();
-                System.out.println("Stanza: " + events);
                 numberOfCombat += this.getNumberOfCombat(events);
                 numberOfInteractable += this.getNumberOfInteractable(events);
             }
