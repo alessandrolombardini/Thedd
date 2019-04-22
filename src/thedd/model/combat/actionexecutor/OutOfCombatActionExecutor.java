@@ -143,6 +143,7 @@ public class OutOfCombatActionExecutor implements ActionExecutor {
         }
         if (!iterator.hasNext() && !action.isPresent()) {
             combatInstance.getAllParties().forEach(a -> a.getStatuses().forEach(s -> s.setIsUpdated(false)));
+            combatInstance.getAllParties().forEach(a -> a.resetActionsQueue());
             combatInstance.setCombatStatus(CombatStatus.COMBAT_ENDED);
         }
     }
