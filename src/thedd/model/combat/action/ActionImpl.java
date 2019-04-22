@@ -8,7 +8,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -17,8 +16,6 @@ import thedd.model.combat.action.executionpolicies.ExecutionPolicy;
 import thedd.model.combat.action.targeting.ActionTargeting;
 import thedd.model.combat.actor.ActionActor;
 import thedd.model.combat.instance.ActionExecutionInstance;
-import thedd.model.combat.modifier.HitChanceModifier;
-import thedd.model.combat.modifier.Modifier;
 import thedd.model.combat.modifier.ModifierActivation;
 import thedd.model.combat.tag.Tag;
 
@@ -204,7 +201,7 @@ public class ActionImpl implements Action {
      */
     @Override
     public void applyEffects(final ActionActor target) {
-        applyModifiers(target, (m) -> !(m instanceof HitChanceModifier));
+        applyModifiers(target);
         effectPolicy.applyEffects(this, target);
     }
 
@@ -248,7 +245,7 @@ public class ActionImpl implements Action {
     public double getHitChance(final ActionActor target) {
         currentTarget =  Optional.ofNullable(target);
         currentHitChance = getBaseHitChance();
-        applyModifiers(target, (m) -> m instanceof HitChanceModifier); 
+        applyModifiers(target);
         return currentHitChance;
     }
 
@@ -456,11 +453,10 @@ public class ActionImpl implements Action {
         return effectPolicy.getCopy();
     }
 
-    private void applyModifiers(final ActionActor target, final Predicate<Modifier<Action>> filterHitChance) {
+    private void applyModifiers(final ActionActor target) {
         currentTarget =  Optional.ofNullable(target);
         if (source.isPresent()) {
             source.get().getActionModifiers().stream()
-                    .filter(filterHitChance::test)
                     .filter(m -> m.getModifierActivation() == ModifierActivation.ACTIVE_ON_ATTACK)
                     .filter(m -> m.accept(this))
                     .forEach(m -> m.modify(this));
@@ -468,7 +464,6 @@ public class ActionImpl implements Action {
 
         if (currentTarget.isPresent()) {
             currentTarget.get().getActionModifiers().stream()
-                    .filter(filterHitChance::test)
                     .filter(m -> m.getModifierActivation() == ModifierActivation.ACTIVE_ON_DEFENCE)
                     .filter(m -> m.accept(this))
                     .forEach(m -> m.modify(this));
