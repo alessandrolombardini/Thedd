@@ -1,10 +1,9 @@
 package thedd.controller;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import javafx.application.Platform;
@@ -15,8 +14,8 @@ import thedd.controller.information.StatisticsInformationImpl;
 import thedd.model.Model;
 import thedd.model.ModelImpl;
 import thedd.model.character.BasicCharacter;
-import thedd.model.character.statistics.Statistic;
 import thedd.model.combat.action.Action;
+import thedd.model.combat.action.TargetType;
 import thedd.model.combat.action.result.ActionResult;
 import thedd.model.combat.actionexecutor.ActionExecutor;
 import thedd.model.combat.actionexecutor.OutOfCombatActionExecutor;
@@ -48,7 +47,6 @@ public class ControllerImpl implements Controller {
     private PlayerInformation playerInfo;
     private StatisticsInformation statisticsInfo;
     private Optional<ActionExecutor> actionExecutor = Optional.empty();
-    private final List<ActionResult> roundResults = new ArrayList<>();
 
     /**
      * Create a new Controller instance.
@@ -75,8 +73,10 @@ public class ControllerImpl implements Controller {
 
 //---------------------QUESTO A LAVORI ULTIMATI è DA RIMUOVERE.
             BasicCharacter charac = this.model.getPlayerCharacter();
-            IntStream.range(0, 15).forEach(i -> {
-                charac.getInventory().addItem(ItemFactory.getRandomItem());
+            IntStream.range(0, 150).forEach(i -> {
+                Item ite = ItemFactory.getRandomItem();
+                if (ite.isUsable())
+                    charac.getInventory().addItem(ite);
             });
 //------------------------------------------------------------
             //return nextRoom();
@@ -207,9 +207,7 @@ public class ControllerImpl implements Controller {
     public void undoActionSelection() {
         final ActionActor playerActor = this.model.getPlayerCharacter();
         playerActor.resetSelectedAction();
-        // call view to tell player to select a new action [DONE]
         view.showMessage("Select an action");
-        view.showActionSelector();
         view.resetActionTargets();
     }
 
@@ -254,7 +252,7 @@ public class ControllerImpl implements Controller {
             // call view to tell player to select a target [DONE]
             model.getPlayerCharacter().addActionToQueue(action, true);
             view.showMessage("Select a target");
-            final List<ActionActor> targetables = nonDeadTargets(action.getValidTargets(instance));
+            final List<ActionActor> targetables = action.getValidTargets(instance);
             view.showActionTargets(targetables, instance.getPlayerParty(), instance.getNPCsParty(), action);
         } else {
             evaluateNextAction();
@@ -271,10 +269,7 @@ public class ControllerImpl implements Controller {
         }
         final ActionExecutor executor = actionExecutor.get();
         executor.executeCurrentAction();
-        // tell view to log
-        evaluateExecutionState();
-        //
-        //togli view.showActionResult(executor.getLastActionResult().get());
+        view.showActionResult(executor.getLastActionResult().get());
     }
 
     /**
@@ -291,45 +286,33 @@ public class ControllerImpl implements Controller {
         switch (status) {
         case COMBAT_ENDED:
             actionExecutor = Optional.empty();
-            view.showActionResult(roundResults);
-            roundResults.clear();
+            view.hideMessage();
             view.update();
             break;
         case PLAYER_LOST:
-            System.out.println("player morto");
             this.view.setState(ApplicationViewState.END_GAME);
-            view.update();
             break;
         case PLAYER_WON:
-            System.out.println("playerWon");
-            view.showActionResult(roundResults);
-            roundResults.clear();
             if (this.isCurrentLastFloor() && this.isCurrentLastRoom()) {
                 this.view.setState(ApplicationViewState.END_GAME);
             }
             this.view.showInventory();
+            view.hideMessage();
             view.update();
             break;
         case ROUND_IN_PROGRESS:
             evaluateNextAction();
             break;
         case ROUND_PAUSED:
-            //tell view to select a new action (by extension, enable all appropriate view components)
-            view.showActionResult(roundResults);
-            roundResults.clear();
             view.showMessage("Select an action");
             view.showActionSelector();
             view.update();
             break;
         case ROUND_ENDED:
-            view.showActionResult(roundResults);
-            roundResults.clear();
             view.showMessage("Select an action");
             view.showActionSelector();
-            view.update();
-            //view.showMessage("Select an action");
-            //view.showActionSelector();
             executor.prepareNextRound();
+            view.update();
             break;
         default:
             break;
@@ -358,12 +341,8 @@ public class ControllerImpl implements Controller {
         actionExecutor.ifPresent(a -> {
             a.setNextAction();
             final Optional<ActionResult> result = a.evaluateCurrentAction();
-            // view visualize(result)
             if (result.isPresent()) {
-                roundResults.add(result.get());
-                //salva actionResult da qualche parte
                 executeCurrentAction();
-                //togli view.showActionEffect(result.get());
             } else {
                 evaluateExecutionState();
             }
@@ -385,15 +364,17 @@ public class ControllerImpl implements Controller {
      */
     @Override
     public void selectAction(final Action action) {
-        //action.setSource(getPlayer());
         model.getPlayerCharacter().addActionToQueue(action, true);
         // call view to tell player to select a target (even if the action target type
         // is SELF?)
-
         final ActionExecutionInstance aei = actionExecutor.get().getExecutionInstance();
-        final List<ActionActor> targetables = nonDeadTargets(action.getValidTargets(aei));
-        view.showActionTargets(targetables, aei.getPlayerParty(), aei.getNPCsParty(), action);
-        view.showMessage("Select a target");
+        if (action.getTargetType() == TargetType.SELF) {
+            targetSelected(action.getSource().get());
+        } else {
+            final List<ActionActor> targetables = action.getValidTargets(aei);
+            view.showActionTargets(targetables, aei.getPlayerParty(), aei.getNPCsParty(), action);
+            view.showMessage("Select a target");
+        }
     }
 
     @Override
@@ -406,7 +387,6 @@ public class ControllerImpl implements Controller {
                                                                     .findFirst()
                                                                     .map(e -> (CombatEvent) e)
                                                                     .get();
-                //this.getPlayer().setIsInCombat(true);
                 this.startCombat(combat.getHostileEncounter());
                 this.view.update();
             } else {
@@ -423,7 +403,10 @@ public class ControllerImpl implements Controller {
 
     @Override
     public final List<RoomEvent> getRoomEvents() {
-        return this.model.getEnvironment().getCurrentFloor().getCurrentRoom().getEvents();
+        if (this.model.getEnvironment().getCurrentFloor().getCurrentRoomIndex() >= 0) {
+            return this.model.getEnvironment().getCurrentFloor().getCurrentRoom().getEvents();
+        }
+        return Collections.emptyList();
     }
 
     @Override
@@ -456,9 +439,4 @@ public class ControllerImpl implements Controller {
         return this.model.getPlayerCharacter();
     }
 
-    private List<ActionActor> nonDeadTargets(final List<ActionActor> targets) {
-        return targets.stream()
-                      .filter(t -> t instanceof BasicCharacter && ((BasicCharacter) t).getStat(Statistic.HEALTH_POINT).getActual() > 0)
-                      .collect(Collectors.toList());
-    }
 }
