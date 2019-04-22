@@ -1,6 +1,9 @@
 package thedd.controller.information;
 
+import java.util.List;
+
 import thedd.model.character.BasicCharacter;
+import thedd.model.combat.status.Status;
 
 /**
  * This class represent an informations wrapper for a specified character's
@@ -23,6 +26,13 @@ public interface StatisticsInformation {
      * @return a {@link String}.
      */
     String getCharacterType();
+
+    /**
+     * This method returns actual selected charatcer's statuses.
+     * 
+     * @return a List<Status>
+     */
+    List<Status> getCharacterStatuses();
 
     /**
      * Return the actual value of character's health points.

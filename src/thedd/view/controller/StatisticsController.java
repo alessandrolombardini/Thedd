@@ -4,6 +4,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
@@ -43,6 +44,8 @@ public class StatisticsController extends ViewNodeControllerImpl {
     private AnchorPane lifePointsImage;
     @FXML
     private TableColumn<Status, String> column;
+    @FXML
+    private TableView<Status> table;
     private static final double BACKGROUND_WIDTH_PERCENTAGE = 1.0;
     private static final double BACKGROUND_HEIGHT_PERCENTAGE = 1.0;
     private final ImageLoader imageFactory = new ImageLoaderImpl();
@@ -58,6 +61,7 @@ public class StatisticsController extends ViewNodeControllerImpl {
      */
     @Override
     public void update() {
+        table.getItems().setAll(this.getController().getStatisticsInformation().getCharacterStatuses());
         // Set the Statistics
         this.healthValue.setText(this.getController().getStatisticsInformation().getHealthPointValue() + " / "
                 + this.getController().getStatisticsInformation().getHealthPointMaxValue());
@@ -84,6 +88,7 @@ public class StatisticsController extends ViewNodeControllerImpl {
     @Override
     protected void initView() {
         update();
+        table.setSelectionModel(null);
         column.setSortable(false);
         column.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
     }

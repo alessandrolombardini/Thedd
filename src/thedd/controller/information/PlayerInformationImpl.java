@@ -1,6 +1,7 @@
 package thedd.controller.information;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,7 +39,7 @@ public final class PlayerInformationImpl implements PlayerInformation {
         final List<Item> allItemsList = new ArrayList<>();
         allItemsList.addAll(this.character.getEquippedItems());
         allItemsList.addAll(this.character.getInventory().getAll());
-        return allItemsList;
+        return Collections.unmodifiableList(allItemsList);
     }
 
     @Override

@@ -42,8 +42,8 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
     /**
      * GenericCharacter's constructor.
      * 
-     * @param name       the name of the character.
-     * @param multiplier rate multiplied at the basic statistics.
+     * @param name            the name of the character.
+     * @param multiplier      rate multiplied at the basic statistics.
      * @param isInPlayerParty true if the actor is part of the player's party
      */
     protected BasicCharacterImpl(final String name, final double multiplier, final boolean isInPlayerParty) {
@@ -195,31 +195,31 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
         List<Tag> requiredTags = new ArrayList<Tag>();
         List<Tag> allowedTags = new ArrayList<Tag>();
 
-        //Resistance to poison per CONSTITUTION point
+        // Resistance to poison per CONSTITUTION point
         final Modifier<ActionEffect> cosPoisonResistance = new StatBasedModifier<>(Statistic.CONSTITUTION, this,
-                                                       new DamageModifier(-0.025, true, defensive));
+                new DamageModifier(-0.025, true, defensive));
         requiredTags = Arrays.asList(EffectTag.POISON_DAMAGE);
         cosPoisonResistance.addRequirement(new TagRequirement<>(false, TagRequirementType.REQUIRED, requiredTags));
 
-        //Bonus to damage per STRENGTH point
+        // Bonus to damage per STRENGTH point
         final Modifier<ActionEffect> strDamage = new StatBasedModifier<>(Statistic.STRENGTH, this,
                 new DamageModifier(2, false, offensive));
         requiredTags = Arrays.asList(EffectTag.NORMAL_DAMAGE);
         strDamage.addRequirement(new TagRequirement<>(false, TagRequirementType.REQUIRED, requiredTags));
 
-        //Bonus to hit chance per AGILITY point
+        // Bonus to hit chance per AGILITY point
         final Modifier<Action> dexHitChance = new StatBasedModifier<>(Statistic.AGILITY, this,
                 new HitChanceModifier(0.025, true, offensive));
         requiredTags = Arrays.asList(EffectTag.NORMAL_DAMAGE);
         dexHitChance.addRequirement(new EffectTagsRequirement<>(false, TagRequirementType.REQUIRED, requiredTags));
 
-        //Bonus to chances of being missed by a physical attack per AGILITY point
+        // Bonus to chances of being missed by a physical attack per AGILITY point
         final Modifier<Action> dexMissChance = new StatBasedModifier<>(Statistic.AGILITY, this,
                 new HitChanceModifier(-0.015, true, defensive));
         requiredTags = Arrays.asList(EffectTag.NORMAL_DAMAGE);
         dexMissChance.addRequirement(new EffectTagsRequirement<>(false, TagRequirementType.REQUIRED, requiredTags));
 
-        //Resistance to physical damage per CONSTITUTION point
+        // Resistance to physical damage per CONSTITUTION point
         final Modifier<ActionEffect> cosDmgResistance = new StatBasedModifier<>(Statistic.CONSTITUTION, this,
                 new DamageModifier(-0.025, true, defensive));
         allowedTags = Arrays.asList(EffectTag.NORMAL_DAMAGE, EffectTag.AP_DAMAGE);

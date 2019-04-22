@@ -75,7 +75,7 @@
 						</AnchorPane>
 					</children>
 				</GridPane>
-				<TableView AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+				<TableView fx:id="table" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 					<columns>
 						<TableColumn minWidth="0.0" text="Status" fx:id="column" />
 					</columns>

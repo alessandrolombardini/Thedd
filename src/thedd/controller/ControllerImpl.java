@@ -73,11 +73,12 @@ public class ControllerImpl implements Controller {
             this.playerInfo = new PlayerInformationImpl(this.model.getPlayerCharacter());
             this.statisticsInfo = new StatisticsInformationImpl(this.model.getPlayerCharacter());
 
-
+//---------------------QUESTO A LAVORI ULTIMATI è DA RIMUOVERE.
             BasicCharacter charac = this.model.getPlayerCharacter();
             IntStream.range(0, 15).forEach(i -> {
                 charac.getInventory().addItem(ItemFactory.getRandomItem());
             });
+//------------------------------------------------------------
             //return nextRoom();
             return true;
         }
@@ -140,7 +141,7 @@ public class ControllerImpl implements Controller {
         if (item.isUsable()) {
             final UsableItem usable = (UsableItem) item;
             playerInfo.setUsedItem(item);
-            this.view.update();
+//            this.view.update();
             final Action itemAction = usable.getAction();
             itemAction.setSource(getPlayer());
             if (getPlayer().isInCombat()) {

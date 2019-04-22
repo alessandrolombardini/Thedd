@@ -1,7 +1,11 @@
 package thedd.controller.information;
 
+import java.util.Collections;
+import java.util.List;
+
 import thedd.model.character.BasicCharacter;
 import thedd.model.character.statistics.Statistic;
+import thedd.model.combat.status.Status;
 
 /**
  * Implementation of {@link StatisticsInformation}.
@@ -20,6 +24,11 @@ public final class StatisticsInformationImpl implements StatisticsInformation {
      */
     public StatisticsInformationImpl(final BasicCharacter character) {
         this.character = character;
+    }
+
+    @Override
+    public List<Status> getCharacterStatuses() {
+        return Collections.unmodifiableList(this.character.getStatuses());
     }
 
     @Override
