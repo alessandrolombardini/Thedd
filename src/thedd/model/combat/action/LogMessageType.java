@@ -53,7 +53,8 @@ public enum LogMessageType {
         final String source = action.getSource().get().getName();
         switch (this) {
         case ITEM_ACTION:
-            return "[Item log messag is still undefined]";
+            return success ? String.format("%s uses %s on %s", source, action.getName(), target.getName()) 
+                    : String.format("%s failed to use %s on %s", source, action.getName(), target.getName());
         case PARRY_ACTION:
             return success ? String.format("%s is guarding against attacks [%s]", source, action.getName()) 
                     : "[PARRY: this message should not be seen]";
