@@ -37,7 +37,7 @@ public final class CharacterFactory {
     public static BasicCharacter createPlayerCharacter(final Optional<String> name, final Difficulty difficulty) {
         Objects.requireNonNull(name);
         Objects.requireNonNull(difficulty);
-        return new PlayerCharacter(name.isPresent() ? name.get() : DEFAULT_PC_NAME,
+        return new PlayerCharacter((name.isPresent() && !name.get().equals("")) ? name.get() : DEFAULT_PC_NAME,
                 difficulty.getLevelOfDifficulty() * generateRandomRate() * PC_RATE);
     }
 

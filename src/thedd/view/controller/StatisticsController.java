@@ -3,6 +3,7 @@ package thedd.view.controller;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Tooltip;
@@ -13,6 +14,7 @@ import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.GridPane;
 import thedd.model.character.statistics.Statistic;
 import thedd.model.combat.status.Status;
 import thedd.view.extensions.AdaptiveFontLabel;
@@ -46,15 +48,11 @@ public class StatisticsController extends ViewNodeControllerImpl {
     private TableColumn<Status, String> column;
     @FXML
     private TableView<Status> table;
+    @FXML
+    private GridPane container;
     private static final double BACKGROUND_WIDTH_PERCENTAGE = 1.0;
     private static final double BACKGROUND_HEIGHT_PERCENTAGE = 1.0;
     private final ImageLoader imageFactory = new ImageLoaderImpl();
-
-    /**
-     * Statistics controller constructor.
-     */
-    public StatisticsController() {
-    }
 
     /**
      * {@inheritDoc}
@@ -87,14 +85,18 @@ public class StatisticsController extends ViewNodeControllerImpl {
      */
     @Override
     protected void initView() {
-        update();
+//        container.setBackground(new Background(new BackgroundImage(new Image("/images/actionselector/box.png"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
+//                BackgroundPosition.CENTER,
+//                new BackgroundSize(BACKGROUND_WIDTH_PERCENTAGE, BACKGROUND_HEIGHT_PERCENTAGE, true, true, false, false))));
+        table.setPlaceholder(new Label("Empty"));
         table.setSelectionModel(null);
         column.setSortable(false);
         column.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
+        update();
     }
 
     private Background setBackgroundImage(final Image img) {
-        BackgroundImage bg = new BackgroundImage(img, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
+        final BackgroundImage bg = new BackgroundImage(img, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.CENTER,
                 new BackgroundSize(BACKGROUND_WIDTH_PERCENTAGE, BACKGROUND_HEIGHT_PERCENTAGE, true, true, true, false));
         // Third boolean, if false ignore image's ratio, otherwise keep it.

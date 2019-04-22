@@ -73,7 +73,7 @@ public class ControllerImpl implements Controller {
 
 //---------------------QUESTO A LAVORI ULTIMATI è DA RIMUOVERE.
             BasicCharacter charac = this.model.getPlayerCharacter();
-            IntStream.range(0, 150).forEach(i -> {
+            IntStream.range(0, 15).forEach(i -> {
                 Item ite = ItemFactory.getRandomItem();
                 if (ite.isUsable())
                     charac.getInventory().addItem(ite);
@@ -207,6 +207,7 @@ public class ControllerImpl implements Controller {
     public void undoActionSelection() {
         final ActionActor playerActor = this.model.getPlayerCharacter();
         playerActor.resetSelectedAction();
+        playerInfo.resetUsedItem();
         if (isCombatActive()) {
             view.showMessage("Select an action");
         } else {

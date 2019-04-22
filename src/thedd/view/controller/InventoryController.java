@@ -2,6 +2,7 @@ package thedd.view.controller;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import thedd.model.item.Item;
@@ -43,6 +44,7 @@ public class InventoryController extends ViewNodeControllerImpl {
             this.useButton.setText(CANCEL_LABEL);
             this.backButton.setDisable(true);
             this.deleteButton.setDisable(true);
+            this.table.setDisable(true);
         } else if (this.useButton.getText().equals(EQUIP_BUTTON_LABEL)) {
             final EquipableItem selected = new EquipableItemImpl(selection.getId(), selection.getBaseName(),
                     ((EquipableItem) selection).getType(), selection.getRarity(), selection.getDescription());
@@ -54,6 +56,7 @@ public class InventoryController extends ViewNodeControllerImpl {
             this.useButton.setText(USE_BUTTON_LABEL);
             this.deleteButton.setDisable(false);
             this.backButton.setDisable(false);
+            this.table.setDisable(false);
         } else {
             this.getController().unequipItem(selection);
         }
@@ -87,7 +90,31 @@ public class InventoryController extends ViewNodeControllerImpl {
      * {@inheritDoc}
      */
     @Override
+    public void disableInteraction() {
+        this.table.setDisable(true);
+        this.backButton.setDisable(true);
+        this.deleteButton.setDisable(true);
+        this.useButton.setDisable(true);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void enableInteraction() {
+        this.table.setDisable(false);
+        this.backButton.setDisable(false);
+        this.deleteButton.setDisable(false);
+        this.useButton.setDisable(false);
+//        update();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     protected void initView() {
+        table.setPlaceholder(new Label("Empty"));
         column.setResizable(true);
         column.setSortable(false);
         column.setCellValueFactory(
@@ -115,10 +142,9 @@ public class InventoryController extends ViewNodeControllerImpl {
                                         : "")
                         + "\n\nDescription: \n" + item.getDescription() + "\n\nEffects: \n"
                         + item.getEffectDescription() + "\nType: Equipable Item."
-                        + (!this.getController().getPlayerInformation().isEquipped(item)
-                                ? "\n\nYou have " + this.getController().getPlayerInformation().getInventoryItemQuantity(item)
-                                        + " of them in your inventory."
-                                : ""));
+                        + (!this.getController().getPlayerInformation().isEquipped(item) ? "\n\nYou have "
+                                + this.getController().getPlayerInformation().getInventoryItemQuantity(item)
+                                + " of them in your inventory." : ""));
             } else {
                 this.content.setText(item.getName() + "\n\nDescription: \n" + item.getDescription() + "\n\nEffects: \n"
                         + item.getEffectDescription() + "\n\nType: Usable Item. \n\nYou have "
