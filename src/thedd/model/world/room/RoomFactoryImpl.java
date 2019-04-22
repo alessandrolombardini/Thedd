@@ -41,7 +41,7 @@ public class RoomFactoryImpl implements RoomFactory {
     /**
      * Maximim enemies in a room.
      */
-    public static final int MAX_ENEMIES_PER_ROOM = 1;
+    public static final int MAX_ENEMIES_PER_ROOM = 2;
 
     /**
      * Minimum enemies in a room.
@@ -49,7 +49,7 @@ public class RoomFactoryImpl implements RoomFactory {
     public static final int MIN_ENEMIES_PER_ROOM = 0;
 
     private static final String ERROR_NOMOREROOMS = "Rooms are over";
-    private static final double PROB_TO_SET_INTERAGIBLE = 0.60;
+    private static final double PROB_TO_SET_CONTENT = 0.60;
     private static final int NONE_ROOMS = -1;
 
     private final EnumMap<RoomContent, Integer> remainingContent;
@@ -101,7 +101,8 @@ public class RoomFactoryImpl implements RoomFactory {
         final BasicCharacter boss = CharacterFactory.createFinalBoss(this.getEnemiesMultiplier());
         final CombatEvent event = RoomEventHelper.getCombat();
         event.getHostileEncounter().addNPC(boss);
-        event.getHostileEncounter().setCombatLogic(new DefaultCombatActionExecutor(event.getHostileEncounter().getNPCs()));
+        event.getHostileEncounter().setCombatLogic(new DefaultCombatActionExecutor(event.getHostileEncounter()
+                                                                                         .getNPCs()));
         return new RoomImpl(Arrays.asList(event));
     }
 
@@ -135,27 +136,31 @@ public class RoomFactoryImpl implements RoomFactory {
         return new RoomImpl(events);
     }
 
-
     private int getQuantityOfEnemies() {
-        if ((this.remainingContent.get(RoomContent.ENEMY) >= this.getRemainingBaseRoomsToSet()
-                || RandomUtils.nextBoolean()) && this.remainingContent.get(RoomContent.ENEMY) > 0) {
-            return MAX_ENEMIES_PER_ROOM;
+        if (this.remainingContent.get(RoomContent.ENEMY) > this.getRemainingBaseRoomsToSet() * MAX_ENEMIES_PER_ROOM) {
+            return Integer.min(MAX_ENEMIES_PER_ROOM, this.remainingContent.get(RoomContent.ENEMY));
+        } else if (StdRandom.bernoulli(PROB_TO_SET_CONTENT) && this.remainingContent.get(RoomContent.ENEMY) > 0) {
+            return RandomUtils.nextInt(MIN_ENEMIES_PER_ROOM,
+                                       Integer.min(MAX_ENEMIES_PER_ROOM, this.remainingContent.get(RoomContent.ENEMY)));
+        } else {
+            return MIN_ENEMIES_PER_ROOM;
         }
-        return MIN_ENEMIES_PER_ROOM;
     }
 
     private EnumMap<RoomContent, Integer> getQuantityOfInteractableAction() {
         final EnumMap<RoomContent, Integer> content = new EnumMap<RoomContent, Integer>(RoomContent.class);
         content.put(RoomContent.CONTRAPTION, 0);
         content.put(RoomContent.TREASURE, 0);
-        final int maxInteractableSettableAfterNextRoom = MAX_INTERACTABLE_ACTIONS_PER_ROOM * (this.getRemainingBaseRoomsToSet());
+        final int maxInteractableSettableAfterNextRoom = MAX_INTERACTABLE_ACTIONS_PER_ROOM
+                                                         * (this.getRemainingBaseRoomsToSet());
         if (this.getRamainingInteractableToSet() > maxInteractableSettableAfterNextRoom || RandomUtils.nextBoolean()) {
             int minInteractable = 0;
             if (this.getRamainingInteractableToSet() > maxInteractableSettableAfterNextRoom) {
                 minInteractable = this.getRamainingInteractableToSet() - maxInteractableSettableAfterNextRoom;
             }
-            final int maxInteractable = Integer.min(MAX_INTERACTABLE_ACTIONS_PER_ROOM, this.getRamainingInteractableToSet());
-            final int numberOfInteractable =  RandomUtils.nextInt(minInteractable, maxInteractable + 1);
+            final int maxInteractable = Integer.min(MAX_INTERACTABLE_ACTIONS_PER_ROOM,
+                                                    this.getRamainingInteractableToSet());
+            final int numberOfInteractable = RandomUtils.nextInt(minInteractable, maxInteractable + 1);
             IntStream.range(0, numberOfInteractable)
                      .boxed()
                      .map(i -> getAvailableRandomInteractableAction().get())
@@ -168,7 +173,7 @@ public class RoomFactoryImpl implements RoomFactory {
 
     private Optional<RoomContent> getAvailableRandomInteractableAction() {
         Optional<RoomContent> contentType = Optional.empty();
-        if (this.remainingContent.get(RoomContent.CONTRAPTION) > 0 && StdRandom.bernoulli(PROB_TO_SET_INTERAGIBLE)) {
+        if (this.remainingContent.get(RoomContent.CONTRAPTION) > 0 && StdRandom.bernoulli(PROB_TO_SET_CONTENT)) {
             contentType = Optional.of(RoomContent.CONTRAPTION);
         } else if (this.remainingContent.get(RoomContent.TREASURE) > 0 && !contentType.isPresent()) {
             contentType = Optional.of(RoomContent.TREASURE);

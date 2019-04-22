@@ -134,7 +134,7 @@ public class ViewImpl extends Application implements View {
     public final void partialUpdate() {
         getGameViewController().ifPresent(c -> ((MainGameViewController) c).partialUpdate());
     }
-    
+
     /**
      * {@inheritDoc}
      */
