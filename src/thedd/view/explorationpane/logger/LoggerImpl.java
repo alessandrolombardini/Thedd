@@ -20,7 +20,7 @@ import thedd.view.extensions.AdaptiveFontLabel;
  */
 public class LoggerImpl extends GridPane implements Logger {
 
-    private static final int FONT_RATIO = 30;
+    private static final int FONT_RATIO = 40;
     private static final Duration FADE_DURATION = Duration.millis(500);
     private static final double TEXT_WIDTH_PERC = 90;
     private static final double BTN_WIDTH_PERC = 10;
@@ -28,7 +28,6 @@ public class LoggerImpl extends GridPane implements Logger {
     private static final double PADDING = 5;
 
     private final AdaptiveFontLabel text = new AdaptiveFontLabel(FONT_RATIO);
-    //private Optional<LoggerManager> loggerManager;
 
     /**
      * 
@@ -50,10 +49,10 @@ public class LoggerImpl extends GridPane implements Logger {
         this.setBackground(new Background(new BackgroundFill(Color.web("#040404"), null, null)));
 
         text.setTextFill(Color.WHITE);
-        text.setWrapText(true);
+        //text.setWrapText(true);
         text.prefWidthProperty().bind(this.getWidthProperty().multiply(TEXT_WIDTH_PERC / 100));
         text.prefHeightProperty().bind(this.getHeightProperty());
-        text.setAlignment(Pos.TOP_LEFT);
+        text.setAlignment(Pos.CENTER);
         this.add(text, 0, 0, 2, 2);
 
         //loggerManager = Optional.empty();
