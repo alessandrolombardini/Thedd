@@ -63,11 +63,12 @@ public class ActorViewerImpl extends ImageView implements Observable<Pair<Boolea
                    and modified to support needs.
                 */
                 final Point2D p = this.localToScreen(0.0, 0.0);
+                final int direction = partySide == PartyType.ALLIED ? 1 : -1;
                 tooltip.show(this, 0, 0);
                 tooltip.hide();
                 tooltip.show(this,
-                             p.getX() + this.getFitWidth() / 2  - tooltip.getWidth() / 2,
-                             p.getY() - tooltip.getHeight());
+                             p.getX() + tooltip.getWidth() * direction,
+                             p.getY() + tooltip.getHeight() / 2);
             }
         });
         this.setOnMouseExited(e -> {
