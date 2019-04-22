@@ -207,7 +207,11 @@ public class ControllerImpl implements Controller {
     public void undoActionSelection() {
         final ActionActor playerActor = this.model.getPlayerCharacter();
         playerActor.resetSelectedAction();
-        view.showMessage("Select an action");
+        if (isCombatActive()) {
+            view.showMessage("Select an action");
+        } else {
+            view.hideMessage();
+        }
         view.resetActionTargets();
     }
 
