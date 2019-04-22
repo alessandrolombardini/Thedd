@@ -187,6 +187,7 @@ public final class ExplorationPaneImpl extends BorderPane implements Exploration
             ((ActorViewerImpl) c).setFitHeight(this.heightProperty().doubleValue());
         });
         roomAdvancer.setFitWidth((roomAdvancer.isVisible() ? 1.0 : Double.MIN_NORMAL) * this.widthProperty().doubleValue() / IMMAGINARY_COLUMNS);
+        roomAdvancer.setFitHeight((roomAdvancer.isVisible() ? 1.0 : Double.MIN_NORMAL) * this.heightProperty().doubleValue());
         this.setPadding(new Insets(0.0, roomAdvancer.isVisible() ? 0.0 : PADDING, this.getHeight() / 10, PADDING));
     }
 
