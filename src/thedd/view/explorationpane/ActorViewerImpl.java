@@ -45,15 +45,15 @@ public class ActorViewerImpl extends ImageView implements Observable<Pair<Boolea
         this.partySide = Objects.requireNonNull(partySide);
         this.partyPosition = partyPosition;
         registeredObservers = new ArrayList<>();
-        this.setOnMouseClicked(e -> {
-            message = Optional.of(new ImmutablePair<>(true, new ImmutablePair<>(partySide, partyPosition)));
-            this.emit();
-        });
         this.setPreserveRatio(true);
         this.setPickOnBounds(true);
 
         tooltip = new Tooltip();
-        Tooltip.install(this, tooltip);
+        this.setOnMouseClicked(e -> {
+            tooltip.hide();
+            message = Optional.of(new ImmutablePair<>(true, new ImmutablePair<>(partySide, partyPosition)));
+            this.emit();
+        });
         this.setOnMouseEntered(e -> {
             if (!this.isDisabled()) {
                 message = Optional.of(new ImmutablePair<>(false, new ImmutablePair<>(partySide, partyPosition)));
@@ -62,11 +62,12 @@ public class ActorViewerImpl extends ImageView implements Observable<Pair<Boolea
                    https://stackoverflow.com/questions/13049362/javafx-how-to-set-correct-tooltip-position
                    and modified to support needs.
                 */
-                //final Point2D p = this.localToScene(0.0, 0.0);
-                /*tooltip.show(this,
-                             p.getX() + this.getScene().getX() + this.getScene().getWindow().getX() + this.getFitWidth() / 4,
-                             p.getY() + this.getScene().getY() + this.getScene().getWindow().getY());
-                             */ 
+                final Point2D p = this.localToScreen(0.0, 0.0);
+                tooltip.show(this, 0, 0);
+                tooltip.hide();
+                tooltip.show(this,
+                             p.getX() + this.getFitWidth() / 2  - tooltip.getWidth() / 2,
+                             p.getY() - tooltip.getHeight());
             }
         });
         this.setOnMouseExited(e -> {
@@ -76,7 +77,6 @@ public class ActorViewerImpl extends ImageView implements Observable<Pair<Boolea
             }
             tooltip.hide();
         });
-        tooltip.setAutoHide(true);
     }
 
     @Override
