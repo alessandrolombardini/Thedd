@@ -90,27 +90,6 @@ public class ViewImpl extends Application implements View {
         }
     }
 
-    private Optional<GameView> getGameViewController() {
-        if (this.actualViewState.isPresent() && this.actualViewState.get() == ApplicationViewState.GAME
-                && this.actualScene.get().getController() instanceof MainGameViewController) {
-            final GameView gameView = (GameView) (this.actualScene.get().getController());
-            return Optional.of(gameView);
-        }
-        return Optional.empty();
-    }
-
-    private void initView() {
-        if (!this.stage.isPresent()) {
-            throw new IllegalStateException(ERROR_STAGEUNSETTED);
-        }
-        final Stage stage = this.stage.get();
-        stage.setTitle(GAME_NAME);
-        stage.setHeight(STAGE_HEIGHT);
-        stage.setWidth(STAGE_WIDTH);
-        stage.setResizable(true);
-        setState(FIRST_APP_STATE);
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -188,13 +167,41 @@ public class ViewImpl extends Application implements View {
      * {@inheritDoc}
      */
     @Override
-    public final void showActionResult(final List<ActionResult> result) {
+    public final void showActionResult(final ActionResult result) {
         this.getGameViewController().ifPresent(c -> this.getGameViewController().get().logAction(result));
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritDoc}.
      */
+    private Optional<GameView> getGameViewController() {
+        if (this.actualViewState.isPresent() && this.actualViewState.get() == ApplicationViewState.GAME
+                && this.actualScene.get().getController() instanceof MainGameViewController) {
+            final GameView gameView = (GameView) (this.actualScene.get().getController());
+            return Optional.of(gameView);
+        }
+        return Optional.empty();
+    }
+
+    private void initView() {
+        if (!this.stage.isPresent()) {
+            throw new IllegalStateException(ERROR_STAGEUNSETTED);
+        }
+        final Stage stage = this.stage.get();
+        stage.setTitle(GAME_NAME);
+        stage.setHeight(STAGE_HEIGHT);
+        stage.setWidth(STAGE_WIDTH);
+        stage.setResizable(true);
+        setState(FIRST_APP_STATE);
+        stage.heightProperty().addListener(l -> {
+            stage.setWidth(stage.getHeight() * (WIDTH / HEIGHT));
+        });
+
+        stage.widthProperty().addListener(l -> {
+            stage.setHeight(stage.getWidth() / (WIDTH / HEIGHT));
+        });
+    }
+
     @Override
     public final void enableInteraction() {
         this.actualScene.ifPresent(s -> s.getController().enableInteraction());
