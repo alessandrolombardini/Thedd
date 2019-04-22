@@ -22,6 +22,7 @@ public class HeavyAttack extends ActionImpl {
     private static final double BASE_HITCHANCE = 0.5d;
     private static final double BASE_DAMAGE_NORMAL = 10d;
     private static final double BASE_DAMAGE_AP = 5d;
+
     /**
      * @param targetType the target type of the action
      */

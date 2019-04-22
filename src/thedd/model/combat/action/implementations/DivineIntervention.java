@@ -17,14 +17,16 @@ import thedd.model.combat.tag.ActionTag;
 import thedd.model.combat.tag.EffectTag;
 
 /**
- * Divine Intervention action: it deals fire and holy damage.
+ * Divine Intervention action: it deals fire and holy damage but weakens the user.
  */
 public class DivineIntervention extends ActionImpl {
 
     private static final String NAME = "Divine Intervention";
-    private static final String DESCRIPTION = "A punitive beam of sacred light which scorches the target.";
-    private static final double BASE_FIRE_DAMAGE = 3.0;
-    private static final double BASE_HOLY_DAMAGE = 3.0;
+    private static final String DESCRIPTION = "A punitive beam of sacred light which scorches the target and all its allies. "
+                                              + "\n\nCalling upon the gods requires concentration, using this action may cause "
+                                              + "the user to become Weakend by fatigue.";
+    private static final double BASE_FIRE_DAMAGE = 5.0;
+    private static final double BASE_HOLY_DAMAGE = 25.0;
     private static final double BASE_HIT_CHANCE = 1.0;
     private static final double WEAKNESS_BASE_HITCHANCE = 0.7d;
     private static final Action EXTRA_ACTION = new ActionBuilder().setName("Weakness")
@@ -39,6 +41,7 @@ public class DivineIntervention extends ActionImpl {
      */
     public DivineIntervention(final TargetType targetType) {
         super(new ActionBuilder().setName(NAME)
+                                 .setCategory(ActionCategory.SPECIAL)
                                  .setDescription(DESCRIPTION)
                                  .setBaseHitChance(BASE_HIT_CHANCE)
                                  .setTargetType(targetType)
