@@ -28,25 +28,26 @@ import thedd.model.world.room.RoomFactoryImpl;
  */
 public class EnvironmentTest {
 
-    private final int numberOfTest = 4;
+    private final int numberOfTest = 100;
 
     /**
      * Test of new environment.
      */
     @Test
     public void testCreateEnvironement() {
-        final int numberOfRooms = 3;
-        final int numberOfFloors = 4;
-        final Environment environment = new EnvironmentImpl(numberOfFloors, numberOfRooms);
-        assertEquals(environment.getCurrentFloorIndex(), 0);
-        final Floor floor = environment.getCurrentFloor();
-        assertTrue(floor.getCurrentRoomIndex() < 0);
-        floor.nextRoom();
-        assertEquals(floor.getCurrentRoomIndex(), 0);
-        assertFalse(floor.checkToChangeFloor());
-        assertTrue(floor.hasNextRoom());
-        final Room room = floor.getCurrentRoom();
-        assertFalse(room.checkToMoveOn());
+        for (int i = 1; i < numberOfTest; i++) {
+            final int numberOfRooms = i + i;
+            final int numberOfFloors = i;
+            final Environment environment = new EnvironmentImpl(numberOfFloors, numberOfRooms);
+            assertEquals(environment.getCurrentFloorIndex(), 0);
+            final Floor floor = environment.getCurrentFloor();
+            assertTrue(floor.getCurrentRoomIndex() < 0);
+            floor.nextRoom();
+            assertEquals(floor.getCurrentRoomIndex(), 0);
+            assertFalse(floor.checkToChangeFloor());
+            assertTrue(floor.hasNextRoom());
+            final Room room = floor.getCurrentRoom();
+        }
     }
 
     /**
@@ -129,23 +130,28 @@ public class EnvironmentTest {
         for (int i = EnvironmentImpl.MIN_NUMBER_OF_ROOMS; i < numberOfTest; i++) {
             final FloorDetails details = factory.createFloorDetails(diff, i, false);
             final RoomFactory roomFactory = new RoomFactoryImpl(details);
-            int numberOfCombat = 0;
+            int numberOfEnemies = 0;
             int numberOfInteractable = 0;
             for (int j = 0; j < i; j++) {
                 final List<RoomEvent> events = roomFactory.createRoom().getEvents();
-                numberOfCombat += this.getNumberOfCombat(events);
+                numberOfEnemies += this.getNumberOfEnemies(events);
                 numberOfInteractable += this.getNumberOfInteractable(events);
             }
-            assertEquals(details.getNumberOfEnemies(), numberOfCombat);
+            assertEquals(details.getNumberOfEnemies(), numberOfEnemies);
             assertEquals(details.getNumberOfTreasures() + details.getNumberOfContraptions(), numberOfInteractable);
         }
-    }
-
-    private int getNumberOfCombat(final List<RoomEvent> events) {
-        return (int) events.stream().filter(e -> e instanceof CombatEvent).count();
     }
 
     private int getNumberOfInteractable(final List<RoomEvent> events) {
         return (int) events.stream().filter(e -> e instanceof InteractableActionPerformer).count();
     }
+
+    private int getNumberOfEnemies(final List<RoomEvent> events) {
+        return (int) events.stream().filter(e -> e instanceof CombatEvent)
+                                    .map(e -> (CombatEvent) e)
+                                    .map(e -> e.getHostileEncounter().getNPCs())
+                                    .flatMap(e -> e.stream())
+                                    .count();
+    }
+
 }
