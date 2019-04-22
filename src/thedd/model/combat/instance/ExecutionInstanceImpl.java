@@ -2,7 +2,7 @@ package thedd.model.combat.instance;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -16,8 +16,8 @@ import thedd.model.combat.actor.ActionActor;
  */
 public class ExecutionInstanceImpl implements ActionExecutionInstance {
 
-    private final Set<ActionActor> npcsParty = new HashSet<>();
-    private final Set<ActionActor> playerParty = new HashSet<>();
+    private final Set<ActionActor> npcsParty = new LinkedHashSet<>();
+    private final Set<ActionActor> playerParty = new LinkedHashSet<>();
     private int roundCount;
     private CombatStatus combatStatus = CombatStatus.NOT_STARTED;
 
