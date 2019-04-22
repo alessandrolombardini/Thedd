@@ -29,8 +29,8 @@ import thedd.utils.observer.Observer;
 public class IconsPane extends Pane implements Observable<Command> {
 
     private static final double TRANSLATE_DURATION_MS = 200;
-    private static final double SELECTED_ITEM_SIZE_PERC = .8d;
-    private static final double DEFAULT_ITEM_SIZE_PERC = .5d;
+    private static final double SELECTED_ITEM_SIZE_PERC = 1.3d;
+    private static final double DEFAULT_ITEM_SIZE_PERC = .9d;
     private final DoubleProperty selectedItemSizeByWidth = new SimpleDoubleProperty();
     private final DoubleProperty selectedItemSizeByHeight = new SimpleDoubleProperty();
     private final DoubleProperty defaultItemSizeByWidth = new SimpleDoubleProperty();
@@ -50,7 +50,14 @@ public class IconsPane extends Pane implements Observable<Command> {
         defaultItemSizeByWidth.bind(this.widthProperty().multiply(DEFAULT_ITEM_SIZE_PERC));
         selectedItemSizeByHeight.bind(this.heightProperty().multiply(SELECTED_ITEM_SIZE_PERC));
         defaultItemSizeByHeight.bind(this.heightProperty().multiply(DEFAULT_ITEM_SIZE_PERC));
-        this.getStyleClass().add("icons-pane-background");
+        //this.getStyleClass().add("icons-pane-background");
+
+        setBackground(new Background(new BackgroundImage(new Image("/images/actionselector/box.png"),
+                BackgroundRepeat.NO_REPEAT, 
+                BackgroundRepeat.NO_REPEAT, 
+                BackgroundPosition.CENTER, 
+                new BackgroundSize(1.0, 1.0, true, true, false, false))));
+
         this.setOnScroll(e -> {
             if (e.getDeltaY() < 0) {
                 scrollDown();
