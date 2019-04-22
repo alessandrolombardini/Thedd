@@ -150,5 +150,21 @@ public class MainGameViewController extends ViewNodeControllerImpl implements Ga
         nodeControllers.get(Position.DOWN_DX).ifPresent(n -> n.update());
     }
 
+    /**
+     * {@inheritDoc}
+     */ 
+    @Override
+    public void disableInteraction() {
+        nodeControllers.values().forEach(c -> c.ifPresent(a -> a.disableInteraction()));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void enableInteraction() {
+        nodeControllers.values().forEach(c -> c.ifPresent(a -> a.enableInteraction()));
+    }
+
 }
 
