@@ -76,8 +76,18 @@ public interface View {
     void hideMessage();
 
     /**
-     * Updates the statistic panel.
+     * Updates the statistic.
      */
     void partialUpdate();
+
+    /**
+     * Enable user interaction.
+     */
+    void enableInteraction();
+
+    /**
+     * Disable user interaction.
+     */
+    void disableInteraction();
 
 }

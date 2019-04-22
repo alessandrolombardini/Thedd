@@ -24,4 +24,15 @@ public interface ViewNodeController {
      * This method allows to update the view controlled by view controller.
      */
     void update();
+
+    /**
+     * This method allows to disable the interaction.
+     */
+    void disableInteraction();
+
+    /**
+     * This method allows to enable the interaction.
+     */
+    void enableInteraction();
+
 }

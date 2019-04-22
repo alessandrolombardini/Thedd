@@ -218,6 +218,9 @@ public class ControllerImpl implements Controller {
      */
     @Override
     public void targetSelected(final ActionActor target) {
+        view.disableInteraction();
+
+
         view.hideMessage();
         final ActionActor playerActor = this.model.getPlayerCharacter();
         final ActionExecutor currentExecutor = actionExecutor.get();
@@ -232,6 +235,9 @@ public class ControllerImpl implements Controller {
         if (currentExecutor.isRoundReady()) {
             evaluateNextAction();
         }
+
+
+        view.enableInteraction();
     }
 
     /**

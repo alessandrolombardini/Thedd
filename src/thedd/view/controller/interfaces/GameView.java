@@ -14,4 +14,5 @@ public interface GameView extends ExplorationView {
      * Show action selector.
      */
     void showActionSelector();
+
 }

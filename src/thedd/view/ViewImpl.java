@@ -192,5 +192,21 @@ public class ViewImpl extends Application implements View {
         this.getGameViewController().ifPresent(c -> this.getGameViewController().get().logAction(result));
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final void enableInteraction() {
+        this.actualScene.ifPresent(s -> s.getController().enableInteraction());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final void disableInteraction() {
+        this.actualScene.ifPresent(s -> s.getController().disableInteraction());
+    }
+
 
 }
