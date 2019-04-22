@@ -297,9 +297,11 @@ public class ControllerImpl implements Controller {
             System.out.println("playerWon");
             view.showActionResult(roundResults);
             roundResults.clear();
-//            this.view.showInventory();
-//            view.update();
-            this.view.setState(ApplicationViewState.END_GAME);
+            if (this.isCurrentLastFloor() && this.isCurrentLastRoom()) {
+                this.view.setState(ApplicationViewState.END_GAME);
+            }
+            this.view.showInventory();
+            view.update();
             break;
         case ROUND_IN_PROGRESS:
             evaluateNextAction();
