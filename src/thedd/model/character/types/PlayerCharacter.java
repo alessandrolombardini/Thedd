@@ -3,6 +3,7 @@ package thedd.model.character.types;
 import thedd.model.character.BasicCharacterImpl;
 import thedd.model.combat.action.TargetType;
 import thedd.model.combat.action.implementations.ActiveDefence;
+import thedd.model.combat.action.implementations.DivineIntervention;
 import thedd.model.combat.action.implementations.HeavyAttack;
 import thedd.model.combat.action.implementations.LightAttack;
 
@@ -24,5 +25,6 @@ public class PlayerCharacter extends BasicCharacterImpl {
         addActionToAvailable(new LightAttack(TargetType.EVERYONE));
         addActionToAvailable(new HeavyAttack(TargetType.EVERYONE));
         addActionToAvailable(new ActiveDefence());
+        addActionToAvailable(new DivineIntervention(TargetType.EVERYONE));
     }
 }

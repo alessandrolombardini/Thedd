@@ -7,6 +7,7 @@ import thedd.model.character.BasicCharacterImpl;
 import thedd.model.combat.action.TargetType;
 import thedd.model.combat.action.effect.ActionEffect;
 import thedd.model.combat.action.implementations.LightAttack;
+import thedd.model.combat.action.implementations.NastyStrike;
 import thedd.model.combat.modifier.DamageModifier;
 import thedd.model.combat.modifier.Modifier;
 import thedd.model.combat.modifier.ModifierActivation;
@@ -30,14 +31,15 @@ public class Goblin extends BasicCharacterImpl {
     public Goblin(final String name, final double multiplier) {
         super(name, multiplier, false);
         setPermanentModifiers();
-        this.addWeightedAction(new LightAttack(TargetType.FOE), RandomPrority.DEFAULT);
+        this.addWeightedAction(new LightAttack(TargetType.FOE), RandomPrority.HIGH);
+        this.addWeightedAction(new NastyStrike(TargetType.FOE), RandomPrority.LOW);
     }
 
     private void setPermanentModifiers() {
         final ModifierActivation defensive = ModifierActivation.ACTIVE_ON_DEFENCE;
         final List<Tag> requiredTags = new ArrayList<Tag>();
 
-        final Modifier<ActionEffect> poisonResistance = new DamageModifier(-0.8, true, defensive);
+        final Modifier<ActionEffect> poisonResistance = new DamageModifier(-0.8, true, true, defensive);
         requiredTags.add(EffectTag.POISON_DAMAGE);
         poisonResistance.addRequirement(new TagRequirement<>(false, TagRequirementType.REQUIRED, requiredTags));
         addEffectModifier(poisonResistance, true);

@@ -197,19 +197,19 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
 
         // Resistance to poison per CONSTITUTION point
         final Modifier<ActionEffect> cosPoisonResistance = new StatBasedModifier<>(Statistic.CONSTITUTION, this,
-                new DamageModifier(-0.025, true, defensive));
+                                                       new DamageModifier(-0.025, true, true, defensive));
         requiredTags = Arrays.asList(EffectTag.POISON_DAMAGE);
         cosPoisonResistance.addRequirement(new TagRequirement<>(false, TagRequirementType.REQUIRED, requiredTags));
 
         // Bonus to damage per STRENGTH point
         final Modifier<ActionEffect> strDamage = new StatBasedModifier<>(Statistic.STRENGTH, this,
-                new DamageModifier(2, false, offensive));
+                new DamageModifier(2, false, false, offensive));
         requiredTags = Arrays.asList(EffectTag.NORMAL_DAMAGE);
         strDamage.addRequirement(new TagRequirement<>(false, TagRequirementType.REQUIRED, requiredTags));
 
         // Bonus to hit chance per AGILITY point
         final Modifier<Action> dexHitChance = new StatBasedModifier<>(Statistic.AGILITY, this,
-                new HitChanceModifier(0.025, true, offensive));
+                new HitChanceModifier(0.015, true, offensive));
         requiredTags = Arrays.asList(EffectTag.NORMAL_DAMAGE);
         dexHitChance.addRequirement(new EffectTagsRequirement<>(false, TagRequirementType.REQUIRED, requiredTags));
 
@@ -221,7 +221,7 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
 
         // Resistance to physical damage per CONSTITUTION point
         final Modifier<ActionEffect> cosDmgResistance = new StatBasedModifier<>(Statistic.CONSTITUTION, this,
-                new DamageModifier(-0.025, true, defensive));
+                new DamageModifier(-0.025, true, true, defensive));
         allowedTags = Arrays.asList(EffectTag.NORMAL_DAMAGE, EffectTag.AP_DAMAGE);
         cosDmgResistance.addRequirement(new TagRequirement<>(false, TagRequirementType.ALLOWED, allowedTags));
 
