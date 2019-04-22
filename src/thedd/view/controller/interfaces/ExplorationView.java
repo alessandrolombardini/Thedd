@@ -42,13 +42,14 @@ public interface ExplorationView {
     void visualizeAction(ActionResult result);
 
     /**
+     * Show message. 
      * 
-     * @param text
+     * @param text of message to show
      */
     void showUserMessage(String text);
 
     /**
-     * 
+     * Hide message.
      */
     void hideUserMessage();
 
