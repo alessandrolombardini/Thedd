@@ -7,7 +7,6 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 
 /**
  * The result of an executed action. To be used by loggers or to decide what to show to the player.
- * <p>
  */
 public interface ActionResult {
 
@@ -25,7 +24,7 @@ public interface ActionResult {
     void addResult(ActionActor target, ActionResultType result);
 
     /**
-     * Returns a List of Pairs <target,ResultType>.
+     * Returns a List of Pairs of target and ResultType.
      * @return the list of results
      */
     List<ImmutablePair<ActionActor, ActionResultType>> getResults();

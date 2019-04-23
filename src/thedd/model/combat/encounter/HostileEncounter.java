@@ -22,9 +22,9 @@ public interface HostileEncounter {
     /**
      * Gets the logic of the combat that will start.
      * If the logic is not set, a NoSuchElementException is thrown.
-     * @return the combat logic
      * 
-     * @throws NoSuchElementException
+     * @return the combat logic
+     * @throws IllegalStateException if there isn't combat logic
      */
     ActionExecutor getCombatLogic();
 

@@ -16,7 +16,7 @@ public interface Environment {
      * @param floorDetails is the details of the floor that has to be setted
      * @return false if FloorDetails is not one of FloorDetails given by this class
      *         to change the current floor or the current floor is not changeable.
-     * @throws NullPointerExeption if floorDetails is null
+     * @throws NullPointerException if floorDetails is null
      */
     boolean setNextFloor(FloorDetails floorDetails);
 

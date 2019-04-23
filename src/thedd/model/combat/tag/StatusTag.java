@@ -1,8 +1,8 @@
 package thedd.model.combat.tag;
 
 /**
- * Tags that an {@link ActionActor} can get when
- * a {@Status} is applied.
+ * Tags that an ActionActor can get when
+ * a Status is applied.
  */
 public enum StatusTag implements Tag {
 

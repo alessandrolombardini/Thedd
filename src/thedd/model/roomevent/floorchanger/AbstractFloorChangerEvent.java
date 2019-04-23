@@ -7,7 +7,7 @@ import thedd.model.roomevent.AbstractRoomEvent;
 import thedd.model.roomevent.RoomEventType;
 
 /**
- * Abstract implementation of {@link model.room_event.FloorChanger}. 
+ * Abstract implementation of FloorChanger. 
  * Every specialization must specify whether it is mandatory or not.
  *
  */
@@ -18,7 +18,7 @@ public abstract class AbstractFloorChangerEvent extends AbstractRoomEvent implem
     /**
      * 
      * @param name
-     *  the name of the {@link model.room_event.FloorChanger}.
+     *  the name of the FloorChanger.
      * @param condition
      *  the condition that has to be met to be able to change floor.
      */

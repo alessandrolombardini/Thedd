@@ -9,7 +9,7 @@ import thedd.model.combat.actor.ActionActor;
 
 
 /**
- * This {@link model.combat.action.effect.ActionEffect} which represent a change of a statistic
+ * This ActionEffect which represent a change of a statistic
  * given by an {@link thedd.model.item.equipableitem.EquipableItem}.
  *
  */
@@ -20,7 +20,7 @@ public final class EquipmentStatisticChangerEffect extends AbstractActionEffect 
     private final int effectValue;
 
     /**
-     * Create a new effect that target a {@link model.character.Statistic}
+     * Create a new effect that target a Statistic
      * and modify it by an integer value which can be positive or negative.
      * @param stat
      *  the Statistic affected

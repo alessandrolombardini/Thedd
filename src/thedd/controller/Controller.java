@@ -82,7 +82,7 @@ public interface Controller {
     StatisticsInformation getStatisticsInformation();
 
     /**
-     * <<<<<<< Updated upstream Resets the player's selected action and prompts the
+     * Updated upstream Resets the player's selected action and prompts the
      * view to let the player choose another action.
      */
     void undoActionSelection();
@@ -96,7 +96,7 @@ public interface Controller {
     void targetSelected(ActionActor target);
 
     /**
-     * Sets the {@link ActionExecutor} as a {@link OutOfCombatActionExecutor} and
+     * Sets the ActionExecutor as a OutOfCombatActionExecutor and
      * starts it passing the provided action.
      * 
      * @param action the action to execute
@@ -104,7 +104,7 @@ public interface Controller {
     void executeSingleAction(Action action);
 
     /**
-     * Execute the last evaluated action by the {@link ActionExecutor}.
+     * Execute the last evaluated action by the ActionExecutor.
      */
     void executeCurrentAction();
 

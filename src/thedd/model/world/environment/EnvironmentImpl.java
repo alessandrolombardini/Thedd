@@ -14,7 +14,7 @@ import thedd.model.world.floor.FloorImpl;
 import thedd.model.world.floor.details.FloorDetails;
 
 /**
- * Implementation of {@link thedd.model.world.Environment}.
+ * Implementation of {@link thedd.model.world.environment.Environment}.
  *
  */
 public class EnvironmentImpl implements Environment {

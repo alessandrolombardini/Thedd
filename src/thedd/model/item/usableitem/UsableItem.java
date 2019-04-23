@@ -21,7 +21,7 @@ public interface UsableItem extends Item {
     Action getAction();
 
     /**
-     * Adds a new {@link thedd.model.combat.action..effectActionEffect}
+     * Adds a new ActionEffect
      * to the {@link thedd.model.combat.action.Action} of the item.
      * @param effect
      *  the effect to add to the item action

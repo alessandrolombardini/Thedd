@@ -13,7 +13,7 @@ import thedd.model.combat.tag.Taggable;
 /**
  * 
  * An entity capable of performing Actions in and out of combat.<br>
- * It also holds collections of {@link Status}, {@link Modifier} and {@link Tag}.
+ * It also holds collections of {@link Status}, {@link Modifier} and Tag.
  * 
  */
 public interface ActionActor extends Taggable {
@@ -117,7 +117,7 @@ public interface ActionActor extends Taggable {
     Set<Modifier<Action>> getActionModifiers();
 
     /**
-     * Gets the Set of {@link Modifier} applicable to {@link ActionEffect.
+     * Gets the Set of {@link Modifier} applicable to ActionEffect.
      * @return the set of effect modifiers
      */
     Set<Modifier<ActionEffect>> getEffectModifiers();
@@ -130,7 +130,7 @@ public interface ActionActor extends Taggable {
 
     /**
      * Adds a {@link Status} to the actor.<br>
-     * It also adds the various {@link Tag} provided by
+     * It also adds the various Tag provided by
      * the status to the actor.
      * @param status the status to be added
      */
@@ -138,7 +138,7 @@ public interface ActionActor extends Taggable {
 
     /**
      * Removes a {@link Status} from the actor.<br>
-     * It also removes the various {@link Tag} provided by
+     * It also removes the various Tag provided by
      * the status to the actor.
      * @param status the status to be removed
      */

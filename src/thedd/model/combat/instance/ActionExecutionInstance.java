@@ -7,10 +7,10 @@ import thedd.model.combat.actor.ActionActor;
 
 /**
  * Holds information about the current instance in which
- * {@link Action} are executed (combat, out of combat
+ * Action are executed (combat, out of combat
  * item usage, executing actions provided by statuses...)
  * such as round number, state of the execution and 
- * {@link ActionActors} involved. 
+ * ActionActors involved. 
  */
 public interface ActionExecutionInstance {
 
@@ -88,7 +88,7 @@ public interface ActionExecutionInstance {
 
     /**
      * Gets the number of Actors that are also instance of
-     * {@link BasicCharacter} and whose method {@link BasicCharacter#isAlive}
+     * BasicCharacter and whose method BasicCharacter#isAlive
      * returns true. 
      * @param actors the actors to be tested
      * @return the number of actors who are characters and alive

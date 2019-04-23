@@ -14,7 +14,7 @@ public enum RoomEventType {
      */
     FLOOR_CHANGER_EVENT, 
     /**
-     * An event that perform an {@link model.combat.Action}.
+     * An event that perform an Action.
      */
     INTERACTABLE_ACTION_PERFORMER
 }

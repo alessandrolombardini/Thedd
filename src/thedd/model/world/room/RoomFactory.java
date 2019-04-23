@@ -10,7 +10,7 @@ public interface RoomFactory {
      * the current floor.
      * 
      * @return a Room
-     * @throws IllegalStateExeption if rooms are over
+     * @throws IllegalStateException if rooms are over
      */
     Room createRoom();
 }

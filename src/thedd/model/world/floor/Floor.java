@@ -20,7 +20,7 @@ public interface Floor {
      * one.
      * 
      * @return false if the current room can't be changed yet
-     * @throws IllegalStateExeption if there aren't other unexplored rooms
+     * @throws IllegalStateException if there aren't other unexplored rooms
      */
     boolean nextRoom();
 
@@ -28,7 +28,7 @@ public interface Floor {
      * This method allows to get the current room.
      * 
      * @return the current room
-     * @throws IllegalStateException() if there isn't a room yet
+     * @throws IllegalStateException if there isn't a room yet
      */
     Room getCurrentRoom();
 

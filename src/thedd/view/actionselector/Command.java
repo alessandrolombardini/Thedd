@@ -1,7 +1,7 @@
 package thedd.view.actionselector;
 
 /**
- * Identifies the different interactions between the {@link ActionSelectorController}
+ * Identifies the different interactions between the ActionSelectorController
  * and its sub panes.
  */
 public enum Command {

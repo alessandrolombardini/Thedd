@@ -8,12 +8,12 @@ public enum ModifierActivation {
 
     /**
      * The modifier should be tried to be applied when
-     * the {@link ActionActor} is attacking.
+     * the ActionActor is attacking.
      */
     ACTIVE_ON_ATTACK,
     /**
      * The modifier should be tried to be applied when
-     * the {@link ActionActor} is defending.
+     * the ActionActor is defending.
      */
     ACTIVE_ON_DEFENCE,
     /**

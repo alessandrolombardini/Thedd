@@ -1,7 +1,7 @@
 package thedd.model.combat.action.result;
 
 /**
- * Defines whether an {@Action} has hit, missed or it has been
+ * Defines whether an Action has hit, missed or it has been
  * parried by its target.
  */
 public enum ActionResultType {

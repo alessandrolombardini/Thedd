@@ -6,8 +6,8 @@ import java.util.stream.Collectors;
 import thedd.model.combat.actor.ActionActor;
 
 /**
- * Targeting component of an {@link Action} which targets
- * every {@ActionActor} available.
+ * Targeting component of an Action which targets
+ * every ActionActor available.
  */
 public class TargetTargetParty extends DefaultTargeting {
 

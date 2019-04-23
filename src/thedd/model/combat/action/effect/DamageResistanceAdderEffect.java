@@ -13,9 +13,9 @@ import thedd.model.combat.requirements.tags.TagRequirementType;
 import thedd.model.combat.tag.EffectTag;
 
 /**
- * {@link model.combat.action.effect.ActionEffect} which adds one {@link model.combat.modifier.DamageModifier}
+ * ActionEffect which adds DamageModifier
  * to every {@link thedd.model.combat.action.effect.ActionEffect}s of every {@link thedd.model.combat.action.Action} 
- * of an {@link model.combat.actor.ActionActor} with the {@link model.combat.tag.Tag} specified in the modifier.
+ * of an ActionActor with the Tag specified in the modifier.
  * This represent a resistance to a type of damage. It can be a percentage or a flat value.
  *
  */

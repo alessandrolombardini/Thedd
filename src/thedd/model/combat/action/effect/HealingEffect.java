@@ -7,7 +7,7 @@ import thedd.model.character.statistics.Statistic;
 import thedd.model.combat.actor.ActionActor;
 
 /**
- * {@link model.combat.action.effect.ActionEffect} which heals the target by a percentage of his health.
+ * ActionEffect which heals the target by a percentage of his health.
  *
  */
 public final class HealingEffect extends AbstractActionEffect implements ActionEffect {
