@@ -29,41 +29,41 @@ public final class StatValuesImpl implements StatValues {
 
     @Override
     public void updateActual(final int value) {
-        if (this.actual + value <= 0) {
-            this.actual = 0;
+        if (actual + value <= 0) {
+            actual = 0;
         } else {
-            if (this.max != NO_MAX && this.actual + value > this.max) {
-                this.actual = this.max;
+            if (max != NO_MAX && actual + value > max) {
+                actual = max;
             } else {
-                this.actual = this.actual + value;
+                actual = actual + value;
             }
         }
     }
 
     @Override
     public void updateMax(final int value) {
-        if (this.max != NO_MAX) {
-            final int oldMax = this.max;
-            this.max = this.max + value;
-            this.actual = (int) Math.round(this.actual * (((double) this.max) / ((double) oldMax)));
+        if (max != NO_MAX) {
+            final int oldMax = max;
+            max = max + value;
+            actual = (int) Math.round(actual * (((double) max) / ((double) oldMax)));
         }
     }
 
     @Override
     public int getActual() {
-        return this.actual;
+        return actual;
     }
 
     @Override
     public int getMax() {
-        return this.max;
+        return max;
     }
 
     @Override
     public String toString() {
-        if (this.max == NO_MAX) {
+        if (max == NO_MAX) {
             return String.valueOf(this.actual);
         }
-        return this.actual + "/" + this.max;
+        return actual + "/" + max;
     }
 }

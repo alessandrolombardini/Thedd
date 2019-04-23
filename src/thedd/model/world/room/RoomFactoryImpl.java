@@ -8,14 +8,11 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
 import org.apache.commons.lang3.RandomUtils;
-
 import edu.princeton.cs.algs4.StdRandom;
 import thedd.model.character.BasicCharacter;
-import thedd.model.character.CharacterFactory;
-import thedd.model.character.types.EnemyCharacterType;
-import thedd.model.world.Difficulty;
+import thedd.model.character.RandomEnemyFactory;
+import thedd.model.character.types.DarkDestructor;
 import thedd.model.world.floor.details.FloorDetails;
 import thedd.model.combat.actionexecutor.DefaultCombatActionExecutor;
 import thedd.model.roomevent.RoomEvent;
@@ -98,11 +95,11 @@ public class RoomFactoryImpl implements RoomFactory {
     }
 
     private Room createBossRoom() {
-        final BasicCharacter boss = CharacterFactory.createFinalBoss(this.getEnemiesMultiplier());
+        final BasicCharacter boss = DarkDestructor.getNewInstance();
         final CombatEvent event = RoomEventHelper.getCombat();
         event.getHostileEncounter().addNPC(boss);
-        event.getHostileEncounter().setCombatLogic(new DefaultCombatActionExecutor(event.getHostileEncounter()
-                                                                                         .getNPCs()));
+        event.getHostileEncounter()
+                .setCombatLogic(new DefaultCombatActionExecutor(event.getHostileEncounter().getNPCs()));
         return new RoomImpl(Arrays.asList(event));
     }
 
@@ -115,24 +112,18 @@ public class RoomFactoryImpl implements RoomFactory {
         final CombatEvent combatEvent = RoomEventHelper.getCombat();
         final int numberOfEnemies = this.getQuantityOfEnemies();
         this.remainingContent.compute(RoomContent.ENEMY, (k, v) -> v - numberOfEnemies);
-        IntStream.range(0, numberOfEnemies)
-                 .boxed()
-                 .map(i -> CharacterFactory.createEnemy(EnemyCharacterType.getRandom(), this.getEnemiesMultiplier()))
-                 .forEach(c -> combatEvent.getHostileEncounter().addNPC(c));
+        IntStream.range(0, numberOfEnemies).boxed().map(i -> RandomEnemyFactory.createRandomEnemy())
+                .forEach(c -> combatEvent.getHostileEncounter().addNPC(c));
         if (!combatEvent.getHostileEncounter().getNPCs().isEmpty()) {
             combatEvent.getHostileEncounter()
-                       .setCombatLogic(new DefaultCombatActionExecutor(combatEvent.getHostileEncounter().getNPCs()));
+                    .setCombatLogic(new DefaultCombatActionExecutor(combatEvent.getHostileEncounter().getNPCs()));
             events.add(combatEvent);
         }
         final EnumMap<RoomContent, Integer> interactableActions = getQuantityOfInteractableAction();
-        events.addAll(IntStream.range(0, interactableActions.get(RoomContent.CONTRAPTION))
-                               .boxed()
-                               .map(b -> RoomEventHelper.getContraption())
-                               .collect(Collectors.toList()));
-        events.addAll(IntStream.range(0, interactableActions.get(RoomContent.TREASURE))
-                               .boxed()
-                               .map(b -> RoomEventHelper.getTreasureChest())
-                               .collect(Collectors.toList()));
+        events.addAll(IntStream.range(0, interactableActions.get(RoomContent.CONTRAPTION)).boxed()
+                .map(b -> RoomEventHelper.getContraption()).collect(Collectors.toList()));
+        events.addAll(IntStream.range(0, interactableActions.get(RoomContent.TREASURE)).boxed()
+                .map(b -> RoomEventHelper.getTreasureChest()).collect(Collectors.toList()));
         return new RoomImpl(events);
     }
 
@@ -141,7 +132,7 @@ public class RoomFactoryImpl implements RoomFactory {
             return Integer.min(MAX_ENEMIES_PER_ROOM, this.remainingContent.get(RoomContent.ENEMY));
         } else if (StdRandom.bernoulli(PROB_TO_SET_CONTENT) && this.remainingContent.get(RoomContent.ENEMY) > 0) {
             return RandomUtils.nextInt(MIN_ENEMIES_PER_ROOM,
-                                       Integer.min(MAX_ENEMIES_PER_ROOM, this.remainingContent.get(RoomContent.ENEMY)));
+                    Integer.min(MAX_ENEMIES_PER_ROOM, this.remainingContent.get(RoomContent.ENEMY)));
         } else {
             return MIN_ENEMIES_PER_ROOM;
         }
@@ -152,19 +143,17 @@ public class RoomFactoryImpl implements RoomFactory {
         content.put(RoomContent.CONTRAPTION, 0);
         content.put(RoomContent.TREASURE, 0);
         final int maxInteractableSettableAfterNextRoom = MAX_INTERACTABLE_ACTIONS_PER_ROOM
-                                                         * (this.getRemainingBaseRoomsToSet());
+                * (this.getRemainingBaseRoomsToSet());
         if (this.getRamainingInteractableToSet() > maxInteractableSettableAfterNextRoom || RandomUtils.nextBoolean()) {
             int minInteractable = 0;
             if (this.getRamainingInteractableToSet() > maxInteractableSettableAfterNextRoom) {
                 minInteractable = this.getRamainingInteractableToSet() - maxInteractableSettableAfterNextRoom;
             }
             final int maxInteractable = Integer.min(MAX_INTERACTABLE_ACTIONS_PER_ROOM,
-                                                    this.getRamainingInteractableToSet());
+                    this.getRamainingInteractableToSet());
             final int numberOfInteractable = RandomUtils.nextInt(minInteractable, maxInteractable + 1);
-            IntStream.range(0, numberOfInteractable)
-                     .boxed()
-                     .map(i -> getAvailableRandomInteractableAction().get())
-                     .forEach(roomContent -> content.compute(roomContent, (k, v) -> v + 1));
+            IntStream.range(0, numberOfInteractable).boxed().map(i -> getAvailableRandomInteractableAction().get())
+                    .forEach(roomContent -> content.compute(roomContent, (k, v) -> v + 1));
         }
         this.remainingContent.compute(RoomContent.CONTRAPTION, (k, v) -> v - content.get(RoomContent.CONTRAPTION));
         this.remainingContent.compute(RoomContent.TREASURE, (k, v) -> v - content.get(RoomContent.TREASURE));
@@ -181,10 +170,6 @@ public class RoomFactoryImpl implements RoomFactory {
             contentType = Optional.of(RoomContent.CONTRAPTION);
         }
         return contentType;
-    }
-
-    private Difficulty getEnemiesMultiplier() {
-        return this.floorDetails.getDifficult();
     }
 
     private int getRamainingInteractableToSet() {

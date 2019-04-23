@@ -6,8 +6,8 @@ import static org.junit.Assert.assertTrue;
 import java.util.Optional;
 import org.junit.Test;
 import thedd.model.character.BasicCharacter;
-import thedd.model.character.CharacterFactory;
-import thedd.model.character.types.EnemyCharacterType;
+import thedd.model.character.types.Goblin;
+import thedd.model.character.types.PlayerCharacter;
 import thedd.model.combat.action.Action;
 import thedd.model.combat.actionexecutor.ActionExecutor;
 import thedd.model.combat.actionexecutor.DefaultCombatActionExecutor;
@@ -17,7 +17,6 @@ import thedd.model.combat.encounter.HostileEncounterImpl;
 import thedd.model.combat.instance.ActionExecutionInstance;
 import thedd.model.combat.instance.CombatStatus;
 import thedd.model.combat.instance.ExecutionInstanceImpl;
-import thedd.model.world.Difficulty;
 
 /**
  * This class allows to test combat module.
@@ -38,10 +37,10 @@ public class CombatTest {
      */
     public CombatTest() {
         final HostileEncounter encounter = new HostileEncounterImpl();
-        player = CharacterFactory.createPlayerCharacter(Optional.of("Giangeffo"), Difficulty.EASY);
+        player = PlayerCharacter.getNewInstance(Optional.empty());
         action = player.getAvailableActionsList().stream().findFirst().get();
         encounter.setCombatLogic(new DefaultCombatActionExecutor());
-        encounter.addNPC(CharacterFactory.createEnemy(EnemyCharacterType.GOBLIN, Difficulty.EASY));
+        encounter.addNPC(Goblin.getNewInstance());
         instance = new ExecutionInstanceImpl();
         instance.addPlayerPartyMember(player);
         instance.addNPCsPartyMembers(encounter.getNPCs());
@@ -92,7 +91,8 @@ public class CombatTest {
     }
 
     /**
-     * Try to set one player and one enemie and try to make a one hit fight for each side.
+     * Try to set one player and one enemie and try to make a one hit fight for each
+     * side.
      */
     @Test
     public void testCombatWithOnePlayerAction() {
@@ -123,8 +123,6 @@ public class CombatTest {
         executeNextAction();
         assertEquals(logic.getExecutionStatus(), CombatStatus.ROUND_ENDED);
     }
-
-
 
     private void executeNextAction() {
         logic.setNextAction();

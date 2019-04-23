@@ -3,8 +3,7 @@ package thedd.model;
 import java.util.Objects;
 import java.util.Optional;
 import thedd.model.character.BasicCharacter;
-import thedd.model.character.CharacterFactory;
-import thedd.model.world.Difficulty;
+import thedd.model.character.types.PlayerCharacter;
 import thedd.model.world.environment.Environment;
 import thedd.model.world.environment.EnvironmentImpl;
 
@@ -70,8 +69,7 @@ public final class ModelImpl implements Model {
         if (numOfLevels < EnvironmentImpl.MIN_NUMBER_OF_FLOORS || numOfRooms < EnvironmentImpl.MIN_NUMBER_OF_ROOMS) {
             return false;
         }
-        this.playerCharacter = Optional.of(CharacterFactory.createPlayerCharacter(playerCharacterName, 
-                                                                                  Difficulty.NORMAL));
+        this.playerCharacter = Optional.of(PlayerCharacter.getNewInstance(playerCharacterName));
         this.environment = Optional.of(new EnvironmentImpl(numOfLevels, numOfRooms));
         return true;
     }

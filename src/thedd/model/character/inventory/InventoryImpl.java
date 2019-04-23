@@ -21,35 +21,35 @@ public final class InventoryImpl implements Inventory {
      * InventoryImpl constructor.
      */
     public InventoryImpl() {
-        this.items = new HashMap<>();
+        items = new HashMap<>();
     }
 
     @Override
     public void addItem(final Item item) {
         Objects.requireNonNull(item);
-        if (this.items.containsKey(item)) {
-            this.items.put(item, this.items.get(item) + 1);
+        if (items.containsKey(item)) {
+            items.put(item, items.get(item) + 1);
         } else {
-            this.items.put(item, 1);
+            items.put(item, 1);
         }
     }
 
     @Override
     public void removeItem(final Item item) {
         Objects.requireNonNull(item);
-        if (!this.items.containsKey(item)) {
+        if (!items.containsKey(item)) {
             throw new IllegalArgumentException();
         }
-        this.items.put(item, this.items.get(item) - 1);
-        if (this.items.get(item) <= 0) {
-            this.items.remove(item);
+        items.put(item, items.get(item) - 1);
+        if (items.get(item) <= 0) {
+            items.remove(item);
         }
     }
 
     @Override
     public String toString() {
         String ret = "";
-        for (final Map.Entry<Item, Integer> pair : this.items.entrySet()) {
+        for (final Map.Entry<Item, Integer> pair : items.entrySet()) {
             ret = ret + "[ Item: " + pair.getKey().toString() + " - Number: " + pair.getValue() + "]\n";
         }
         if (ret.equals("")) {
@@ -60,16 +60,16 @@ public final class InventoryImpl implements Inventory {
 
     @Override
     public List<Item> getAll() {
-        return Collections.unmodifiableList(this.items.keySet().stream().collect(Collectors.toList()));
+        return Collections.unmodifiableList(items.keySet().stream().collect(Collectors.toList()));
     }
 
     @Override
     public int getQuantity(final Item item) {
         Objects.requireNonNull(item);
-        if (!this.items.containsKey(item)) {
+        if (!items.containsKey(item)) {
             return 0;
         } else {
-            return this.items.get(item);
+            return items.get(item);
         }
     }
 
@@ -85,7 +85,7 @@ public final class InventoryImpl implements Inventory {
     public boolean equals(final Object obj) {
         if (obj instanceof InventoryImpl) {
             final InventoryImpl other = (InventoryImpl) obj;
-            return this.getAll().equals(other.getAll());
+            return getAll().equals(other.getAll());
         }
         return false;
     }

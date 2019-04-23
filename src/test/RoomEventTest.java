@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.Test;
-import thedd.model.character.CharacterFactory;
+import thedd.model.character.types.DarkDestructor;
 import thedd.model.roomevent.RoomEventType;
 import thedd.model.roomevent.combatevent.CombatEvent;
 import thedd.model.roomevent.combatevent.CombatEventImpl;
@@ -13,7 +13,6 @@ import thedd.model.roomevent.floorchanger.FloorChangerEvent;
 import thedd.model.roomevent.floorchanger.Stairs;
 import thedd.model.roomevent.interactableactionperformer.ContraptionSanctuary;
 import thedd.model.roomevent.interactableactionperformer.InteractableActionPerformer;
-import thedd.model.world.Difficulty;
 
 /**
  * This class tests thedd.model.roomevent package.
@@ -52,7 +51,7 @@ public class RoomEventTest {
         final CombatEvent combat = new CombatEventImpl();
         assertEquals(RoomEventType.COMBAT_EVENT, combat.getType());
         assertNotNull(combat.getHostileEncounter());
-        combat.getHostileEncounter().addNPC(CharacterFactory.createFinalBoss(Difficulty.EASY));
+        combat.getHostileEncounter().addNPC(DarkDestructor.getNewInstance());
         assertNotNull(combat.getHostileEncounter().getNPCs());
 //        assertFalse(combat.isCompleted());
         assertFalse(combat.isSkippable());

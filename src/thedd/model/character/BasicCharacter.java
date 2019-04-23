@@ -16,6 +16,13 @@ import thedd.model.item.equipableitem.EquipableItem;
 public interface BasicCharacter extends AutomaticActionActor {
 
     /**
+     * This methods initialize character's statistics.
+     * 
+     * @param stat the EnumMap with the statistics of this character.
+     */
+    void setStatistics(EnumMap<Statistic, StatValues> stat);
+
+    /**
      * This method allows to know if the character is alive.
      * 
      * @return true if current character is alive, otherwise false.
@@ -23,24 +30,24 @@ public interface BasicCharacter extends AutomaticActionActor {
     boolean isAlive();
 
     /**
-     * This method returns the character's status of a specified statistic.
+     * This method returns character's values of a specified statistic.
      * 
      * @param stat specifies the statistic.
      * @return a StatValues that contains the actual/max values of the specified.
      *         statistic.
-     * @throws NullPointerException if stat parameter is null.
+     * @throws NullPointerException if parameter is null.
      */
     StatValues getStat(Statistic stat);
 
     /**
-     * This method returns all the character's status.
+     * This method returns all character's statistics.
      * 
-     * @return an EnumMap that contains the values of the statistic.
+     * @return an EnumMap that contains character's statistics values.
      */
     EnumMap<Statistic, StatValues> getAllStat();
 
     /**
-     * This method return the character's inventory.
+     * This method return character's inventory.
      * 
      * @return the character's inventory
      */
@@ -51,29 +58,29 @@ public interface BasicCharacter extends AutomaticActionActor {
      * 
      * @param item the item to be equipped.
      * @return true if the item is successfully equipped, otherwise false.
-     * @throws NullPointerException if item parameter is null.
+     * @throws NullPointerException if parameter is null.
      */
     boolean equipItem(Item item);
 
     /**
-     * This method remove the item from the equipped ones.
+     * This method remove the item from equipments.
      * 
      * @param item the item to be removed.
-     * @return true if the item is successfully unequipped, otherwise false.
-     * @throws NullPointerException if item parameter is null.
+     * @return true if the item is successfully removed, otherwise false.
+     * @throws NullPointerException if parameter is null.
      */
     boolean unequipItem(Item item);
 
     /**
-     * This method returns a list with all the equipped items.
+     * This method returns a the list of character's equipments.
      * 
-     * @return a list of Equipable Items
+     * @return a list of EquipableItem
      */
     List<EquipableItem> getEquippedItems();
 
     /**
-     * This method returns true if the specified EquipableItem is Equipable on
-     * Player's Equipments.
+     * This method returns true if the specified EquipableItem is equipable on
+     * character's equipments.
      * 
      * @param item the specified item
      * @return true if is equipable, otherwise false.

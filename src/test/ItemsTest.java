@@ -7,14 +7,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import java.util.Optional;
 import org.junit.Test;
-import thedd.model.character.CharacterFactory;
+import thedd.model.character.types.PlayerCharacter;
 import thedd.model.item.ItemRarityImpl;
 import thedd.model.item.equipableitem.EquipableItem;
 import thedd.model.item.equipableitem.EquipableItemImpl;
 import thedd.model.item.equipableitem.EquipableItemType;
 import thedd.model.item.usableitem.UsableItem;
 import thedd.model.item.usableitem.UsableItemImpl;
-import thedd.model.world.Difficulty;
 
 /**
  * This class tests thedd.model.item package.
@@ -72,7 +71,7 @@ public class ItemsTest {
         final EquipableItem equipable2 = new EquipableItemImpl(0, NAME, EquipableItemType.AMULET, ItemRarityImpl.COMMON,
                 DESCRIPTION);
         assertEquals(equipable1, equipable2);
-        equipable2.onEquip(CharacterFactory.createPlayerCharacter(Optional.empty(), Difficulty.EASY));
+        equipable2.onEquip(PlayerCharacter.getNewInstance(Optional.empty()));
         assertNotEquals(equipable1, equipable2);
     }
 }
