@@ -145,6 +145,14 @@ public class ActionSelectorController extends ViewNodeControllerImpl implements 
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void disableInteraction() {
+        descriptionPane.setUndoDisable(true);
+    }
+
     private void selectItem() {
         if (!categorySelected) {
             categorySelected = true;
