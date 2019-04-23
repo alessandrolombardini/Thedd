@@ -47,7 +47,6 @@ public class StatisticsController extends ViewNodeControllerImpl {
     private TableColumn<Status, String> column;
     @FXML
     private TableView<Status> table;
-
     private static final double BACKGROUND_WIDTH_PERCENTAGE = 1.0;
     private static final double BACKGROUND_HEIGHT_PERCENTAGE = 1.0;
     private final ImageLoader imageFactory = new ImageLoaderImpl();
@@ -83,9 +82,6 @@ public class StatisticsController extends ViewNodeControllerImpl {
      */
     @Override
     protected void initView() {
-//        container.setBackground(new Background(new BackgroundImage(new Image("/images/actionselector/box.png"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
-//                BackgroundPosition.CENTER,
-//                new BackgroundSize(BACKGROUND_WIDTH_PERCENTAGE, BACKGROUND_HEIGHT_PERCENTAGE, true, true, false, false))));
         table.setPlaceholder(new Label("Empty"));
         table.setSelectionModel(null);
         column.setSortable(false);
