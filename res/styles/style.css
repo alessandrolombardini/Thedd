@@ -1,30 +1,107 @@
-Label {
-	-fx-font-size: 25px;
+.label {
+	-fx-text-fill: #fff;
+	-fx-label-padding: 0.5em;
+	-fx-alignment: center;
+	-fx-font-size: 1.0em;
+}
+
+.table-column {
+	-fx-text-fill: #000;
+	-fx-alignment:center;
+	-fx-border-width: 0.0px;
+}
+
+.table-view {
+	-fx-alignment: center;
+	-fx-background-color: #222;
+	-fx-base: #444;
+}
+
+.column-header {
+	-fx-size: 0.1em;
+	-fx-font-size: 1.0em;
+	-fx-alignment:center;
+	-fx-background-color: 
+        linear-gradient(from 0.0% 93.0% to 0.0% 100.0%, #1f2429 0.0%, #191d22 100.0%),
+        #20262b,
+        #191d22,
+        radial-gradient(center 50.0% 50.0%, radius 100.0%, rgba(101.0,108.0,119.0,0.9), #111);
+}
+
+/*CREDIT FOR THIS BUTTON STYLE: http://fxexperience.com/2011/12/styling-fx-buttons-with-css/ */
+
+AdaptiveFontButton {
+    -fx-padding: 8.0 15.0 15.0 15.0;
+    -fx-background-insets: 0.0,0.0 0.0 5.0 0.0, 0.0 0.0 6.0 0.0, 0.0 0.0 7.0 0.0;
+    -fx-background-radius: 8.0;        
+    -fx-background-color: 
+        linear-gradient(from 0.0% 93.0% to 0.0% 100.0%, #1f2429 0.0%, #191d22 100.0%),
+        #20262b,
+        #191d22,
+        radial-gradient(center 50.0% 50.0%, radius 100.0%, rgba(101.0,108.0,119.0,0.9), #111);
+    -fx-effect: dropshadow( gaussian , rgba(0.0,0.0,0.0,0.75) , 4.0,0.0,0.0,1.0 );
     -fx-font-weight: bold;
-    -fx-text-fill: #f2f2f2;
-    -fx-effect: dropshadow( gaussian , rgba(0.5,0.5,0.5,0.5) , 10,0,0,1 );
+    -fx-font-size: 1.1em;
+    -fx-text-fill: #fff;
 }
 
-Button {
-	 -fx-background-color: 
-        #090a0c,
-        linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
-        linear-gradient(#20262b, #191d22),
-        radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));
-    -fx-background-radius: 5,4,3,5;
-    -fx-background-insets: 0,1,2,0;
-    -fx-text-fill: white;
-    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
-    -fx-text-fill: linear-gradient(white, #d0d0d0);
-    -fx-font-size: 20px;
-    -fx-font-weight: bold;
-    -fx-padding: 10 20 10 20;
+AdaptiveFontButton:hover {
+    -fx-background-color:
+        linear-gradient(from 0.0% 93.0% to 0.0% 100.0%, #1f2429 0.0%, #191d22 100.0%),
+        #20262b,
+        #191d22,
+        radial-gradient(center 50.0% 50.0%, radius 100.0%, rgba(114.0,131.0,148.0,0.9), rgba(255.0,255.0,255.0,0.5));
 }
 
-Button:hover {
-	-fx-text-fill: red;
+.background {
+	-fx-background-color: #111;
 }
 
+.icons-pane-background {
+	-fx-background-color: #222;
+}
 
+.action-selector-button{
+	-fx-background-color: 
+        linear-gradient(from 0.0% 93.0% to 0.0% 100.0%, #1f2429 0.0%, #191d22 100.0%),
+        radial-gradient(center 50.0% 50.0%, radius 100.0%, rgba(101.0,108.0,119.0,0.9), #111);
+    -fx-text-fill: #fff;
+}
 
+.action-selector-button:hover{
+	-fx-background-color:
+        linear-gradient(from 0.0% 93.0% to 0.0% 100.0%, #1f2429 0.0%, #191d22 100.0%),
+        radial-gradient(center 50.0% 50.0%, radius 100.0%, rgba(114.0,131.0,148.0,0.9), rgba(255.0,255.0,255.0,0.5));
+	
+}
 
+.labelNewPlay {
+	-fx-text-fill: #fff;
+	-fx-label-padding: 0.5em;
+	-fx-alignment: center-right;
+	-fx-font-size: 1.0em;
+}
+
+#menu {
+    -fx-background-image: url("/images/background/castelloBackground.jpg");
+    -fx-background-color: rgb(0.0, 0.0, 0.0);
+    -fx-background-repeat: no-repeat;
+    -fx-background-size:cover;
+    -fx-background-position: center center;
+}
+
+#newGame {
+    -fx-background-image: url("/images/background/blackBackground.jpg");
+    -fx-background-color: rgb(0.0, 0.0, 0.0);
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
+    -fx-background-size:cover
+}
+
+#gameOver {
+    -fx-background-image: url("/images/background/blackBackground.jpg");
+    -fx-background-color: rgb(0.0, 0.0, 0.0);
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
+    -fx-background-position: center center;
+}

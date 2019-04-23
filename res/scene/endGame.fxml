@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import thedd.view.extensions.AdaptiveFontButton?>
 
-<AnchorPane fx:id="gameOver" stylesheets="styles/inventory_statistics_style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="thedd.view.controller.EndGameController" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+<AnchorPane fx:id="gameOver" stylesheets="styles/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="thedd.view.controller.EndGameController" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 	<children>
 		<GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 			<columnConstraints>
@@ -43,12 +43,12 @@
                            	<children>
                               <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="2" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                 		<AdaptiveFontButton ratio="15" fx:id="menuButton" onAction="#handleBackToMenuButtonAction" text="BACK TO MENU" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+                                 		<AdaptiveFontButton ratio="20" fx:id="menuButton" onAction="#handleBackToMenuButtonAction" text="BACK TO MENU" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
                                  </children>
                               </AnchorPane>
                               <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="4" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                    			  		<AdaptiveFontButton ratio="15" fx:id="exitButton"  onAction="#handleCloseButtonAction" text="EXIT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+                    			  		<AdaptiveFontButton ratio="20" fx:id="exitButton"  onAction="#handleCloseButtonAction" text="EXIT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
                                  </children>
                               </AnchorPane>
                            </children>

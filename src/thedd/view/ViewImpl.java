@@ -27,6 +27,8 @@ public class ViewImpl extends Application implements View {
     private static final String GAME_NAME = "The dark destruction";
     private static final double WIDTH = 16;
     private static final double HEIGHT = 9;
+    private static final double MIN_WIDTH = Screen.getPrimary().getBounds().getWidth() / WIDTH *  3;
+    private static final double MIN_HEIGHT = Screen.getPrimary().getBounds().getHeight() / HEIGHT * 3;
     private static final double STAGE_WIDTH = Screen.getPrimary().getBounds().getWidth() / WIDTH * HEIGHT;
     private static final double STAGE_HEIGHT = Screen.getPrimary().getBounds().getHeight() / WIDTH * HEIGHT;
     private static final ApplicationViewState FIRST_APP_STATE = ApplicationViewState.MENU;
@@ -189,17 +191,19 @@ public class ViewImpl extends Application implements View {
         }
         final Stage stage = this.stage.get();
         stage.setTitle(GAME_NAME);
+        stage.setResizable(true);
         stage.setHeight(STAGE_HEIGHT);
         stage.setWidth(STAGE_WIDTH);
-        stage.setResizable(true);
-        setState(FIRST_APP_STATE);
+        stage.setMinHeight(MIN_HEIGHT);
+        stage.setMinWidth(MIN_WIDTH);
+        stage.centerOnScreen();
         stage.heightProperty().addListener(l -> {
             stage.setWidth(stage.getHeight() * (WIDTH / HEIGHT));
         });
-
         stage.widthProperty().addListener(l -> {
             stage.setHeight(stage.getWidth() / (WIDTH / HEIGHT));
         });
+        setState(FIRST_APP_STATE);
     }
 
     @Override
