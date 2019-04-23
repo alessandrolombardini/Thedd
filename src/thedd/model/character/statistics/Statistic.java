@@ -6,32 +6,21 @@ package thedd.model.character.statistics;
 public enum Statistic {
 
     /** Represents the amount of damage a character can take before dying. */
-    HEALTH_POINT(20, "Health Points"),
+    HEALTH_POINT("Health Points"),
 
     /** Represents the character's physical toughness. */
-    CONSTITUTION(5, "Constitution"),
+    CONSTITUTION("Constitution"),
 
     /** Represents the character's physical power. */
-    STRENGTH(10, "Strength"),
+    STRENGTH("Strength"),
 
     /** Represents a measure of how agile a character is. */
-    AGILITY(5, "Agility");
+    AGILITY("Agility");
 
-    private final int basicValue;
     private final String representation;
 
-    Statistic(final int value, final String representation) {
-        this.basicValue = value;
+    Statistic(final String representation) {
         this.representation = representation;
-    }
-
-    /**
-     * This method returns the basic value of the selected statistic.
-     * 
-     * @return a int value
-     */
-    public int getBasicValue() {
-        return this.basicValue;
     }
 
     @Override
