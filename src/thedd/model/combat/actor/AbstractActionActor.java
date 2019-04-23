@@ -36,8 +36,9 @@ public abstract class AbstractActionActor implements ActionActor {
     private final List<Action> queuedActions = new ArrayList<>();
     private final String name;
     private final boolean inPlayerParty;
-    private Optional<Action> selectedAction = Optional.empty();
     private boolean inCombat;
+    private Optional<Action> selectedAction = Optional.empty();
+    private Optional<Integer> turnInitiative = Optional.empty();
 
     @Override
     public abstract int getPriority();
@@ -391,6 +392,30 @@ public abstract class AbstractActionActor implements ActionActor {
     @Override
     public boolean isInPlayerParty() {
         return inPlayerParty;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setTurnInitiative(final int turnInitiative) {
+        this.turnInitiative = Optional.of(turnInitiative);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void resetTurnInitiative() {
+        this.turnInitiative = Optional.empty();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<Integer> getTurnInitiative() {
+        return turnInitiative;
     }
 
 }
