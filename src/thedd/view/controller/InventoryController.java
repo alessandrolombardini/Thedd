@@ -101,18 +101,6 @@ public class InventoryController extends ViewNodeControllerImpl {
      * {@inheritDoc}
      */
     @Override
-    public void enableInteraction() {
-        this.table.setDisable(false);
-        this.backButton.setDisable(false);
-        this.deleteButton.setDisable(false);
-        this.useButton.setDisable(false);
-//        update();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     protected void initView() {
         table.setPlaceholder(new Label("Empty"));
         column.setResizable(true);

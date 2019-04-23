@@ -30,9 +30,4 @@ public interface ViewNodeController {
      */
     void disableInteraction();
 
-    /**
-     * This method allows to enable the interaction.
-     */
-    void enableInteraction();
-
 }

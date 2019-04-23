@@ -160,13 +160,5 @@ public class MainGameViewController extends ViewNodeControllerImpl implements Ga
         nodeControllers.values().forEach(c -> c.ifPresent(a -> a.disableInteraction()));
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void enableInteraction() {
-        nodeControllers.values().forEach(c -> c.ifPresent(a -> a.enableInteraction()));
-    }
-
 }
 

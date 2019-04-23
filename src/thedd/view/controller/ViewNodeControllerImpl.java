@@ -54,14 +54,6 @@ public abstract class ViewNodeControllerImpl implements ViewNodeController {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void enableInteraction() {
-        /* This method could be overrided if the node could be enable */
-    }
-
-    /**
      * This method is called when the controller is initialized.
      * Should be used to do everything necessary to set correctly the view.
      */

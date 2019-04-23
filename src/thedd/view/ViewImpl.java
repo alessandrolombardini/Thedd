@@ -210,14 +210,6 @@ public class ViewImpl extends Application implements View {
      * {@inheritDoc}
      */
     @Override
-    public final void enableInteraction() {
-        this.actualScene.ifPresent(s -> s.getController().enableInteraction());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public final void disableInteraction() {
         this.actualScene.ifPresent(s -> s.getController().disableInteraction());
     }

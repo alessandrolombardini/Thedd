@@ -81,11 +81,6 @@ public interface View {
     void partialUpdate();
 
     /**
-     * Enable user interaction.
-     */
-    void enableInteraction();
-
-    /**
      * Disable user interaction.
      */
     void disableInteraction();
