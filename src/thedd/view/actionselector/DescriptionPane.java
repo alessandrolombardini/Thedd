@@ -138,6 +138,14 @@ public class DescriptionPane extends Pane implements Observable<Command> {
     }
 
     /**
+     * Sets the disabled property for the undo button.
+     * @param disabled true to disable, false to enable
+     */
+    public void setUndoDisable(final boolean disabled) {
+        buttons.get(buttons.size() - 1).setDisable(disabled);
+    }
+
+    /**
      *  The custom button used in this pane. 
      *  When clicked, it signals to its listeners with a provided command.
      *  In can be either set to fire the event one time per mouse click or
@@ -199,6 +207,5 @@ public class DescriptionPane extends Pane implements Observable<Command> {
             }
         }
     }
-
 
 }
