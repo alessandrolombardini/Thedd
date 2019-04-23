@@ -94,13 +94,13 @@
 				                      		</children>
 				                          </AnchorPane>  
 				                          
-				                          <AnchorPane GridPane.columnIndex="3" GridPane.rowIndex="4" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+				                          <AnchorPane GridPane.columnIndex="3" GridPane.rowIndex="6" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 				                             <children>
 				                                <AdaptiveFontLabel ratio="20" fx:id="errorNumberOfRooms" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
 											</children>
 				                          </AnchorPane>
 				                          
-				                          <AnchorPane GridPane.columnIndex="3" GridPane.rowIndex="6" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+				                          <AnchorPane GridPane.columnIndex="3" GridPane.rowIndex="4" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 				                             <children>
 				                                <AdaptiveFontLabel ratio="20" fx:id="errorNumberOfFloors" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
 											</children>
