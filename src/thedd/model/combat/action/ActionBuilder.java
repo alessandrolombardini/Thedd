@@ -28,7 +28,7 @@ import thedd.model.combat.actor.ActionActor;
  */
 public class ActionBuilder {
 
-    private ActionActor source;
+    private ActionActor source = null;
     private String name = "[Name missing]";
     private String description = "[Description missing]";
     private List<ActionEffect> effects = new ArrayList<>();
@@ -37,7 +37,7 @@ public class ActionBuilder {
     private ActionTargeting targeting = new DefaultTargeting();
     private ExecutionPolicy applyPolicy = new DefaultExecutionPolicy();
     private TargetType targetType = TargetType.EVERYONE;
-    private double baseHitChance;
+    private double baseHitChance = 0d;
 
     /**
      * Sets the target type.
@@ -45,8 +45,6 @@ public class ActionBuilder {
      * @return the updated builder
      */
     public ActionBuilder setTargetType(final TargetType targetType) {
-        source = null;
-        baseHitChance = 0d;
         this.targetType = targetType;
         return this;
     }
