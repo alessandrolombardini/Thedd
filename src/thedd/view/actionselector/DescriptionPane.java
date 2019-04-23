@@ -177,7 +177,6 @@ public class DescriptionPane extends Pane implements Observable<Command> {
 
                     @Override
                     public void handle(final long time) {
-                        lastUpdate = 0;
                         final long timeStampMs = time / 1000000;
                         if (Math.abs(timeStampMs - lastUpdate) >= PRESS_INTERVAL_MS) {
                             currentCommand = onClickCommand;
