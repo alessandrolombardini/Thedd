@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import thedd.model.character.BasicCharacter;
 import thedd.model.combat.action.Action;
@@ -46,6 +47,12 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
         public int compare(final ActionActor a, final ActionActor b) {
             final int aPriority = a.getPriority();
             final int bPriority = b.getPriority();
+            if (canActorAct(a) && !canActorAct(b)) {
+                return -1;
+            }
+            if (!canActorAct(a) && canActorAct(b)) {
+                return 1;
+            }
             if (aPriority == bPriority) {
                 if (actorsQueue.contains(a) && !actorsQueue.contains(b)) {
                     return -1;
@@ -166,6 +173,11 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
      */
     @Override
     public void updateExecutionStatus() {
+        combatInstance.getAllParties().forEach(a -> a.resetTurnInitiative());
+        if (combatInstance.getNumberOfAliveCharacters(combatInstance.getPlayerParty()) <= 0) {
+            combatInstance.setCombatStatus(CombatStatus.PLAYER_LOST);
+            return;
+        }
 
         if (currentActor.isPresent() && currentActor.get().getActionQueue().isEmpty()) {
             final ActionActor actor = currentActor.get();
@@ -188,10 +200,7 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
         }
 
         if (!(combatInstance.getCombatStatus() == CombatStatus.ROUND_IN_PROGRESS)) {
-            if (combatInstance.getNumberOfAliveCharacters(combatInstance.getPlayerParty()) <= 0) {
-                combatInstance.setCombatStatus(CombatStatus.PLAYER_LOST);
-                return;
-            } else if (combatInstance.getNumberOfAliveCharacters(combatInstance.getNPCsParty()) <= 0) {
+            if (combatInstance.getNumberOfAliveCharacters(combatInstance.getNPCsParty()) <= 0) {
                 combatInstance.setCombatStatus(CombatStatus.PLAYER_WON);
                 combatInstance.getPlayerParty().forEach(a -> {
                     a.setIsInCombat(false);
@@ -239,6 +248,8 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
     public void prepareNextRound() {
         combatInstance.increaseRoundNumber();
         setNextAIMoves();
+        final List<ActionActor> orderedActors = getOrderedActorsList();
+        IntStream.range(0, combatInstance.getAllParties().size()).forEach(i -> orderedActors.get(i).setTurnInitiative(i + 1));
     }
 
     /**
