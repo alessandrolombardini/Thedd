@@ -194,4 +194,21 @@ public interface ActionActor extends Taggable {
      */
     boolean isInPlayerParty();
 
+    /**
+     * Sets the current turn initiative of the actor.
+     * @param turnInitiative the current initiative of the actor
+     */
+    void setTurnInitiative(int turnInitiative);
+
+    /**
+     * Resets the current turn initiative of the actor.
+     */
+    void resetTurnInitiative();
+
+    /**
+     * Gets the current turn initiative of the actor.
+     * @return the turn initiative of the actor
+     */
+    Optional<Integer> getTurnInitiative();
+
 }
