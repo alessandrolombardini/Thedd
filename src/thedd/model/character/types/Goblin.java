@@ -31,7 +31,7 @@ public class Goblin extends BasicCharacterImpl {
     public Goblin(final String name, final double multiplier) {
         super(name, multiplier, false);
         setPermanentModifiers();
-        this.addWeightedAction(new LightAttack(TargetType.FOE), RandomPrority.HIGH);
+        this.addWeightedAction(new LightAttack(TargetType.FOE), RandomPrority.VERY_HIGH);
         this.addWeightedAction(new NastyStrike(TargetType.FOE), RandomPrority.LOW);
     }
 
