@@ -14,7 +14,6 @@ import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
-import javafx.scene.layout.GridPane;
 import thedd.model.character.statistics.Statistic;
 import thedd.model.combat.status.Status;
 import thedd.view.extensions.AdaptiveFontLabel;
@@ -48,8 +47,7 @@ public class StatisticsController extends ViewNodeControllerImpl {
     private TableColumn<Status, String> column;
     @FXML
     private TableView<Status> table;
-    @FXML
-    private GridPane container;
+
     private static final double BACKGROUND_WIDTH_PERCENTAGE = 1.0;
     private static final double BACKGROUND_HEIGHT_PERCENTAGE = 1.0;
     private final ImageLoader imageFactory = new ImageLoaderImpl();

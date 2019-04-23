@@ -11,7 +11,7 @@ import thedd.model.item.equipableitem.EquipableItemType;
  * Protection for hands.
  * Provides a scarce protection against {@link thedd.model.combat.tag.EffectTag#NORMAL_DAMAGE}.
  */
-public class EquipableItemGloves extends EquipableItemImpl {
+public final class EquipableItemGloves extends EquipableItemImpl {
 
     private static final int ID = -5;
     private static final String NAME = "Gloves";
@@ -25,7 +25,7 @@ public class EquipableItemGloves extends EquipableItemImpl {
      * @param rarity
      *  the rarity of the new Gloves
      */
-    public EquipableItemGloves(final ItemRarity rarity) {
+    private EquipableItemGloves(final ItemRarity rarity) {
         super(ID, NAME, TYPE, rarity, DESCRIPTION);
         this.addActionEffect(new DamageResistanceAdderEffect(BASE_DAMAGE_REDUCTION, EffectTag.NORMAL_DAMAGE, false, false));
     }

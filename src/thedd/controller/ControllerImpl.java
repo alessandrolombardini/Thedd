@@ -4,8 +4,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.IntStream;
-
 import javafx.application.Platform;
 import thedd.controller.information.PlayerInformation;
 import thedd.controller.information.PlayerInformationImpl;
@@ -26,13 +24,12 @@ import thedd.model.combat.instance.ActionExecutionInstance;
 import thedd.model.combat.instance.CombatStatus;
 import thedd.model.combat.instance.ExecutionInstanceImpl;
 import thedd.model.item.Item;
-import thedd.model.item.ItemFactory;
 import thedd.model.item.usableitem.UsableItem;
 import thedd.model.roomevent.RoomEvent;
 import thedd.model.roomevent.RoomEventType;
 import thedd.model.roomevent.combatevent.CombatEvent;
 import thedd.model.world.environment.EnvironmentImpl;
-import thedd.model.world.floor.FloorDetails.FloorDetails;
+import thedd.model.world.floor.details.FloorDetails;
 import thedd.model.world.room.Room;
 import thedd.view.ApplicationViewState;
 import thedd.view.View;
@@ -42,6 +39,8 @@ import thedd.view.View;
  */
 public class ControllerImpl implements Controller {
 
+    private static final String SELECT_ACTION = "Select an action";
+    private static final String SELECT_TARGET = "Select a target";
     private final View view;
     private final Model model;
     private PlayerInformation playerInfo;
@@ -70,21 +69,14 @@ public class ControllerImpl implements Controller {
             this.model.initGame(Optional.ofNullable(playerName), numOfFloors, numOfRooms);
             this.playerInfo = new PlayerInformationImpl(this.model.getPlayerCharacter());
             this.statisticsInfo = new StatisticsInformationImpl(this.model.getPlayerCharacter());
-
-//---------------------QUESTO A LAVORI ULTIMATI è DA RIMUOVERE.
-            BasicCharacter charac = this.model.getPlayerCharacter();
-            IntStream.range(0, 15).forEach(i -> {
-                Item ite = ItemFactory.getRandomItem();
-                if (ite.isUsable())
-                    charac.getInventory().addItem(ite);
-            });
-//------------------------------------------------------------
-            //return nextRoom();
             return true;
         }
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final boolean isValidNumberOfRooms(final String numberOfRooms) {
         if (this.checkNumber(numberOfRooms)) {
@@ -94,6 +86,9 @@ public class ControllerImpl implements Controller {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final boolean isValidNumberOfFloors(final String numberOfFloors) {
         if (this.checkNumber(numberOfFloors)) {
@@ -115,7 +110,6 @@ public class ControllerImpl implements Controller {
         Platform.exit();
     }
 
-    // -------------------------------------------------------------------
     /**
      * {@inheritDoc}
      */
@@ -141,7 +135,6 @@ public class ControllerImpl implements Controller {
         if (item.isUsable()) {
             final UsableItem usable = (UsableItem) item;
             playerInfo.setUsedItem(item);
-//            this.view.update();
             final Action itemAction = usable.getAction();
             itemAction.setSource(getPlayer());
             if (getPlayer().isInCombat()) {
@@ -193,12 +186,8 @@ public class ControllerImpl implements Controller {
     @Override
     public void updateStatistics(final BasicCharacter character) {
         this.statisticsInfo.setCharacter(character);
-        //this.view.update();
         view.partialUpdate();
     }
-
-    // ----------------------------------------------------Action execution and
-    // combat management session
 
     /**
      * {@inheritDoc}
@@ -209,7 +198,7 @@ public class ControllerImpl implements Controller {
         playerActor.resetSelectedAction();
         playerInfo.resetUsedItem();
         if (isCombatActive()) {
-            view.showMessage("Select an action");
+            view.showMessage(SELECT_ACTION);
         } else {
             view.hideMessage();
         }
@@ -221,9 +210,6 @@ public class ControllerImpl implements Controller {
      */
     @Override
     public void targetSelected(final ActionActor target) {
-        view.disableInteraction();
-
-
         view.hideMessage();
         final ActionActor playerActor = this.model.getPlayerCharacter();
         final ActionExecutor currentExecutor = actionExecutor.get();
@@ -238,9 +224,6 @@ public class ControllerImpl implements Controller {
         if (currentExecutor.isRoundReady()) {
             evaluateNextAction();
         }
-
-
-        view.enableInteraction();
     }
 
     /**
@@ -254,9 +237,8 @@ public class ControllerImpl implements Controller {
         instance.addPlayerPartyMember(playerActor);
         actionExecutor.get().setExecutionInstance(instance);
         if (action.getTargets().isEmpty()) {
-            // call view to tell player to select a target [DONE]
             model.getPlayerCharacter().addActionToQueue(action, true);
-            view.showMessage("Select a target");
+            view.showMessage(SELECT_TARGET);
             final List<ActionActor> targetables = action.getValidTargets(instance);
             view.showActionTargets(targetables, instance.getPlayerParty(), instance.getNPCsParty(), action);
         } else {
@@ -309,12 +291,12 @@ public class ControllerImpl implements Controller {
             evaluateNextAction();
             break;
         case ROUND_PAUSED:
-            view.showMessage("Select an action");
+            view.showMessage(SELECT_ACTION);
             view.showActionSelector();
             view.update();
             break;
         case ROUND_ENDED:
-            view.showMessage("Select an action");
+            view.showMessage(SELECT_ACTION);
             view.showActionSelector();
             executor.prepareNextRound();
             view.update();
@@ -336,9 +318,8 @@ public class ControllerImpl implements Controller {
         if (combatExecutor.isRoundReady()) {
             evaluateNextAction();
         } else {
-            // call view to tell player to select an action
             view.showActionSelector();
-            view.showMessage("Select an action");
+            view.showMessage(SELECT_ACTION);
         }
     }
 
@@ -370,18 +351,19 @@ public class ControllerImpl implements Controller {
     @Override
     public void selectAction(final Action action) {
         model.getPlayerCharacter().addActionToQueue(action, true);
-        // call view to tell player to select a target (even if the action target type
-        // is SELF?)
         final ActionExecutionInstance aei = actionExecutor.get().getExecutionInstance();
         if (action.getTargetType() == TargetType.SELF) {
             targetSelected(action.getSource().get());
         } else {
             final List<ActionActor> targetables = action.getValidTargets(aei);
             view.showActionTargets(targetables, aei.getPlayerParty(), aei.getNPCsParty(), action);
-            view.showMessage("Select a target");
+            view.showMessage(SELECT_TARGET);
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final boolean nextRoom() {
         final boolean isChanged = this.model.getEnvironment().getCurrentFloor().nextRoom();
@@ -401,11 +383,17 @@ public class ControllerImpl implements Controller {
         return isChanged;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final boolean nextFloor(final FloorDetails floorDetails) {
         return this.model.getEnvironment().setNextFloor(floorDetails);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final List<RoomEvent> getRoomEvents() {
         if (this.model.getEnvironment().getCurrentFloor().getCurrentRoomIndex() >= 0) {
@@ -414,31 +402,49 @@ public class ControllerImpl implements Controller {
         return Collections.emptyList();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final List<FloorDetails> getStairsOptions() {
         return this.model.getEnvironment().getFloorOptions();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final boolean isCurrentLastFloor() {
         return this.model.getEnvironment().isCurrentLastFloor();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final boolean isCurrentLastRoom() {
         return !this.model.getEnvironment().getCurrentFloor().hasNextRoom();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final boolean isCurrentRoomCompleted() {
         return this.model.getEnvironment().getCurrentFloor().getCurrentRoom().checkToMoveOn();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final boolean hasPlayerWon() {
         return this.model.hasPlayerWon();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final BasicCharacter getPlayer() {
         return this.model.getPlayerCharacter();

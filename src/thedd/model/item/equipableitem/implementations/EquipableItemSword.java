@@ -17,7 +17,7 @@ import thedd.model.item.equipableitem.EquipableItemType;
  * One handed weapon.
  * His innate effect provide more damage to actions which already has {@link EffectTag#NORMAL_DAMAGE}.
  */
-public class EquipableItemSword extends EquipableItemImpl {
+public final class EquipableItemSword extends EquipableItemImpl {
 
     private static final int ID = -1;
     private static final String NAME = "Sword";
@@ -30,7 +30,7 @@ public class EquipableItemSword extends EquipableItemImpl {
      * @param rarity
      *          the rarity of the new item
      */
-    public EquipableItemSword(final ItemRarity rarity) {
+    private EquipableItemSword(final ItemRarity rarity) {
         super(ID, NAME, TYPE, rarity, DESCRIPTION);
         this.addActionEffect(
             new ActionModifierAdderEffect(

@@ -10,7 +10,7 @@ import thedd.model.item.equipableitem.EquipableItemType;
 /**
  * A ring which provide an additional point of {@link Statistic#STRENGTH}.
  */
-public class EquipableItemRing extends EquipableItemImpl {
+public final class EquipableItemRing extends EquipableItemImpl {
 
     private static final int ID = -8;
     private static final String NAME = "Ring";
@@ -24,7 +24,7 @@ public class EquipableItemRing extends EquipableItemImpl {
      * @param rarity
      *  the rarity of the new Ring
      */
-    public EquipableItemRing(final ItemRarity rarity) {
+    private EquipableItemRing(final ItemRarity rarity) {
         super(ID, NAME, TYPE, rarity, DESCRIPTION);
         this.addActionEffect(new EquipmentStatisticChangerEffect(Statistic.STRENGTH, ADDITIONAL_STRENGTH));
     }

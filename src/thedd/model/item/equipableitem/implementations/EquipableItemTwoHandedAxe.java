@@ -17,7 +17,7 @@ import thedd.model.item.equipableitem.EquipableItemType;
  * Two-handed weapon. 
  * His innate effect is more normal damage to action with {@link EffectTag#NORMAL_DAMAGE}.
  */
-public class EquipableItemTwoHandedAxe extends EquipableItemImpl {
+public final class EquipableItemTwoHandedAxe extends EquipableItemImpl {
 
     private static final int ID = -3;
     private static final String NAME = "Two-handed Axe";
@@ -31,7 +31,7 @@ public class EquipableItemTwoHandedAxe extends EquipableItemImpl {
      * @param rarity
      *  the rarity of the new item
      */
-    public EquipableItemTwoHandedAxe(final ItemRarity rarity) {
+    private EquipableItemTwoHandedAxe(final ItemRarity rarity) {
         super(ID, NAME, TYPE, Objects.requireNonNull(rarity), DESCRIPTION);
         final DamageAdderModifier dmgMod = new DamageAdderModifier(BASE_DAMAGE,
                                                                    Arrays.asList(new EffectTagsRequirement<>(false, TagRequirementType.REQUIRED, Arrays.asList(EffectTag.NORMAL_DAMAGE))),

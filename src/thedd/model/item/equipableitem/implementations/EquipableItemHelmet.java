@@ -11,7 +11,7 @@ import thedd.model.item.equipableitem.EquipableItemType;
  * Protection for the head.
  * It provide a scarce resistance against {@link thedd.model.combat.tag.EffectTag#NORMAL_DAMAGE}.
  */
-public class EquipableItemHelmet extends EquipableItemImpl {
+public final class EquipableItemHelmet extends EquipableItemImpl {
 
     private static final int ID = -7;
     private static final String NAME = "Helmet";
@@ -25,7 +25,7 @@ public class EquipableItemHelmet extends EquipableItemImpl {
      * @param rarity
      *  the rarity of the new Item
      */
-    public EquipableItemHelmet(final ItemRarity rarity) {
+    private EquipableItemHelmet(final ItemRarity rarity) {
         super(ID, NAME, TYPE, rarity, DESCRIPTION);
         this.addActionEffect(new DamageResistanceAdderEffect(BASE_DAMAGE_REDUCTION, EffectTag.NORMAL_DAMAGE, false, false));
     }

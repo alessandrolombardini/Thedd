@@ -1,15 +1,11 @@
 package test;
 
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import org.junit.Test;
-
 import thedd.model.character.CharacterFactory;
-import thedd.model.character.types.EnemyCharacterType;
 import thedd.model.roomevent.RoomEventType;
 import thedd.model.roomevent.combatevent.CombatEvent;
 import thedd.model.roomevent.combatevent.CombatEventImpl;

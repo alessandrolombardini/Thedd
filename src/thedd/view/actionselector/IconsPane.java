@@ -46,6 +46,7 @@ public class IconsPane extends Pane implements Observable<Command> {
      * Initializes the structure of the pane and sets the bindings.
      */
     public IconsPane() {
+        super();
         selectedItemSizeByWidth.bind(this.widthProperty().multiply(SELECTED_ITEM_SIZE_PERC));
         defaultItemSizeByWidth.bind(this.widthProperty().multiply(DEFAULT_ITEM_SIZE_PERC));
         selectedItemSizeByHeight.bind(this.heightProperty().multiply(SELECTED_ITEM_SIZE_PERC));
@@ -185,14 +186,14 @@ public class IconsPane extends Pane implements Observable<Command> {
         currentTransitions.clear();
 
         buttons.forEach(b -> {
-            TranslateTransition tt = new TranslateTransition(Duration.millis(TRANSLATE_DURATION_MS), b);
-            int index = buttons.indexOf(b);
-            int direction = index == selected ? 0 : index > selected ? 1 : -1;
-            int offset = index == selected ? 0 :  Math.abs(index - selected);
+            final TranslateTransition tt = new TranslateTransition(Duration.millis(TRANSLATE_DURATION_MS), b);
+            final int index = buttons.indexOf(b);
+            final int direction = index == selected ? 0 : index > selected ? 1 : -1;
+            final int offset = index == selected ? 0 :  Math.abs(index - selected);
             b.layoutXProperty().unbind();
             b.translateYProperty().unbind();
 
-            double endPoint = getNewDefaultY(b, direction, offset, getSelectedSize()).get();
+            final double endPoint = getNewDefaultY(b, direction, offset, getSelectedSize()).get();
             tt.setToY(endPoint);
             currentTransitions.add(tt);
             tt.play();

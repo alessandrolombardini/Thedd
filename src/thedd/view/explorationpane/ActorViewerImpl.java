@@ -6,10 +6,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
-
 import javafx.geometry.Point2D;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;

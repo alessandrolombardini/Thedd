@@ -58,9 +58,8 @@ public class VisualCategory {
      * @return the description of the category
      */
     public String getDescription() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("Category name: ");
-        sb.append(getName());
+        final String s = "Category name: " + getName();
+        final StringBuilder sb = new StringBuilder(s);
         if (!getActions().isEmpty()) {
             sb.append("\n\nActions in this category: ");
             getActions().forEach(a -> sb.append("\n\t").append(a.getName()));

@@ -11,7 +11,7 @@ import thedd.model.world.floor.Floor;
 import thedd.model.world.floor.FloorDetailsFactory;
 import thedd.model.world.floor.FloorDetailsFactoryImpl;
 import thedd.model.world.floor.FloorImpl;
-import thedd.model.world.floor.FloorDetails.FloorDetails;
+import thedd.model.world.floor.details.FloorDetails;
 
 /**
  * Implementation of {@link thedd.model.world.Environment}.

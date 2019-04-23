@@ -11,7 +11,7 @@ import thedd.model.item.equipableitem.EquipableItemType;
  * Protection for legs and feet.
  * They provide a scarce resistance against {@link thedd.model.combat.tag.EffectTag#NORMAL_DAMAGE}.
  */
-public class EquipableItemGreaves extends EquipableItemImpl {
+public final class EquipableItemGreaves extends EquipableItemImpl {
 
     private static final int ID = -6;
     private static final String NAME = "Greaves";
@@ -25,7 +25,7 @@ public class EquipableItemGreaves extends EquipableItemImpl {
      * @param rarity
      *  the rarity of the new Greaves
      */
-    public EquipableItemGreaves(final ItemRarity rarity) {
+    private EquipableItemGreaves(final ItemRarity rarity) {
         super(ID, NAME, TYPE, rarity, DESCRIPTION);
         this.addActionEffect(new DamageResistanceAdderEffect(BASE_DAMAGE_REDUCTION, EffectTag.NORMAL_DAMAGE, false, false));
     }

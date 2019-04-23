@@ -1,7 +1,6 @@
 package thedd.view.explorationpane;
 
 import java.util.Objects;
-
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.ObjectExpression;
 import javafx.event.EventHandler;
@@ -43,6 +42,7 @@ public class TopStackPane extends StackPane implements DialogResponseManager, Mo
      * It also creates the dialog.
      */
     public TopStackPane() {
+        super();
         final double half = 0.5;
         this.setAlignment(Pos.CENTER);
 

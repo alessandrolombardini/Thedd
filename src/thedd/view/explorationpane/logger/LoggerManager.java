@@ -3,7 +3,6 @@ package thedd.view.explorationpane.logger;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Queue;
-
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -36,6 +35,7 @@ public class LoggerManager extends Task<Integer> {
      *          the strings to be displayed in the logger
      */
     public LoggerManager(final Logger logger, final Queue<String> queuedLogStrings) {
+        super();
         this.queuedLogStrings = new LinkedList<>(Objects.requireNonNull(queuedLogStrings));
         this.managedLogger = Objects.requireNonNull(logger);
         setOnCancelled(loggerCloser);

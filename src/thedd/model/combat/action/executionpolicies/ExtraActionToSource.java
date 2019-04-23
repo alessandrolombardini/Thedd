@@ -19,6 +19,7 @@ public class ExtraActionToSource extends DefaultExecutionPolicy {
      * @param extraAction the extra action to assign to the source actor
      */
     public ExtraActionToSource(final Action extraAction) {
+        super();
         this.extraAction = extraAction;
     }
 

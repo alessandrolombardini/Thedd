@@ -33,6 +33,7 @@ public class LoggerImpl extends GridPane implements Logger {
      * 
      */
     public LoggerImpl() {
+        super();
         final ColumnConstraints column1 = new ColumnConstraints();
         column1.setPercentWidth(TEXT_WIDTH_PERC);
         final ColumnConstraints column2 = new ColumnConstraints();

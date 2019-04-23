@@ -16,11 +16,11 @@ import thedd.model.character.BasicCharacter;
 import thedd.model.character.CharacterFactory;
 import thedd.model.character.types.EnemyCharacterType;
 import thedd.model.world.Difficulty;
+import thedd.model.world.floor.details.FloorDetails;
 import thedd.model.combat.actionexecutor.DefaultCombatActionExecutor;
 import thedd.model.roomevent.RoomEvent;
 import thedd.model.roomevent.RoomEventHelper;
 import thedd.model.roomevent.combatevent.CombatEvent;
-import thedd.model.world.floor.FloorDetails.FloorDetails;
 
 /**
  * Implementation of {@link thedd.model.world.RoomFactory}.

@@ -36,15 +36,6 @@ public class NewGameController extends ViewNodeControllerImpl {
     private TextField numberOfFloorsTextField;
 
     @FXML
-    private AdaptiveFontLabel playerNameLabel;
-
-    @FXML
-    private AdaptiveFontLabel numberOfRoomsLabel;
-
-    @FXML
-    private AdaptiveFontLabel numberOfFloorsLabel;
-
-    @FXML
     private AdaptiveFontLabel errorNumberOfRooms;
 
     @FXML

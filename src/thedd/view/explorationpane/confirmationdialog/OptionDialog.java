@@ -37,6 +37,7 @@ public final class OptionDialog extends Pane {
      * Create a new Dialog and bind size of his component to his size.
      */
     public OptionDialog() {
+        super();
         buttonList = new ArrayList<>();
 
         r.setWidth(DEFAULT_WIDTH);

@@ -3,6 +3,7 @@ package thedd.view.controller;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -31,15 +32,18 @@ public class ActionSelectorController extends ViewNodeControllerImpl implements 
     private final IconsPane iconsPane;
     private final DescriptionPane descriptionPane;
     private final List<VisualCategory> categories = new ArrayList<>();
-    private int selectedCategoryIndex = 0;
-    private boolean categorySelected = false;
-    private boolean actionSelected = false;
+    private int selectedCategoryIndex;
+    private boolean categorySelected;
+    private boolean actionSelected;
 
     /**
      * Public constructor.
      */
     public ActionSelectorController() {
         super();
+        selectedCategoryIndex = 0;
+        categorySelected = false;
+        actionSelected = false;
         iconsPane = new IconsPane();
         descriptionPane = new DescriptionPane();
     }
@@ -79,7 +83,7 @@ public class ActionSelectorController extends ViewNodeControllerImpl implements 
                                                     .filter(a -> a.getCategory() == c)
                                                     .map(a -> new VisualAction(a))
                                                     .collect(Collectors.toList());
-                   final String categoryName = c.name().toLowerCase();
+                   final String categoryName = c.name().toLowerCase(Locale.ENGLISH);
                    categories.add(new VisualCategory(categoryName, actionsByCategory));
                });
     }
