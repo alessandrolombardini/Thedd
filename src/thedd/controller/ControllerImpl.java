@@ -211,6 +211,7 @@ public class ControllerImpl implements Controller {
     @Override
     public void targetSelected(final ActionActor target) {
         view.hideMessage();
+        view.disableInteraction();
         final ActionActor playerActor = this.model.getPlayerCharacter();
         final ActionExecutor currentExecutor = actionExecutor.get();
         playerActor.getSelectedAction().ifPresent(a -> {
