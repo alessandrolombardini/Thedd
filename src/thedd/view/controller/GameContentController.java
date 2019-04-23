@@ -24,6 +24,7 @@ import thedd.model.character.BasicCharacter;
 import thedd.model.character.statistics.StatValues;
 import thedd.model.character.statistics.Statistic;
 import thedd.model.character.types.DarkDestructor;
+import thedd.model.character.types.PlayerCharacter;
 import thedd.model.combat.action.Action;
 import thedd.model.combat.action.result.ActionResult;
 import thedd.model.combat.actor.ActionActor;
@@ -260,14 +261,14 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
             result.getResults().forEach(r -> {
                 switch (r.getRight()) {
                 case HIT:
-                    queue.add(result.getAction().getLogMessage(result.getAction().getTarget().get(), true));
+                    queue.add(result.getAction().getLogMessage(r.getLeft(), true));
                     result.getAction().getEffects().forEach(e -> {
-                        e.setTarget(r.getKey());
+                        e.setTarget(r.getLeft());
                         queue.add(e.getLogMessage());
                     });
                     break;
                 case MISSED:
-                    queue.add(result.getAction().getLogMessage(result.getAction().getTarget().get(), false));
+                    queue.add(result.getAction().getLogMessage(r.getLeft(), false));
                     break;
                 case PARRIED:
                     queue.add(r.getLeft().getName() + " parried " + result.getAction().getSource().get().getName() + "'s action");
@@ -275,10 +276,13 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
                 default:
                     break;
                 }
-                if (r.getKey() instanceof BasicCharacter && !((BasicCharacter) r.getKey()).isAlive()) {
-                    queue.add(r.getKey().getName() + " has been defeated.");
-                    if (r.getKey() instanceof DarkDestructor) {
+                if (r.getLeft() instanceof BasicCharacter && !((BasicCharacter) r.getLeft()).isAlive()) {
+                    queue.add(r.getLeft().getName() + " has been defeated.");
+                    if (r.getLeft() instanceof DarkDestructor) {
                         queue.add("You have completed your mission, brave knight!");
+                    }
+                    if (r.getLeft() instanceof PlayerCharacter) {
+                        queue.add("May Morr watch over your soul, fallen one.");
                     }
                 }
             });
@@ -320,11 +324,18 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
             final double hitChance = action.isPresent() ? Objects.requireNonNull(action).get().getHitChance(target) : 0;
             final String hitC = String.format("%.2f%%", hitChance * 100);
             final Optional<Action> targetAction = target.getSelectedAction();
-            final String tooltip = bcTarget.getName() + '\n'
-                                   + "HP: " + targetHP.getActual() + "/" + targetHP.getMax() + '\n'
-                                   + (action.isPresent() ? "Chanche to hit: " + hitC  + '\n' : "")
-                                   + (targetAction.isPresent() ? "Next action: " + targetAction.get().getName() + '\n' : "");
-            explorationPane.updatePositionTooltip(Objects.requireNonNull(position), tooltip);
+            final Optional<Integer> targetInitiative = target.getTurnInitiative();
+            final StringBuilder sb = new StringBuilder().append(bcTarget.getName())
+                                                        .append('\n')
+                                                        .append("HP: ")
+                                                        .append(targetHP.getActual())
+                                                        .append('/')
+                                                        .append(targetHP.getMax())
+                                                        .append('\n');
+           targetAction.ifPresent(a -> sb.append("Next action: ").append(a.getName()).append('\n'));
+           targetInitiative.ifPresent(i -> sb.append("Round initiative: ").append(i).append('\n'));
+           action.ifPresent(a -> sb.append("Chance to hit: ").append(hitC));
+           explorationPane.updatePositionTooltip(Objects.requireNonNull(position), sb.toString());
             if (bcTarget.getStat(Statistic.HEALTH_POINT).getActual() <= 0) {
                     explorationPane.disableViewer(position);
             }
