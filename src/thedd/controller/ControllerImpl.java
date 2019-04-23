@@ -237,9 +237,6 @@ public class ControllerImpl implements Controller {
         if (currentExecutor.isRoundReady()) {
             evaluateNextAction();
         }
-
-
-        view.enableInteraction();
     }
 
     /**
@@ -294,6 +291,7 @@ public class ControllerImpl implements Controller {
             view.update();
             break;
         case PLAYER_LOST:
+            view.update();
             this.view.setState(ApplicationViewState.END_GAME);
             break;
         case PLAYER_WON:
@@ -305,6 +303,7 @@ public class ControllerImpl implements Controller {
             view.update();
             break;
         case ROUND_IN_PROGRESS:
+            view.update();
             evaluateNextAction();
             break;
         case ROUND_PAUSED:
