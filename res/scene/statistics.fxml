@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import thedd.view.extensions.AdaptiveFontLabel?>
 
-<AnchorPane styleClass="background" stylesheets="styles/inventory_statistics_style.css" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="thedd.view.controller.StatisticsController"
+<AnchorPane styleClass="background" stylesheets="styles/bottom_game_style.css" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="thedd.view.controller.StatisticsController"
 	xmlns:fx="http://javafx.com/fxml/1" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 	<children>
 		<GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">

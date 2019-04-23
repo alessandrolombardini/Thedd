@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 import java.util.function.Function;
-
 import thedd.model.character.statistics.Statistic;
 import thedd.model.combat.action.Action;
 import thedd.model.combat.action.TargetType;
@@ -14,7 +13,6 @@ import thedd.model.combat.action.effect.ActionEffect;
 import thedd.model.combat.action.effect.ActionModifierAdderEffect;
 import thedd.model.combat.action.effect.DamageResistanceAdderEffect;
 import thedd.model.combat.action.effect.EquipmentStatisticChangerEffect;
-import thedd.model.combat.action.implementations.DivineIntervention;
 import thedd.model.combat.action.implementations.FieryTouch;
 import thedd.model.combat.action.implementations.NastyStrike;
 import thedd.model.combat.modifier.DamageAdderModifier;

@@ -3,6 +3,7 @@ package thedd.view.controller;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Tooltip;
@@ -51,12 +52,6 @@ public class StatisticsController extends ViewNodeControllerImpl {
     private final ImageLoader imageFactory = new ImageLoaderImpl();
 
     /**
-     * Statistics controller constructor.
-     */
-    public StatisticsController() {
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -87,14 +82,15 @@ public class StatisticsController extends ViewNodeControllerImpl {
      */
     @Override
     protected void initView() {
-        update();
+        table.setPlaceholder(new Label("Empty"));
         table.setSelectionModel(null);
         column.setSortable(false);
         column.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
+        update();
     }
 
     private Background setBackgroundImage(final Image img) {
-        BackgroundImage bg = new BackgroundImage(img, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
+        final BackgroundImage bg = new BackgroundImage(img, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.CENTER,
                 new BackgroundSize(BACKGROUND_WIDTH_PERCENTAGE, BACKGROUND_HEIGHT_PERCENTAGE, true, true, true, false));
         // Third boolean, if false ignore image's ratio, otherwise keep it.

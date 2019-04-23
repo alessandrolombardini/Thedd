@@ -11,7 +11,7 @@ import thedd.model.item.ItemRarity;
  * Class of Item Potion that heals the target.
  *
  */
-public class UsableItemPotion extends UsableItemImpl {
+public final class UsableItemPotion extends UsableItemImpl {
 
     private static final int ID = 0;
     private static final String NAME = "Potion";
@@ -24,7 +24,7 @@ public class UsableItemPotion extends UsableItemImpl {
      * @param rarity
      *  the rarity of the potion
      */
-    public UsableItemPotion(final ItemRarity rarity) {
+    private UsableItemPotion(final ItemRarity rarity) {
         super(ID, NAME, rarity, DESCRIPTION, true, true);
         this.addActionEffect(new HealingEffect(HEALING_VALUE * this.getEffectsMultiplier().get(rarity)));
     }

@@ -58,19 +58,18 @@ public class VisualAction {
      * @return a description of the action
      */
     public String getDescription() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append(getName())
-          .append("\n\n");
+        final StringBuilder sb = new StringBuilder(getName());
+        sb.append("\n\n");
         if (!getTags().isEmpty()) {
             sb.append(getTags())
-              .append("\n");
+              .append('\n');
         }
         sb.append(action.getDescription())
           .append("\n\n")
           .append(getEffectsPreview())
           .append("Base hitchance: ")
           .append(getBaseHitChance())
-          .append("%");
+          .append('%');
         return sb.toString();
     }
 

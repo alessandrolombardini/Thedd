@@ -6,7 +6,7 @@ import javafx.beans.property.DoubleProperty;
  * A graphic component which can show the result of an action.
  * It is managed by a {@link LoggerManager} which can run parallel to the application.
  */
-public interface Logger {
+public interface ApplicationLogger {
 
     /**
      * Set the current text to show.

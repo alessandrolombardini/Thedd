@@ -1,7 +1,7 @@
 package thedd.model.world.floor;
 
 import thedd.model.world.Difficulty;
-import thedd.model.world.floor.FloorDetails.FloorDetails;
+import thedd.model.world.floor.details.FloorDetails;
 
 /**
  * Interface that define the factory of floor details.

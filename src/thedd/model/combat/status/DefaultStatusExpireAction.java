@@ -14,7 +14,9 @@ public class DefaultStatusExpireAction extends ActionImpl {
     private static final double BASE_HITCHANCE = 1d;
 
     /**
-     * @param statusName, the name of the expired status
+     * DefaultStatusExpireAction constructor.
+     * 
+     * @param statusName the name of the expired status
      */
     public DefaultStatusExpireAction(final String statusName) {
         super(new ActionBuilder().setName(statusName)

@@ -130,7 +130,7 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
                                        checkStatusResistance(action, target);
                                        break;
                                     case PARRIED:
-                                        applyParry(action, target);
+                                        applyParry(target);
                                         break;
                                     default:
                                         break;
@@ -199,8 +199,11 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
             combatInstance.getAllParties().forEach(a -> a.getStatuses().forEach(s -> s.setIsUpdated(false)));
         }
 
-        if (!(combatInstance.getCombatStatus() == CombatStatus.ROUND_IN_PROGRESS)) {
-            if (combatInstance.getNumberOfAliveCharacters(combatInstance.getNPCsParty()) <= 0) {
+        if (combatInstance.getCombatStatus() != CombatStatus.ROUND_IN_PROGRESS) {
+            if (combatInstance.getNumberOfAliveCharacters(combatInstance.getPlayerParty()) <= 0) {
+                combatInstance.setCombatStatus(CombatStatus.PLAYER_LOST);
+                return;
+            } else if (combatInstance.getNumberOfAliveCharacters(combatInstance.getNPCsParty()) <= 0) {
                 combatInstance.setCombatStatus(CombatStatus.PLAYER_WON);
                 combatInstance.getPlayerParty().forEach(a -> {
                     a.setIsInCombat(false);
@@ -369,7 +372,7 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
                 && !actorsQueue.contains(target);
     }
 
-    private void applyParry(final Action action, final ActionActor target) {
+    private void applyParry(final ActionActor target) {
         target.resetSelectedAction();
         if (combatInstance.getNPCsParty().contains(target)) { //Maybe check if target is Automatic AND his behavior is active
             setNextAIMove((AutomaticActionActor) target);

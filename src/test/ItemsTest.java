@@ -1,14 +1,12 @@
 package test;
 
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-
 import java.util.Optional;
-
 import org.junit.Test;
-
 import thedd.model.character.CharacterFactory;
 import thedd.model.item.ItemRarityImpl;
 import thedd.model.item.equipableitem.EquipableItem;
@@ -61,7 +59,7 @@ public class ItemsTest {
     public void testEqualsUsableItems() {
         final UsableItem usable1 = new UsableItemImpl(0, NAME, ItemRarityImpl.COMMON, DESCRIPTION, false, false);
         final UsableItem usable2 = new UsableItemImpl(0, NAME, ItemRarityImpl.COMMON, DESCRIPTION, false, false);
-        assertTrue(usable1.equals(usable2));
+        assertEquals(usable1, usable2);
     }
 
     /**
@@ -73,8 +71,8 @@ public class ItemsTest {
                 DESCRIPTION);
         final EquipableItem equipable2 = new EquipableItemImpl(0, NAME, EquipableItemType.AMULET, ItemRarityImpl.COMMON,
                 DESCRIPTION);
-        assertTrue(equipable1.equals(equipable2));
+        assertEquals(equipable1, equipable2);
         equipable2.onEquip(CharacterFactory.createPlayerCharacter(Optional.empty(), Difficulty.EASY));
-        assertFalse(equipable1.equals(equipable2));
+        assertNotEquals(equipable1, equipable2);
     }
 }

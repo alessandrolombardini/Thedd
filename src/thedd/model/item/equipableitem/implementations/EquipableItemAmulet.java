@@ -11,7 +11,7 @@ import thedd.model.item.equipableitem.EquipableItemType;
  * A charm which makes the wearer feel thougher.
  * It provides an additional point of {@link thedd.model.character.statistics.Statistic#HEALTH_POINT}.
  */
-public class EquipableItemAmulet extends EquipableItemImpl {
+public final class EquipableItemAmulet extends EquipableItemImpl {
 
     private static final int ID = -9;
     private static final String NAME = "Amulet";
@@ -25,7 +25,7 @@ public class EquipableItemAmulet extends EquipableItemImpl {
      * @param rarity
      *  the rarity of the new item
      */
-    public EquipableItemAmulet(final ItemRarity rarity) {
+    private EquipableItemAmulet(final ItemRarity rarity) {
         super(ID, NAME, TYPE, rarity, DESCRIPTION);
         this.addActionEffect(new EquipmentStatisticChangerEffect(Statistic.HEALTH_POINT, ADDITIONAL_HP));
     }

@@ -7,8 +7,8 @@ import org.apache.commons.lang3.RandomUtils;
 import edu.princeton.cs.algs4.StdRandom;
 import thedd.model.world.Difficulty;
 import thedd.model.world.environment.EnvironmentImpl;
-import thedd.model.world.floor.FloorDetails.FloorDetails;
-import thedd.model.world.floor.FloorDetails.FloorDetailsBuilderImpl;
+import thedd.model.world.floor.details.FloorDetails;
+import thedd.model.world.floor.details.FloorDetailsBuilderImpl;
 import thedd.model.world.room.RoomFactoryImpl;
 
 /**

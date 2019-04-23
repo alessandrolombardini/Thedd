@@ -11,7 +11,7 @@ import thedd.model.item.equipableitem.EquipableItemType;
  * Protection for chest.
  * It provide a fair resistance against {@link thedd.model.combat.tag.EffectTag#NORMAL_DAMAGE}.
  */
-public class EquipableItemChest extends EquipableItemImpl {
+public final class EquipableItemChest extends EquipableItemImpl {
 
     private static final int ID = -4;
     private static final String NAME = "Chestplate";
@@ -25,7 +25,7 @@ public class EquipableItemChest extends EquipableItemImpl {
      * @param rarity
      *          the rarity of the new Item
      */
-    public EquipableItemChest(final ItemRarity rarity) {
+    private EquipableItemChest(final ItemRarity rarity) {
         super(ID, NAME, TYPE, rarity, DESCRIPTION);
         this.addActionEffect(new DamageResistanceAdderEffect(BASE_DAMAGE_REDUCTION, EffectTag.NORMAL_DAMAGE, false, false));
     }

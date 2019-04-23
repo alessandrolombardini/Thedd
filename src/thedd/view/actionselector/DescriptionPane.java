@@ -43,6 +43,7 @@ public class DescriptionPane extends Pane implements Observable<Command> {
      * Public constructor, sets up the structure of the pane.
      */
     public DescriptionPane() {
+        super();
         upperAreaHeight.bind(this.heightProperty().multiply(UPPER_AREA_HEIGHT_PERC));
         lowerAreaHeight.bind(this.heightProperty().subtract(upperAreaHeight));
         padding.bind(this.widthProperty().multiply(PADDING_PERC));
@@ -172,10 +173,11 @@ public class DescriptionPane extends Pane implements Observable<Command> {
             } else {
                 //Code taken and modified from https://stackoverflow.com/questions/33157671/javafx-how-to-repeat-action-as-long-as-button-is-pressed
                 final AnimationTimer timer = new AnimationTimer() {
-                    private long lastUpdate = 0;
+                    private long lastUpdate;
 
                     @Override
                     public void handle(final long time) {
+                        lastUpdate = 0;
                         final long timeStampMs = time / 1000000;
                         if (Math.abs(timeStampMs - lastUpdate) >= PRESS_INTERVAL_MS) {
                             currentCommand = onClickCommand;

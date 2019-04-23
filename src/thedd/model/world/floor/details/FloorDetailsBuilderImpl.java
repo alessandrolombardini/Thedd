@@ -1,4 +1,4 @@
-package thedd.model.world.floor.FloorDetails;
+package thedd.model.world.floor.details;
 
 import java.util.Optional;
 
@@ -6,7 +6,7 @@ import thedd.model.world.Difficulty;
 import thedd.model.world.environment.EnvironmentImpl;
 
 /**
- * Implementation of {@link thedd.model.world.floor.FloorDetails.FloorDetailsBuilder}.
+ * Implementation of {@link thedd.model.world.floor.details.FloorDetailsBuilder}.
  */
 public class FloorDetailsBuilderImpl implements FloorDetailsBuilder {
 
