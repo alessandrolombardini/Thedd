@@ -15,7 +15,7 @@
 			</columnConstraints>
 			<rowConstraints>
 				<RowConstraints minHeight="0.0" percentHeight="60" fillHeight="true" />
-				<RowConstraints minHeight="0.0" fillHeight="true" />
+				<RowConstraints minHeight="0.0" percentHeight="40" fillHeight="true" />
 			</rowConstraints>
 			<children>
 				<AnchorPane fx:id="gameContent" GridPane.columnSpan="2"
