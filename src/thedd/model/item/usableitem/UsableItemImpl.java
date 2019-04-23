@@ -7,8 +7,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import thedd.model.combat.action.Action;
 import thedd.model.combat.action.ActionBuilder;
-import thedd.model.combat.action.ActionCategory;
-import thedd.model.combat.action.LogMessageType;
 import thedd.model.combat.action.effect.ActionEffect;
 import thedd.model.item.AbstractItem;
 import thedd.model.item.ItemRarity;
@@ -56,12 +54,7 @@ public class UsableItemImpl extends AbstractItem implements UsableItem {
         super(id, name, rarity, description);
         this.usableInCombat = usableInCombat;
         this.usableOutOfCombat = usableOutOfCombat;
-        action = new ActionBuilder().setName(this.getName())
-                                    .setCategory(ActionCategory.ITEM)
-                                    .setBaseHitChance(1d)
-                                    .setDescription(description)
-                                    .setLogMessage(LogMessageType.ITEM_ACTION)
-                                    .build();
+        action = buildAction();
     }
 
     @Override
@@ -114,6 +107,16 @@ public class UsableItemImpl extends AbstractItem implements UsableItem {
     @Override
     public final boolean isUsableOutOfCombat() {
         return usableOutOfCombat;
+    }
+
+    /**
+     * Builds the action executed when using the item.
+     * @return the action linked to the item
+     */
+    protected Action buildAction() {
+        return new ActionBuilder().setName("[Action uninitialized]")
+                                  .setDescription("[Action uninitialized]")
+                                  .build();
     }
 
 }
