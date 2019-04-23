@@ -21,8 +21,8 @@ public final class RandomEnemyFactory {
     public static BasicCharacter createRandomEnemy() {
         final EnemyCharacterType type = EnemyCharacterType.getRandom();
         if (type == EnemyCharacterType.GOBLIN) {
-            return Goblin.getNewInstance();
+            return new Goblin();
         }
-        return Headless.getNewInstance();
+        return new Headless();
     }
 }

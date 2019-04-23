@@ -66,4 +66,24 @@ public final class StatValuesImpl implements StatValues {
         }
         return actual + "/" + max;
     }
+
+    /**
+     * StatValuesImpl's static factory method with max value.
+     * 
+     * @param value the value of the statistic.
+     * @return a new StatValuesImpl
+     */
+    public static StatValuesImpl buildWithMax(final int value) {
+        return new StatValuesImpl(value, value);
+    }
+
+    /**
+     * StatValuesImpl's static factory method without max value.
+     * 
+     * @param value the value of the statistic.
+     * @return a new StatValuesImpl
+     */
+    public static StatValuesImpl buildWithoutMax(final int value) {
+        return new StatValuesImpl(value, NO_MAX);
+    }
 }

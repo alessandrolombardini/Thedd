@@ -50,7 +50,7 @@ public class InventoryController extends ViewNodeControllerImpl {
                     ((EquipableItem) selection).getType(), selection.getRarity(), selection.getDescription());
             ((EquipableItem) selection).getActionEffects().forEach(ae -> selected.addActionEffect(ae));
             ((EquipableItem) selection).getAdditionalActions().forEach(a -> selected.addAdditionalAction(a));
-            this.getController().equipItem(selected);
+            this.getController().equipItem(selection);
         } else if (this.useButton.getText().equals(CANCEL_LABEL)) {
             this.getController().undoActionSelection();
             this.useButton.setText(USE_BUTTON_LABEL);

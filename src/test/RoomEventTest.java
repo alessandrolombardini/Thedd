@@ -4,8 +4,10 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import org.junit.Test;
 import thedd.model.character.types.DarkDestructor;
+import thedd.model.combat.actionexecutor.DefaultCombatActionExecutor;
 import thedd.model.roomevent.RoomEventType;
 import thedd.model.roomevent.combatevent.CombatEvent;
 import thedd.model.roomevent.combatevent.CombatEventImpl;
@@ -51,9 +53,10 @@ public class RoomEventTest {
         final CombatEvent combat = new CombatEventImpl();
         assertEquals(RoomEventType.COMBAT_EVENT, combat.getType());
         assertNotNull(combat.getHostileEncounter());
-        combat.getHostileEncounter().addNPC(DarkDestructor.getNewInstance());
+        combat.getHostileEncounter().addNPC(new DarkDestructor());
+        combat.getHostileEncounter().setCombatLogic(new DefaultCombatActionExecutor());
         assertNotNull(combat.getHostileEncounter().getNPCs());
-//        assertFalse(combat.isCompleted());
+        assertFalse(combat.isCompleted());
         assertFalse(combat.isSkippable());
     }
 }

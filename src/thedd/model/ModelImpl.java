@@ -69,7 +69,7 @@ public final class ModelImpl implements Model {
         if (numOfLevels < EnvironmentImpl.MIN_NUMBER_OF_FLOORS || numOfRooms < EnvironmentImpl.MIN_NUMBER_OF_ROOMS) {
             return false;
         }
-        this.playerCharacter = Optional.of(PlayerCharacter.getNewInstance(playerCharacterName));
+        this.playerCharacter = Optional.of(new PlayerCharacter(playerCharacterName));
         this.environment = Optional.of(new EnvironmentImpl(numOfLevels, numOfRooms));
         return true;
     }

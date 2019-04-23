@@ -95,7 +95,7 @@ public class RoomFactoryImpl implements RoomFactory {
     }
 
     private Room createBossRoom() {
-        final BasicCharacter boss = DarkDestructor.getNewInstance();
+        final BasicCharacter boss = new DarkDestructor();
         final CombatEvent event = RoomEventHelper.getCombat();
         event.getHostileEncounter().addNPC(boss);
         event.getHostileEncounter()

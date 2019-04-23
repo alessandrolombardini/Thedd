@@ -71,7 +71,7 @@ public class ItemsTest {
         final EquipableItem equipable2 = new EquipableItemImpl(0, NAME, EquipableItemType.AMULET, ItemRarityImpl.COMMON,
                 DESCRIPTION);
         assertEquals(equipable1, equipable2);
-        equipable2.onEquip(PlayerCharacter.getNewInstance(Optional.empty()));
+        equipable2.onEquip(new PlayerCharacter(Optional.empty()));
         assertNotEquals(equipable1, equipable2);
     }
 }

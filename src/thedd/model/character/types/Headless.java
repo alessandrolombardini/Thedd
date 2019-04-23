@@ -1,13 +1,8 @@
 package thedd.model.character.types;
 
-import java.util.EnumMap;
-import java.util.Random;
+import org.apache.commons.lang3.RandomUtils;
 
-import thedd.model.character.BasicCharacter;
 import thedd.model.character.BasicCharacterImpl;
-import thedd.model.character.statistics.StatValues;
-import thedd.model.character.statistics.StatValuesImpl;
-import thedd.model.character.statistics.Statistic;
 import thedd.model.combat.action.TargetType;
 import thedd.model.combat.action.implementations.HeavyAttack;
 import thedd.model.combat.action.implementations.LightAttack;
@@ -18,8 +13,6 @@ import thedd.utils.randomcollections.RandomPrority;
  */
 public class Headless extends BasicCharacterImpl {
 
-    private final Random seed;
-    private final EnumMap<Statistic, StatValues> stat;
     private static final String DEFAULT_NAME = "Headless";
     private static final int BASE_AGILITY = 4;
     private static final int VARIATION_AGILITY = 2;
@@ -32,36 +25,42 @@ public class Headless extends BasicCharacterImpl {
 
     /**
      * Headless' constructor.
-     * 
-     * @param name name of this NPC.
      */
-    public Headless(final String name) {
-        super(name, false);
-        seed = new Random();
-        stat = new EnumMap<>(Statistic.class);
-        initStatValues();
-        this.setStatistics(stat);
+    public Headless() {
+        super(DEFAULT_NAME, false);
         this.addWeightedAction(new LightAttack(TargetType.FOE), RandomPrority.LOW);
         this.addWeightedAction(new HeavyAttack(TargetType.FOE), RandomPrority.DEFAULT);
     }
 
-    private void initStatValues() {
-        final int value = seed.nextInt(VARIATION_HEALTH + 1) + BASE_HEALTH;
-        this.stat.put(Statistic.HEALTH_POINT, new StatValuesImpl(value, value));
-        this.stat.put(Statistic.AGILITY,
-                new StatValuesImpl(seed.nextInt(VARIATION_AGILITY + 1) + BASE_AGILITY, StatValuesImpl.NO_MAX));
-        this.stat.put(Statistic.CONSTITUTION, new StatValuesImpl(
-                seed.nextInt(VARIATION_CONSTITUTION + 1) + BASE_CONSTITUTION, StatValuesImpl.NO_MAX));
-        this.stat.put(Statistic.STRENGTH,
-                new StatValuesImpl((seed.nextInt(VARIATION_STRENGTH + 1) + BASE_STRENGTH), StatValuesImpl.NO_MAX));
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getHealthPointBaseValue() {
+        return RandomUtils.nextInt(0, VARIATION_HEALTH + 1) + BASE_HEALTH;
     }
 
     /**
-     * Static Factory Method that create a new Headless Character.
-     * 
-     * @return a new Headless Character.
+     * {@inheritDoc}
      */
-    public static BasicCharacter getNewInstance() {
-        return new Headless(DEFAULT_NAME);
+    @Override
+    public int getAgilityStatBaseValue() {
+        return RandomUtils.nextInt(0, VARIATION_AGILITY + 1) + BASE_AGILITY;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getConstitutionStatBaseValue() {
+        return RandomUtils.nextInt(0, VARIATION_CONSTITUTION + 1) + BASE_CONSTITUTION;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getStrengthStatBaseValue() {
+        return RandomUtils.nextInt(0, VARIATION_STRENGTH + 1) + BASE_STRENGTH;
     }
 }

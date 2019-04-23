@@ -1,15 +1,11 @@
 package thedd.model.character.types;
 
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.List;
-import java.util.Random;
 
-import thedd.model.character.BasicCharacter;
+import org.apache.commons.lang3.RandomUtils;
+
 import thedd.model.character.BasicCharacterImpl;
-import thedd.model.character.statistics.StatValues;
-import thedd.model.character.statistics.StatValuesImpl;
-import thedd.model.character.statistics.Statistic;
 import thedd.model.combat.action.TargetType;
 import thedd.model.combat.action.effect.ActionEffect;
 import thedd.model.combat.action.implementations.ActiveDefence;
@@ -31,8 +27,6 @@ import thedd.utils.randomcollections.RandomPrority;
  */
 public class DarkDestructor extends BasicCharacterImpl {
 
-    private final Random seed;
-    private final EnumMap<Statistic, StatValues> stat;
     private static final String DEFAULT_NAME = "Dark Destructor";
     private static final double DAMAGE_RESISTANCE = -0.3;
     private static final double DAMAGE_WEAKNESS = 0.2;
@@ -47,15 +41,9 @@ public class DarkDestructor extends BasicCharacterImpl {
 
     /**
      * DarkDestructor's constructor.
-     * 
-     * @param name name of this Boss.
      */
-    public DarkDestructor(final String name) {
-        super(name, false);
-        seed = new Random();
-        stat = new EnumMap<>(Statistic.class);
-        initStatValues();
-        this.setStatistics(stat);
+    public DarkDestructor() {
+        super(DEFAULT_NAME, false);
         setPermanentModifiers();
     }
 
@@ -80,23 +68,35 @@ public class DarkDestructor extends BasicCharacterImpl {
         addWeightedAction(new HeavyAttack(TargetType.FOE), RandomPrority.DEFAULT);
     }
 
-    private void initStatValues() {
-        final int value = seed.nextInt(VARIATION_HEALTH + 1) + BASE_HEALTH;
-        this.stat.put(Statistic.HEALTH_POINT, new StatValuesImpl(value, value));
-        this.stat.put(Statistic.AGILITY,
-                new StatValuesImpl(seed.nextInt(VARIATION_AGILITY + 1) + BASE_AGILITY, StatValuesImpl.NO_MAX));
-        this.stat.put(Statistic.CONSTITUTION, new StatValuesImpl(
-                seed.nextInt(VARIATION_CONSTITUTION + 1) + BASE_CONSTITUTION, StatValuesImpl.NO_MAX));
-        this.stat.put(Statistic.STRENGTH,
-                new StatValuesImpl((seed.nextInt(VARIATION_STRENGTH + 1) + BASE_STRENGTH), StatValuesImpl.NO_MAX));
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getHealthPointBaseValue() {
+        return RandomUtils.nextInt(0, VARIATION_HEALTH + 1) + BASE_HEALTH;
     }
 
     /**
-     * Static Factory Method that create a new Dark Destructor Character.
-     * 
-     * @return a new Dark Destructor Character.
+     * {@inheritDoc}
      */
-    public static BasicCharacter getNewInstance() {
-        return new DarkDestructor(DEFAULT_NAME);
+    @Override
+    public int getAgilityStatBaseValue() {
+        return RandomUtils.nextInt(0, VARIATION_AGILITY + 1) + BASE_AGILITY;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getConstitutionStatBaseValue() {
+        return RandomUtils.nextInt(0, VARIATION_CONSTITUTION + 1) + BASE_CONSTITUTION;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getStrengthStatBaseValue() {
+        return RandomUtils.nextInt(0, VARIATION_STRENGTH + 1) + BASE_STRENGTH;
     }
 }

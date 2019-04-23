@@ -1,15 +1,11 @@
 package thedd.model.character.types;
 
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.List;
-import java.util.Random;
 
-import thedd.model.character.BasicCharacter;
+import org.apache.commons.lang3.RandomUtils;
+
 import thedd.model.character.BasicCharacterImpl;
-import thedd.model.character.statistics.StatValues;
-import thedd.model.character.statistics.StatValuesImpl;
-import thedd.model.character.statistics.Statistic;
 import thedd.model.combat.action.TargetType;
 import thedd.model.combat.action.effect.ActionEffect;
 import thedd.model.combat.action.implementations.LightAttack;
@@ -28,8 +24,6 @@ import thedd.utils.randomcollections.RandomPrority;
  */
 public class Goblin extends BasicCharacterImpl {
 
-    private final Random seed;
-    private final EnumMap<Statistic, StatValues> stat;
     private static final String DEFAULT_NAME = "Goblin";
     private static final double POISON_RESISTANCE = -0.8;
     private static final int BASE_AGILITY = 7;
@@ -43,15 +37,9 @@ public class Goblin extends BasicCharacterImpl {
 
     /**
      * Goblin's constructor.
-     * 
-     * @param name name of this Character.
      */
-    public Goblin(final String name) {
-        super(name, false);
-        seed = new Random();
-        stat = new EnumMap<>(Statistic.class);
-        initStatValues();
-        this.setStatistics(stat);
+    public Goblin() {
+        super(DEFAULT_NAME, false);
         setPermanentModifiers();
         this.addWeightedAction(new LightAttack(TargetType.FOE), RandomPrority.VERY_HIGH);
         this.addWeightedAction(new NastyStrike(TargetType.FOE), RandomPrority.LOW);
@@ -66,23 +54,35 @@ public class Goblin extends BasicCharacterImpl {
         addEffectModifier(poisonResistance, true);
     }
 
-    private void initStatValues() {
-        final int value = seed.nextInt(VARIATION_HEALTH + 1) + BASE_HEALTH;
-        this.stat.put(Statistic.HEALTH_POINT, new StatValuesImpl(value, value));
-        this.stat.put(Statistic.AGILITY,
-                new StatValuesImpl(seed.nextInt(VARIATION_AGILITY + 1) + BASE_AGILITY, StatValuesImpl.NO_MAX));
-        this.stat.put(Statistic.CONSTITUTION, new StatValuesImpl(
-                seed.nextInt(VARIATION_CONSTITUTION + 1) + BASE_CONSTITUTION, StatValuesImpl.NO_MAX));
-        this.stat.put(Statistic.STRENGTH,
-                new StatValuesImpl((seed.nextInt(VARIATION_STRENGTH + 1) + BASE_STRENGTH), StatValuesImpl.NO_MAX));
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getHealthPointBaseValue() {
+        return RandomUtils.nextInt(0, VARIATION_HEALTH + 1) + BASE_HEALTH;
     }
 
     /**
-     * Static Factory Method that create a new Goblin Character.
-     * 
-     * @return a new Goblin Character.
+     * {@inheritDoc}
      */
-    public static BasicCharacter getNewInstance() {
-        return new Goblin(DEFAULT_NAME);
+    @Override
+    public int getAgilityStatBaseValue() {
+        return RandomUtils.nextInt(0, VARIATION_AGILITY + 1) + BASE_AGILITY;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getConstitutionStatBaseValue() {
+        return RandomUtils.nextInt(0, VARIATION_CONSTITUTION + 1) + BASE_CONSTITUTION;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getStrengthStatBaseValue() {
+        return RandomUtils.nextInt(0, VARIATION_STRENGTH + 1) + BASE_STRENGTH;
     }
 }

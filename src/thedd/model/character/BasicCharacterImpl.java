@@ -10,6 +10,7 @@ import java.util.Objects;
 import thedd.model.character.inventory.Inventory;
 import thedd.model.character.inventory.InventoryImpl;
 import thedd.model.character.statistics.StatValues;
+import thedd.model.character.statistics.StatValuesImpl;
 import thedd.model.character.statistics.Statistic;
 import thedd.model.combat.action.Action;
 import thedd.model.combat.action.effect.ActionEffect;
@@ -31,7 +32,7 @@ import thedd.model.item.equipableitem.EquipableItemType;
 /**
  * Implementation of {@link thedd.model.character.BasicCharacter}.
  */
-public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicCharacter {
+public abstract class BasicCharacterImpl extends AbstractAutomaticActor implements BasicCharacter {
 
     private final EnumMap<Statistic, StatValues> stat;
     private final Inventory inventory;
@@ -51,17 +52,10 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
     protected BasicCharacterImpl(final String name, final boolean isInPlayerParty) {
         super(name, isInPlayerParty);
         this.stat = new EnumMap<>(Statistic.class);
+        initStat();
         this.inventory = new InventoryImpl();
         this.equipment = new ArrayList<>();
         setCommonStatBasedModifiers();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setStatistics(final EnumMap<Statistic, StatValues> stat) {
-        this.stat.putAll(stat);
     }
 
     /**
@@ -221,4 +215,39 @@ public class BasicCharacterImpl extends AbstractAutomaticActor implements BasicC
         addEffectModifier(strDamage, true);
         addEffectModifier(cosPoisonResistance, true);
     }
+
+    private void initStat() {
+        this.stat.put(Statistic.HEALTH_POINT, StatValuesImpl.buildWithMax(this.getHealthPointBaseValue()));
+        this.stat.put(Statistic.AGILITY, StatValuesImpl.buildWithoutMax(this.getAgilityStatBaseValue()));
+        this.stat.put(Statistic.CONSTITUTION, StatValuesImpl.buildWithoutMax(this.getConstitutionStatBaseValue()));
+        this.stat.put(Statistic.STRENGTH, StatValuesImpl.buildWithoutMax(this.getStrengthStatBaseValue()));
+    }
+
+    /**
+     * Return the specific Health Point value.
+     * 
+     * @return a int value.
+     */
+    public abstract int getHealthPointBaseValue();
+
+    /**
+     * Return the specific Agility value.
+     * 
+     * @return a int value.
+     */
+    public abstract int getAgilityStatBaseValue();
+
+    /**
+     * Return the specific Constitution value.
+     * 
+     * @return a int value.
+     */
+    public abstract int getConstitutionStatBaseValue();
+
+    /**
+     * Return the specific Strength value.
+     * 
+     * @return a int value.
+     */
+    public abstract int getStrengthStatBaseValue();
 }

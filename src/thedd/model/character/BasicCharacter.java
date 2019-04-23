@@ -16,13 +16,6 @@ import thedd.model.item.equipableitem.EquipableItem;
 public interface BasicCharacter extends AutomaticActionActor {
 
     /**
-     * This methods initialize character's statistics.
-     * 
-     * @param stat the EnumMap with the statistics of this character.
-     */
-    void setStatistics(EnumMap<Statistic, StatValues> stat);
-
-    /**
      * This method allows to know if the character is alive.
      * 
      * @return true if current character is alive, otherwise false.

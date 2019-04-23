@@ -1,15 +1,10 @@
 package thedd.model.character.types;
 
-import java.util.EnumMap;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.Random;
 
-import thedd.model.character.BasicCharacter;
+import org.apache.commons.lang3.RandomUtils;
+
 import thedd.model.character.BasicCharacterImpl;
-import thedd.model.character.statistics.StatValues;
-import thedd.model.character.statistics.StatValuesImpl;
-import thedd.model.character.statistics.Statistic;
 import thedd.model.combat.action.TargetType;
 import thedd.model.combat.action.implementations.ActiveDefence;
 import thedd.model.combat.action.implementations.DivineIntervention;
@@ -29,8 +24,6 @@ import thedd.model.item.usableitem.UsableItemPotion;
  */
 public class PlayerCharacter extends BasicCharacterImpl {
 
-    private final Random seed;
-    private final EnumMap<Statistic, StatValues> stat;
     private static final String DEFAULT_NAME = "Player";
     private static final int BASE_AGILITY = 5;
     private static final int VARIATION_AGILITY = 2;
@@ -44,30 +37,16 @@ public class PlayerCharacter extends BasicCharacterImpl {
     /**
      * PlayerCharacter's constructor.
      * 
-     * @param name the string name of the player character.
+     * @param name the string name of the player character. If this value is
+     *             Optional.empty then a default name value will be added.
      */
-    public PlayerCharacter(final String name) {
-        super(name, true);
-        seed = new Random();
-        stat = new EnumMap<>(Statistic.class);
-        initStatValues();
-        this.setStatistics(stat);
+    public PlayerCharacter(final Optional<String> name) {
+        super((name.isPresent() && !name.get().equals("")) ? name.get() : DEFAULT_NAME, true);
         initInventory();
         addActionToAvailable(new LightAttack(TargetType.EVERYONE));
         addActionToAvailable(new HeavyAttack(TargetType.EVERYONE));
         addActionToAvailable(new ActiveDefence());
         addActionToAvailable(new DivineIntervention(TargetType.EVERYONE));
-    }
-
-    private void initStatValues() {
-        final int value = seed.nextInt(VARIATION_HEALTH + 1) + BASE_HEALTH;
-        this.stat.put(Statistic.HEALTH_POINT, new StatValuesImpl(value, value));
-        this.stat.put(Statistic.AGILITY,
-                new StatValuesImpl(seed.nextInt(VARIATION_AGILITY + 1) + BASE_AGILITY, StatValuesImpl.NO_MAX));
-        this.stat.put(Statistic.CONSTITUTION, new StatValuesImpl(
-                seed.nextInt(VARIATION_CONSTITUTION + 1) + BASE_CONSTITUTION, StatValuesImpl.NO_MAX));
-        this.stat.put(Statistic.STRENGTH,
-                new StatValuesImpl((seed.nextInt(VARIATION_STRENGTH + 1) + BASE_STRENGTH), StatValuesImpl.NO_MAX));
     }
 
     private void initInventory() {
@@ -80,14 +59,35 @@ public class PlayerCharacter extends BasicCharacterImpl {
     }
 
     /**
-     * Static Factory Method that create a new Player Character.
-     * 
-     * @param name string representation choice of player's name.
-     * @return a Player Character.
-     * @throws NullPointerException if parameter is null.
+     * {@inheritDoc}
      */
-    public static BasicCharacter getNewInstance(final Optional<String> name) {
-        Objects.requireNonNull(name);
-        return new PlayerCharacter((name.isPresent() && !name.get().equals("")) ? name.get() : DEFAULT_NAME);
+    @Override
+    public int getHealthPointBaseValue() {
+        return RandomUtils.nextInt(0, VARIATION_HEALTH + 1) + BASE_HEALTH;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getAgilityStatBaseValue() {
+        return RandomUtils.nextInt(0, VARIATION_AGILITY + 1) + BASE_AGILITY;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getConstitutionStatBaseValue() {
+        return RandomUtils.nextInt(0, VARIATION_CONSTITUTION + 1) + BASE_CONSTITUTION;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getStrengthStatBaseValue() {
+        return RandomUtils.nextInt(0, VARIATION_STRENGTH + 1) + BASE_STRENGTH;
+    }
+
 }

@@ -37,10 +37,10 @@ public class CombatTest {
      */
     public CombatTest() {
         final HostileEncounter encounter = new HostileEncounterImpl();
-        player = PlayerCharacter.getNewInstance(Optional.empty());
+        player = new PlayerCharacter(Optional.empty());
         action = player.getAvailableActionsList().stream().findFirst().get();
         encounter.setCombatLogic(new DefaultCombatActionExecutor());
-        encounter.addNPC(Goblin.getNewInstance());
+        encounter.addNPC(new Goblin());
         instance = new ExecutionInstanceImpl();
         instance.addPlayerPartyMember(player);
         instance.addNPCsPartyMembers(encounter.getNPCs());
