@@ -9,7 +9,7 @@ import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 
 /**
- * A manager for {@link Logger}s. It can be run on a secondary thread.
+ * A manager for {@link ApplicationLogger}s. It can be run on a secondary thread.
  *
  */
 public class LoggerManager extends Task<Integer> {
@@ -17,8 +17,7 @@ public class LoggerManager extends Task<Integer> {
     private static final int MILLISECONDS_SLEEP = 1500;
 
     //This logger is a graphic component. It cannot be static as it can vary between different LoggerManagers.
-    @SuppressWarnings("PMD.LoggerIsNotStaticFinal")
-    private final Logger managedLogger;
+    private final ApplicationLogger managedLogger;
     private final Queue<String> queuedLogStrings;
     private final EventHandler<WorkerStateEvent> loggerCloser = new EventHandler<WorkerStateEvent>() {
         @Override
@@ -34,7 +33,7 @@ public class LoggerManager extends Task<Integer> {
      * @param queuedLogStrings
      *          the strings to be displayed in the logger
      */
-    public LoggerManager(final Logger logger, final Queue<String> queuedLogStrings) {
+    public LoggerManager(final ApplicationLogger logger, final Queue<String> queuedLogStrings) {
         super();
         this.queuedLogStrings = new LinkedList<>(Objects.requireNonNull(queuedLogStrings));
         this.managedLogger = Objects.requireNonNull(logger);

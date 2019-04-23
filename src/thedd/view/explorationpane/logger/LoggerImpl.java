@@ -16,9 +16,9 @@ import javafx.util.Duration;
 import thedd.view.extensions.AdaptiveFontLabel;
 
 /**
- * {@link GridPane} which acts as {@link Logger}.
+ * {@link GridPane} which acts as {@link ApplicationLogger}.
  */
-public class LoggerImpl extends GridPane implements Logger {
+public class LoggerImpl extends GridPane implements ApplicationLogger {
 
     private static final int FONT_RATIO = 40;
     private static final Duration FADE_DURATION = Duration.millis(500);
