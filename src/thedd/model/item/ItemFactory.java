@@ -77,7 +77,7 @@ public final class ItemFactory {
 
     /**
      * Return a new {@link thedd.model.item.Item}. If an {@link thedd.model.item.equipableitem.EquipableItem}
-     * is extracted, then additional {@link model.combat.action.Action} and {@link model.combat.action.effect.ActionEffect}
+     * is extracted, then additional {@link Action} and {@link ActionEffect}
      * are added as well, accordingly with the rarity of the item; otherwise the new item is returned without additions.
      * 
      * @return

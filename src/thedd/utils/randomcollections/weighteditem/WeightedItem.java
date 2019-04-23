@@ -1,10 +1,10 @@
 package thedd.utils.randomcollections.weighteditem;
 
 /**
- * An item to be used in a {@link RandomCollection}<br>
+ * An item to be used in a RandomCollection<br>
  * Holds a reference to the item of type E and a weight associated
  * with that item.
- * @param <E>
+ * @param <E> is the type of the object
  */
 public interface WeightedItem<E> {
 

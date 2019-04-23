@@ -24,7 +24,7 @@ public class DamageModifier extends AbstractValueModifier<ActionEffect> {
     /**
      * Adds the value to the damage, such as:<br>
      * damageToBeAdded = isPercentage ? damage * getValue : getValue;
-     * @throws ClassCastException
+     * @throws ClassCastException if there is a cast class exception
      */
     @Override
     public void modify(final ActionEffect effect) {
@@ -34,7 +34,7 @@ public class DamageModifier extends AbstractValueModifier<ActionEffect> {
     }
 
     /**
-     * Checks whether the Modifiable is accepted as per {@link AbstractEffectModifier#accept(Modifiable)}
+     * Checks whether the Modifiable is accepted as per AbstractEffectModifier.accept(Modifiable)
      * and it is an instance of {@link DamageEffect}.
      * @param effect the effect to be accepted
      */

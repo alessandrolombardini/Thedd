@@ -10,8 +10,8 @@ import thedd.model.combat.modifier.Modifier;
 
 
 /**
- * {@link model.combat.action.effect.ActionEffect} which adds one {@link model.combat.modifier.Modifier}
- * to every actions of an {@link model.combat.actor.ActionActor} with the {@link model.combat.tag.Tag}
+ * ActionEffect which adds one Modifier
+ * to every actions of an ActionActor with the Tag
  * specified in the modifier.
  */
 public final class ActionModifierAdderEffect extends AbstractActionEffect implements ActionEffect, RemovableEffect {
@@ -21,7 +21,7 @@ public final class ActionModifierAdderEffect extends AbstractActionEffect implem
     private Optional<ActionActor> target;
 
     /**
-     * Create a new {@link model.combat.action.effect.ActionEffect}.
+     * Create a new ActionEffect.
      * @param modifier
      *          the modifier to be added to the target
      * @param isPermanent

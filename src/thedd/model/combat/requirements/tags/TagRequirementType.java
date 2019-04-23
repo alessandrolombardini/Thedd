@@ -8,19 +8,19 @@ public enum TagRequirementType {
 
     /**
      * The requirement is met if it wasn't looking for any tags or if
-     * at least one of the target tags is present in the tested {@link Taggable}
+     * at least one of the target tags is present in the tested Taggable
      * entity.
      */
     ALLOWED,
     /**
      * The requirement is met if it wasn't looking for any tags or if
-     * all the target tags are present in the tested {@link Taggable}
+     * all the target tags are present in the tested Taggable
      * entity.
      */
     REQUIRED,
     /**
      * The requirement is met if it wasn't looking for any tags or if
-     * all the target tags are missing from the tested {@link Taggable}
+     * all the target tags are missing from the tested Taggable
      * entity.
      */
     UNALLOWED

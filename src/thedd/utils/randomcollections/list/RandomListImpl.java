@@ -213,8 +213,7 @@ public class RandomListImpl<E> extends AbstractRandomCollection<E> implements Ra
 
     /**
      * Adds the elements of the collection to the set as per
-     * {@link RandomSetImpl#add(Object)}.
-     * @see java.util.Set#addAll(Object)
+     * RandomSetImpl.add(Object).
      */
     @Override
     public boolean addAll(final Collection<? extends E> c) {
@@ -272,7 +271,7 @@ public class RandomListImpl<E> extends AbstractRandomCollection<E> implements Ra
 
     /**
      * Unsupported operation.
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException if couldn't remove
      */
     @Override
     public E remove(final int arg0) {
@@ -281,7 +280,7 @@ public class RandomListImpl<E> extends AbstractRandomCollection<E> implements Ra
 
     /**
      * Unsupported operation.
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException if couldn't set
      */
     @Override
     public E set(final int arg0, final E arg1) {
@@ -313,7 +312,7 @@ public class RandomListImpl<E> extends AbstractRandomCollection<E> implements Ra
 
     /**
      * Unsupported operation.
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException if couldn't add
      */
     @Override
     public boolean addAll(final int index, final Collection<? extends E> c) {

@@ -12,7 +12,7 @@ import thedd.model.combat.tag.Tag;
  * An entity that holds up to two {@link Action} and one (or more) {@link Tag}.<br>
  * It can be attached to an {@link ActionActor}.<p>
  * A status represents a particular condition afflicting an actor: it has a duration
- * and may provide an action.<p>
+ * and may provide an action.
  */
 public interface Status {
 

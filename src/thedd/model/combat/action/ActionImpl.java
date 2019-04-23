@@ -422,7 +422,7 @@ public class ActionImpl implements Action {
 
     /**
      * Not implemented, use {@link #setTargets}.
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException if couldn't set target
      */
     @Override
     public void setTarget(final ActionActor target) {

@@ -1,7 +1,7 @@
 package thedd.model.combat.action.effect;
 
 /**
- * {@link model.combat.action.effect.ActionEffect} which can be removed and the effect will no longer
+ * ActionEffect which can be removed and the effect will no longer
  * be grated to the target after the removal.
  *
  */

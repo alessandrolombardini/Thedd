@@ -9,7 +9,7 @@ import thedd.view.imageloader.DirectoryPicker;
 import thedd.view.imageloader.ImageLoaderImpl;
 
 /**
- * A class used to display information about the category of a group of {@link Action}s.<br>
+ * A class used to display information about the category of a group of Actions.<br>
  * It holds an image associated with the action and specifies the formatting
  * of the text.
  */

@@ -27,7 +27,7 @@ public class FloorImpl implements Floor {
      * Floor constructor.
      * 
      * @param floorDetails contains the details of this floor
-     * @throws NullPointerExecption if roomFactory is null
+     * @throws NullPointerException if roomFactory is null
      */
     public FloorImpl(final FloorDetails floorDetails) {
         Objects.requireNonNull(floorDetails);

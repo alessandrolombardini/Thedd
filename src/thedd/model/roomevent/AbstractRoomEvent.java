@@ -3,7 +3,7 @@ package thedd.model.roomevent;
 import java.util.Objects;
 
 /**
- * Abstract implementation of {@link.room_event.RoomEvent}.
+ * Abstract implementation of RoomEvent.
  * Each specialization has to specify what type it is, 
  * whether it can be completed and whether it is mandatory.
  *

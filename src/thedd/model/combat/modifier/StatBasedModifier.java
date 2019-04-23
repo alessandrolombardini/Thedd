@@ -25,7 +25,7 @@ public class StatBasedModifier<T extends Modifiable> implements ValueModifier<T>
     /**
      * Public constructor of the modifier.
      * @param targetStat the {@link Statistic} to monitor
-     * @param targetCharacter the {@link BasicCharater to monitor}
+     * @param targetCharacter the BasicCharater to monitor
      * @param modifier the decorated modifier
      */
     public StatBasedModifier(final Statistic targetStat, final BasicCharacter targetCharacter, final ValueModifier<T> modifier) {

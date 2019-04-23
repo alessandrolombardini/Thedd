@@ -29,7 +29,7 @@ public interface Room {
      * This method allows to add an event to the collection.
      * 
      * @param event that has to be added to the room
-     * @throws NullPointerExeption if event is null
+     * @throws NullPointerException if event is null
      */
     void addEvent(RoomEvent event);
 
@@ -46,7 +46,7 @@ public interface Room {
      * 
      * @param event that has to be removed
      * @return true if the event has been removed
-     * @throws NullPointerExeption if event is null
+     * @throws NullPointerException if event is null
      */
     boolean removeEvent(RoomEvent event);
 

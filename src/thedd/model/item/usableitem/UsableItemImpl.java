@@ -31,7 +31,7 @@ public class UsableItemImpl extends AbstractItem implements UsableItem {
     }
 
     /**
-     * Create a new {@link thedd.model.item.usable.item.UsableItem}
+     * Create a new UsableItem
      * with the given {@link thedd.model.item.ItemRarity}.
      * On creation the action is empty, effects must be added after
      * the construction and with multipliers already applied.

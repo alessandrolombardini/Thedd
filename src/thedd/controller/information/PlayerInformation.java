@@ -46,7 +46,7 @@ public interface PlayerInformation {
     /**
      * This method get the current used item before applying its effects.
      * 
-     * @return an Optional<Item>.
+     * @return an Optional of Item
      */
     Optional<Item> getUsedItem();
 
@@ -58,7 +58,7 @@ public interface PlayerInformation {
     /**
      * This method returns a list of player's available actions.
      * 
-     * @return a List<Action>
+     * @return a a list of Action
      */
     List<Action> getPlayerActions();
 

@@ -15,7 +15,7 @@ public class PlayerCharacter extends BasicCharacterImpl {
     /**
      * PlayerCharacter's constructor.
      * 
-     * @param name Optional<String> 
+     * @param name 
      *          the string name of the player character.
      * @param multiplier 
      *          rate multiplied at the basic statistics.

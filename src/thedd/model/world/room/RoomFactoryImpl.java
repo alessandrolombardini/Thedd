@@ -23,7 +23,7 @@ import thedd.model.roomevent.RoomEventHelper;
 import thedd.model.roomevent.combatevent.CombatEvent;
 
 /**
- * Implementation of {@link thedd.model.world.RoomFactory}.
+ * Implementation of RoomFactory.
  * 
  */
 public class RoomFactoryImpl implements RoomFactory {

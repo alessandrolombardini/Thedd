@@ -8,11 +8,11 @@ import thedd.model.combat.tag.Taggable;
 
 /**
  * 
- * The effect that an {@link Action} has on its target.
+ * The effect that an Action has on its target.
  * <p>
  * The effect can be applied to the target and may be change depending on who is 
  * executing the Action that has this effect and who is the target, depending on
- * their respective {@link Modifier}
+ * their respective Modifier
  *
  */
 public interface ActionEffect extends Modifiable, Taggable, SourceHolder, TargetHolder {

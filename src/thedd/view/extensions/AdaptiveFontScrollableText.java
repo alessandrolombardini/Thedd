@@ -7,7 +7,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 
 /**
- * This class extends {@link ScrollPane} adding a {@link Text} into it.
+ * This class extends {@link ScrollPane} adding a Text into it.
  */
 public final class AdaptiveFontScrollableText extends ScrollPane implements AdaptiveFontComponent {
     private final Label text = new Label();

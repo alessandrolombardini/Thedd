@@ -30,7 +30,7 @@ public interface StatisticsInformation {
     /**
      * This method returns actual selected charatcer's statuses.
      * 
-     * @return a List<Status>
+     * @return a list of Status
      */
     List<Status> getCharacterStatuses();
 

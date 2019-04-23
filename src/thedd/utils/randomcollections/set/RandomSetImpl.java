@@ -110,8 +110,7 @@ public class RandomSetImpl<E> extends AbstractRandomCollection<E> implements Ran
 
     /**
      * Adds the elements of the collection to the set as per
-     * {@link RandomSetImpl#add(Object)}.
-     * @see java.util.Set#addAll(Object)
+     * RandomSetImpl.add(Object).
      */
     @Override
     public boolean addAll(final Collection<? extends E> c) {
