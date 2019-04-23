@@ -3,7 +3,6 @@ package thedd.view;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -32,13 +31,13 @@ public class ViewImpl extends Application implements View {
     private static final double STAGE_WIDTH = Screen.getPrimary().getBounds().getWidth() / WIDTH * HEIGHT;
     private static final double STAGE_HEIGHT = Screen.getPrimary().getBounds().getHeight() / WIDTH * HEIGHT;
     private static final ApplicationViewState FIRST_APP_STATE = ApplicationViewState.MENU;
+    private static final int MAX_DIFF_BETWEEN_SIZE = 4;
 
     private final Controller controller;
     private Optional<Stage> stage;
     private Optional<ViewNodeWrapper> actualScene;
     private Optional<ApplicationViewState> actualViewState;
     private boolean viewStarted;
-
     /**
      * Create a new View instance.
      */
@@ -75,11 +74,12 @@ public class ViewImpl extends Application implements View {
             throw new IllegalStateException(ERROR_STAGEUNSETTED);
         }
         this.actualScene = Optional.of(ViewNodeWrapper.createViewNodeWrapper(state.getViewNode(), 
-                                                                                    this.controller, 
-                                                                                    this));
+                                                                             this.controller, 
+                                                                             this));
         this.actualViewState = Optional.of(state);
         this.actualScene.get().getController().init(this, this.controller);
-        final Scene newScene = new Scene((Parent) this.actualScene.get().getNode());
+        final Parent parent = (Parent) this.actualScene.get().getNode();
+        final Scene newScene = new Scene(parent);
         final Stage stage = this.stage.get();
         final double width = stage.getWidth();
         final double height = stage.getHeight();
@@ -87,7 +87,10 @@ public class ViewImpl extends Application implements View {
         stage.setWidth(width);
         stage.setHeight(height);
         if (!this.viewStarted) {
+            stage.centerOnScreen();
             stage.show();
+            stage.setMinHeight(MIN_HEIGHT);
+            stage.setMinWidth(MIN_WIDTH);
             this.viewStarted = true;
         }
     }
@@ -190,19 +193,26 @@ public class ViewImpl extends Application implements View {
             throw new IllegalStateException(ERROR_STAGEUNSETTED);
         }
         final Stage stage = this.stage.get();
-        stage.setTitle(GAME_NAME);
-        stage.setResizable(true);
+        stage.widthProperty().addListener((obs, oldVal, newVal) -> {
+            if (Math.abs(oldVal.doubleValue() - newVal.doubleValue()) > MAX_DIFF_BETWEEN_SIZE) {
+                if (Math.abs(Math.abs(stage.getHeight()) - Math.abs(stage.getHeight() / (WIDTH / HEIGHT))) > MAX_DIFF_BETWEEN_SIZE) {
+                    stage.setHeight(stage.getWidth() / (WIDTH / HEIGHT));
+                }
+            }
+        });
+        stage.heightProperty().addListener((obs, oldVal, newVal) -> {
+            if (Math.abs(oldVal.doubleValue() - newVal.doubleValue()) > MAX_DIFF_BETWEEN_SIZE) {
+                if (Math.abs(Math.abs(stage.getWidth()) - Math.abs(stage.getHeight() * (WIDTH / HEIGHT))) > MAX_DIFF_BETWEEN_SIZE) {
+                    stage.setWidth(stage.getHeight() * (WIDTH / HEIGHT));
+                }
+            }
+        });
         stage.setHeight(STAGE_HEIGHT);
         stage.setWidth(STAGE_WIDTH);
-        stage.setMinHeight(MIN_HEIGHT);
-        stage.setMinWidth(MIN_WIDTH);
-        stage.centerOnScreen();
-        stage.heightProperty().addListener(l -> {
-            stage.setWidth(stage.getHeight() * (WIDTH / HEIGHT));
-        });
-        stage.widthProperty().addListener(l -> {
-            stage.setHeight(stage.getWidth() / (WIDTH / HEIGHT));
-        });
+        stage.setTitle(GAME_NAME);
+        stage.setResizable(true);
+        stage.setMinHeight(STAGE_HEIGHT);
+        stage.setMinWidth(STAGE_WIDTH);
         setState(FIRST_APP_STATE);
     }
 
