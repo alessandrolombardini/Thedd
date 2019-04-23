@@ -1,5 +1,9 @@
 package thedd.model.item.usableitem;
 
+import thedd.model.combat.action.Action;
+import thedd.model.combat.action.ActionBuilder;
+import thedd.model.combat.action.ActionCategory;
+import thedd.model.combat.action.LogMessageType;
 import thedd.model.combat.action.effect.HealingEffect;
 import thedd.model.item.Item;
 import thedd.model.item.ItemRarity;
@@ -11,7 +15,7 @@ public class UsableItemPotion extends UsableItemImpl {
 
     private static final int ID = 0;
     private static final String NAME = "Potion";
-    private static final String DESCRIPTION = "A mystical beverage that heal wounds";
+    private static final String DESCRIPTION = "A mystical beverage that heals wounds";
     private static final double HEALING_VALUE = 0.25;
     /**
      * Create an instance of a Potion item of a certain rarity.
@@ -34,5 +38,18 @@ public class UsableItemPotion extends UsableItemImpl {
      */
     public static Item getNewInstance(final ItemRarity rarity) {
         return new UsableItemPotion(rarity);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Action buildAction() {
+        return new ActionBuilder().setName(this.getName())
+                .setCategory(ActionCategory.ITEM)
+                .setBaseHitChance(1d)
+                .setDescription(DESCRIPTION)
+                .setLogMessage(LogMessageType.ITEM_ACTION)
+                .build();
     }
 }
