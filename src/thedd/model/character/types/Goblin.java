@@ -26,9 +26,9 @@ public class Goblin extends BasicCharacterImpl {
 
     private static final String DEFAULT_NAME = "Goblin";
     private static final double POISON_RESISTANCE = -0.8;
-    private static final int BASE_AGILITY = 7;
+    private static final int BASE_AGILITY = 6;
     private static final int VARIATION_AGILITY = 2;
-    private static final int BASE_HEALTH = 60;
+    private static final int BASE_HEALTH = 30;
     private static final int VARIATION_HEALTH = 30;
     private static final int BASE_CONSTITUTION = 4;
     private static final int VARIATION_CONSTITUTION = 2;
@@ -42,7 +42,7 @@ public class Goblin extends BasicCharacterImpl {
         super(DEFAULT_NAME, false);
         setPermanentModifiers();
         this.addWeightedAction(new LightAttack(TargetType.FOE), RandomPrority.VERY_HIGH);
-        this.addWeightedAction(new NastyStrike(TargetType.FOE), RandomPrority.LOW);
+        this.addWeightedAction(new NastyStrike(TargetType.FOE), RandomPrority.VERY_LOW);
     }
 
     private void setPermanentModifiers() {

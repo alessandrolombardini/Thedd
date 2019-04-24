@@ -15,13 +15,13 @@ public class Headless extends BasicCharacterImpl {
 
     private static final String DEFAULT_NAME = "Headless";
     private static final int BASE_AGILITY = 4;
-    private static final int VARIATION_AGILITY = 2;
-    private static final int BASE_HEALTH = 90;
-    private static final int VARIATION_HEALTH = 30;
-    private static final int BASE_CONSTITUTION = 8;
-    private static final int VARIATION_CONSTITUTION = 0;
+    private static final int VARIATION_AGILITY = 1;
+    private static final int BASE_HEALTH = 50;
+    private static final int VARIATION_HEALTH = 10;
+    private static final int BASE_CONSTITUTION = 7;
+    private static final int VARIATION_CONSTITUTION = 1;
     private static final int BASE_STRENGTH = 7;
-    private static final int VARIATION_STRENGTH = 2;
+    private static final int VARIATION_STRENGTH = 1;
 
     /**
      * Headless' constructor.

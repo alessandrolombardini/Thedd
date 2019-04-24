@@ -2,10 +2,9 @@ package thedd.model.character.types;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.commons.lang3.RandomUtils;
-
 import thedd.model.character.BasicCharacterImpl;
+import thedd.model.combat.action.Action;
 import thedd.model.combat.action.TargetType;
 import thedd.model.combat.action.effect.ActionEffect;
 import thedd.model.combat.action.implementations.ActiveDefence;
@@ -33,7 +32,7 @@ public class DarkDestructor extends BasicCharacterImpl {
     private static final int BASE_AGILITY = 8;
     private static final int VARIATION_AGILITY = 1;
     private static final int BASE_HEALTH = 150;
-    private static final int VARIATION_HEALTH = 40;
+    private static final int VARIATION_HEALTH = 0;
     private static final int BASE_CONSTITUTION = 5;
     private static final int VARIATION_CONSTITUTION = 1;
     private static final int BASE_STRENGTH = 7;
@@ -62,10 +61,18 @@ public class DarkDestructor extends BasicCharacterImpl {
         requiredTags.add(EffectTag.HOLY_DAMAGE);
         holyDmgWeakness.addRequirement(new TagRequirement<>(false, TagRequirementType.REQUIRED, requiredTags));
         addEffectModifier(holyDmgWeakness, true);
-        addWeightedAction(new LightAttack(TargetType.FOE), RandomPrority.HIGH);
-        addWeightedAction(new FieryTouch(TargetType.FOE), RandomPrority.LOW);
-        addWeightedAction(new ActiveDefence(), RandomPrority.LOW);
-        addWeightedAction(new HeavyAttack(TargetType.FOE), RandomPrority.DEFAULT);
+        //Initializing actions (all of them ignore modifiers)
+        Action action = new LightAttack(TargetType.FOE);
+        action.getEffects().forEach(e -> e.addTag(EffectTag.IGNORES_MODIFIERS, true));
+        addWeightedAction(action, RandomPrority.HIGH);
+        action = new FieryTouch(TargetType.FOE);
+        action.getEffects().forEach(e -> e.addTag(EffectTag.IGNORES_MODIFIERS, true));
+        addWeightedAction(action, RandomPrority.LOW);
+        action = new ActiveDefence();
+        addWeightedAction(action, RandomPrority.DEFAULT);
+        action = new HeavyAttack(TargetType.FOE);
+        action.getEffects().forEach(e -> e.addTag(EffectTag.IGNORES_MODIFIERS, true));
+        addWeightedAction(action, RandomPrority.DEFAULT);
     }
 
     /**

@@ -26,13 +26,13 @@ public class PlayerCharacter extends BasicCharacterImpl {
 
     private static final String DEFAULT_NAME = "Player";
     private static final int BASE_AGILITY = 5;
-    private static final int VARIATION_AGILITY = 2;
-    private static final int BASE_HEALTH = 120;
+    private static final int VARIATION_AGILITY = 3;
+    private static final int BASE_HEALTH = 80;
     private static final int VARIATION_HEALTH = 30;
-    private static final int BASE_CONSTITUTION = 6;
+    private static final int BASE_CONSTITUTION = 5;
     private static final int VARIATION_CONSTITUTION = 2;
-    private static final int BASE_STRENGTH = 4;
-    private static final int VARIATION_STRENGTH = 3;
+    private static final int BASE_STRENGTH = 6;
+    private static final int VARIATION_STRENGTH = 2;
 
     /**
      * PlayerCharacter's constructor.
