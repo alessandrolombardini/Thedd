@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import thedd.model.character.BasicCharacter;
+import thedd.model.character.types.DarkDestructor;
 import thedd.model.combat.action.Action;
 import thedd.model.combat.action.ActionCategory;
 import thedd.model.combat.action.TargetType;
@@ -103,6 +104,7 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
             currentAction = currentActor.get().getNextQueuedAction();
         } else {
             currentAction = Optional.of(actionsQueue.get(0));
+            currentActor = currentAction.get().getSource();
             actionsQueue.remove(0);
         }
         if (currentAction.isPresent()) {
@@ -149,6 +151,9 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
             final ActionResult result = new ActionResultImpl(action);
             boolean interrupted = false;
             final List<ActionActor> targets = action.getTargets();
+            if (!action.getRequirements().stream().allMatch(r -> r.isFulfilled(action))) {
+                interrupted = true;
+            }
             for (int i = 0; i < targets.size() && !interrupted; i++) {
                 final ActionActor target = targets.get(i);
                 action.rollToHit(target);
@@ -174,6 +179,13 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
     @Override
     public void updateExecutionStatus() {
         combatInstance.getAllParties().forEach(a -> a.resetTurnInitiative());
+
+        //Closes the combat instantly (without going trough the process of updating statuses)
+        //if the player has won against the final boss
+        if (combatInstance.getNPCsParty().stream().anyMatch(a -> a instanceof DarkDestructor)) {
+            checkPlayerVictory();
+        }
+
         if (combatInstance.getNumberOfAliveCharacters(combatInstance.getPlayerParty()) <= 0) {
             combatInstance.setCombatStatus(CombatStatus.PLAYER_LOST);
             return;
@@ -182,7 +194,7 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
         if (currentActor.isPresent() && currentActor.get().getActionQueue().isEmpty()) {
             final ActionActor actor = currentActor.get();
             updateExpiredStatuses(actor);
-            if (actor.getActionQueue().isEmpty()) {
+            if (currentActor.get().getActionQueue().isEmpty()) {
                 actorsQueue.remove(actor);
                 currentActor = Optional.empty();
             }
@@ -200,17 +212,7 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
         }
 
         if (combatInstance.getCombatStatus() != CombatStatus.ROUND_IN_PROGRESS) {
-            if (combatInstance.getNumberOfAliveCharacters(combatInstance.getPlayerParty()) <= 0) {
-                combatInstance.setCombatStatus(CombatStatus.PLAYER_LOST);
-                return;
-            } else if (combatInstance.getNumberOfAliveCharacters(combatInstance.getNPCsParty()) <= 0) {
-                combatInstance.setCombatStatus(CombatStatus.PLAYER_WON);
-                combatInstance.getPlayerParty().forEach(a -> {
-                    a.setIsInCombat(false);
-                    a.resetActionsQueue();
-                });
-                return;
-            }
+            checkPlayerVictory();
         }
 
     }
@@ -227,7 +229,7 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
         }
 
         if (combatInstance.getCombatStatus() == CombatStatus.ROUND_PAUSED) {
-            actionsQueue.add(0, actor.getSelectedAction().get());
+            actorsQueue.add(0, actor);
         } else {
             actorsQueue.add(actor);
             actorsQueue.sort(actorsSortingOrder);
@@ -361,19 +363,18 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
          * -The target of the action is not the actor executing it
          * -The action is not of type STATUS
          * -The target's action is of type parry
-         * -The target is not in the queue ->  this means it has already activated its defense
         */
         return target.getSelectedAction().isPresent()
                 && !currentAction.get().getTags().contains(ActionTag.UNBLOCKABLE)
                 && currentAction.get().getTags().contains(ActionTag.OFFENSIVE)
                 && currentAction.get().getTargetType() != TargetType.SELF
                 && currentAction.get().getCategory() != ActionCategory.STATUS
-                && target.getSelectedAction().get().getTags().contains(ActionTag.PARRY)
-                && !actorsQueue.contains(target);
+                && target.getSelectedAction().get().getTags().contains(ActionTag.PARRY);
     }
 
     private void applyParry(final ActionActor target) {
-        target.resetSelectedAction();
+        target.resetActionsQueue();
+        actorsQueue.remove(target);
         if (combatInstance.getNPCsParty().contains(target)) { //Maybe check if target is Automatic AND his behavior is active
             setNextAIMove((AutomaticActionActor) target);
         } else {
@@ -398,8 +399,6 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
         if (target instanceof BasicCharacter
                 && !((BasicCharacter) target).isAlive()) {
             actorsQueue.remove(target);
-        } else if (canTargetParry(target)) {
-            target.resetSelectedAction();
         }
         updateNewlyAppliedStatuses(target);
     }
@@ -443,6 +442,17 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
     private void depleteStatus(final Status s) {
         while (s.getCurrentDuration() != 0 && !s.isPermanent()) {
             s.update(combatInstance);
+        }
+    }
+
+    private void checkPlayerVictory() {
+        if (combatInstance.getNumberOfAliveCharacters(combatInstance.getNPCsParty()) <= 0) {
+            combatInstance.setCombatStatus(CombatStatus.PLAYER_WON);
+            combatInstance.getPlayerParty().forEach(a -> {
+                a.setIsInCombat(false);
+                a.resetActionsQueue();
+            });
+            return;
         }
     }
 
