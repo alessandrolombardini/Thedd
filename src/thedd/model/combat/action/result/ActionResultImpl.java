@@ -29,7 +29,7 @@ public class ActionResultImpl implements ActionResult {
      */
     @Override
     public Action getAction() {
-        return action;
+        return action.getCopy();
     }
 
     /**
