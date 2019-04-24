@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import thedd.model.world.Difficulty;
 import thedd.model.world.environment.EnvironmentImpl;
+import thedd.model.world.floor.FloorImpl;
 
 /**
  * Implementation of {@link thedd.model.world.floor.details.FloorDetailsBuilder}.
@@ -11,7 +12,6 @@ import thedd.model.world.environment.EnvironmentImpl;
 public class FloorDetailsBuilderImpl implements FloorDetailsBuilder {
 
     private static final String ERROR_INVALIDPARAMS = "One or more params hasn't been setted or wasn't valid";
-    private static final int MIN_NUMBER_CONTENTS_PER_FLOOR = 0;
 
     private Optional<Difficulty> difficulty;
     private Optional<Integer> numberOfRooms;
@@ -55,7 +55,7 @@ public class FloorDetailsBuilderImpl implements FloorDetailsBuilder {
      */
     @Override
     public final FloorDetailsBuilder setNumberOfEnemies(final int numOfEnemies) {
-        this.numberOfEnemies = Optional.of(numOfEnemies).filter(n -> n >= MIN_NUMBER_CONTENTS_PER_FLOOR);
+        this.numberOfEnemies = Optional.of(numOfEnemies).filter(n -> n >= FloorImpl.MIN_NUMBER_CONTENTS_PER_FLOOR);
         return this;
     }
 
@@ -64,7 +64,7 @@ public class FloorDetailsBuilderImpl implements FloorDetailsBuilder {
      */
     @Override
     public final FloorDetailsBuilder setNumberOfTreasures(final int numOfTreasures) {
-        this.numberOfTreasures = Optional.of(numOfTreasures).filter(n -> n >= MIN_NUMBER_CONTENTS_PER_FLOOR);
+        this.numberOfTreasures = Optional.of(numOfTreasures).filter(n -> n >= FloorImpl.MIN_NUMBER_CONTENTS_PER_FLOOR);
         return this;
     }
 
@@ -72,8 +72,8 @@ public class FloorDetailsBuilderImpl implements FloorDetailsBuilder {
      * {@inheritDoc}
      */
     @Override
-    public final FloorDetailsBuilder setNumberOfContraptions(final int numOfContraptions) {
-        this.numberOfContraptions = Optional.of(numOfContraptions).filter(n -> n >= MIN_NUMBER_CONTENTS_PER_FLOOR);
+    public final FloorDetailsBuilder setNumberOfContraptions(final int numOfContr) {
+        this.numberOfContraptions = Optional.of(numOfContr).filter(n -> n >= FloorImpl.MIN_NUMBER_CONTENTS_PER_FLOOR);
         return this;
     }
 
