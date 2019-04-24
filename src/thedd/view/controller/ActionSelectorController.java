@@ -90,8 +90,6 @@ public class ActionSelectorController extends ViewNodeControllerImpl implements 
 
     @Override
     public void update() {
-        // TODO Auto-generated method stub
-
     }
 
     /**
@@ -127,15 +125,20 @@ public class ActionSelectorController extends ViewNodeControllerImpl implements 
         switch (message.get()) {
         case NEXT:
             iconsPane.scrollDown();
+            updateSelectButton();
             break;
         case PREVIOUS:
             iconsPane.scrollUp();
+            updateSelectButton();
             break;
         case RETURN:
             undoSelection();
             break;
         case SELECT:
             selectItem();
+            if (!actionSelected) {
+                updateSelectButton();
+            }
             break;
         case UPDATE:
             updateDescription();
@@ -170,7 +173,6 @@ public class ActionSelectorController extends ViewNodeControllerImpl implements 
             actionSelected = true;
             iconsPane.setDisable(true);
             descriptionPane.setSelectionAndMovement(true);
-            //Disable action selections and scroll, enable only "undo selection" button
             final int selectedActionIndex = iconsPane.getSelectedIndex(); 
             final Action selectedAction = categories.get(selectedCategoryIndex)
                                                     .getActions()
@@ -185,14 +187,26 @@ public class ActionSelectorController extends ViewNodeControllerImpl implements 
             actionSelected = false;
             iconsPane.setDisable(false);
             descriptionPane.setSelectionAndMovement(false);
-            //enable what needs to be enabled
             getController().undoActionSelection();
-            updateDescription();
         } else {
             iconsPane.passItems(categories.stream()
                     .map(c -> c.getImage()).collect(Collectors.toList()));
             categorySelected = false;
-            updateDescription();
+        }
+        updateDescription();
+        updateSelectButton();
+    }
+
+    private void updateSelectButton() {
+        if (categorySelected) {
+            final VisualAction selectedAction = categories.get(selectedCategoryIndex)
+                                                          .getActions()
+                                                          .get(iconsPane.getSelectedIndex());
+            descriptionPane.setSelectDisable(!selectedAction.canSelect());
+            iconsPane.getChildren().get(iconsPane.getSelectedIndex()).setDisable(!selectedAction.canSelect());
+        } else {
+            descriptionPane.setSelectDisable(false);
+            iconsPane.getChildren().get(iconsPane.getSelectedIndex()).setDisable(false);
         }
     }
 
