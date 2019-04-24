@@ -104,7 +104,7 @@ public class StatusUpdateActionExecutor implements ActionExecutor {
             currentActionResult = Optional.empty();
         } else {
             final Action action = currentAction.get();
-            final ActionResult result = new ActionResultImpl(action);
+            final ActionResult result = new ActionResultImpl(action.getCopy());
             final List<ActionActor> targets = action.getTargets();
             targets.forEach(target -> {
                 action.rollToHit(target);
