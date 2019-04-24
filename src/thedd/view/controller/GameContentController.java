@@ -258,6 +258,8 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
     @Override
     public final void logAction(final ActionResult result) {
             final LinkedList<String> queue = new LinkedList<>();
+            //If an action result exists but doesn't contain results, it means that
+            //the actor has become unable to execute the action he originally selected.
             if (result.getResults().isEmpty()) {
                 queue.add(result.getAction().getSource().get().getName()
                           + " was unable to execute "
@@ -329,7 +331,7 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
             final StatValues targetHP = bcTarget.getStat(Statistic.HEALTH_POINT);
             final double hitChance = action.isPresent() ? Objects.requireNonNull(action).get().getHitChance(target) : 0;
             final String hitC = String.format("%.2f%%", hitChance * 100);
-            final Optional<Action> targetAction = target.getSelectedAction();
+            final Optional<Action> targetAction = position.getLeft() == PartyType.ALLIED ? Optional.empty() : target.getSelectedAction();
             final Optional<Integer> targetInitiative = target.getTurnInitiative();
             final StringBuilder sb = new StringBuilder().append(bcTarget.getName())
                                                         .append('\n')
