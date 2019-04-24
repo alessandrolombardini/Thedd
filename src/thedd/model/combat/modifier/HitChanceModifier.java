@@ -30,6 +30,6 @@ public class HitChanceModifier extends AbstractValueModifier<Action> {
 
     @Override
     public final String toString() {
-        return "Hit chance is modified by " + this.getValue() + " when" + (this.getModifierActivation() == ModifierActivation.ACTIVE_ON_ATTACK ? "attacking" : " defending");
+        return "Hit chance is modified by " + this.getValue() * 100 + "% when" + (this.getModifierActivation() == ModifierActivation.ACTIVE_ON_ATTACK ? "attacking" : " defending");
     }
 }
