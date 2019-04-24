@@ -25,8 +25,8 @@ public final class FloorDetailsImpl implements FloorDetails {
      * @param isLastFloor of the floor
      */
     protected FloorDetailsImpl(final Difficulty difficulty, final int numberOfRooms, final int numberOfEnemies,
-                             final int numberOfTreasure, final int numberOfContraptions, 
-                             final boolean isLastFloor) {
+                               final int numberOfTreasure, final int numberOfContraptions, 
+                               final boolean isLastFloor) {
         this.difficulty = difficulty;
         this.numberOfRooms = numberOfRooms;
         this.numberOfEnemies = numberOfEnemies;
