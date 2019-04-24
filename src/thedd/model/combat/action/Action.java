@@ -10,6 +10,7 @@ import thedd.model.combat.common.Modifiable;
 import thedd.model.combat.common.SourceHolder;
 import thedd.model.combat.common.TargetHolder;
 import thedd.model.combat.instance.ActionExecutionInstance;
+import thedd.model.combat.requirements.Requirement;
 import thedd.model.combat.tag.Taggable;
 
 /**
@@ -175,5 +176,17 @@ public interface Action extends Modifiable, Taggable, SourceHolder, TargetHolder
      * @return the execution policy of the action
      */
     ExecutionPolicy getExecutionPolicy();
+
+    /**
+     * Gets the list of requirements of the action.
+     * @return the requirements of the action
+     */
+    List<Requirement<Action>> getRequirements();
+
+    /**
+     * Adds a requirement to the list of requirements of the action.
+     * @param requirement the requirement to be added
+     */
+    void addRequirement(Requirement<Action> requirement);
 
 }
