@@ -99,7 +99,7 @@ public class RoomFactoryImpl implements RoomFactory {
         final CombatEvent event = RoomEventHelper.getCombat();
         event.getHostileEncounter().addNPC(boss);
         event.getHostileEncounter()
-                .setCombatLogic(new DefaultCombatActionExecutor(event.getHostileEncounter().getNPCs()));
+             .setCombatLogic(new DefaultCombatActionExecutor(event.getHostileEncounter().getNPCs()));
         return new RoomImpl(Arrays.asList(event));
     }
 
@@ -113,17 +113,19 @@ public class RoomFactoryImpl implements RoomFactory {
         final int numberOfEnemies = this.getQuantityOfEnemies();
         this.remainingContent.compute(RoomContent.ENEMY, (k, v) -> v - numberOfEnemies);
         IntStream.range(0, numberOfEnemies).boxed().map(i -> RandomEnemyFactory.createRandomEnemy())
-                .forEach(c -> combatEvent.getHostileEncounter().addNPC(c));
+                 .forEach(c -> combatEvent.getHostileEncounter().addNPC(c));
         if (!combatEvent.getHostileEncounter().getNPCs().isEmpty()) {
             combatEvent.getHostileEncounter()
-                    .setCombatLogic(new DefaultCombatActionExecutor(combatEvent.getHostileEncounter().getNPCs()));
+                       .setCombatLogic(new DefaultCombatActionExecutor(combatEvent.getHostileEncounter().getNPCs()));
             events.add(combatEvent);
         }
         final EnumMap<RoomContent, Integer> interactableActions = getQuantityOfInteractableAction();
-        events.addAll(IntStream.range(0, interactableActions.get(RoomContent.CONTRAPTION)).boxed()
-                .map(b -> RoomEventHelper.getContraption()).collect(Collectors.toList()));
-        events.addAll(IntStream.range(0, interactableActions.get(RoomContent.TREASURE)).boxed()
-                .map(b -> RoomEventHelper.getTreasureChest()).collect(Collectors.toList()));
+        events.addAll(IntStream.range(0, interactableActions.get(RoomContent.CONTRAPTION))
+              .boxed()
+              .map(b -> RoomEventHelper.getContraption()).collect(Collectors.toList()));
+        events.addAll(IntStream.range(0, interactableActions.get(RoomContent.TREASURE))
+              .boxed()
+              .map(b -> RoomEventHelper.getTreasureChest()).collect(Collectors.toList()));
         return new RoomImpl(events);
     }
 
@@ -131,32 +133,29 @@ public class RoomFactoryImpl implements RoomFactory {
         if (this.remainingContent.get(RoomContent.ENEMY) > this.getRemainingBaseRoomsToSet() * MAX_ENEMIES_PER_ROOM) {
             return Integer.min(MAX_ENEMIES_PER_ROOM, this.remainingContent.get(RoomContent.ENEMY));
         } else if (StdRandom.bernoulli(PROB_TO_SET_CONTENT) && this.remainingContent.get(RoomContent.ENEMY) > 0) {
-            return RandomUtils.nextInt(MIN_ENEMIES_PER_ROOM,
-                    Integer.min(MAX_ENEMIES_PER_ROOM, this.remainingContent.get(RoomContent.ENEMY)));
-        } else {
-            return MIN_ENEMIES_PER_ROOM;
-        }
+            return RandomUtils.nextInt(MIN_ENEMIES_PER_ROOM, 
+                                       Integer.min(MAX_ENEMIES_PER_ROOM, this.remainingContent.get(RoomContent.ENEMY)));
+        } 
+        return MIN_ENEMIES_PER_ROOM;
     }
 
     private EnumMap<RoomContent, Integer> getQuantityOfInteractableAction() {
         final EnumMap<RoomContent, Integer> content = new EnumMap<RoomContent, Integer>(RoomContent.class);
         content.put(RoomContent.CONTRAPTION, 0);
         content.put(RoomContent.TREASURE, 0);
-        final int maxInteractableSettableAfterNextRoom = MAX_INTERACTABLE_ACTIONS_PER_ROOM
-                * (this.getRemainingBaseRoomsToSet());
-        if (this.getRamainingInteractableToSet() > maxInteractableSettableAfterNextRoom || RandomUtils.nextBoolean()) {
+        final int maxInteractAfterNextRoom = MAX_INTERACTABLE_ACTIONS_PER_ROOM * (this.getRemainingBaseRoomsToSet());
+        if (this.getRamainingInteractToSet() > maxInteractAfterNextRoom || RandomUtils.nextBoolean()) {
             int minInteractable = 0;
-            if (this.getRamainingInteractableToSet() > maxInteractableSettableAfterNextRoom) {
-                minInteractable = this.getRamainingInteractableToSet() - maxInteractableSettableAfterNextRoom;
+            if (this.getRamainingInteractToSet() > maxInteractAfterNextRoom) {
+                minInteractable = this.getRamainingInteractToSet() - maxInteractAfterNextRoom;
             }
-            final int maxInteractable = Integer.min(MAX_INTERACTABLE_ACTIONS_PER_ROOM,
-                    this.getRamainingInteractableToSet());
-            final int numberOfInteractable = RandomUtils.nextInt(minInteractable, maxInteractable + 1);
-            IntStream.range(0, numberOfInteractable).boxed().map(i -> getAvailableRandomInteractableAction().get())
-                    .forEach(roomContent -> content.compute(roomContent, (k, v) -> v + 1));
+            final int maxInteract = Integer.min(MAX_INTERACTABLE_ACTIONS_PER_ROOM, this.getRamainingInteractToSet());
+            final int numberOfInteractable = RandomUtils.nextInt(minInteractable, maxInteract + 1);
+            IntStream.range(0, numberOfInteractable)
+                     .boxed()
+                     .map(i -> getAvailableRandomInteractableAction().get())
+                     .forEach(roomContent -> content.compute(roomContent, (k, v) -> v + 1));
         }
-        this.remainingContent.compute(RoomContent.CONTRAPTION, (k, v) -> v - content.get(RoomContent.CONTRAPTION));
-        this.remainingContent.compute(RoomContent.TREASURE, (k, v) -> v - content.get(RoomContent.TREASURE));
         return content;
     }
 
@@ -166,13 +165,16 @@ public class RoomFactoryImpl implements RoomFactory {
             contentType = Optional.of(RoomContent.CONTRAPTION);
         } else if (this.remainingContent.get(RoomContent.TREASURE) > 0 && !contentType.isPresent()) {
             contentType = Optional.of(RoomContent.TREASURE);
-        } else {
+        } else if (this.remainingContent.get(RoomContent.CONTRAPTION) > 0 && !contentType.isPresent()) {
             contentType = Optional.of(RoomContent.CONTRAPTION);
+        }
+        if (contentType.isPresent()) {
+            this.remainingContent.compute(contentType.get(), (k, v) -> v - 1);
         }
         return contentType;
     }
 
-    private int getRamainingInteractableToSet() {
+    private int getRamainingInteractToSet() {
         return this.remainingContent.get(RoomContent.TREASURE) + this.remainingContent.get(RoomContent.CONTRAPTION);
     }
 

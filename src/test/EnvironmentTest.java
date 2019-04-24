@@ -11,6 +11,7 @@ import org.junit.Test;
 import thedd.model.roomevent.RoomEvent;
 import thedd.model.roomevent.combatevent.CombatEvent;
 import thedd.model.roomevent.floorchanger.Stairs;
+import thedd.model.roomevent.interactableactionperformer.Contraption;
 import thedd.model.roomevent.interactableactionperformer.InteractableActionPerformer;
 import thedd.model.world.Difficulty;
 import thedd.model.world.environment.Environment;
@@ -28,7 +29,7 @@ import thedd.model.world.room.RoomFactoryImpl;
  */
 public class EnvironmentTest {
 
-    private static final int NUMBER_OF_TEST = 100;
+    private static final int NUMBER_OF_TEST = 1000;
 
     /**
      * Test of new environment.
@@ -130,20 +131,35 @@ public class EnvironmentTest {
             final FloorDetails details = factory.createFloorDetails(diff, i, false);
             final RoomFactory roomFactory = new RoomFactoryImpl(details);
             int numberOfEnemies = 0;
+            int numberOfContraption = 0;
+            int numberOfTreasure = 0;
             int numberOfInteractable = 0;
             for (int j = 0; j < i; j++) {
                 final List<RoomEvent> events = roomFactory.createRoom().getEvents();
                 numberOfEnemies += this.getNumberOfEnemies(events);
+                numberOfContraption += this.getNumberOfContraption(events);
+                numberOfTreasure += this.getNumberOfTreasure(events);
                 numberOfInteractable += this.getNumberOfInteractable(events);
             }
             assertEquals(details.getNumberOfEnemies(), numberOfEnemies);
+            assertEquals(details.getNumberOfTreasures(), numberOfTreasure);
+            assertEquals(details.getNumberOfContraptions(), numberOfContraption);
             assertEquals(details.getNumberOfTreasures() + details.getNumberOfContraptions(), numberOfInteractable);
+
         }
     }
 
-    private int getNumberOfInteractable(final List<RoomEvent> events) {
-        return (int) events.stream().filter(e -> e instanceof InteractableActionPerformer).count();
+    private int getNumberOfContraption(final List<RoomEvent> events) {
+        return (int) events.stream().filter(e -> e instanceof Contraption).count();
     }
+
+    private int getNumberOfTreasure(final List<RoomEvent> events) {
+        return (int) events.stream().filter(e -> !(e instanceof Contraption) 
+                                                 && !(e instanceof Stairs) 
+                                                 && !(e instanceof CombatEvent))
+                                    .count();
+    }
+
 
     private int getNumberOfEnemies(final List<RoomEvent> events) {
         return (int) events.stream().filter(e -> e instanceof CombatEvent)
@@ -151,6 +167,10 @@ public class EnvironmentTest {
                                     .map(e -> e.getHostileEncounter().getNPCs())
                                     .flatMap(e -> e.stream())
                                     .count();
+    }
+
+    private int getNumberOfInteractable(final List<RoomEvent> events) {
+        return (int) events.stream().filter(e -> e instanceof InteractableActionPerformer).count();
     }
 
 }
