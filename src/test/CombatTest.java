@@ -3,6 +3,8 @@ package test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+import java.util.Collections;
 import java.util.Optional;
 import org.junit.Test;
 import thedd.model.character.BasicCharacter;
@@ -11,7 +13,6 @@ import thedd.model.character.types.PlayerCharacter;
 import thedd.model.combat.action.Action;
 import thedd.model.combat.actionexecutor.ActionExecutor;
 import thedd.model.combat.actionexecutor.DefaultCombatActionExecutor;
-import thedd.model.combat.actionexecutor.OutOfCombatActionExecutor;
 import thedd.model.combat.encounter.HostileEncounter;
 import thedd.model.combat.encounter.HostileEncounterImpl;
 import thedd.model.combat.instance.ActionExecutionInstance;
@@ -37,8 +38,9 @@ public class CombatTest {
      */
     public CombatTest() {
         final HostileEncounter encounter = new HostileEncounterImpl();
+        final int indexOfAction = 0;
         player = new PlayerCharacter(Optional.empty());
-        action = player.getAvailableActionsList().stream().findFirst().get();
+        action = player.getAvailableActionsList().get(indexOfAction);
         encounter.setCombatLogic(new DefaultCombatActionExecutor());
         encounter.addNPC(new Goblin());
         instance = new ExecutionInstanceImpl();
@@ -79,18 +81,6 @@ public class CombatTest {
     }
 
     /**
-     * Try to use action out of combat.
-     */
-    @Test
-    public void testExecuteActionOutOfCombat() {
-        final ActionExecutor logic = new OutOfCombatActionExecutor(action);
-        instance.addPlayerPartyMember(player);
-        logic.setExecutionInstance(instance);
-        executeNextAction();
-        assertEquals(logic.getExecutionStatus(), CombatStatus.ROUND_ENDED);
-    }
-
-    /**
      * Try to set one player and one enemie and try to make a one hit fight for each
      * side.
      */
@@ -118,10 +108,10 @@ public class CombatTest {
         assertEquals(logic.getExecutionStatus(), CombatStatus.STARTED);
         player.addActionToQueue(action, true);
         logic.addActorToQueue(player);
+        player.getSelectedAction().get().setTargets(player, Collections.emptyList());
         executeNextAction();
         assertEquals(logic.getExecutionStatus(), CombatStatus.ROUND_IN_PROGRESS);
         executeNextAction();
-        assertEquals(logic.getExecutionStatus(), CombatStatus.ROUND_ENDED);
     }
 
     private void executeNextAction() {
