@@ -17,6 +17,7 @@ import thedd.model.combat.action.targeting.ActionTargeting;
 import thedd.model.combat.actor.ActionActor;
 import thedd.model.combat.instance.ActionExecutionInstance;
 import thedd.model.combat.modifier.ModifierActivation;
+import thedd.model.combat.requirements.Requirement;
 import thedd.model.combat.tag.Tag;
 
 /**
@@ -39,41 +40,7 @@ public class ActionImpl implements Action {
     private String name;
     private final ActionTargeting targeting;
     private final ExecutionPolicy effectPolicy;
-
-    /**
-     * Public constructor.
-     * @param name the literal name of the action
-     * @param baseHitChance the base hit chance (a number between 0.0 and 1.0)
-     * @param targetType what kind of Actor the action can target
-     * @param description a description of the action
-     * @param logMessage the category of message for the logger
-     * @param category the category of the action
-     * @param targeting the targeting system of the action
-     */
-    /*public ActionImpl(final String name, final ActionCategory category,
-            final ActionTargeting targeting, final double baseHitChance,
-            final TargetType targetType, final String description,
-            final LogMessageType logMessage) {
-        this(null, name, Collections.<ActionEffect>emptyList(), category, targeting, baseHitChance, targetType, description, logMessage);
-    } */
-
-    /**
-     * Public constructor.
-     * @param source the source of the action
-     * @param name the literal name of the action
-     * @param baseHitChance the base hit chance (a number between 0.0 and 1.0)
-     * @param targetType what kind of Actor the action can target
-     * @param description a description of the action
-     * @param logMessage the category of message for the logger
-     * @param category the category of the action
-     * @param targeting the targeting system of the action
-     */
-    /*public ActionImpl(final ActionActor source, final String name,
-            final ActionCategory category, final ActionTargeting targeting,
-            final double baseHitChance, final TargetType targetType, 
-            final String description, final LogMessageType logMessage) {
-        this(source, name, Collections.<ActionEffect>emptyList(), category, targeting, baseHitChance, targetType, description, logMessage);
-    }*/
+    private final List<Requirement<Action>> requirements = new ArrayList<>();
 
     /**
      * Public constructor.
@@ -371,6 +338,7 @@ public class ActionImpl implements Action {
         getEffects().forEach(e -> copy.addEffect(e.getCopy()));
         copy.addTags(tags, false);
         copy.addTags(permanentTags, true);
+        getRequirements().forEach(copy::addRequirement);
         source.ifPresent(copy::setSource);
         if (!targets.isEmpty()) {
             final ActionActor originalTarget = targets.get(0);
@@ -451,6 +419,23 @@ public class ActionImpl implements Action {
     @Override
     public ExecutionPolicy getExecutionPolicy() {
         return effectPolicy.getCopy();
+    }
+
+    /**
+     * {@inheritDoc}
+     * @return
+     */
+    @Override
+    public List<Requirement<Action>> getRequirements() {
+        return Collections.unmodifiableList(requirements);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void addRequirement(final Requirement<Action> requirement) {
+        requirements.add(Objects.requireNonNull(requirement));
     }
 
     private void applyModifiers(final ActionActor target) {
