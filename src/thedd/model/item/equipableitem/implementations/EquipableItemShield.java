@@ -1,10 +1,12 @@
 package thedd.model.item.equipableitem.implementations;
 
 import java.util.Objects;
-
 import thedd.model.combat.action.effect.ActionModifierAdderEffect;
 import thedd.model.combat.modifier.HitChanceModifier;
 import thedd.model.combat.modifier.ModifierActivation;
+import thedd.model.combat.requirements.tags.TagRequirement;
+import thedd.model.combat.requirements.tags.TagRequirementType;
+import thedd.model.combat.tag.ActionTag;
 import thedd.model.item.Item;
 import thedd.model.item.ItemRarity;
 import thedd.model.item.equipableitem.EquipableItemImpl;
@@ -32,6 +34,7 @@ public final class EquipableItemShield extends EquipableItemImpl {
     private EquipableItemShield(final ItemRarity rarity) {
         super(ID, NAME, TYPE, Objects.requireNonNull(rarity), DESCRIPTION);
         final HitChanceModifier hcm = new HitChanceModifier(-BASE_HIT_CHANCE_MOD, false, ModifierActivation.ACTIVE_ON_DEFENCE);
+        hcm.addRequirement(new TagRequirement<>(false, TagRequirementType.REQUIRED, ActionTag.OFFENSIVE));
         this.addActionEffect(new ActionModifierAdderEffect(hcm, false));
     }
 
