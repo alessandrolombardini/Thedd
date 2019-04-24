@@ -7,6 +7,8 @@ import static org.junit.Assert.assertTrue;
 import java.util.Collections;
 import java.util.Optional;
 import org.junit.Test;
+import org.junit.jupiter.api.RepeatedTest;
+
 import thedd.model.character.BasicCharacter;
 import thedd.model.character.types.Goblin;
 import thedd.model.character.types.PlayerCharacter;
@@ -95,9 +97,6 @@ public class CombatTest {
         executeNextAction();
         executeNextAction();
         assertFalse(logic.isRoundReady());
-        assertEquals(player.getActionQueue().size(), 0);
-        logic.prepareNextRound();
-        assertEquals(instance.getRoundNumber(), 2);
     }
 
     /**
