@@ -31,7 +31,7 @@ public final class EquipableItemShield extends EquipableItemImpl {
      */
     private EquipableItemShield(final ItemRarity rarity) {
         super(ID, NAME, TYPE, Objects.requireNonNull(rarity), DESCRIPTION);
-        final HitChanceModifier hcm = new HitChanceModifier(BASE_HIT_CHANCE_MOD, false, ModifierActivation.ACTIVE_ON_DEFENCE);
+        final HitChanceModifier hcm = new HitChanceModifier(-BASE_HIT_CHANCE_MOD, false, ModifierActivation.ACTIVE_ON_DEFENCE);
         this.addActionEffect(new ActionModifierAdderEffect(hcm, false));
     }
 
