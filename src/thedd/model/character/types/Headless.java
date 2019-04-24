@@ -28,7 +28,7 @@ public class Headless extends BasicCharacterImpl {
      */
     public Headless() {
         super(DEFAULT_NAME, false);
-        this.addWeightedAction(new LightAttack(TargetType.FOE), RandomPrority.LOW);
+        this.addWeightedAction(new LightAttack(TargetType.FOE), RandomPrority.DEFAULT);
         this.addWeightedAction(new HeavyAttack(TargetType.FOE), RandomPrority.DEFAULT);
     }
 
