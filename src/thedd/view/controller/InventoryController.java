@@ -84,6 +84,9 @@ public class InventoryController extends ViewNodeControllerImpl {
     @Override
     public void update() {
         table.getItems().setAll(this.getController().getPlayerInformation().getAllItemsList());
+        if (!this.getController().isCombatActive()) {
+            table.setDisable(false);
+        }
     }
 
     /**
