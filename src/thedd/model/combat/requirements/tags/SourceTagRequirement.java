@@ -1,6 +1,8 @@
 package thedd.model.combat.requirements.tags;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import thedd.model.combat.common.SourceHolder;
 import thedd.model.combat.requirements.AbstractRequirement;
@@ -16,6 +18,8 @@ import thedd.model.combat.tag.Taggable;
 public class SourceTagRequirement<T extends SourceHolder> extends AbstractRequirement<T> {
 
     private final TagRequirement<Taggable> condition;
+    private final TagRequirementType rType;
+    private final List<Tag> targetTags = new ArrayList<Tag>();
 
     /**
      * @param hidden true if the requirement must be hidden
@@ -24,7 +28,9 @@ public class SourceTagRequirement<T extends SourceHolder> extends AbstractRequir
      */
     public SourceTagRequirement(final boolean hidden, final TagRequirementType rType, final List<Tag> targetTags) {
         super(hidden);
+        this.rType = rType;
         condition = new TagRequirement<Taggable>(hidden, rType, targetTags);
+        targetTags.addAll(targetTags);
     }
 
     /**
@@ -34,7 +40,9 @@ public class SourceTagRequirement<T extends SourceHolder> extends AbstractRequir
      */
     public SourceTagRequirement(final boolean hidden, final TagRequirementType rType, final Tag targetTag) {
         super(hidden);
+        this.rType = rType;
         condition = new TagRequirement<Taggable>(hidden, rType, targetTag);
+        targetTags.add(targetTag);
     }
 
     /**
@@ -42,8 +50,24 @@ public class SourceTagRequirement<T extends SourceHolder> extends AbstractRequir
      */
     @Override
     public String toString() {
-        //Might be useful to return "Source must/might/must not have tags: + condition.toString()
-        return condition.toString();
+        String conditionString;
+        switch (rType) {
+        case ALLOWED:
+            conditionString = " must have ";
+            break;
+        case REQUIRED:
+            conditionString = " must not have ";
+            break;
+        case UNALLOWED:
+            conditionString = " must have one or more of ";
+            break;
+        default:
+            conditionString = "THIS SHOULD NOT BE SEEN";
+            break;
+        }
+        return "Actor" + conditionString + "the following conditions: " + targetTags.stream()
+                                                                                    .map(t -> t.getLiteral())
+                                                                                    .collect(Collectors.joining("/"));
     }
 
     /**
