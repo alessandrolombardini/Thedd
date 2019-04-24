@@ -148,7 +148,7 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
     public Optional<ActionResult> evaluateCurrentAction() {
         if (currentAction.isPresent()) {
             final Action action = currentAction.get();
-            final ActionResult result = new ActionResultImpl(action);
+            final ActionResult result = new ActionResultImpl(action.getCopy());
             boolean interrupted = false;
             final List<ActionActor> targets = action.getTargets();
             if (!action.getRequirements().stream().allMatch(r -> r.isFulfilled(action))) {
