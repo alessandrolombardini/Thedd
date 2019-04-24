@@ -10,7 +10,7 @@ public final class StatValuesImpl implements StatValues {
     /**
      * Value used to not set the maximum field.
      */
-    public static final int NO_MAX = -1;
+    private static final int NO_MAX = -1;
 
     /**
      * StatValues constructor.
