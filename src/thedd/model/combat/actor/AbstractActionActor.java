@@ -172,7 +172,7 @@ public abstract class AbstractActionActor implements ActionActor {
         if (arePermanent) {
             permanentTags.addAll(tags);
         } else {
-            this.tags.addAll(tags.stream().filter(permanentTags::contains).collect(Collectors.toSet()));
+            this.tags.addAll(tags.stream().filter(t -> !permanentTags.contains(t)).collect(Collectors.toSet()));
         }
     }
 
