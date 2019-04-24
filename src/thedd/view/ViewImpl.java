@@ -182,7 +182,7 @@ public class ViewImpl extends Application implements View {
      */
     private Optional<GameView> getGameViewController() {
         if (this.actualViewState.isPresent() && this.actualViewState.get() == ApplicationViewState.GAME
-                && this.actualScene.get().getController() instanceof MainGameViewController) {
+             && this.actualScene.get().getController() instanceof MainGameViewController) {
             final GameView gameView = (GameView) (this.actualScene.get().getController());
             return Optional.of(gameView);
         }
