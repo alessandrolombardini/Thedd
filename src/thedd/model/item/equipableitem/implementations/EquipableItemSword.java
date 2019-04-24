@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import thedd.model.combat.action.effect.ActionModifierAdderEffect;
 import thedd.model.combat.modifier.DamageAdderModifier;
+import thedd.model.combat.modifier.ModifierActivation;
 import thedd.model.combat.requirements.tags.EffectTagsRequirement;
 import thedd.model.combat.requirements.tags.TagRequirementType;
 import thedd.model.combat.tag.EffectTag;
@@ -38,7 +39,8 @@ public final class EquipableItemSword extends EquipableItemImpl {
                                         Arrays.asList(new EffectTagsRequirement<>(false, 
                                                                                   TagRequirementType.REQUIRED,
                                                                                   Arrays.asList(EffectTag.NORMAL_DAMAGE))),
-                                        EffectTag.NORMAL_DAMAGE), 
+                                        EffectTag.NORMAL_DAMAGE,
+                                        ModifierActivation.ACTIVE_ON_ATTACK),
                 false));
     }
 

@@ -16,6 +16,7 @@ import thedd.model.combat.action.effect.EquipmentStatisticChangerEffect;
 import thedd.model.combat.action.implementations.FieryTouch;
 import thedd.model.combat.action.implementations.NastyStrike;
 import thedd.model.combat.modifier.DamageAdderModifier;
+import thedd.model.combat.modifier.ModifierActivation;
 import thedd.model.combat.tag.EffectTag;
 import thedd.model.item.equipableitem.EquipableItem;
 import thedd.model.item.equipableitem.implementations.EquipableItemAmulet;
@@ -121,7 +122,8 @@ public final class ItemFactory {
             DMG_MOD.add(dmgType);
             return new ActionModifierAdderEffect(new DamageAdderModifier(Math.ceil(RNGENERATOR.nextDouble() * MAX_DAMAGE_MODIFIER_VALUE),
                                                                          new ArrayList<>(),
-                                                                         dmgType),
+                                                                         dmgType,
+                                                                         ModifierActivation.ACTIVE_ON_ATTACK),
                                                 false);
         case DAMAGE_RESISTANCE:
             EffectTag resType = EffectTag.values()[RNGENERATOR.nextInt(EffectTag.values().length)];
