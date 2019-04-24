@@ -20,7 +20,7 @@ public class FieryTouch extends ActionImpl {
                                               + "of damage, but it's rather hard to score an hit "
                                               + "due to the need of being close to the target.";
     private static final double BASE_HITCHANCE = 0.4d;
-    private static final double BASE_FIRE_DAMAGE = 40d;
+    private static final double BASE_FIRE_DAMAGE = 45d;
 
     /**
      * @param targetType the target type of the action

@@ -12,9 +12,12 @@ import thedd.model.combat.action.effect.DamageEffect;
 import thedd.model.combat.action.effect.StatusGiverEffect;
 import thedd.model.combat.action.executionpolicies.ExtraActionToSource;
 import thedd.model.combat.action.targeting.TargetTargetParty;
+import thedd.model.combat.requirements.tags.SourceTagRequirement;
+import thedd.model.combat.requirements.tags.TagRequirementType;
 import thedd.model.combat.status.weakness.WeaknessStatus;
 import thedd.model.combat.tag.ActionTag;
 import thedd.model.combat.tag.EffectTag;
+import thedd.model.combat.tag.StatusTag;
 
 /**
  * Divine Intervention action: it deals fire and holy damage but weakens the user.
@@ -23,12 +26,12 @@ public class DivineIntervention extends ActionImpl {
 
     private static final String NAME = "Divine Intervention";
     private static final String DESCRIPTION = "A punitive beam of sacred light which scorches the target and all its allies. "
-                                              + "\n\nCalling upon the gods requires concentration, using this action may cause "
+                                              + "\n\nCalling upon the gods requires concentration, using this action will cause "
                                               + "the user to become Weakend by fatigue.";
     private static final double BASE_FIRE_DAMAGE = 5.0;
-    private static final double BASE_HOLY_DAMAGE = 25.0;
+    private static final double BASE_HOLY_DAMAGE = 35.0;
     private static final double BASE_HIT_CHANCE = 1.0;
-    private static final double WEAKNESS_BASE_HITCHANCE = 0.7d;
+    private static final double WEAKNESS_BASE_HITCHANCE = 1d;
     private static final Action EXTRA_ACTION = new ActionBuilder().setName("Weakness")
                                                                    .setCategory(ActionCategory.STATUS)
                                                                    .setLogMessage(LogMessageType.STATUS_ACTION)
@@ -48,7 +51,9 @@ public class DivineIntervention extends ActionImpl {
                                  .setTargetingPolicy(new TargetTargetParty())
                                  .setExecutionPolicy(new ExtraActionToSource(EXTRA_ACTION.getCopy()))
                                  .build());
+        EXTRA_ACTION.addTag(ActionTag.IGNORES_MODIFIERS, true);
         this.addTag(ActionTag.OFFENSIVE, true);
+        this.addRequirement(new SourceTagRequirement<>(false, TagRequirementType.UNALLOWED, StatusTag.WEAKENED));
 
         final DamageEffect fireDamage = new DamageEffect(BASE_FIRE_DAMAGE);
         fireDamage.addTag(EffectTag.FIRE_DAMAGE, true);

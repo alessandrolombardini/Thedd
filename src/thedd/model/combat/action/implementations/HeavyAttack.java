@@ -19,7 +19,7 @@ public class HeavyAttack extends ActionImpl {
     private static final String DESCRIPTION = "A decisive blow dealt with great strength." 
                                               + "\nIt deals more damage on average, but it's " 
                                               + "an hard move to pull off.";
-    private static final double BASE_HITCHANCE = 0.5d;
+    private static final double BASE_HITCHANCE = 0.6d;
     private static final double BASE_DAMAGE_NORMAL = 10d;
     private static final double BASE_DAMAGE_AP = 5d;
 
@@ -40,7 +40,6 @@ public class HeavyAttack extends ActionImpl {
 
         //Effects tags
         normalDamage.addTag(EffectTag.NORMAL_DAMAGE, true);
-        apDamage.addTag(EffectTag.NORMAL_DAMAGE, true);
         apDamage.addTag(EffectTag.AP_DAMAGE, true);
 
         addEffects(Arrays.asList(normalDamage, apDamage));
