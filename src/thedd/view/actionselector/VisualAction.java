@@ -43,6 +43,14 @@ public class VisualAction {
     }
 
     /**
+     * Gets whether the action can be selected.
+     * @return true if the action is selectable, false otherwise
+     */
+    public boolean canSelect() {
+        return action.getRequirements().stream().allMatch(r -> r.isFulfilled(action));
+    }
+
+    /**
      * Gets the name of the associated {@link Action}.
      * @return the name of the action
      */
@@ -70,6 +78,11 @@ public class VisualAction {
           .append("Base hitchance: ")
           .append(getBaseHitChance())
           .append('%');
+        if (!action.getRequirements().isEmpty()) {
+            sb.append("\n\nRequirements: ");
+            action.getRequirements().forEach(r -> sb.append('\n')
+                                                    .append(r));
+        }
         return sb.toString();
     }
 
