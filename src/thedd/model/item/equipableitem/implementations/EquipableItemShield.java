@@ -22,7 +22,7 @@ public final class EquipableItemShield extends EquipableItemImpl {
     private static final String NAME = "Shield";
     private static final EquipableItemType TYPE = EquipableItemType.ONE_HANDED;
     private static final String DESCRIPTION = "A simple shield. It can offer some protection against direct attacks.";
-    private static final double BASE_HIT_CHANCE_MOD = 0.2;
+    private static final double BASE_HIT_CHANCE_MOD = 0.1;
 
     /**
      * Create a Shield item and add his innate effect,
