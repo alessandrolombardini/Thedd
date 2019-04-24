@@ -51,7 +51,6 @@ public class IconsPane extends Pane implements Observable<Command> {
         defaultItemSizeByWidth.bind(this.widthProperty().multiply(DEFAULT_ITEM_SIZE_PERC));
         selectedItemSizeByHeight.bind(this.heightProperty().multiply(SELECTED_ITEM_SIZE_PERC));
         defaultItemSizeByHeight.bind(this.heightProperty().multiply(DEFAULT_ITEM_SIZE_PERC));
-        //this.getStyleClass().add("icons-pane-background");
 
         setBackground(new Background(new BackgroundImage(new Image("/images/actionselector/box.png"),
                 BackgroundRepeat.NO_REPEAT, 
