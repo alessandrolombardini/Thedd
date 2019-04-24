@@ -20,7 +20,7 @@ public class LightAttack extends ActionImpl {
                                               + "\nWhile more precise, it deals " 
                                               + "less damage on average.";
     private static final double BASE_HITCHANCE = 0.7d;
-    private static final double BASE_DAMAGE_NORMAL = 5d;
+    private static final double BASE_DAMAGE_NORMAL = 10d;
 
     /**
      * @param targetType the target type of the action

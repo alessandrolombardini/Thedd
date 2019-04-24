@@ -20,7 +20,7 @@ public class HeavyAttack extends ActionImpl {
                                               + "\nIt deals more damage on average, but it's " 
                                               + "an hard move to pull off.";
     private static final double BASE_HITCHANCE = 0.6d;
-    private static final double BASE_DAMAGE_NORMAL = 10d;
+    private static final double BASE_DAMAGE_NORMAL = 15d;
     private static final double BASE_DAMAGE_AP = 5d;
 
     /**
