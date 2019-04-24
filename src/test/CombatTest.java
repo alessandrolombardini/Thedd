@@ -3,12 +3,9 @@ package test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-
 import java.util.Collections;
 import java.util.Optional;
 import org.junit.Test;
-import org.junit.jupiter.api.RepeatedTest;
-
 import thedd.model.character.BasicCharacter;
 import thedd.model.character.types.Goblin;
 import thedd.model.character.types.PlayerCharacter;
