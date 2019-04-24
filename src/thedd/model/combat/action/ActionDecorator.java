@@ -9,6 +9,7 @@ import thedd.model.combat.action.executionpolicies.ExecutionPolicy;
 import thedd.model.combat.action.targeting.ActionTargeting;
 import thedd.model.combat.actor.ActionActor;
 import thedd.model.combat.instance.ActionExecutionInstance;
+import thedd.model.combat.requirements.Requirement;
 import thedd.model.combat.tag.Tag;
 
 /**
@@ -288,6 +289,22 @@ public class ActionDecorator implements Action {
     @Override
     public ExecutionPolicy getExecutionPolicy() {
         return action.getExecutionPolicy();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Requirement<Action>> getRequirements() {
+        return action.getRequirements();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void addRequirement(final Requirement<Action> requirement) {
+        action.addRequirement(requirement);
     }
 
 }
