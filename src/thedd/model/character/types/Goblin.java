@@ -28,8 +28,8 @@ public class Goblin extends BasicCharacterImpl {
     private static final double POISON_RESISTANCE = -0.8;
     private static final int BASE_AGILITY = 6;
     private static final int VARIATION_AGILITY = 2;
-    private static final int BASE_HEALTH = 30;
-    private static final int VARIATION_HEALTH = 10;
+    private static final int BASE_HEALTH = 25;
+    private static final int VARIATION_HEALTH = 12;
     private static final int BASE_CONSTITUTION = 4;
     private static final int VARIATION_CONSTITUTION = 2;
     private static final int BASE_STRENGTH = 4;
