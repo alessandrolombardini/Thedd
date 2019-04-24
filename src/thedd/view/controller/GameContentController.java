@@ -258,6 +258,12 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
     @Override
     public final void logAction(final ActionResult result) {
             final LinkedList<String> queue = new LinkedList<>();
+            if (result.getResults().isEmpty()) {
+                queue.add(result.getAction().getSource().get().getName()
+                          + " was unable to execute "
+                          + result.getAction().getName()
+                          + " action");
+            }
             result.getResults().forEach(r -> {
                 switch (r.getRight()) {
                 case HIT:
