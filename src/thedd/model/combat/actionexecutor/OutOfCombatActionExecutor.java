@@ -110,7 +110,7 @@ public class OutOfCombatActionExecutor implements ActionExecutor {
         roundStarted = true;
         if (action.isPresent()) {
             final Action a = action.get();
-            final ActionResult result = new ActionResultImpl(a);
+            final ActionResult result = new ActionResultImpl(a.getCopy());
             final List<ActionActor> targets = a.getTargets();
             targets.forEach(target -> {
                 a.rollToHit(target);
