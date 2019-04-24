@@ -136,7 +136,7 @@ public class ActionSelectorController extends ViewNodeControllerImpl implements 
             break;
         case SELECT:
             selectItem();
-            if (!actionSelected) {
+            if (!actionSelected && selectedCategoryIndex != categories.size() - 1) {
                 updateSelectButton();
             }
             break;
