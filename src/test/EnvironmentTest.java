@@ -28,14 +28,14 @@ import thedd.model.world.room.RoomFactoryImpl;
  */
 public class EnvironmentTest {
 
-    private static final int NOMBER_OF_TEST = 100;
+    private static final int NUMBER_OF_TEST = 100;
 
     /**
      * Test of new environment.
      */
     @Test
     public void testCreateEnvironement() {
-        for (int i = 1; i < NOMBER_OF_TEST; i++) {
+        for (int i = 1; i < NUMBER_OF_TEST; i++) {
             final int numberOfRooms = i + i;
             final int numberOfFloors = i;
             final Environment environment = new EnvironmentImpl(numberOfFloors, numberOfRooms);
@@ -65,7 +65,7 @@ public class EnvironmentTest {
     private void testWithDifferentDifficulty(final Difficulty difficulty, final boolean boss) {
         final FloorDetailsFactory factory = new FloorDetailsFactoryImpl();
         final int roomForBoss = boss ? 1 : 0;
-        for (int i = 1; i < NOMBER_OF_TEST; i++) {
+        for (int i = 1; i < NUMBER_OF_TEST; i++) {
             final FloorDetails details = factory.createFloorDetails(difficulty, i, boss);
             assertEquals(details.isBossFloor(), boss);
             assertTrue(details.getNumberOfEnemies() <= RoomFactoryImpl.MAX_ENEMIES_PER_ROOM * (i - roomForBoss));
@@ -126,7 +126,7 @@ public class EnvironmentTest {
 
     private void testRoomFactoryByDifficulty(final Difficulty diff) {
         final FloorDetailsFactory factory = new FloorDetailsFactoryImpl();
-        for (int i = EnvironmentImpl.MIN_NUMBER_OF_ROOMS; i < NOMBER_OF_TEST; i++) {
+        for (int i = EnvironmentImpl.MIN_NUMBER_OF_ROOMS; i < NUMBER_OF_TEST; i++) {
             final FloorDetails details = factory.createFloorDetails(diff, i, false);
             final RoomFactory roomFactory = new RoomFactoryImpl(details);
             int numberOfEnemies = 0;
