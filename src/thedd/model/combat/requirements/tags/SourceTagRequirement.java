@@ -52,13 +52,13 @@ public class SourceTagRequirement<T extends SourceHolder> extends AbstractRequir
     public String toString() {
         String conditionString;
         switch (rType) {
-        case ALLOWED:
+        case REQUIRED:
             conditionString = " must have ";
             break;
-        case REQUIRED:
+        case UNALLOWED:
             conditionString = " must not have ";
             break;
-        case UNALLOWED:
+        case ALLOWED:
             conditionString = " must have one or more of ";
             break;
         default:

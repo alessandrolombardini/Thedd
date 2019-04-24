@@ -24,14 +24,15 @@ public class ViewImpl extends Application implements View {
 
     private static final String ERROR_STAGEUNSETTED = "Stage is not setted";
     private static final String GAME_NAME = "The dark destruction";
-    private static final double WIDTH = 16;
-    private static final double HEIGHT = 9;
+    private static final double WIDTH = 16.0;
+    private static final double HEIGHT = 9.0;
+    private static final int DIFF_BY_SCREEN = 480;
     private static final double MIN_WIDTH = Screen.getPrimary().getBounds().getWidth() / WIDTH *  3;
     private static final double MIN_HEIGHT = Screen.getPrimary().getBounds().getHeight() / HEIGHT * 3;
     private static final double STAGE_WIDTH = Screen.getPrimary().getBounds().getWidth() / WIDTH * HEIGHT;
     private static final double STAGE_HEIGHT = Screen.getPrimary().getBounds().getHeight() / WIDTH * HEIGHT;
     private static final ApplicationViewState FIRST_APP_STATE = ApplicationViewState.MENU;
-    private static final int MAX_DIFF_BETWEEN_SIZE = 4;
+    private static final int DIFF_BETWEEN_SIZE = (int) (Screen.getPrimary().getBounds().getWidth() / DIFF_BY_SCREEN);
 
     private final Controller controller;
     private Optional<Stage> stage;
@@ -194,17 +195,13 @@ public class ViewImpl extends Application implements View {
         }
         final Stage stage = this.stage.get();
         stage.widthProperty().addListener((obs, oldVal, newVal) -> {
-            if (Math.abs(oldVal.doubleValue() - newVal.doubleValue()) > MAX_DIFF_BETWEEN_SIZE) {
-                if (Math.abs(Math.abs(stage.getHeight()) - Math.abs(stage.getHeight() / (WIDTH / HEIGHT))) > MAX_DIFF_BETWEEN_SIZE) {
+            if (Math.abs(oldVal.doubleValue() - newVal.doubleValue()) > DIFF_BETWEEN_SIZE) {
                     stage.setHeight(stage.getWidth() / (WIDTH / HEIGHT));
-                }
             }
         });
         stage.heightProperty().addListener((obs, oldVal, newVal) -> {
-            if (Math.abs(oldVal.doubleValue() - newVal.doubleValue()) > MAX_DIFF_BETWEEN_SIZE) {
-                if (Math.abs(Math.abs(stage.getWidth()) - Math.abs(stage.getHeight() * (WIDTH / HEIGHT))) > MAX_DIFF_BETWEEN_SIZE) {
+            if (Math.abs(oldVal.doubleValue() - newVal.doubleValue()) > DIFF_BETWEEN_SIZE) {
                     stage.setWidth(stage.getHeight() * (WIDTH / HEIGHT));
-                }
             }
         });
         stage.setHeight(STAGE_HEIGHT);

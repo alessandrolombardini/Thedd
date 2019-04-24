@@ -14,6 +14,11 @@ import thedd.model.world.room.RoomFactoryImpl;
  */
 public class FloorImpl implements Floor {
 
+    /**
+     * The minimum number of interactable contents inside the floor.
+     */
+    public static final int MIN_NUMBER_CONTENTS_PER_FLOOR = 0;
+
     private static final String ERROR_UNSETTEDROOM = "No rooms are setted";
     private static final String ERROR_UNVAILABLEROOM = "No room available";
     private static final int NONE_ROOMS = -1;

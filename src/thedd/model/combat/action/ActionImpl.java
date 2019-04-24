@@ -423,7 +423,7 @@ public class ActionImpl implements Action {
 
     /**
      * {@inheritDoc}
-     * @return
+     * @return list of Requirement of Action
      */
     @Override
     public List<Requirement<Action>> getRequirements() {

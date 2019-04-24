@@ -47,7 +47,7 @@ public class VisualAction {
      * @return true if the action is selectable, false otherwise
      */
     public boolean canSelect() {
-        return action.getRequirements().stream().allMatch(r -> r.isFulfilled(action));
+        return getAction().getRequirements().stream().allMatch(r -> r.isFulfilled(action));
     }
 
     /**
@@ -87,17 +87,17 @@ public class VisualAction {
     }
 
     private List<String> getTags() {
-        return action.getTags().stream()
+        return getAction().getTags().stream()
                                .filter(t -> !t.isHidden())
                                .map(t -> t.getLiteral()).collect(Collectors.toList());
     }
 
     private String getEffectsPreview() {
-        return action.getEffectsPreview(null);
+        return getAction().getEffectsPreview(null);
     }
 
     private double getBaseHitChance() {
-        return action.getBaseHitChance() * 100;
+        return getAction().getBaseHitChance() * 100;
     }
 
 }

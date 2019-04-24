@@ -27,9 +27,11 @@ public final class DamageAdderModifier extends AbstractModifier<Action> implemen
      *          the requirements needed by actions to get the damage added
      * @param addedTag
      *          additional tags added to the action modified
+     * @param modifierActivation 
+     *          the modifier activation type
      */
-    public DamageAdderModifier(final double value, final List<Requirement<Action>> requirements, final Tag addedTag) {
-        super(ModifierActivation.RETRIEVING_ACTION);
+    public DamageAdderModifier(final double value, final List<Requirement<Action>> requirements, final Tag addedTag, final ModifierActivation modifierActivation) {
+        super(modifierActivation);
         this.value = value;
         this.addedTag = Objects.requireNonNull(addedTag);
         Objects.requireNonNull(requirements).forEach(this::addRequirement);

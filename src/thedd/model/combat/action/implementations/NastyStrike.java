@@ -20,7 +20,7 @@ public class NastyStrike extends ActionImpl {
                                                + "It injects a powerful toxin in the body of the target.";
     private static final double BASE_DAMAGE = 1.0;
     private static final int STATUS_DURATION = 3;
-    private static final double BASE_HIT_CHANCE = 1.0;
+    private static final double BASE_HIT_CHANCE = 0.8;
 
     /**
      * @param targetType the target type of the action
