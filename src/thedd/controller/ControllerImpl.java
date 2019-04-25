@@ -21,7 +21,7 @@ import thedd.model.combat.actionexecutor.StatusUpdateActionExecutor;
 import thedd.model.combat.actor.ActionActor;
 import thedd.model.combat.encounter.HostileEncounter;
 import thedd.model.combat.instance.ActionExecutionInstance;
-import thedd.model.combat.instance.CombatStatus;
+import thedd.model.combat.instance.ExecutionStatus;
 import thedd.model.combat.instance.ExecutionInstanceImpl;
 import thedd.model.item.Item;
 import thedd.model.item.usableitem.UsableItem;
@@ -270,7 +270,7 @@ public class ControllerImpl implements Controller {
         }
         final ActionExecutor executor = actionExecutor.get();
         executor.updateExecutionStatus();
-        final CombatStatus status = executor.getExecutionStatus();
+        final ExecutionStatus status = executor.getExecutionStatus();
         switch (status) {
         case COMBAT_ENDED:
             actionExecutor = Optional.empty();
@@ -331,7 +331,7 @@ public class ControllerImpl implements Controller {
             a.setNextAction();
             final Optional<ActionResult> result = a.evaluateCurrentAction();
             if (result.isPresent()) {
-                executeCurrentAction();
+                view.visualizeAction(result.get());
             } else {
                 evaluateExecutionState();
             }
