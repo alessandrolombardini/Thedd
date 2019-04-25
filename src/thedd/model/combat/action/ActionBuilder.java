@@ -20,7 +20,7 @@ import thedd.model.combat.actor.ActionActor;
  *  -Description: "[Description missing]"<br>
  *  -Effects: an empty list<br>
  *  -Category: {@link ActionCategory#STANDARD}<br>
- *  -LogMessageType: {@link LogMessageType#STANDARD_ACTION}<br>
+ *  -LogMessageType: {@link LogMessageTypeImpl#STANDARD_ACTION}<br>
  *  -ActionTargeting: {@link DefaultTargeting}<br>
  *  -ExecutionPolicy: {@link DefaultExecutionPolicy}<br>
  *  -TargetType: {@link TargetType#EVERYONE}<br>
@@ -33,7 +33,7 @@ public class ActionBuilder {
     private String description = "[Description missing]";
     private List<ActionEffect> effects = new ArrayList<>();
     private ActionCategory category = ActionCategory.STANDARD;
-    private LogMessageType logMessageType = LogMessageType.STANDARD_ACTION;
+    private LogMessageType logMessageType = LogMessageTypeImpl.STANDARD_ACTION;
     private ActionTargeting targeting = new DefaultTargeting();
     private ExecutionPolicy applyPolicy = new DefaultExecutionPolicy();
     private TargetType targetType = TargetType.EVERYONE;
