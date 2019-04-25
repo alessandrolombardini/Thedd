@@ -46,14 +46,14 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
     private final Comparator<ActionActor> actorsSortingOrder = new Comparator<ActionActor>() {
         @Override
         public int compare(final ActionActor a, final ActionActor b) {
-            final int aPriority = a.getPriority();
-            final int bPriority = b.getPriority();
             if (canActorAct(a) && !canActorAct(b)) {
                 return -1;
             }
             if (!canActorAct(a) && canActorAct(b)) {
                 return 1;
             }
+            final int aPriority = a.getPriority();
+            final int bPriority = b.getPriority();
             if (aPriority == bPriority) {
                 if (actorsQueue.contains(a) && !actorsQueue.contains(b)) {
                     return -1;

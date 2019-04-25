@@ -45,7 +45,7 @@ public final class AdaptiveFontScrollableText extends ScrollPane implements Adap
         this.setFitToWidth(true);
         this.getStylesheets().add(ClassLoader.getSystemClassLoader().getResource(STYLESHEET).toExternalForm());
         if (PROPORTIONAL_DIVIDER > 0) {
-            ObjectExpression<Font> bi = Bindings.createObjectBinding(
+            final ObjectExpression<Font> bi = Bindings.createObjectBinding(
                     () -> Font.font((this.getWidth() + this.getHeight()) / PROPORTIONAL_DIVIDER), this.widthProperty(),
                     this.heightProperty());
             text.fontProperty().bind(bi);
