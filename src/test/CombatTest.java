@@ -15,7 +15,7 @@ import thedd.model.combat.actionexecutor.DefaultCombatActionExecutor;
 import thedd.model.combat.encounter.HostileEncounter;
 import thedd.model.combat.encounter.HostileEncounterImpl;
 import thedd.model.combat.instance.ActionExecutionInstance;
-import thedd.model.combat.instance.CombatStatus;
+import thedd.model.combat.instance.ExecutionStatus;
 import thedd.model.combat.instance.ExecutionInstanceImpl;
 
 /**
@@ -58,7 +58,7 @@ public class CombatTest {
         assertEquals(instance.getPlayerParty().size(), NUMBER_OF_PLAYER);
         assertEquals(instance.getNPCsParty().size(), NUMBER_OF_NPC);
         assertEquals(instance.getNumberOfAliveCharacters(instance.getAllParties()), NUMBER_OF_ACTORS);
-        assertEquals(logic.getExecutionStatus(), CombatStatus.STARTED);
+        assertEquals(logic.getExecutionStatus(), ExecutionStatus.STARTED);
         assertEquals(logic.getOrderedActorsList().size(), NUMBER_OF_ACTORS);
         assertFalse(logic.isRoundReady());
         assertTrue(logic.getOrderedActorsList().contains(player));
@@ -101,12 +101,12 @@ public class CombatTest {
      */
     @Test
     public void testExecutionStatus() {
-        assertEquals(logic.getExecutionStatus(), CombatStatus.STARTED);
+        assertEquals(logic.getExecutionStatus(), ExecutionStatus.STARTED);
         player.addActionToQueue(action, true);
         logic.addActorToQueue(player);
         player.getSelectedAction().get().setTargets(player, Collections.emptyList());
         executeNextAction();
-        assertEquals(logic.getExecutionStatus(), CombatStatus.ROUND_IN_PROGRESS);
+        assertEquals(logic.getExecutionStatus(), ExecutionStatus.ROUND_IN_PROGRESS);
         executeNextAction();
     }
 
