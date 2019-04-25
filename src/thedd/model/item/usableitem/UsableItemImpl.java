@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import thedd.model.combat.action.Action;
 import thedd.model.combat.action.ActionBuilder;
@@ -19,9 +20,9 @@ import thedd.model.item.ItemRarityImpl;
 public class UsableItemImpl extends AbstractItem implements UsableItem {
 
     private static final Map<ItemRarity, Integer> EFFECT_MULTIPLIERS;
-    private final Action action;
     private final boolean usableInCombat;
     private final boolean usableOutOfCombat;
+    private Optional<Action> action = Optional.empty();
 
     static {
         EFFECT_MULTIPLIERS = new HashMap<>();
@@ -54,12 +55,14 @@ public class UsableItemImpl extends AbstractItem implements UsableItem {
         super(id, name, rarity, description);
         this.usableInCombat = usableInCombat;
         this.usableOutOfCombat = usableOutOfCombat;
-        action = buildAction();
     }
 
     @Override
     public final Action getAction() {
-        return action.getCopy();
+        if (!action.isPresent()) {
+            action = Optional.of(buildAction());
+        }
+        return action.get().getCopy();
     }
 
     @Override
@@ -69,7 +72,10 @@ public class UsableItemImpl extends AbstractItem implements UsableItem {
 
     @Override
     public final void addActionEffect(final ActionEffect effect) {
-        action.addEffect(Objects.requireNonNull(effect));
+        if (!action.isPresent()) {
+            action = Optional.of(buildAction());
+        }
+        action.get().addEffect(Objects.requireNonNull(effect));
     }
 
     @Override
@@ -79,7 +85,10 @@ public class UsableItemImpl extends AbstractItem implements UsableItem {
 
     @Override
     public final String getEffectDescription() {
-        return action.getEffects().stream().map(e -> e.getDescription()).collect(Collectors.joining("\n"));
+        if (!action.isPresent()) {
+            action = Optional.of(buildAction());
+        }
+        return action.get().getEffects().stream().map(e -> e.getDescription()).collect(Collectors.joining("\n"));
     }
 
     @Override
@@ -87,11 +96,11 @@ public class UsableItemImpl extends AbstractItem implements UsableItem {
         if (!super.equals(obj)) {
             return false;
         }
-        if (!(obj instanceof UsableItemImpl)) {
+        if (!(obj instanceof UsableItem)) {
             return false;
         }
-        final UsableItemImpl other = ((UsableItemImpl) obj);
-        return other.getAction().equals(this.action);
+        final UsableItem other = (UsableItem) obj;
+        return other.getAction().equals(getAction());
     }
 
     @Override
