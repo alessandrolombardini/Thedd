@@ -1,7 +1,6 @@
 package thedd.view;
 
 import java.util.List;
-
 import thedd.model.combat.action.Action;
 import thedd.model.combat.action.result.ActionResult;
 import thedd.model.combat.actor.ActionActor;
@@ -84,5 +83,11 @@ public interface View {
      * Disable user interaction.
      */
     void disableInteraction();
+
+    /**
+     * Shows a visual representation of the action (e.g. animations).
+     * @param result the result of the action
+     */
+    void visualizeAction(ActionResult result);
 
 }
