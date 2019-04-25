@@ -13,7 +13,11 @@ public enum StatusTag implements Tag {
     /**
      * To be applied to status that imbue a weakening condition.
      */
-    WEAKENED("Weakened", false);
+    WEAKENED("Weakened", false),
+    /**
+     * To be applied to status that enable the afflicted actor to block an attack that misses.
+     */
+    DEFENSIVE("Defensive", false);
 
     private final String literal;
     private final boolean hidden;
