@@ -18,7 +18,7 @@ public class DefensiveStatus extends StatusImpl {
     private static final double HITCHANCE_MODIFIER_VALUE = -0.1;
     private static final HitChanceModifier MODIFIER = new HitChanceModifier(HITCHANCE_MODIFIER_VALUE, false, ModifierActivation.ACTIVE_ON_DEFENCE);
 
-    {
+    static {
         MODIFIER.addRequirement(new TagRequirement<>(false, TagRequirementType.REQUIRED, Arrays.asList(ActionTag.OFFENSIVE)));
     }
 
