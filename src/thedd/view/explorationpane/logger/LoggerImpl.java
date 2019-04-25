@@ -58,9 +58,9 @@ public class LoggerImpl extends GridPane implements ApplicationLogger {
 
         this.setPadding(new Insets(PADDING));
         this.setBackground(new Background(new BackgroundFill(Color.web("#040404"), null, null)));
+        this.setMinSize(0.0, 0.0);
 
         text.setTextFill(Color.WHITE);
-        //text.setWrapText(true);
         text.prefWidthProperty().bind(this.getWidthProperty().multiply(TEXT_WIDTH_PERC / 100));
         text.prefHeightProperty().bind(this.getHeightProperty());
         text.setAlignment(Pos.CENTER);

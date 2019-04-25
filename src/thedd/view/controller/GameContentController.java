@@ -420,12 +420,13 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
         final int two = 2;
         final int six = 6;
         final int bottomPadding = 10;
+        final double widthPerc = 0.9;
 
         log.setVisible(false);
         log.setText("");
-        log.getWidthProperty().bind(explorationPane.widthProperty().divide(two));
+        log.getWidthProperty().bind(explorationPane.widthProperty().multiply(widthPerc));
         log.getHeightProperty().bind(explorationPane.heightProperty().divide(six));
-        log.translateYProperty().bind(explorationPane.heightProperty().subtract(log.getHeightProperty().add(bottomPadding)).divide(two));
+        log.translateYProperty().bind((explorationPane.heightProperty().divide(two)).subtract(log.getHeightProperty().add(bottomPadding)));
         mainPane.getChildren().add(log);
         return log;
     }
