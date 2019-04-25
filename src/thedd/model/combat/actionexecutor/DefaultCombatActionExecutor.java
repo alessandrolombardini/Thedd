@@ -24,6 +24,7 @@ import thedd.model.combat.instance.ExecutionStatus;
 import thedd.model.combat.instance.ExecutionInstanceImpl;
 import thedd.model.combat.status.Status;
 import thedd.model.combat.tag.ActionTag;
+import thedd.model.combat.tag.StatusTag;
 
 /**
  *  Logic of a default combat<p>
@@ -43,6 +44,7 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
     private Optional<ActionResult> currentActionResult = Optional.empty();
     private final List<Action> actionsQueue = new LinkedList<>(); //A queue of actions that will be executed before the current actor's one
     private final List<ActionActor> actorsQueue = new LinkedList<>();
+    private boolean roundEndStatusUpdated;
     private final Comparator<ActionActor> actorsSortingOrder = new Comparator<ActionActor>() {
         @Override
         public int compare(final ActionActor a, final ActionActor b) {
@@ -99,12 +101,15 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
         if (actionsQueue.isEmpty()) {
             if (!currentActor.isPresent()) {
                 currentActor = Optional.of(actorsQueue.get(0));
-                updateTurnStartStatuses(currentActor.get());
+                updateActorTurnStartStatuses(currentActor.get());
             }
             currentAction = currentActor.get().getNextQueuedAction();
         } else {
             currentAction = Optional.of(actionsQueue.get(0));
             currentActor = currentAction.get().getSource();
+            if (currentAction.equals(currentActor.get().getSelectedAction())) {
+                currentActor.get().resetSelectedAction();
+            }
             actionsQueue.remove(0);
         }
         if (currentAction.isPresent()) {
@@ -185,30 +190,33 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
         if (combatInstance.getNPCsParty().stream().anyMatch(a -> a instanceof DarkDestructor)) {
             checkPlayerVictory();
         }
-
         if (combatInstance.getNumberOfAliveCharacters(combatInstance.getPlayerParty()) <= 0) {
             combatInstance.setExecutionStatus(ExecutionStatus.PLAYER_LOST);
             return;
         }
-
         if (currentActor.isPresent() && currentActor.get().getActionQueue().isEmpty()) {
             final ActionActor actor = currentActor.get();
-            updateExpiredStatuses(actor);
+            updateActorExpiredStatuses(actor);
             if (currentActor.get().getActionQueue().isEmpty()) {
                 actorsQueue.remove(actor);
                 currentActor = Optional.empty();
             }
         }
-
         if (combatInstance.getExecutionStatus() == ExecutionStatus.ROUND_PAUSED) {
             return;
         }
-
         if (actorsQueue.isEmpty() && actionsQueue.isEmpty() 
                 && combatInstance.getExecutionStatus() == ExecutionStatus.ROUND_IN_PROGRESS) {
-            combatInstance.setExecutionStatus(ExecutionStatus.ROUND_ENDED);
-            combatInstance.getAllParties().forEach(ActionActor::resetSelectedAction);
-            combatInstance.getAllParties().forEach(a -> a.getStatuses().forEach(s -> s.setIsUpdated(false)));
+            if (!roundEndStatusUpdated) {
+                updateRoundExpiredStatuses();
+                roundEndStatusUpdated = true;
+            }
+            if (actionsQueue.isEmpty()) {
+                combatInstance.setExecutionStatus(ExecutionStatus.ROUND_ENDED);
+                combatInstance.getAllParties().forEach(ActionActor::resetSelectedAction);
+                combatInstance.getAllParties().forEach(a -> a.getStatuses().forEach(s -> s.setIsUpdated(false)));
+                roundEndStatusUpdated = false;
+            }
         }
 
         if (combatInstance.getExecutionStatus() != ExecutionStatus.ROUND_IN_PROGRESS) {
@@ -226,6 +234,12 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
     public void addActorToQueue(final ActionActor actor) {
         if (actorsQueue.contains(actor)) {
             throw new IllegalArgumentException("The actor was already present in the queue");
+        }
+        if (!actor.getSelectedAction().isPresent()) {
+            throw new IllegalArgumentException("The actor did not select an action");
+        }
+        if (actor.getSelectedAction().get().getTags().contains(ActionTag.TAKES_PRIORITY)) {
+            actionsQueue.add(actor.getSelectedAction().get());
         }
         if (combatInstance.getExecutionStatus() == ExecutionStatus.ROUND_PAUSED) {
             actorsQueue.add(0, actor);
@@ -254,6 +268,7 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
         setNextAIMoves();
         final List<ActionActor> orderedActors = getOrderedActorsList();
         IntStream.range(0, combatInstance.getAllParties().size()).forEach(i -> orderedActors.get(i).setTurnInitiative(i + 1));
+        updateRoundStatuses();
     }
 
     /**
@@ -361,14 +376,13 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
          * -The action is offensive
          * -The target of the action is not the actor executing it
          * -The action is not of type STATUS
-         * -The target's action is of type parry
+         * -The target has the tag provided by the Defensive status
         */
-        return target.getSelectedAction().isPresent()
-                && !currentAction.get().getTags().contains(ActionTag.UNBLOCKABLE)
+        return  !currentAction.get().getTags().contains(ActionTag.UNBLOCKABLE)
                 && currentAction.get().getTags().contains(ActionTag.OFFENSIVE)
                 && currentAction.get().getTargetType() != TargetType.SELF
                 && currentAction.get().getCategory() != ActionCategory.STATUS
-                && target.getSelectedAction().get().getTags().contains(ActionTag.PARRY);
+                && target.getTags().contains(StatusTag.DEFENSIVE);
     }
 
     private void applyParry(final ActionActor target) {
@@ -379,6 +393,15 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
         } else {
             combatInstance.setExecutionStatus(ExecutionStatus.ROUND_PAUSED);
         }
+        final List<Status> defensiveStatuses = target.getStatuses().stream()
+                                                                   .filter(s -> s.getTags().contains(StatusTag.DEFENSIVE))
+                                                                   .collect(Collectors.toList());
+        defensiveStatuses.forEach(s -> {
+            s.depleteStatus();
+            s.update(combatInstance);
+            s.getAction().ifPresent(actionsQueue::add);
+            target.removeStatus(s);
+        });
     }
 
     private void checkStatusResistance(final Action action, final ActionActor target) {
@@ -389,7 +412,7 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
                                              .filter(s -> s.getAction().isPresent())
                                              .filter(s -> s.getAction().get().equals(action))
                                              .findFirst()
-                                             .ifPresent(this::depleteStatus);
+                                             .ifPresent(Status::depleteStatus);
         }
     }
 
@@ -402,9 +425,10 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
         updateNewlyAppliedStatuses(target);
     }
 
-    private void updateTurnStartStatuses(final ActionActor actor) {
+    private void updateActorTurnStartStatuses(final ActionActor actor) {
         actor.getStatuses().stream()
                            .filter(s -> !s.isUpdated())
+                           .filter(s -> s.isRelativeToActors())
                            .forEach(s -> {
                                s.update(combatInstance);
                                if (s.getCurrentDuration() >= 0 || s.isPermanent()) {
@@ -415,8 +439,9 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
                            });
     }
 
-    private void updateExpiredStatuses(final ActionActor actor) {
+    private void updateActorExpiredStatuses(final ActionActor actor) {
         final List<Status> toRemove = actor.getStatuses().stream()
+                                                         .filter(s -> s.isRelativeToActors())
                                                          .filter(s -> s.getCurrentDuration() <= 0)
                                                          .collect(Collectors.toList());
         toRemove.forEach(s -> {
@@ -438,10 +463,31 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
                             });
     }
 
-    private void depleteStatus(final Status s) {
-        while (s.getCurrentDuration() != 0 && !s.isPermanent()) {
+    private void updateRoundStatuses() {
+        getOrderedActorsList().stream()
+                              .filter(this::canActorAct)
+                              .flatMap(a -> a.getStatuses().stream())
+                              .filter(s -> !s.isUpdated())
+                              .filter(s -> !s.isRelativeToActors())
+                              .filter(s -> s.getCurrentDuration() >= 0 || s.isPermanent())
+                              .forEach(s -> {
+                                  s.update(combatInstance);
+                                  s.getAction().ifPresent(actionsQueue::add);
+                              });
+    }
+
+    private void updateRoundExpiredStatuses() {
+        final List<Status> toRemove = getOrderedActorsList().stream()
+                                                             .filter(this::canActorAct)
+                                                             .flatMap(a -> a.getStatuses().stream())
+                                                             .filter(s -> !s.isRelativeToActors())
+                                                             .filter(s -> s.getCurrentDuration() <= 0)
+                                                             .collect(Collectors.toList());
+        toRemove.forEach(s -> {
             s.update(combatInstance);
-        }
+            s.getAction().ifPresent(actionsQueue::add);
+            s.getAfflictedActor().get().removeStatus(s);
+        });
     }
 
     private void checkPlayerVictory() {
