@@ -41,7 +41,11 @@ public enum ActionTag implements Tag {
     /**
      * To be applied to actions that ignore damage adder modifiers.
      */
-    IGNORES_DMG_ADDER_MOD("Ignores damage adder", true);
+    IGNORES_DMG_ADDER_MOD("Ignores damage adder", true),
+    /**
+     * To be applied to actions that take priority.
+     */
+    TAKES_PRIORITY("Takes priority over other actions", true);
 
     private final String literal;
     private final boolean hidden;
