@@ -64,11 +64,8 @@ public class ActorViewerImpl extends ImageView implements Observable<Pair<Boolea
                     final double width = this.getBoundsInLocal().getWidth();
                     final double height = this.getBoundsInLocal().getHeight();
                     final Point2D point = this.localToScreen(0, 0);
-                    tooltip.setOnShown(l -> {
-                        tooltip.setX(point.getX() + width / 2 - tooltip.getWidth() / 2);
-                        tooltip.setY(point.getY() + height);
-                    });
-                    tooltip.show(this, 0, 0);
+                    final int direction = partySide == PartyType.ALLIED ? 1 : -1;
+                    tooltip.show(this, point.getX() + width * direction, point.getY() + height / 2);
                 }
             }
         });
