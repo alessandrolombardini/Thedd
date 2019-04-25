@@ -6,7 +6,7 @@ import thedd.model.combat.actor.ActionActor;
  *  An enum designed to provide basic formatted strings for logging
  *  results of actions.
  */
-public enum LogMessageType {
+public enum LogMessageTypeImpl implements LogMessageType {
 
     /**
      * Standard actions shared between characters.
