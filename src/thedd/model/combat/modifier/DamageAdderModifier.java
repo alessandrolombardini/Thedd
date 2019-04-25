@@ -6,6 +6,7 @@ import java.util.Objects;
 import thedd.model.combat.action.Action;
 import thedd.model.combat.action.effect.DamageEffect;
 import thedd.model.combat.requirements.Requirement;
+import thedd.model.combat.tag.ActionTag;
 import thedd.model.combat.tag.Tag;
 
 /**
@@ -53,6 +54,14 @@ public final class DamageAdderModifier extends AbstractModifier<Action> implemen
     @Override
     public String toString() {
         return "Adds " + value + " to " + addedTag.getLiteral();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean accept(final Action action) {
+        return super.accept(action) && !action.getTags().contains(ActionTag.IGNORES_DMG_ADDER_MOD);
     }
 
     @Override
