@@ -17,7 +17,6 @@ import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import thedd.model.character.BasicCharacter;
@@ -297,18 +296,12 @@ public class GameContentController extends ViewNodeControllerImpl implements Obs
             final LoggerImpl log = generateLog();
             final LoggerManager lm = new LoggerManager(log, queue);
             log.setLoggerManager(lm);
-            final EventHandler<MouseEvent> filter = new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(final MouseEvent event) {
-                        event.consume();
-                }
-            };
-            mainPane.addEventFilter(MouseEvent.ANY, filter);
+            explorationPane.setMouseTransparent(true);
             final EventHandler<WorkerStateEvent> loggerCloser = new EventHandler<WorkerStateEvent>() {
                 @Override
                 public void handle(final WorkerStateEvent event) {
                     mainPane.getChildren().remove(log);
-                    mainPane.removeEventFilter(MouseEvent.ANY, filter);
+                    explorationPane.setMouseTransparent(false);
                     getController().evaluateExecutionState();
                 }
             };
