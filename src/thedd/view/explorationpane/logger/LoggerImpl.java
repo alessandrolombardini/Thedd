@@ -1,19 +1,28 @@
 package thedd.view.explorationpane.logger;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javafx.animation.FadeTransition;
 import javafx.beans.property.DoubleProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import thedd.view.extensions.AdaptiveFontLabel;
+import thedd.view.imageloader.DirectoryPicker;
+import thedd.view.imageloader.ImageLoader;
+import thedd.view.imageloader.ImageLoaderImpl;
 
 /**
  * {@link GridPane} which acts as {@link ApplicationLogger}.
@@ -28,6 +37,7 @@ public class LoggerImpl extends GridPane implements ApplicationLogger {
     private static final double PADDING = 5;
 
     private final AdaptiveFontLabel text = new AdaptiveFontLabel(FONT_RATIO);
+    private Optional<LoggerManager> loggerManager;
 
     /**
      * 
@@ -56,9 +66,9 @@ public class LoggerImpl extends GridPane implements ApplicationLogger {
         text.setAlignment(Pos.CENTER);
         this.add(text, 0, 0, 2, 2);
 
-        //loggerManager = Optional.empty();
+        loggerManager = Optional.empty();
 
-        /*final ImageLoader imgl = new ImageLoaderImpl();
+        final ImageLoader imgl = new ImageLoaderImpl();
         final Button close = new Button();
         close.setPickOnBounds(true);
         close.setTranslateY(PADDING);
@@ -68,7 +78,7 @@ public class LoggerImpl extends GridPane implements ApplicationLogger {
                               new BackgroundImage(
                                 imgl.loadSingleImage(DirectoryPicker.ICON, "closelogger"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(1.0,  1.0,  true, true, true, false))));
         close.setOnAction(e -> loggerManager.ifPresent(lm -> lm.cancel()));
-        this.add(close, 1, 0, 1, 1);*/
+        this.add(close, 1, 0, 1, 1);
     }
 
     @Override
@@ -91,7 +101,7 @@ public class LoggerImpl extends GridPane implements ApplicationLogger {
 
     @Override
     public final void setLoggerManager(final LoggerManager logMan) {
-        //loggerManager = Optional.of(Objects.requireNonNull(logMan));
+        loggerManager = Optional.of(Objects.requireNonNull(logMan));
     }
 
     @Override
