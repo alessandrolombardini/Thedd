@@ -19,7 +19,7 @@ public class AdaptiveFontButton extends Button implements AdaptiveFontComponent 
     public AdaptiveFontButton(@NamedArg("ratio") final int ratio) {
         super();
         this.ratio = ratio;
-        this.setFontRatioFromSameObject(ratio, this);
+        this.setFontRatio(ratio, this);
     }
 
     /**

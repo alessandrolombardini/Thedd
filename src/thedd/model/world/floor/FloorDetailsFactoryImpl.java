@@ -31,7 +31,7 @@ public final class FloorDetailsFactoryImpl implements FloorDetailsFactory {
         final int numberOfIteragibleSetted = 0;
         final int numberOfContraptions = this.getRandomNumberOfContraptions(numberOfRooms - 1, difficulty,
                                                                             numberOfIteragibleSetted);
-        final int numberOfTreasures = this.getRandomNumberOfTreasure(numberOfRooms - 1, difficulty,
+        final int numberOfTreasures = this.getRandomNumberOfTreasures(numberOfRooms - 1, difficulty,
                                                                      numberOfContraptions);
         final int numberOfEnemies = this.getRandomNumberOfEnemies(numberOfRooms - 1, difficulty);
         return new FloorDetailsBuilderImpl().setDifficulty(difficulty)
@@ -52,7 +52,7 @@ public final class FloorDetailsFactoryImpl implements FloorDetailsFactory {
                                 effectiveNumberOfRooms * RoomFactoryImpl.MAX_ENEMIES_PER_ROOM);
     }
 
-    private int getRandomNumberOfTreasure(final int effectiveNumOfRooms, final Difficulty difficulty,
+    private int getRandomNumberOfTreasures(final int effectiveNumOfRooms, final Difficulty difficulty,
                                           final int interagibleSetted) {
         final int baseValue = (int) Math.round(effectiveNumOfRooms * Difficulty.NORMAL.getMultiplier());
         final int baseNumber = getGaussian(baseValue, baseValue);
@@ -64,7 +64,7 @@ public final class FloorDetailsFactoryImpl implements FloorDetailsFactory {
 
     private int getRandomNumberOfContraptions(final int effectiveNumberOfRooms, final Difficulty difficulty,
                                               final int interagibleSetted) {
-        return this.getRandomNumberOfTreasure(effectiveNumberOfRooms, difficulty, interagibleSetted);
+        return this.getRandomNumberOfTreasures(effectiveNumberOfRooms, difficulty, interagibleSetted);
     }
 
     private int getGaussian(final int mediumVal, final int var) {

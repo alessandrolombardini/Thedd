@@ -3,9 +3,7 @@ package thedd.view.extensions;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.ObjectExpression;
 import javafx.scene.control.Control;
-import javafx.scene.control.Label;
 import javafx.scene.control.Labeled;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.text.Font;
 
@@ -21,7 +19,7 @@ public interface AdaptiveFontComponent {
      * @param ratio the ratio applied to the font size.
      * @param node  the node where this ratio is applied.
      */
-    default void setFontRatioFromSameObject(final int ratio, final Control node) {
+    default void setFontRatio(final int ratio, final Control node) {
         if (ratio > 0) {
             final ObjectExpression<Font> bi = Bindings.createObjectBinding(
                     () -> Font.font((node.getWidth() + node.getHeight()) / ratio), node.widthProperty(),
@@ -36,25 +34,6 @@ public interface AdaptiveFontComponent {
         }
         node.autosize();
         node.setMinSize(0, 0);
-    }
-
-    /**
-     * Sets into a Label component the font resize property binding the size of
-     * ScrollPane component, that contains it.
-     * 
-     * @param ratio     the ratio applied to the font size.
-     * @param content   the node where this ratio in applied.
-     * @param container the node where the content is located into.
-     */
-    default void setFontRatioFromOtherObject(final int ratio, final Label content, final ScrollPane container) {
-        if (ratio > 0) {
-            ObjectExpression<Font> bi = Bindings.createObjectBinding(
-                    () -> Font.font((container.getWidth() + container.getHeight()) / ratio), container.widthProperty(),
-                    container.heightProperty());
-            content.fontProperty().bind(bi);
-        }
-        container.setMinSize(0, 0);
-//        content.setMinSize(0, 0);
     }
 
     /**

@@ -19,7 +19,7 @@ public class AdaptiveFontLabel extends Label implements AdaptiveFontComponent {
     public AdaptiveFontLabel(@NamedArg("ratio") final int ratio) {
         super();
         this.ratio = ratio;
-        this.setFontRatioFromSameObject(ratio, this);
+        this.setFontRatio(ratio, this);
     }
 
     /**
