@@ -4,7 +4,7 @@ package thedd.model.combat.instance;
  * Defines the various states of a combat/action execution
  * instance.
  */
-public enum CombatStatus {
+public enum ExecutionStatus {
 
     /**
      * Player has won the combat.

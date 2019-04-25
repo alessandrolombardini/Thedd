@@ -2,7 +2,7 @@ package thedd.model.combat.action.implementations;
 
 import thedd.model.combat.action.ActionBuilder;
 import thedd.model.combat.action.ActionImpl;
-import thedd.model.combat.action.LogMessageType;
+import thedd.model.combat.action.LogMessageTypeImpl;
 import thedd.model.combat.action.TargetType;
 import thedd.model.combat.tag.ActionTag;
 
@@ -27,7 +27,7 @@ public class ActiveDefence extends ActionImpl {
                                  .setDescription(DESCRIPTION)
                                  .setTargetType(TargetType.SELF)
                                  .setBaseHitChance(BASE_HITCHANCE)
-                                 .setLogMessage(LogMessageType.PARRY_ACTION)
+                                 .setLogMessage(LogMessageTypeImpl.PARRY_ACTION)
                                  .build());
         addTag(ActionTag.IGNORES_MODIFIERS, true);
         addTag(ActionTag.DEFENSIVE, true);

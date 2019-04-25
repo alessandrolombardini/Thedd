@@ -20,7 +20,7 @@ import thedd.model.combat.action.result.ActionResultType;
 import thedd.model.combat.actor.ActionActor;
 import thedd.model.combat.actor.automatic.AutomaticActionActor;
 import thedd.model.combat.instance.ActionExecutionInstance;
-import thedd.model.combat.instance.CombatStatus;
+import thedd.model.combat.instance.ExecutionStatus;
 import thedd.model.combat.instance.ExecutionInstanceImpl;
 import thedd.model.combat.status.Status;
 import thedd.model.combat.tag.ActionTag;
@@ -108,7 +108,7 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
             actionsQueue.remove(0);
         }
         if (currentAction.isPresent()) {
-            combatInstance.setCombatStatus(CombatStatus.ROUND_IN_PROGRESS);
+            combatInstance.setExecutionStatus(ExecutionStatus.ROUND_IN_PROGRESS);
         }
     }
 
@@ -187,7 +187,7 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
         }
 
         if (combatInstance.getNumberOfAliveCharacters(combatInstance.getPlayerParty()) <= 0) {
-            combatInstance.setCombatStatus(CombatStatus.PLAYER_LOST);
+            combatInstance.setExecutionStatus(ExecutionStatus.PLAYER_LOST);
             return;
         }
 
@@ -200,18 +200,18 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
             }
         }
 
-        if (combatInstance.getCombatStatus() == CombatStatus.ROUND_PAUSED) {
+        if (combatInstance.getExecutionStatus() == ExecutionStatus.ROUND_PAUSED) {
             return;
         }
 
         if (actorsQueue.isEmpty() && actionsQueue.isEmpty() 
-                && combatInstance.getCombatStatus() == CombatStatus.ROUND_IN_PROGRESS) {
-            combatInstance.setCombatStatus(CombatStatus.ROUND_ENDED);
+                && combatInstance.getExecutionStatus() == ExecutionStatus.ROUND_IN_PROGRESS) {
+            combatInstance.setExecutionStatus(ExecutionStatus.ROUND_ENDED);
             combatInstance.getAllParties().forEach(ActionActor::resetSelectedAction);
             combatInstance.getAllParties().forEach(a -> a.getStatuses().forEach(s -> s.setIsUpdated(false)));
         }
 
-        if (combatInstance.getCombatStatus() != CombatStatus.ROUND_IN_PROGRESS) {
+        if (combatInstance.getExecutionStatus() != ExecutionStatus.ROUND_IN_PROGRESS) {
             checkPlayerVictory();
         }
 
@@ -227,8 +227,7 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
         if (actorsQueue.contains(actor)) {
             throw new IllegalArgumentException("The actor was already present in the queue");
         }
-
-        if (combatInstance.getCombatStatus() == CombatStatus.ROUND_PAUSED) {
+        if (combatInstance.getExecutionStatus() == ExecutionStatus.ROUND_PAUSED) {
             actorsQueue.add(0, actor);
         } else {
             actorsQueue.add(actor);
@@ -241,7 +240,7 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
      */
     @Override
     public void startExecutor() { 
-        combatInstance.setCombatStatus(CombatStatus.STARTED);
+        combatInstance.setExecutionStatus(ExecutionStatus.STARTED);
         combatInstance.getAllParties().forEach(a -> a.setIsInCombat(true));
         prepareNextRound();
     }
@@ -269,8 +268,8 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
      * {@inheritDoc}
      */
     @Override
-    public CombatStatus getExecutionStatus() {
-        return combatInstance.getCombatStatus();
+    public ExecutionStatus getExecutionStatus() {
+        return combatInstance.getExecutionStatus();
     }
 
     /**
@@ -282,7 +281,7 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
                                                                 combatInstance.getNPCsParty().stream())
                                                                 .filter(a -> canActorAct(a))
                                                                 .collect(Collectors.toList());
-        return combatInstance.getCombatStatus() == CombatStatus.ROUND_PAUSED
+        return combatInstance.getExecutionStatus() == ExecutionStatus.ROUND_PAUSED
                 || actorsQueue.containsAll(availableActors);
     }
 
@@ -378,7 +377,7 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
         if (combatInstance.getNPCsParty().contains(target)) { //Maybe check if target is Automatic AND his behavior is active
             setNextAIMove((AutomaticActionActor) target);
         } else {
-            combatInstance.setCombatStatus(CombatStatus.ROUND_PAUSED);
+            combatInstance.setExecutionStatus(ExecutionStatus.ROUND_PAUSED);
         }
     }
 
@@ -447,7 +446,7 @@ public class DefaultCombatActionExecutor implements ActionExecutor {
 
     private void checkPlayerVictory() {
         if (combatInstance.getNumberOfAliveCharacters(combatInstance.getNPCsParty()) <= 0) {
-            combatInstance.setCombatStatus(CombatStatus.PLAYER_WON);
+            combatInstance.setExecutionStatus(ExecutionStatus.PLAYER_WON);
             combatInstance.getPlayerParty().forEach(a -> {
                 a.setIsInCombat(false);
                 a.resetActionsQueue();

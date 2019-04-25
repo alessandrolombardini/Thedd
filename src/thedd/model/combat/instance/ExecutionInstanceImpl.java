@@ -19,7 +19,7 @@ public class ExecutionInstanceImpl implements ActionExecutionInstance {
     private final Set<ActionActor> npcsParty = new LinkedHashSet<>();
     private final Set<ActionActor> playerParty = new LinkedHashSet<>();
     private int roundCount;
-    private CombatStatus combatStatus = CombatStatus.NOT_STARTED;
+    private ExecutionStatus combatStatus = ExecutionStatus.NOT_STARTED;
 
     /**
      * {@inheritDoc}
@@ -89,7 +89,7 @@ public class ExecutionInstanceImpl implements ActionExecutionInstance {
      * {@inheritDoc}
      */
     @Override
-    public void setCombatStatus(final CombatStatus newStatus) {
+    public void setExecutionStatus(final ExecutionStatus newStatus) {
         combatStatus = newStatus;
     }
 
@@ -97,7 +97,7 @@ public class ExecutionInstanceImpl implements ActionExecutionInstance {
      * {@inheritDoc}
      */
     @Override
-    public CombatStatus getCombatStatus() {
+    public ExecutionStatus getExecutionStatus() {
         return combatStatus;
     }
 
@@ -117,7 +117,7 @@ public class ExecutionInstanceImpl implements ActionExecutionInstance {
         final ActionExecutionInstance copy = new ExecutionInstanceImpl();
         copy.addPlayerPartyMembers(playerParty);
         copy.addNPCsPartyMembers(npcsParty);
-        copy.setCombatStatus(getCombatStatus());
+        copy.setExecutionStatus(getExecutionStatus());
         while (getRoundNumber() > copy.getRoundNumber()) {
             copy.increaseRoundNumber();
         }

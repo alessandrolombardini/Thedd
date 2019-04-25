@@ -12,7 +12,7 @@ import thedd.model.combat.action.result.ActionResultImpl;
 import thedd.model.combat.action.result.ActionResultType;
 import thedd.model.combat.actor.ActionActor;
 import thedd.model.combat.instance.ActionExecutionInstance;
-import thedd.model.combat.instance.CombatStatus;
+import thedd.model.combat.instance.ExecutionStatus;
 import thedd.model.combat.status.Status;
 
 /**
@@ -60,7 +60,7 @@ public class OutOfCombatActionExecutor implements ActionExecutor {
      */
     @Override
     public void prepareNextRound() {
-        getExecutionInstance().setCombatStatus(CombatStatus.STARTED);
+        getExecutionInstance().setExecutionStatus(ExecutionStatus.STARTED);
     }
 
     /**
@@ -106,7 +106,7 @@ public class OutOfCombatActionExecutor implements ActionExecutor {
      */
     @Override
     public Optional<ActionResult> evaluateCurrentAction() {
-        combatInstance.setCombatStatus(CombatStatus.ROUND_IN_PROGRESS);
+        combatInstance.setExecutionStatus(ExecutionStatus.ROUND_IN_PROGRESS);
         roundStarted = true;
         if (action.isPresent()) {
             final Action a = action.get();
@@ -131,7 +131,7 @@ public class OutOfCombatActionExecutor implements ActionExecutor {
     @Override
     public void updateExecutionStatus() {
         if (combatInstance.getNumberOfAliveCharacters(combatInstance.getPlayerParty()) <= 0) {
-            combatInstance.setCombatStatus(CombatStatus.PLAYER_LOST);
+            combatInstance.setExecutionStatus(ExecutionStatus.PLAYER_LOST);
             return;
         } 
 
@@ -144,7 +144,7 @@ public class OutOfCombatActionExecutor implements ActionExecutor {
         if (!iterator.hasNext() && !action.isPresent()) {
             combatInstance.getAllParties().forEach(a -> a.getStatuses().forEach(s -> s.setIsUpdated(false)));
             combatInstance.getAllParties().forEach(a -> a.resetActionsQueue());
-            combatInstance.setCombatStatus(CombatStatus.COMBAT_ENDED);
+            combatInstance.setExecutionStatus(ExecutionStatus.COMBAT_ENDED);
         }
     }
 
@@ -152,8 +152,8 @@ public class OutOfCombatActionExecutor implements ActionExecutor {
      * {@inheritDoc}
      */
     @Override
-    public CombatStatus getExecutionStatus() {
-        return combatInstance.getCombatStatus();
+    public ExecutionStatus getExecutionStatus() {
+        return combatInstance.getExecutionStatus();
     }
 
     /**

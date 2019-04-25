@@ -63,16 +63,16 @@ public interface ActionExecutionInstance {
     List<ActionActor> getPlayerParty();
 
     /**
-     * Sets the current combat status.
+     * Sets the current execution status.
      * @param newStatus the new status
      */
-    void setCombatStatus(CombatStatus newStatus);
+    void setExecutionStatus(ExecutionStatus newStatus);
 
     /**
-     * Returns the current combat status.
+     * Returns the current execution status.
      * @return the current status
      */
-    CombatStatus getCombatStatus();
+    ExecutionStatus getExecutionStatus();
 
     /**
      * Returns a list containing all the Actors involved in the combat.

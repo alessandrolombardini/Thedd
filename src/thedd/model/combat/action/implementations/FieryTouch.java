@@ -35,6 +35,8 @@ public class FieryTouch extends ActionImpl {
         this.addTag(ActionTag.OFFENSIVE, true);
 
         final DamageEffect fireDamage = new DamageEffect(BASE_FIRE_DAMAGE);
+        this.addTag(ActionTag.IGNORES_HITCHANCE_MOD, true);
+        this.addTag(ActionTag.IGNORES_DMG_ADDER_MOD, true);
         fireDamage.addTag(EffectTag.FIRE_DAMAGE, true);
 
         addEffect(fireDamage);

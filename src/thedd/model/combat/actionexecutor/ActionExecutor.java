@@ -6,7 +6,7 @@ import java.util.Optional;
 import thedd.model.combat.action.result.ActionResult;
 import thedd.model.combat.actor.ActionActor;
 import thedd.model.combat.instance.ActionExecutionInstance;
-import thedd.model.combat.instance.CombatStatus;
+import thedd.model.combat.instance.ExecutionStatus;
 
 /**
  * The entity that dictates how the combat will flow.<br>
@@ -59,7 +59,7 @@ public interface ActionExecutor {
      * Returns the current instance status.
      * @return the current status of the combat
      */
-    CombatStatus getExecutionStatus();
+    ExecutionStatus getExecutionStatus();
 
     /**
      * Adds the actor to the queue.

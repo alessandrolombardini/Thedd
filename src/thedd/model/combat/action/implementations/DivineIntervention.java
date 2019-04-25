@@ -6,7 +6,7 @@ import thedd.model.combat.action.Action;
 import thedd.model.combat.action.ActionBuilder;
 import thedd.model.combat.action.ActionCategory;
 import thedd.model.combat.action.ActionImpl;
-import thedd.model.combat.action.LogMessageType;
+import thedd.model.combat.action.LogMessageTypeImpl;
 import thedd.model.combat.action.TargetType;
 import thedd.model.combat.action.effect.DamageEffect;
 import thedd.model.combat.action.effect.StatusGiverEffect;
@@ -34,7 +34,7 @@ public class DivineIntervention extends ActionImpl {
     private static final double WEAKNESS_BASE_HITCHANCE = 1d;
     private static final Action EXTRA_ACTION = new ActionBuilder().setName("Weakness")
                                                                    .setCategory(ActionCategory.STATUS)
-                                                                   .setLogMessage(LogMessageType.STATUS_ACTION)
+                                                                   .setLogMessage(LogMessageTypeImpl.STATUS_ACTION)
                                                                    .setBaseHitChance(WEAKNESS_BASE_HITCHANCE)
                                                                    .setEffects(Arrays.asList(new StatusGiverEffect(new WeaknessStatus(3))))
                                                                    .build();
@@ -53,6 +53,8 @@ public class DivineIntervention extends ActionImpl {
                                  .build());
         EXTRA_ACTION.addTag(ActionTag.IGNORES_MODIFIERS, true);
         this.addTag(ActionTag.OFFENSIVE, true);
+        this.addTag(ActionTag.IGNORES_HITCHANCE_MOD, true);
+        this.addTag(ActionTag.IGNORES_DMG_ADDER_MOD, true);
         this.addRequirement(new SourceTagRequirement<>(false, TagRequirementType.UNALLOWED, StatusTag.WEAKENED));
 
         final DamageEffect fireDamage = new DamageEffect(BASE_FIRE_DAMAGE);

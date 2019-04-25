@@ -12,7 +12,7 @@ import thedd.model.combat.action.result.ActionResultImpl;
 import thedd.model.combat.action.result.ActionResultType;
 import thedd.model.combat.actor.ActionActor;
 import thedd.model.combat.instance.ActionExecutionInstance;
-import thedd.model.combat.instance.CombatStatus;
+import thedd.model.combat.instance.ExecutionStatus;
 import thedd.model.combat.instance.ExecutionInstanceImpl;
 import thedd.model.combat.status.Status;
 
@@ -45,7 +45,7 @@ public class StatusUpdateActionExecutor implements ActionExecutor {
      */
     @Override
     public void startExecutor() {
-        instance.setCombatStatus(CombatStatus.STARTED);
+        instance.setExecutionStatus(ExecutionStatus.STARTED);
         instance.getAllParties().forEach(a -> {
             queue.addAll(a.getStatuses());
         });
@@ -99,7 +99,7 @@ public class StatusUpdateActionExecutor implements ActionExecutor {
      */
     @Override
     public Optional<ActionResult> evaluateCurrentAction() {
-        instance.setCombatStatus(CombatStatus.ROUND_IN_PROGRESS);
+        instance.setExecutionStatus(ExecutionStatus.ROUND_IN_PROGRESS);
         if (!currentAction.isPresent()) {
             currentActionResult = Optional.empty();
         } else {
@@ -125,7 +125,7 @@ public class StatusUpdateActionExecutor implements ActionExecutor {
     @Override
     public void updateExecutionStatus() {
         if (instance.getNumberOfAliveCharacters(instance.getPlayerParty()) <= 0) {
-                instance.setCombatStatus(CombatStatus.PLAYER_LOST);
+                instance.setExecutionStatus(ExecutionStatus.PLAYER_LOST);
                 return;
         }
 
@@ -141,7 +141,7 @@ public class StatusUpdateActionExecutor implements ActionExecutor {
 
         if (!iterator.hasNext() && !currentAction.isPresent()) {
             queue.forEach(s -> s.setIsUpdated(false));
-            instance.setCombatStatus(CombatStatus.COMBAT_ENDED);
+            instance.setExecutionStatus(ExecutionStatus.COMBAT_ENDED);
         }
     }
 
@@ -149,8 +149,8 @@ public class StatusUpdateActionExecutor implements ActionExecutor {
      * {@inheritDoc}
      */
     @Override
-    public CombatStatus getExecutionStatus() {
-        return instance.getCombatStatus();
+    public ExecutionStatus getExecutionStatus() {
+        return instance.getExecutionStatus();
     }
 
     /**
