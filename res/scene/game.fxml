@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="thedd.view.controller.MainGameViewController"
+	AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+	<children>
+		<GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+			<columnConstraints>
+				<ColumnConstraints minWidth="0.0" percentWidth="50" fillWidth="true" />
+				<ColumnConstraints minWidth="0.0" percentWidth="50" fillWidth="true" />
+			</columnConstraints>
+			<rowConstraints>
+				<RowConstraints minHeight="0.0" percentHeight="60" fillHeight="true" />
+				<RowConstraints minHeight="0.0" percentHeight="40" fillHeight="true" />
+			</rowConstraints>
+			<children>
+				<AnchorPane fx:id="gameContent" GridPane.columnSpan="2"
+					AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+				<AnchorPane fx:id="inventoryContent" GridPane.rowIndex="1" 
+					AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+				<AnchorPane fx:id="statisticsContent" GridPane.columnIndex="1" GridPane.rowIndex="1" 
+					AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+			</children>
+		</GridPane>
+	</children>
+</AnchorPane>
