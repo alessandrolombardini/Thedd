@@ -125,4 +125,16 @@ public interface Status {
      */
     void resetCurrentDuration();
 
+    /**
+     * Brings the current duration to 0 (if the status is not permanent).
+     */
+    void depleteStatus();
+
+    /**
+     * Gets whether the status should be updated on actors' turn start/end
+     * or global rounds' start/end.
+     * @return true if the status is updated relative to actors' turn, false otherwise
+     */
+    boolean isRelativeToActors();
+
 }
