@@ -41,8 +41,8 @@ public abstract class BasicCharacterImpl extends AbstractAutomaticActor implemen
     // Modifier constants
     private static final double COS_POISON_RESISTANCE_PERC = -0.05;
     private static final double STR_DAMAGE_ATK_PERC = 0.05;
-    private static final double DEX_HIT_CHANCE_ATK_PERC = 0.1;
-    private static final double DEX_HIT_CHANCE_DEF_PERC = -0.1;
+    private static final double DEX_HIT_CHANCE_ATK_PERC = 0.025;
+    private static final double DEX_HIT_CHANCE_DEF_PERC = -0.025;
     private static final double COS_DMG_RES_DEF = -0.02;
     /**
      * BasicCharacterImpl's constructor.
@@ -197,12 +197,12 @@ public abstract class BasicCharacterImpl extends AbstractAutomaticActor implemen
         strDamage.addRequirement(new TagRequirement<>(false, TagRequirementType.REQUIRED, requiredTags));
         // Bonus to hit chance per AGILITY point
         final Modifier<Action> dexHitChance = new StatBasedModifier<>(Statistic.AGILITY, this,
-                new HitChanceModifier(DEX_HIT_CHANCE_ATK_PERC, true, offensive));
+                new HitChanceModifier(DEX_HIT_CHANCE_ATK_PERC, false, offensive));
         requiredTags = Arrays.asList(EffectTag.NORMAL_DAMAGE);
         dexHitChance.addRequirement(new EffectTagsRequirement<>(false, TagRequirementType.REQUIRED, requiredTags));
         // Bonus to chances of being missed by a physical attack per AGILITY point
         final Modifier<Action> dexMissChance = new StatBasedModifier<>(Statistic.AGILITY, this,
-                new HitChanceModifier(DEX_HIT_CHANCE_DEF_PERC, true, defensive));
+                new HitChanceModifier(DEX_HIT_CHANCE_DEF_PERC, false, defensive));
         requiredTags = Arrays.asList(EffectTag.NORMAL_DAMAGE);
         dexMissChance.addRequirement(new EffectTagsRequirement<>(false, TagRequirementType.REQUIRED, requiredTags));
         // Resistance to physical damage per CONSTITUTION point
