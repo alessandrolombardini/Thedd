@@ -21,6 +21,7 @@ public class StatusImpl implements Status {
     private final Optional<Action> deactivationAction;
     private final StatusActivationFrequency activationType;
     private final int baseDuration;
+    private final boolean relativeToActor;
     private int remainingTurns;
     private Optional<ActionActor> afflictedActor = Optional.empty();
     private Optional<Action> currentAction;
@@ -29,16 +30,19 @@ public class StatusImpl implements Status {
     private final String name;
     private boolean initialized;
 
+
     /**
      * Constructor for a Status.
      * @param name the name of the Status
      * @param activationAction the action provided by updating the status
      * @param deactivationAction the action provided when the status is expired
-     * @param activationFrequency the frequency with which the activationaction has to be provided
+     * @param activationFrequency the frequency with which the activation action has to be provided
      * @param duration the duration of the status (number of possible updates)
+     * @param relativeToActor true if the status has to be updated on actors' turn start/end, false if it instead has to be updated on global round start/end
      */
-    public StatusImpl(final String name, final Action activationAction, final Action deactivationAction, final StatusActivationFrequency activationFrequency, final int duration) {
+    public StatusImpl(final String name, final Action activationAction, final Action deactivationAction, final StatusActivationFrequency activationFrequency, final int duration, final boolean relativeToActor) {
         this.name = name;
+        this.relativeToActor = relativeToActor;
         this.activationAction = Optional.ofNullable(activationAction);
         this.deactivationAction = Optional.ofNullable(deactivationAction);
         this.activationType = activationFrequency;
@@ -240,7 +244,7 @@ public class StatusImpl implements Status {
     public Status getCopy() {
         final Action action1 = activationAction.isPresent() ? activationAction.get().getCopy() : null;
         final Action action2 = deactivationAction.isPresent() ? deactivationAction.get().getCopy() : null;
-        final Status copy = new StatusImpl(this.name, action1, action2, this.activationType, this.baseDuration);
+        final Status copy = new StatusImpl(this.name, action1, action2, this.activationType, this.baseDuration, this.relativeToActor);
         copy.addTags(getTags());
         return copy;
     }
@@ -252,6 +256,24 @@ public class StatusImpl implements Status {
     public void resetCurrentDuration() {
         updated = false;
         remainingTurns = baseDuration;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isRelativeToActors() {
+        return relativeToActor;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void depleteStatus() {
+        if (!isPermanent()) {
+            remainingTurns = 0;
+        }
     }
 
     /**
