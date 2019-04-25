@@ -3,11 +3,8 @@ package test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-
 import java.util.List;
-
 import org.junit.Test;
-
 import thedd.model.roomevent.RoomEvent;
 import thedd.model.roomevent.combatevent.CombatEvent;
 import thedd.model.roomevent.floorchanger.Stairs;
@@ -29,7 +26,7 @@ import thedd.model.world.room.RoomFactoryImpl;
  */
 public class EnvironmentTest {
 
-    private static final int NUMBER_OF_TEST = 1000;
+    private static final int NUMBER_OF_TEST = 10;
 
     /**
      * Test of new environment.
