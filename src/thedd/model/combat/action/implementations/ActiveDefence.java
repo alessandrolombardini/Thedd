@@ -4,6 +4,8 @@ import thedd.model.combat.action.ActionBuilder;
 import thedd.model.combat.action.ActionImpl;
 import thedd.model.combat.action.LogMessageTypeImpl;
 import thedd.model.combat.action.TargetType;
+import thedd.model.combat.action.effect.StatusGiverEffect;
+import thedd.model.combat.status.defensive.DefensiveStatus;
 import thedd.model.combat.tag.ActionTag;
 
 /**
@@ -32,6 +34,7 @@ public class ActiveDefence extends ActionImpl {
         addTag(ActionTag.IGNORES_MODIFIERS, true);
         addTag(ActionTag.DEFENSIVE, true);
         addTag(ActionTag.PARRY, true);
-
+        addTag(ActionTag.TAKES_PRIORITY, true);
+        addEffect(new StatusGiverEffect(new DefensiveStatus()));
     }
 }
