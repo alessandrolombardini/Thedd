@@ -1,6 +1,7 @@
 package thedd.model.combat.modifier;
 
 import thedd.model.combat.action.Action;
+import thedd.model.combat.tag.ActionTag;
 
 /**
  * A modifier that modifies an {@link Action}'s hit chance. 
@@ -26,6 +27,14 @@ public class HitChanceModifier extends AbstractValueModifier<Action> {
         final Action action = (Action) modifiable;
         final double modifier = isPercentage() ? action.getBaseHitChance() * getValue() : getValue();
         action.addToCurrentHitChance(modifier);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean accept(final Action action) {
+        return super.accept(action) && !action.getTags().contains(ActionTag.IGNORES_HITCHANCE_MOD);
     }
 
     @Override
