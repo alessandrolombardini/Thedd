@@ -52,7 +52,7 @@ public abstract class AbstractActionEffect implements ActionEffect {
      * The copy should only be initialized with its special attributes
      * (such as damage for DamageEffects, resistance for DamageResistanceEffects...).
      * Any attribute shared between all effects (such as tags) shall be copied and set
-     * by the getCopy template method of the {@link AbstractActionEffect } class.
+     * by the getCopy template method of the {@link AbstractActionEffect} class.
      * @return a partial copy of the class
      */
     protected abstract ActionEffect getSpecializedCopy();
