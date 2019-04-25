@@ -26,7 +26,8 @@ public interface ViewNodeController {
     void update();
 
     /**
-     * This method allows to disable the interaction.
+     * This method allows to disable the interaction, should be overrided if the
+     * class want to do something to be disabled.
      */
     void disableInteraction();
 

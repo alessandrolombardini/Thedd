@@ -1,13 +1,11 @@
 package thedd.model;
 
 import java.util.Optional;
-
 import thedd.model.character.BasicCharacter;
 import thedd.model.world.environment.Environment;
 
 /**
  * This class describe the model of the pattern MVC.
- *
  */
 public interface Model {
 
