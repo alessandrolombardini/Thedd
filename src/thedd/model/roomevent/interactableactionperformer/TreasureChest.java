@@ -1,9 +1,9 @@
 package thedd.model.roomevent.interactableactionperformer;
 
-import thedd.model.combat.action.Action;
+import java.util.Arrays;
 import thedd.model.combat.action.ActionBuilder;
 import thedd.model.combat.action.ActionCategory;
-import thedd.model.combat.action.LogMessageType;
+import thedd.model.combat.action.LogMessageTypeImpl;
 import thedd.model.combat.action.effect.ItemGiverEffect;
 
 /**
@@ -13,23 +13,19 @@ import thedd.model.combat.action.effect.ItemGiverEffect;
 public class TreasureChest extends AbstractInteractableActionPerformer implements InteractableActionPerformer {
 
     private static final String NAME = "Treasure Chest";
-    private static final Action ACTION;
-    static {
-        final String description = "A chest that contains an unknown item.";
-        ACTION = new ActionBuilder().setName(NAME)
-                                    .setCategory(ActionCategory.INTERACTABLE)
-                                    .setBaseHitChance(1d)
-                                    .setDescription(description)
-                                    .setLogMessage(LogMessageType.TREASURE_ACTION)
-                                    .build();
-        ACTION.addEffect(new ItemGiverEffect());
-    }
+    private static final String DESCRIPTION = "A chest that contains an unknown item.";
 
     /**
      * 
      */
     public TreasureChest() {
-        super(NAME, ACTION.getCopy());
+        super(NAME, new ActionBuilder().setName(NAME)
+                                       .setCategory(ActionCategory.INTERACTABLE)
+                                       .setBaseHitChance(1d)
+                                       .setDescription(DESCRIPTION)
+                                       .setEffects(Arrays.asList(new ItemGiverEffect()))
+                                       .setLogMessage(LogMessageTypeImpl.TREASURE_ACTION)
+                                       .build());
     }
 
     /**
