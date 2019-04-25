@@ -15,7 +15,7 @@ public class PoisonStatus extends StatusImpl {
      * @param duration the duration of the status
      */
     public PoisonStatus(final int duration) {
-        super("Poisoned", new PoisonStatusAction(), new DefaultStatusExpireAction("Poisoned"), StatusActivationFrequency.OVER_TIME, duration);
+        super("Poisoned", new PoisonStatusAction(), new DefaultStatusExpireAction("Poisoned"), StatusActivationFrequency.OVER_TIME, duration, true);
         addTag(StatusTag.POISONED);
     }
 

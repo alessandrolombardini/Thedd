@@ -14,7 +14,7 @@ public class WeaknessStatus extends StatusImpl {
      * @param duration the duration of the status
      */
     public WeaknessStatus(final int duration) {
-        super("Weakness", new WeaknessStatusAction(), new WeaknessStatusActionDeact(), StatusActivationFrequency.ONE_TIME, duration);
+        super("Weakness", new WeaknessStatusAction(), new WeaknessStatusActionDeact(), StatusActivationFrequency.ONE_TIME, duration, true);
         addTag(StatusTag.WEAKENED);
     }
 
