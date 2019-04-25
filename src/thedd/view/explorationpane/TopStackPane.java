@@ -1,15 +1,14 @@
 package thedd.view.explorationpane;
 
 import java.util.Objects;
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.ObjectExpression;
+
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
-import javafx.scene.text.Font;
 import thedd.view.explorationpane.confirmationdialog.OptionDialog;
+import thedd.view.extensions.AdaptiveFontButton;
 
 /**
  * A {@link StackPane} which can run any function based on the response of a modal dialog it can create and show.
@@ -49,20 +48,16 @@ public class TopStackPane extends StackPane implements DialogResponseManager, Mo
         final int twentyFive = 25;
         final int fifteen = 15;
         final int five = 5;
-        final int two = 2;
+        final int btnFontRatio = 15;
 
-        final ObjectExpression<Font> bi = Bindings.createObjectBinding(
-              () -> Font.font((bop.getWidthProperty().add(bop.getHeightProperty()).doubleValue()) / (twentyFive * two)), bop.getWidthProperty(),
-              bop.getHeightProperty());
-
-        final Button accept = new Button("Accept");
-        accept.fontProperty().bind(bi);
+        final Button accept = new AdaptiveFontButton(btnFontRatio);
+        accept.setText("Accept");
         accept.prefWidthProperty().bind(bop.getWidthProperty().multiply(getPercentageAsDecimal(twentyFive)));
         accept.prefHeightProperty().bind(bop.getHeightProperty().multiply(getPercentageAsDecimal(fifteen)));
         accept.setOnAction(e -> onDialogAccept.run());
 
-        final Button cancel = new Button("Cancel");
-        cancel.fontProperty().bind(bi);
+        final Button cancel = new AdaptiveFontButton(btnFontRatio);
+        cancel.setText("Cancel");
         cancel.prefWidthProperty().bind(bop.getWidthProperty().multiply(getPercentageAsDecimal(twentyFive)));
         cancel.prefHeightProperty().bind(bop.getHeightProperty().multiply(getPercentageAsDecimal(fifteen)));
         cancel.setOnAction(e -> onDialogDecline.run());

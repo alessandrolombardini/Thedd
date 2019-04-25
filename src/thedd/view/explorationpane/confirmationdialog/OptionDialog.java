@@ -46,6 +46,7 @@ public final class OptionDialog extends Pane {
 
         l.setTextFill(Color.WHITE);
         l.setAlignment(Pos.CENTER);
+        l.setWrapText(true);
         l.prefWidthProperty().bind(getWidthProperty());
         l.prefHeightProperty().bind(getHeightProperty().subtract(this.getHeightProperty().multiply(HALF)));
 
@@ -101,6 +102,7 @@ public final class OptionDialog extends Pane {
      */
     public void addButton(final Button newButton) {
         buttonList.add(newButton);
+        newButton.getStylesheets().add(ClassLoader.getSystemResource("styles/style.css").toString());
         buttons.add(newButton, buttonList.size(), 0);
     }
 }
