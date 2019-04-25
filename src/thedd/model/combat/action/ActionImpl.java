@@ -102,9 +102,9 @@ public class ActionImpl implements Action {
      * {@inheritDoc}
      */
     @Override
-    public void setTargets(final ActionActor target, final List<ActionActor> targetedParty) {
+    public void setTargets(final ActionActor target, final List<ActionActor> validTargets) {
         targets.clear();
-        targets.addAll(targeting.getTargets(target, targetedParty));
+        targets.addAll(targeting.getTargets(target, validTargets));
     }
 
     /**
@@ -177,6 +177,7 @@ public class ActionImpl implements Action {
      */
     @Override
     public String getEffectsPreview(final ActionActor target) {
+        this.applyModifiers(target);
         final StringBuilder sb = new StringBuilder();
         effects.stream().forEach((e) -> {
             sb.append(e.getPreviewMessage());
