@@ -40,7 +40,7 @@ public final class EquipableItemSword extends EquipableItemImpl {
                                                                                   TagRequirementType.REQUIRED,
                                                                                   Arrays.asList(EffectTag.NORMAL_DAMAGE))),
                                         EffectTag.NORMAL_DAMAGE,
-                                        ModifierActivation.ACTIVE_ON_ATTACK),
+                                        ModifierActivation.RETRIEVING_ACTION),
                 false));
     }
 

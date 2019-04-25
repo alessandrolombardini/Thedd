@@ -3,7 +3,7 @@ package thedd.model.item.usableitem;
 import thedd.model.combat.action.Action;
 import thedd.model.combat.action.ActionBuilder;
 import thedd.model.combat.action.ActionCategory;
-import thedd.model.combat.action.LogMessageType;
+import thedd.model.combat.action.LogMessageTypeImpl;
 import thedd.model.combat.action.effect.DamageEffect;
 import thedd.model.combat.action.targeting.TargetTargetParty;
 import thedd.model.item.Item;
@@ -51,7 +51,7 @@ public final class UsableItemBomb extends UsableItemImpl {
                 .setBaseHitChance(1d)
                 .setDescription(DESCRIPTION)
                 .setTargetingPolicy(new TargetTargetParty())
-                .setLogMessage(LogMessageType.ITEM_ACTION)
+                .setLogMessage(LogMessageTypeImpl.ITEM_ACTION)
                 .build();
     }
 }

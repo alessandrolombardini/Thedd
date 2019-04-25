@@ -27,13 +27,21 @@ public enum ActionTag implements Tag {
      */
     IGNORES_MODIFIERS("Ignores modifiers", true),
     /**
+     * To be applied to actions that ignore hit chance modifiers.
+     */
+    IGNORES_HITCHANCE_MOD("Ignores hitchance modifiers", true),
+    /**
      * To be applied to actions that can block another action.
      */
     PARRY("Parry", true),
     /**
      * To be applied to actions that cannot be blocked by another action.
      */
-    UNBLOCKABLE("Unblockable", true);
+    UNBLOCKABLE("Unblockable", true), 
+    /**
+     * To be applied to actions that ignore damage adder modifiers.
+     */
+    IGNORES_DMG_ADDER_MOD("Ignores damage adder", true);
 
     private final String literal;
     private final boolean hidden;

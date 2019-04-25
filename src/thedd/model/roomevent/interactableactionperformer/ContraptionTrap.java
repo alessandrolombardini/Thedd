@@ -3,7 +3,7 @@ package thedd.model.roomevent.interactableactionperformer;
 import thedd.model.combat.action.Action;
 import thedd.model.combat.action.ActionBuilder;
 import thedd.model.combat.action.ActionCategory;
-import thedd.model.combat.action.LogMessageType;
+import thedd.model.combat.action.LogMessageTypeImpl;
 import thedd.model.combat.action.effect.DamageEffect;
 
 
@@ -23,7 +23,7 @@ public class ContraptionTrap extends AbstractInteractableActionPerformer impleme
                                     .setCategory(ActionCategory.INTERACTABLE)
                                     .setBaseHitChance(1d)
                                     .setDescription(description)
-                                    .setLogMessage(LogMessageType.CONTRAPTION_ACTION)
+                                    .setLogMessage(LogMessageTypeImpl.CONTRAPTION_ACTION)
                                     .build();
         ACTION.addEffect(new DamageEffect(BASE_DAMAGE));
     }

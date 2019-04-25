@@ -37,7 +37,7 @@ public final class EquipableItemTwoHandedAxe extends EquipableItemImpl {
         final DamageAdderModifier dmgMod = new DamageAdderModifier(BASE_DAMAGE,
                                                                    Arrays.asList(new EffectTagsRequirement<>(false, TagRequirementType.REQUIRED, Arrays.asList(EffectTag.NORMAL_DAMAGE))),
                                                                    EffectTag.NORMAL_DAMAGE,
-                                                                   ModifierActivation.ACTIVE_ON_ATTACK);
+                                                                   ModifierActivation.RETRIEVING_ACTION);
         this.addActionEffect(new ActionModifierAdderEffect(dmgMod, false));
     }
 

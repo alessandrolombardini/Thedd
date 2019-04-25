@@ -3,7 +3,7 @@ package thedd.model.combat.status;
 import thedd.model.combat.action.ActionBuilder;
 import thedd.model.combat.action.ActionCategory;
 import thedd.model.combat.action.ActionImpl;
-import thedd.model.combat.action.LogMessageType;
+import thedd.model.combat.action.LogMessageTypeImpl;
 import thedd.model.combat.action.TargetType;
 
 /** 
@@ -23,7 +23,7 @@ public class DefaultStatusExpireAction extends ActionImpl {
                                  .setBaseHitChance(BASE_HITCHANCE)
                                  .setCategory(ActionCategory.STATUS)
                                  .setTargetType(TargetType.SELF)
-                                 .setLogMessage(LogMessageType.STATUS_EXPIRE)
+                                 .setLogMessage(LogMessageTypeImpl.STATUS_EXPIRE)
                                  .build());
     }
 

@@ -6,7 +6,7 @@ import thedd.model.character.statistics.Statistic;
 import thedd.model.combat.action.ActionBuilder;
 import thedd.model.combat.action.ActionCategory;
 import thedd.model.combat.action.ActionImpl;
-import thedd.model.combat.action.LogMessageType;
+import thedd.model.combat.action.LogMessageTypeImpl;
 import thedd.model.combat.action.TargetType;
 import thedd.model.combat.action.effect.ActionEffect;
 import thedd.model.combat.action.effect.EquipmentStatisticChangerEffect;
@@ -28,7 +28,7 @@ public class WeaknessStatusAction extends ActionImpl {
                                  .setBaseHitChance(BASE_HITCHANCE)
                                  .setCategory(ActionCategory.STATUS)
                                  .setTargetType(TargetType.SELF)
-                                 .setLogMessage(LogMessageType.STATUS_APPLY)
+                                 .setLogMessage(LogMessageTypeImpl.STATUS_APPLY)
                                  .build());
         final ActionEffect cosEffect = new EquipmentStatisticChangerEffect(Statistic.CONSTITUTION, -1);
         final ActionEffect strEffect = new EquipmentStatisticChangerEffect(Statistic.STRENGTH, -1);

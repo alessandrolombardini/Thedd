@@ -1,5 +1,4 @@
 package thedd.model.combat.modifier;
-
 import thedd.model.combat.action.effect.ActionEffect;
 import thedd.model.combat.action.effect.DamageEffect;
 

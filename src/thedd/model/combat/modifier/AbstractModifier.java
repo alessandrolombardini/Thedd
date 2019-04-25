@@ -18,7 +18,7 @@ public abstract class AbstractModifier<T extends Modifiable> implements Modifier
 
     /**
      * Constructor for the abstract class.
-     * @param type declares whether this modifier should be applied on attack, defense or everytime
+     * @param type declares whether this modifier should be applied on attack, defense or every time
      */
     protected AbstractModifier(final ModifierActivation type) {
         this.type = type;

@@ -123,7 +123,7 @@ public final class ItemFactory {
             return new ActionModifierAdderEffect(new DamageAdderModifier(Math.ceil(RNGENERATOR.nextDouble() * MAX_DAMAGE_MODIFIER_VALUE),
                                                                          new ArrayList<>(),
                                                                          dmgType,
-                                                                         ModifierActivation.ACTIVE_ON_ATTACK),
+                                                                         ModifierActivation.RETRIEVING_ACTION),
                                                 false);
         case DAMAGE_RESISTANCE:
             EffectTag resType = EffectTag.values()[RNGENERATOR.nextInt(EffectTag.values().length)];

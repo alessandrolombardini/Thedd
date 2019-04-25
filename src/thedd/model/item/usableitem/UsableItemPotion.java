@@ -3,7 +3,7 @@ package thedd.model.item.usableitem;
 import thedd.model.combat.action.Action;
 import thedd.model.combat.action.ActionBuilder;
 import thedd.model.combat.action.ActionCategory;
-import thedd.model.combat.action.LogMessageType;
+import thedd.model.combat.action.LogMessageTypeImpl;
 import thedd.model.combat.action.effect.HealingEffect;
 import thedd.model.item.Item;
 import thedd.model.item.ItemRarity;
@@ -49,7 +49,7 @@ public final class UsableItemPotion extends UsableItemImpl {
                 .setCategory(ActionCategory.ITEM)
                 .setBaseHitChance(1d)
                 .setDescription(DESCRIPTION)
-                .setLogMessage(LogMessageType.ITEM_ACTION)
+                .setLogMessage(LogMessageTypeImpl.ITEM_ACTION)
                 .build();
     }
 }

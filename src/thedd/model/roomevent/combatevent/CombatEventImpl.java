@@ -4,7 +4,7 @@ import java.util.Objects;
 
 import thedd.model.combat.encounter.HostileEncounter;
 import thedd.model.combat.encounter.HostileEncounterImpl;
-import thedd.model.combat.instance.CombatStatus;
+import thedd.model.combat.instance.ExecutionStatus;
 import thedd.model.roomevent.AbstractRoomEvent;
 import thedd.model.roomevent.RoomEventType;
 
@@ -38,7 +38,7 @@ public final class CombatEventImpl extends AbstractRoomEvent implements CombatEv
 
     @Override
     public boolean isCompleted() {
-        return hostileEncounter.getCombatLogic().getExecutionStatus() == CombatStatus.PLAYER_WON;
+        return hostileEncounter.getCombatLogic().getExecutionStatus() == ExecutionStatus.PLAYER_WON;
     }
 
     @Override
