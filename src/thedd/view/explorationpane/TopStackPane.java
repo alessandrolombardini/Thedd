@@ -46,20 +46,19 @@ public class TopStackPane extends StackPane implements DialogResponseManager, Mo
         this.setAlignment(Pos.CENTER);
 
         final int twentyFive = 25;
-        final int fifteen = 15;
         final int five = 5;
-        final int btnFontRatio = 15;
+        final int btnFontRatio = 17;
 
         final Button accept = new AdaptiveFontButton(btnFontRatio);
         accept.setText("Accept");
         accept.prefWidthProperty().bind(bop.getWidthProperty().multiply(getPercentageAsDecimal(twentyFive)));
-        accept.prefHeightProperty().bind(bop.getHeightProperty().multiply(getPercentageAsDecimal(fifteen)));
+        accept.prefHeightProperty().bind(bop.getHeightProperty().multiply(getPercentageAsDecimal(twentyFive)));
         accept.setOnAction(e -> onDialogAccept.run());
 
         final Button cancel = new AdaptiveFontButton(btnFontRatio);
         cancel.setText("Cancel");
         cancel.prefWidthProperty().bind(bop.getWidthProperty().multiply(getPercentageAsDecimal(twentyFive)));
-        cancel.prefHeightProperty().bind(bop.getHeightProperty().multiply(getPercentageAsDecimal(fifteen)));
+        cancel.prefHeightProperty().bind(bop.getHeightProperty().multiply(getPercentageAsDecimal(twentyFive)));
         cancel.setOnAction(e -> onDialogDecline.run());
 
         bop.getButtonDistance().bind(bop.getWidthProperty().multiply(getPercentageAsDecimal(five)));
