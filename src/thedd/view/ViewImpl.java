@@ -221,5 +221,13 @@ public class ViewImpl extends Application implements View {
         this.actualScene.ifPresent(s -> s.getController().disableInteraction());
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void visualizeAction(final ActionResult result) {
+        this.getGameViewController().ifPresent(c -> this.getGameViewController().get().visualizeAction(result));
+    }
+
 
 }
